@@ -1,4 +1,4 @@
-﻿namespace SchoolManagementService.Domain.Enums.School;
+﻿namespace SchoolManagementService.Core.Domain.Enums.School;
 
 public enum SchoolOwnershipType
 {

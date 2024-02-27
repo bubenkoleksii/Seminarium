@@ -1,4 +1,4 @@
-﻿namespace SchoolManagementService.Domain.Entities;
+﻿namespace SchoolManagementService.Core.Domain.Entities;
 
 public abstract class Entity
 {

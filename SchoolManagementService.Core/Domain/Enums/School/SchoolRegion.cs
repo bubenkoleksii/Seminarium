@@ -1,4 +1,4 @@
-﻿namespace SchoolManagementService.Domain.Enums.School;
+﻿namespace SchoolManagementService.Core.Domain.Enums.School;
 
 public enum SchoolRegion
 {
@@ -15,7 +15,7 @@ public enum SchoolRegion
     Luhansk = 11,
     Lviv = 12,
     Mykolaiv = 13,
-    Odessa = 14,
+    Odesa = 14,
     Poltava = 15,
     Rivne = 16,
     Sumy = 17,
