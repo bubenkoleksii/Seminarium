@@ -1,8 +1,8 @@
-﻿using SchoolManagementService.Core.Domain.Enums.School;
+﻿using SchoolManagementService.Core.Application.Common.Enums.School;
 
-namespace SchoolManagementService.Core.Domain.Entities;
+namespace SchoolManagementService.Core.Application.School.Commands.CreateSchool;
 
-public class School : Entity
+public class CreateSchoolCommand : IRequest<Guid>
 {
     public ulong RegisterCode { get; set; }
 
@@ -31,8 +31,4 @@ public class School : Entity
     public required string Address { get; set; }
 
     public bool AreOccupied { get; set; }
-
-    public string? SiteUrl { get; set; }
-
-    public string? Img { get; set; }
 }

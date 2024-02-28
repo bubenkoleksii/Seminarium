@@ -1,6 +1,8 @@
-﻿namespace SchoolManagementService.Infrastructure.Persistence;
+﻿using SchoolManagementService.Core.Application.DataContext;
 
-public class QueryContext : BaseContext
+namespace SchoolManagementService.Infrastructure.Persistence;
+
+public class QueryContext : BaseContext, IQueryContext
 {
     public QueryContext(DbContextOptions options) : base(options)
     {

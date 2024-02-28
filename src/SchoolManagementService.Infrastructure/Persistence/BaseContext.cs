@@ -1,4 +1,4 @@
-﻿using SchoolManagementService.Core.Domain.Entities;
+﻿using SchoolManagementService.Core.Domain;
 using SchoolManagementService.Infrastructure.Persistence.EntityTypeConfigurations;
 
 namespace SchoolManagementService.Infrastructure.Persistence;

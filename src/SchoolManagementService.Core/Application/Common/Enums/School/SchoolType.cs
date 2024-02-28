@@ -1,4 +1,4 @@
-﻿namespace SchoolManagementService.Core.Domain.Enums.School;
+﻿namespace SchoolManagementService.Core.Application.Common.Enums.School;
 
 public enum SchoolType
 {

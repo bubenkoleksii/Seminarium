@@ -1,6 +1,8 @@
-﻿namespace SchoolManagementService.Infrastructure.Persistence;
+﻿using SchoolManagementService.Core.Application.DataContext;
 
-public class CommandContext : BaseContext
+namespace SchoolManagementService.Infrastructure.Persistence;
+
+public class CommandContext : BaseContext, ICommandContext
 {
     public CommandContext(DbContextOptions options) : base(options)
     {
