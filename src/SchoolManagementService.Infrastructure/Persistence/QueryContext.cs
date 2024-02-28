@@ -1,6 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-
-namespace SchoolManagementService.Infrastructure.Persistence;
+﻿namespace SchoolManagementService.Infrastructure.Persistence;
 
 public class QueryContext : BaseContext
 {

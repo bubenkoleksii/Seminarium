@@ -10,9 +10,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.editorconfig = .editorconfig
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SchoolManagementService.Core", "src\SchoolManagementService.Core\SchoolManagementService.Core.csproj", "{539AB5E3-837B-427B-972E-062E1F9CE065}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SchoolManagementService.Core", "src\SchoolManagementService.Core\SchoolManagementService.Core.csproj", "{539AB5E3-837B-427B-972E-062E1F9CE065}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SchoolManagementService.Infrastructure", "src\SchoolManagementService.Infrastructure\SchoolManagementService.Infrastructure.csproj", "{E9CAF19C-6384-494E-8BCA-3CBC37C19C97}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SchoolManagementService.Infrastructure", "src\SchoolManagementService.Infrastructure\SchoolManagementService.Infrastructure.csproj", "{E9CAF19C-6384-494E-8BCA-3CBC37C19C97}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

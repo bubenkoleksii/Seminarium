@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using SchoolManagementService.Core.Domain.Entities;
+﻿using SchoolManagementService.Core.Domain.Entities;
 using SchoolManagementService.Infrastructure.Persistence.EntityTypeConfigurations;
 
 namespace SchoolManagementService.Infrastructure.Persistence;
