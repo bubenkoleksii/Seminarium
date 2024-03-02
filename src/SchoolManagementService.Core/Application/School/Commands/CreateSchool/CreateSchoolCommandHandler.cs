@@ -6,18 +6,19 @@ public class CreateSchoolCommandHandler : IRequestHandler<CreateSchoolCommand, G
 {
     private readonly ICommandContext _commandContext;
 
-    public CreateSchoolCommandHandler(ICommandContext commandContext)
+    private readonly IMapper _mapper;
+
+    public CreateSchoolCommandHandler(ICommandContext commandContext, IMapper mapper)
     {
         _commandContext = commandContext;
+        _mapper = mapper;
     }
 
     public Task<Guid> Handle(CreateSchoolCommand request, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
-    }
+        var entity = _mapper.Map<Domain.School>(request);
 
-    private Domain.School GenerateSchool(CreateSchoolCommand request)
-    {
-        throw new NotImplementedException();
+        var id = Guid.NewGuid();
+        return Task.FromResult(id);
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace SchoolManagementService.Core.Application.Common.Enums.School;
+﻿namespace SchoolManagementService.Core.Domain.Enums.School;
 
 public enum SchoolRegion
 {

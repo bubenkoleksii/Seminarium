@@ -1,9 +1,8 @@
-﻿using SchoolManagementService.Core.Application.Common.Enums.School;
-using SchoolManagementService.Core.Application.Common.Mappings;
+﻿using SchoolManagementService.Core.Domain.Enums.School;
 
 namespace SchoolManagementService.Core.Application.School.Models;
 
-public class SchoolModelResponse : IMapWith<Domain.School>
+public class SchoolModelResponse
 {
     public Guid Id { get; set; }
 

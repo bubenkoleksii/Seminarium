@@ -1,4 +1,4 @@
-﻿using SchoolManagementService.Core.Application.Common.Enums.School;
+﻿using SchoolManagementService.Core.Domain.Enums.School;
 
 namespace SchoolManagementService.Core.Domain;
 
