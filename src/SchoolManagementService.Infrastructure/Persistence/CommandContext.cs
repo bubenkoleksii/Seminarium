@@ -4,7 +4,7 @@ namespace SchoolManagementService.Infrastructure.Persistence;
 
 public class CommandContext : BaseContext, ICommandContext
 {
-    public CommandContext(DbContextOptions options) : base(options)
+    public CommandContext(DbContextOptions<CommandContext> options) : base(options)
     {
     }
 }

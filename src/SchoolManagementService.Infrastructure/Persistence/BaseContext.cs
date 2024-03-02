@@ -5,7 +5,8 @@ namespace SchoolManagementService.Infrastructure.Persistence;
 
 public abstract class BaseContext : DbContext
 {
-    public const string Schema = "SchoolManagement";
+    public const string Schema = "public";
+    public const string MigrationsTableName = "__EFMigrationsHistory";
 
     public DbSet<School> Schools { get; set; }
 
