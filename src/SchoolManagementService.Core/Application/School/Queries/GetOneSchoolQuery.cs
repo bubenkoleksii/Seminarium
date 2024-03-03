@@ -2,4 +2,5 @@
 
 public class GetOneSchoolQuery
 {
+    public int Id { get; set; }
 }

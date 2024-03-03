@@ -1,4 +1,4 @@
-﻿using SchoolManagementService.Core.Application.DataContext;
+﻿using SchoolManagementService.Core.Application.Common.DataContext;
 
 namespace SchoolManagementService.Infrastructure.Persistence;
 

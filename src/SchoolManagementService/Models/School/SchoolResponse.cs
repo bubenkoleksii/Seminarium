@@ -1,8 +1,6 @@
-﻿using SchoolManagementService.Core.Domain.Enums.School;
+﻿namespace SchoolManagementService.Models.School;
 
-namespace SchoolManagementService.Core.Application.School.Models;
-
-public record SchoolModelResponse(
+public record SchoolResponse(
     Guid Id,
 
     ulong RegisterCode,
@@ -17,15 +15,15 @@ public record SchoolModelResponse(
 
     string? Phone,
 
-    SchoolType Type,
+    string Type,
 
     ulong PostalCode,
 
-    SchoolOwnershipType OwnershipType,
+    string OwnershipType,
 
     uint StudentsQuantity,
 
-    SchoolRegion Region,
+    string Region,
 
     string? TerritorialCommunity,
 

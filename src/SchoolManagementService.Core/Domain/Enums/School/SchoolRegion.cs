@@ -27,5 +27,6 @@ public enum SchoolRegion
     Chernivtsi = 23,
     Chernihiv = 24,
     Crimea = 25,
-    Abroad = 26
+    Abroad = 26,
+    None = 27
 }

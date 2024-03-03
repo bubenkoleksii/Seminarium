@@ -30,12 +30,14 @@ namespace SchoolManagementService.Infrastructure.Persistence.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<string>("Address")
-                        .IsRequired()
                         .HasMaxLength(250)
                         .HasColumnType("character varying(250)");
 
                     b.Property<bool>("AreOccupied")
                         .HasColumnType("boolean");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Email")
                         .HasMaxLength(50)
@@ -48,8 +50,11 @@ namespace SchoolManagementService.Infrastructure.Persistence.Migrations
                         .HasMaxLength(250)
                         .HasColumnType("character varying(250)");
 
-                    b.Property<bool>("IsDeleted")
+                    b.Property<bool>("IsArchived")
                         .HasColumnType("boolean");
+
+                    b.Property<DateTime?>("LastUpdatedAt")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -73,7 +78,8 @@ namespace SchoolManagementService.Infrastructure.Persistence.Migrations
                         .HasColumnType("numeric(20,0)");
 
                     b.Property<string>("ShortName")
-                        .HasColumnType("text");
+                        .HasMaxLength(250)
+                        .HasColumnType("character varying(250)");
 
                     b.Property<string>("SiteUrl")
                         .HasMaxLength(50)
@@ -83,7 +89,6 @@ namespace SchoolManagementService.Infrastructure.Persistence.Migrations
                         .HasColumnType("bigint");
 
                     b.Property<string>("TerritorialCommunity")
-                        .IsRequired()
                         .HasMaxLength(250)
                         .HasColumnType("character varying(250)");
 
@@ -91,15 +96,6 @@ namespace SchoolManagementService.Infrastructure.Persistence.Migrations
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("Email")
-                        .IsUnique();
-
-                    b.HasIndex("Img")
-                        .IsUnique();
-
-                    b.HasIndex("RegisterCode")
-                        .IsUnique();
 
                     b.ToTable("Schools", "public");
                 });

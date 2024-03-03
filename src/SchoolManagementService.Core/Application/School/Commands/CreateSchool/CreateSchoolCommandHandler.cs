@@ -1,8 +1,11 @@
-﻿using SchoolManagementService.Core.Application.DataContext;
+﻿using SchoolManagementService.Core.Application.Common.DataContext;
+using SchoolManagementService.Core.Application.School.Common;
+using SchoolManagementService.Core.Application.School.Models;
+using SchoolManagementService.Core.Domain.Errors;
 
 namespace SchoolManagementService.Core.Application.School.Commands.CreateSchool;
 
-public class CreateSchoolCommandHandler : IRequestHandler<CreateSchoolCommand, Guid>
+public class CreateSchoolCommandHandler : IRequestHandler<CreateSchoolCommand, Either<SchoolModelResponse, Error>>
 {
     private readonly ICommandContext _commandContext;
 
@@ -14,11 +17,18 @@ public class CreateSchoolCommandHandler : IRequestHandler<CreateSchoolCommand, G
         _mapper = mapper;
     }
 
-    public Task<Guid> Handle(CreateSchoolCommand request, CancellationToken cancellationToken)
+    public async Task<Either<SchoolModelResponse, Error>> Handle(CreateSchoolCommand request, CancellationToken cancellationToken)
     {
         var entity = _mapper.Map<Domain.School>(request);
 
-        var id = Guid.NewGuid();
-        return Task.FromResult(id);
+        var isAlreadyExists = UniquenessChecker.GetErrorIfAlreadyExists(_commandContext, entity, out var error);
+        if (isAlreadyExists)
+            return error!;
+
+        await _commandContext.Schools.AddAsync(entity, cancellationToken);
+        await _commandContext.SaveChangesAsync(cancellationToken);
+
+        var schoolResponse = _mapper.Map<SchoolModelResponse>(entity);
+        return schoolResponse;
     }
 }

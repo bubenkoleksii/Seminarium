@@ -1,4 +1,4 @@
-﻿namespace SchoolManagementService.Core.Application.DataContext;
+﻿namespace SchoolManagementService.Core.Application.Common.DataContext;
 
 public interface IContext
 {

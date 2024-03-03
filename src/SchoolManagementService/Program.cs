@@ -11,7 +11,7 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddAutoMapper(configuration =>
 {
-    configuration.AddProfile(typeof(MappingProfile));
+    configuration.AddProfile(typeof(ApiMappingProfile));
     configuration.AddProfile(typeof(CoreMappingProfile));
 });
 
