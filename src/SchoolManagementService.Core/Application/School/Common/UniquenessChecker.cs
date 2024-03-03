@@ -23,7 +23,10 @@ internal static class UniquenessChecker
 
         if (existedEntity.RegisterCode == entity.RegisterCode)
         {
-            error = new RegisterCodeAlreadyExists { Params = { nameof(entity.RegisterCode).ToLower() } };
+            error = new RegisterCodeAlreadyExists
+            {
+                Params = { "registerCode" }
+            };
             return true;
         }
 
@@ -32,7 +35,7 @@ internal static class UniquenessChecker
             error = new EmailAlreadyExistsError
             {
                 Detail = "The school with this email address already exists.",
-                Params = { nameof(entity.Email).ToLower() }
+                Params = { "email" }
             };
             return true;
         }
@@ -42,10 +45,11 @@ internal static class UniquenessChecker
             error = new PhoneAlreadyExistsError
             {
                 Detail = "The school with this phone already exists.",
-                Params = { nameof(entity.Phone).ToLower() }
+                Params = { "phone" }
             };
             return true;
         }
+
 
         error = new AlreadyExistsError();
         return true;

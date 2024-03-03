@@ -8,5 +8,5 @@ public abstract class Error
 
     public virtual string Type => ErrorTypes.Unknown;
 
-    public virtual List<string> Params => new();
+    public List<string> Params { get; set; } = new();
 }

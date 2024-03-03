@@ -6,7 +6,7 @@ public static class ErrorCodes
     {
         public static readonly string EmailAlreadyExists = "email_already_exists";
 
-        public static readonly string PhoneAlreadyExists = "email_already_exists";
+        public static readonly string PhoneAlreadyExists = "phone_already_exists";
 
         public static readonly string Unknown = "unknown";
     }

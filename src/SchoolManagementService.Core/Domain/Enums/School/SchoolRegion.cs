@@ -10,7 +10,7 @@ public enum SchoolRegion
     Zakarpattia = 6,
     Zaporizhzhia = 7,
     IvanoFrankivsk = 8,
-    Kiev = 9,
+    Kyiv = 9,
     Kirovohrad = 10,
     Luhansk = 11,
     Lviv = 12,
