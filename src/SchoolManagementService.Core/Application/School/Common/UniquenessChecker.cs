@@ -23,33 +23,21 @@ internal static class UniquenessChecker
 
         if (existedEntity.RegisterCode == entity.RegisterCode)
         {
-            error = new RegisterCodeAlreadyExists
-            {
-                Params = { "registerCode" }
-            };
+            error = new RegisterCodeAlreadyExists(entity.RegisterCode);
             return true;
         }
 
         if (existedEntity.Email == entity.Email)
         {
-            error = new EmailAlreadyExistsError
-            {
-                Detail = "The school with this email address already exists.",
-                Params = { "email" }
-            };
+            error = new EmailAlreadyExistsError(entity.Email!);
             return true;
         }
 
         if (existedEntity.Phone == entity.Phone)
         {
-            error = new PhoneAlreadyExistsError
-            {
-                Detail = "The school with this phone already exists.",
-                Params = { "phone" }
-            };
+            error = new PhoneAlreadyExistsError(entity.Phone!);
             return true;
         }
-
 
         error = new AlreadyExistsError();
         return true;

@@ -6,5 +6,7 @@ public static class ErrorTypes
 
     public static readonly string Uniqueness = "uniqueness";
 
+    public static readonly string NotFound = "not_found";
+
     public static readonly string Unknown = "unknown";
 }

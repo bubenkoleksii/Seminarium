@@ -1,6 +1,6 @@
-﻿namespace SchoolManagementService.Core.Application.School.Queries;
+﻿using SchoolManagementService.Core.Application.School.Models;
+using SchoolManagementService.Core.Domain.Errors;
 
-public class GetOneSchoolQuery
-{
-    public int Id { get; set; }
-}
+namespace SchoolManagementService.Core.Application.School.Queries;
+
+public record GetOneSchoolQuery(Guid Id) : IRequest<Either<SchoolModelResponse, Error>>;
