@@ -10,7 +10,7 @@ public class SchoolController(IMapper mapper) : BaseController
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SchoolResponse))]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> GetOne([Required] Guid id)
+    public async Task<IActionResult> GetOne(Guid id)
     {
         var query = new GetOneSchoolQuery(id);
 
@@ -23,7 +23,7 @@ public class SchoolController(IMapper mapper) : BaseController
     }
 
     [HttpPost]
-    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SchoolResponse))]
+    [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(SchoolResponse))]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(Error))]
     public async Task<IActionResult> Create([FromBody] CreateSchoolRequest schoolRequest)
     {
@@ -32,7 +32,7 @@ public class SchoolController(IMapper mapper) : BaseController
         var result = await Mediator.Send(command);
 
         return result.Match<IActionResult>(
-            Left: modelResponse => Ok(mapper.Map<SchoolResponse>(modelResponse)),
+            Left: modelResponse => CreatedAtAction(mapper.Map<SchoolResponse>(modelResponse)),
             Right: BadRequest
         );
     }

@@ -4,7 +4,7 @@ public abstract class Error
 {
     public virtual string Detail { get; set; } = "Unknown error.";
 
-    public virtual string Code => ErrorCodes.Common.Unknown;
+    public virtual string Title => ErrorTitles.Common.Unknown;
 
     public virtual string Type => ErrorTypes.Unknown;
 

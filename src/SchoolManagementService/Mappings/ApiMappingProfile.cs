@@ -8,6 +8,7 @@ public class ApiMappingProfile : Profile
 {
     public ApiMappingProfile()
     {
+        ConfigureGlobalMappings();
         ConfigureSchoolMapping();
     }
 
@@ -16,5 +17,10 @@ public class ApiMappingProfile : Profile
         CreateMap<CreateSchoolRequest, CreateSchoolCommand>();
 
         CreateMap<SchoolModelResponse, SchoolResponse>();
+    }
+
+    private void ConfigureGlobalMappings()
+    {
+        CreateMap<Enum, string>().ConvertUsing(e => e.ToString().ToSnakeCase());
     }
 }

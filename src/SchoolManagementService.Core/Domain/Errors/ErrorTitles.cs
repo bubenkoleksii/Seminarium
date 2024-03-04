@@ -1,6 +1,6 @@
 ﻿namespace SchoolManagementService.Core.Domain.Errors;
 
-public static class ErrorCodes
+public static class ErrorTitles
 {
     public static class Common
     {

@@ -1,11 +1,15 @@
 ﻿using SchoolManagementService.Core;
 using SchoolManagementService.Core.Application.Common.Mappings;
+using SchoolManagementService.Errors;
 using SchoolManagementService.Infrastructure.Persistence;
 using SchoolManagementService.Mappings;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllers();
+builder.Services.AddControllers(options =>
+{
+    options.Filters.Add(new ConvertToProblemDetailsFilter());
+});
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 

@@ -29,17 +29,17 @@ internal static class UniquenessChecker
 
         if (existedEntity.Email == entity.Email)
         {
-            error = new EmailAlreadyExistsError(entity.Email!);
+            error = new EmailAlreadyExistsError(entity.Email!, "school");
             return true;
         }
 
         if (existedEntity.Phone == entity.Phone)
         {
-            error = new PhoneAlreadyExistsError(entity.Phone!);
+            error = new PhoneAlreadyExistsError(entity.Phone!, "school");
             return true;
         }
 
-        error = new AlreadyExistsError();
+        error = new AlreadyExistsError("school");
         return true;
     }
 }
