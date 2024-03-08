@@ -4,6 +4,14 @@ public static class ErrorTitles
 {
     public static class Common
     {
+        public static readonly string Empty = "empty";
+
+        public static readonly string TooLong = "too_long";
+
+        public static readonly string LowerZero = "lower_zero";
+
+        public static readonly string Invalid = "invalid";
+
         public static readonly string EmailAlreadyExists = "email_already_exists";
 
         public static readonly string PhoneAlreadyExists = "phone_already_exists";

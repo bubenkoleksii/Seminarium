@@ -6,7 +6,7 @@ public class EmailAlreadyExistsError(string email, string resourceName = "resour
 
     public override string Title => ErrorTitles.Common.EmailAlreadyExists;
 
-    public override string Type => ErrorTypes.Uniqueness;
+    public override string Type => ErrorTypes.AlreadyExists;
 
     public override List<string> Params { get; set; } = new() { "email" };
 }

@@ -21,9 +21,7 @@ public class ValidationBehavior<TRequest, TResponse>
             .ToList();
 
         if (failures.Any())
-        {
             throw new ValidationException(failures);
-        }
 
         return next();
     }

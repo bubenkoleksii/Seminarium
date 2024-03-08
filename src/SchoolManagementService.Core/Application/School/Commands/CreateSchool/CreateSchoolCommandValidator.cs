@@ -1,4 +1,6 @@
-﻿namespace SchoolManagementService.Core.Application.School.Commands.CreateSchool;
+﻿using SchoolManagementService.Core.Domain.Errors;
+
+namespace SchoolManagementService.Core.Application.School.Commands.CreateSchool;
 
 public class CreateSchoolCommandValidator : AbstractValidator<CreateSchoolCommand>
 {
@@ -6,48 +8,68 @@ public class CreateSchoolCommandValidator : AbstractValidator<CreateSchoolComman
     {
         RuleFor(x => x.RegisterCode)
             .NotEmpty()
-            .GreaterThan((ulong)0);
+            .WithErrorCode(ErrorTitles.Common.Empty)
+            .GreaterThan((ulong)0)
+            .WithErrorCode(ErrorTitles.Common.LowerZero);
 
         RuleFor(x => x.Name)
             .NotEmpty()
-            .Length(5, 250);
+            .WithErrorCode(ErrorTitles.Common.Empty)
+            .MaximumLength(250)
+            .WithErrorCode(ErrorTitles.Common.TooLong);
 
         RuleFor(x => x.ShortName)
-            .Length(5, 250);
+            .MaximumLength(250)
+            .WithErrorCode(ErrorTitles.Common.TooLong);
 
         RuleFor(x => x.GradingSystem)
             .NotEmpty()
-            .GreaterThan((uint)0);
+            .WithErrorCode(ErrorTitles.Common.Empty)
+            .GreaterThan((uint)0)
+            .WithErrorCode(ErrorTitles.Common.LowerZero);
 
         RuleFor(x => x.Email)
             .EmailAddress()
-            .Length(5, 50);
+            .WithErrorCode(ErrorTitles.Common.Invalid)
+            .MaximumLength(50)
+            .WithErrorCode(ErrorTitles.Common.TooLong);
 
         RuleFor(x => x.Phone)
             .NotEmpty()
-            .Length(5, 50);
+            .WithErrorCode(ErrorTitles.Common.Empty)
+            .MaximumLength(50)
+            .WithErrorCode(ErrorTitles.Common.TooLong);
 
         RuleFor(x => x.Type)
-            .NotEmpty();
+            .NotEmpty()
+            .WithErrorCode(ErrorTitles.Common.Empty);
 
         RuleFor(x => x.PostalCode)
             .NotEmpty()
-            .GreaterThan((ulong)0);
+            .WithErrorCode(ErrorTitles.Common.Empty)
+            .GreaterThan((ulong)0)
+            .WithErrorCode(ErrorTitles.Common.LowerZero);
 
         RuleFor(x => x.OwnershipType)
-            .NotEmpty();
+            .NotEmpty()
+            .WithErrorCode(ErrorTitles.Common.Empty);
 
         RuleFor(x => x.StudentsQuantity)
             .NotEmpty()
-            .GreaterThan((uint)0);
+            .WithErrorCode(ErrorTitles.Common.Empty)
+            .GreaterThan((uint)0)
+            .WithErrorCode(ErrorTitles.Common.LowerZero);
 
         RuleFor(x => x.Region)
-            .NotEmpty();
+            .NotEmpty()
+            .WithErrorCode(ErrorTitles.Common.Empty);
 
         RuleFor(x => x.TerritorialCommunity)
-            .Length(5, 250);
+            .MaximumLength(250)
+            .WithErrorCode(ErrorTitles.Common.TooLong);
 
         RuleFor(x => x.Address)
-            .Length(5, 250);
+            .MaximumLength(250)
+            .WithErrorCode(ErrorTitles.Common.TooLong);
     }
 }

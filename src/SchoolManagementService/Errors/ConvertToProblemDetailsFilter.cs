@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc.Filters;
+using SchoolManagementService.Core.Domain.Errors;
 
 namespace SchoolManagementService.Errors;
 
@@ -10,6 +11,21 @@ public class ConvertToProblemDetailsFilter : IActionFilter
 
     public void OnActionExecuted(ActionExecutedContext context)
     {
-        throw new NotImplementedException();
+        if (context.Result is not ObjectResult { Value: Error error } result)
+            return;
+
+        var problemDetails = new ProblemDetails
+        {
+            Detail = error.Detail,
+            Title = error.Title,
+            Status = result.StatusCode,
+            Type = error.Type,
+            Extensions =
+            {
+                { "params", error.Params }
+            }
+        };
+
+        context.Result = new ObjectResult(problemDetails) { StatusCode = result.StatusCode };
     }
 }

@@ -30,6 +30,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseGlobalExceptionHandler();
+
+app.UseRouting();
 app.UseHttpsRedirection();
 
 app.UseAuthorization();

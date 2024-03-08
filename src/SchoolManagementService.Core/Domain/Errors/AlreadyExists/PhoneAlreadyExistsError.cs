@@ -6,7 +6,7 @@ public class PhoneAlreadyExistsError(string phone, string resourceName = "resour
 
     public override string Title => ErrorTitles.Common.PhoneAlreadyExists;
 
-    public override string Type => ErrorTypes.Uniqueness;
+    public override string Type => ErrorTypes.AlreadyExists;
 
     public override List<string> Params { get; set; } = new() { "phone" };
 }

@@ -1,6 +1,7 @@
 ﻿using SchoolManagementService.Core.Application.School.Commands.CreateSchool;
 using SchoolManagementService.Core.Application.School.Queries;
 using SchoolManagementService.Core.Domain.Errors;
+using SchoolManagementService.Errors;
 using SchoolManagementService.Models.School;
 
 namespace SchoolManagementService.Controllers;
@@ -16,9 +17,9 @@ public class SchoolController(IMapper mapper) : BaseController
 
         var result = await Mediator.Send(query);
 
-        return result.Match<IActionResult>(
+        return result.Match(
             Left: modelResponse => Ok(mapper.Map<SchoolResponse>(modelResponse)),
-            Right: NotFound
+            Right: ErrorActionResultHandler.Handle
         );
     }
 
@@ -31,9 +32,9 @@ public class SchoolController(IMapper mapper) : BaseController
 
         var result = await Mediator.Send(command);
 
-        return result.Match<IActionResult>(
-            Left: modelResponse => CreatedAtAction(mapper.Map<SchoolResponse>(modelResponse)),
-            Right: BadRequest
+        return result.Match(
+            Left: modelResponse => CreatedAtAction(nameof(Create), mapper.Map<SchoolResponse>(modelResponse)),
+            Right: ErrorActionResultHandler.Handle
         );
     }
 }
