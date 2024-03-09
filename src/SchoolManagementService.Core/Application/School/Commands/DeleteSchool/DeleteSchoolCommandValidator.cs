@@ -1,10 +1,10 @@
 ﻿using SchoolManagementService.Core.Domain.Errors;
 
-namespace SchoolManagementService.Core.Application.School.Queries;
+namespace SchoolManagementService.Core.Application.School.Commands.DeleteSchool;
 
-public class GetOneSchoolQueryValidator : AbstractValidator<GetOneSchoolQuery>
+public class DeleteSchoolCommandValidator : AbstractValidator<DeleteSchoolCommand>
 {
-    public GetOneSchoolQueryValidator()
+    public DeleteSchoolCommandValidator()
     {
         RuleFor(x => x.Id)
             .NotNull()

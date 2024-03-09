@@ -15,7 +15,7 @@ internal static class UniquenessChecker
                                  (entity.Email != null && s.Email == entity.Email) ||
                                  (entity.Phone != null && s.Phone == entity.Phone));
 
-        if (existedEntity == null)
+        if (existedEntity is null)
         {
             error = null;
             return false;

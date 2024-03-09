@@ -6,6 +6,8 @@ public static class ErrorTitles
     {
         public static readonly string Empty = "empty";
 
+        public static readonly string Null = "null";
+
         public static readonly string TooLong = "too_long";
 
         public static readonly string LowerZero = "lower_zero";
@@ -15,6 +17,8 @@ public static class ErrorTitles
         public static readonly string EmailAlreadyExists = "email_already_exists";
 
         public static readonly string PhoneAlreadyExists = "phone_already_exists";
+
+        public static readonly string AlreadyUnarchived = "already_unarchived";
 
         public static readonly string NotFoundById = "not_found_by_id";
 

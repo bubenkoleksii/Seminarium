@@ -22,7 +22,7 @@ public class GetOneSchoolQueryHandler : IRequestHandler<GetOneSchoolQuery, Eithe
         var entity = await _queryContext.Schools
             .FirstOrDefaultAsync(s => s.Id == request.Id, cancellationToken: cancellationToken);
 
-        if (entity == null)
+        if (entity is null)
             return new NotFoundByIdError(request.Id, "school");
 
         var schoolResponse = _mapper.Map<SchoolModelResponse>(entity);

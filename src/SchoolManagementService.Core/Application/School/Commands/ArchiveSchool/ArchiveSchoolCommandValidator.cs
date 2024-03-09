@@ -1,10 +1,10 @@
 ﻿using SchoolManagementService.Core.Domain.Errors;
 
-namespace SchoolManagementService.Core.Application.School.Queries;
+namespace SchoolManagementService.Core.Application.School.Commands.ArchiveSchool;
 
-public class GetOneSchoolQueryValidator : AbstractValidator<GetOneSchoolQuery>
+public class ArchiveSchoolCommandValidator : AbstractValidator<ArchiveSchoolCommand>
 {
-    public GetOneSchoolQueryValidator()
+    public ArchiveSchoolCommandValidator()
     {
         RuleFor(x => x.Id)
             .NotNull()
