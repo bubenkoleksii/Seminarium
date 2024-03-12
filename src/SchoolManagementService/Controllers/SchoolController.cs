@@ -41,6 +41,24 @@ public class SchoolController(IMapper mapper) : BaseController
         );
     }
 
+    [HttpPut("[action]/")]
+    [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(SchoolResponse))]
+    [ProducesResponseType(StatusCodes.Status409Conflict, Type = typeof(Error))]
+    public IActionResult Update([FromForm] UpdateSchoolRequest schoolRequest)
+    {
+        using var fileStream = schoolRequest.Img!.OpenReadStream();
+
+        var isRecognizableType = FileTypeValidator.IsTypeRecognizable(fileStream);
+        var fileType = FileTypeValidator.GetFileType(fileStream);
+        var isImage = fileStream.IsImage();
+
+        Console.WriteLine(isRecognizableType);
+        Console.WriteLine(fileType);
+        Console.WriteLine(isImage);
+
+        return Ok(schoolRequest);
+    }
+
     [HttpPatch("[action]/{id}")]
     [ProducesResponseType(StatusCodes.Status202Accepted)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]

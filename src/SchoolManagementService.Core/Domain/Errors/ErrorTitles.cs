@@ -25,6 +25,13 @@ public static class ErrorTitles
         public static readonly string Unknown = "unknown";
     }
 
+    public static class File
+    {
+        public static readonly string NotRecognizable = "not_recognizable";
+
+        public static readonly string LargerMaxSize = "larger_max_size";
+    }
+
     public static class School
     {
         public static readonly string RegisterCodeAlreadyExists = "register_code_already_exists";

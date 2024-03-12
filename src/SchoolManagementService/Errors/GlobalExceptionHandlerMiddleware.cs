@@ -1,5 +1,7 @@
 ﻿using SchoolManagementService.Core.Domain.Errors;
 
+using ValidationException = FluentValidation.ValidationException;
+
 namespace SchoolManagementService.Errors;
 
 public class GlobalExceptionHandlerMiddleware(RequestDelegate next)

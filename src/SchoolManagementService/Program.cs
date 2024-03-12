@@ -1,8 +1,10 @@
 ﻿using SchoolManagementService.Core;
 using SchoolManagementService.Core.Application.Common.Mappings;
 using SchoolManagementService.Errors;
+using SchoolManagementService.Infrastructure.CloudStorage;
 using SchoolManagementService.Infrastructure.Persistence;
 using SchoolManagementService.Mappings;
+using SchoolManagementService.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,7 +21,9 @@ builder.Services.AddAutoMapper(configuration =>
     configuration.AddProfile(typeof(CoreMappingProfile));
 });
 
+builder.Services.SetupOptions(builder.Configuration);
 builder.Services.AddCore();
+builder.Services.AddCloudStorage(builder.Configuration);
 builder.Services.AddPersistence(builder.Configuration);
 
 var app = builder.Build();

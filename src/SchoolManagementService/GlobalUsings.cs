@@ -1,7 +1,12 @@
-﻿global using System.Net;
+﻿global using System.ComponentModel.DataAnnotations;
+global using System.Net;
 global using System.Text.Json;
 global using AutoMapper;
 global using CaseExtensions;
-global using FluentValidation;
+global using FileTypeChecker;
+global using FileTypeChecker.Extensions;
 global using MediatR;
 global using Microsoft.AspNetCore.Mvc;
+global using Microsoft.AspNetCore.Mvc.Filters;
+global using Microsoft.AspNetCore.Mvc.ModelBinding;
+global using Microsoft.Extensions.Options;

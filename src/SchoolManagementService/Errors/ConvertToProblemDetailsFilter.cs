@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc.Filters;
-using SchoolManagementService.Core.Domain.Errors;
+﻿using SchoolManagementService.Core.Domain.Errors;
 
 namespace SchoolManagementService.Errors;
 
