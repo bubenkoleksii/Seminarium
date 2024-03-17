@@ -1,0 +1,23 @@
+﻿global using System.Net;
+global using System.Text.Json;
+global using AutoMapper;
+global using CaseExtensions;
+global using FluentValidation;
+global using MediatR;
+global using Microsoft.AspNetCore.Mvc;
+global using Microsoft.AspNetCore.Mvc.Filters;
+global using SchoolService.Api.Errors;
+global using SchoolService.Api.Mappings;
+global using SchoolService.Api.Models.School;
+global using SchoolService.Application;
+global using SchoolService.Application.Common.Mappings;
+global using SchoolService.Application.School.Commands.ArchiveSchool;
+global using SchoolService.Application.School.Commands.CreateSchool;
+global using SchoolService.Application.School.Commands.DeleteSchool;
+global using SchoolService.Application.School.Commands.UnarchiveSchool;
+global using SchoolService.Application.School.Commands.UpdateSchool;
+global using SchoolService.Application.School.Models;
+global using SchoolService.Application.School.Queries;
+global using SchoolService.Domain.Errors;
+global using SchoolService.Infrastructure.Persistence;
+
