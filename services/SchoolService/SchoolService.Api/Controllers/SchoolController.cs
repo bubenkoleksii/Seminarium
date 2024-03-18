@@ -39,6 +39,19 @@ public class SchoolController(IMapper mapper) : BaseController
     {
         var command = mapper.Map<UpdateSchoolCommand>(schoolRequest);
 
+        if (schoolRequest.Img is not null)
+        {
+            var mappingResult = ImageMapper.GetStreamIfValid(schoolRequest.Img);
+
+            if (mappingResult.IsRight)
+            {
+                var error = (Error)mappingResult;
+                return ErrorActionResultHandler.Handle(error);
+            }
+
+            command.Img = (Stream)mappingResult;
+        }
+
         var result = await Mediator.Send(command);
 
         return result.Match(

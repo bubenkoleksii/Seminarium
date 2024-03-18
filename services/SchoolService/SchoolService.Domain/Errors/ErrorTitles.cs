@@ -14,11 +14,11 @@ public static class ErrorTitles
 
         public static readonly string Invalid = "invalid";
 
+        public static readonly string InvalidSize = "invalid_size";
+
         public static readonly string EmailAlreadyExists = "email_already_exists";
 
         public static readonly string PhoneAlreadyExists = "phone_already_exists";
-
-        public static readonly string AlreadyUnarchived = "already_unarchived";
 
         public static readonly string NotFoundById = "not_found_by_id";
 

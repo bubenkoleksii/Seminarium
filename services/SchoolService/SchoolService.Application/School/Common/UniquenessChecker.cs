@@ -8,7 +8,7 @@ internal static class UniquenessChecker
         var existedEntity = commandContext.Schools
             .AsNoTracking()
             .FirstOrDefault(s => s.RegisterCode == entity.RegisterCode ||
-                                 entity.Email != null && s.Email == entity.Email ||
+                                 entity.Email != null && string.CompareOrdinal(s.Email, entity.Email) == 0 ||
                                  entity.Phone != null && s.Phone == entity.Phone);
 
         if (existedEntity is null)
