@@ -23,7 +23,7 @@ internal static class UniquenessChecker
             return true;
         }
 
-        if (existedEntity.Email == entity.Email)
+        if (string.CompareOrdinal(existedEntity.Email, entity.Email) == 0)
         {
             error = new EmailAlreadyExistsError(entity.Email!, "school");
             return true;
