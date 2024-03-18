@@ -1,4 +1,4 @@
-﻿namespace SchoolService.Api.Options.Image;
+﻿namespace SchoolService.Api.Options;
 
 public class ImageOptions
 {

@@ -15,7 +15,6 @@ global using SchoolService.Api.Mappings;
 global using SchoolService.Api.Mappings.Files;
 global using SchoolService.Api.Models.School;
 global using SchoolService.Api.Options;
-global using SchoolService.Api.Options.Image;
 global using SchoolService.Application;
 global using SchoolService.Application.Common.Mappings;
 global using SchoolService.Application.School.Commands.ArchiveSchool;

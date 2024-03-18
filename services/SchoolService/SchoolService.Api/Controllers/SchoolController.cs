@@ -1,6 +1,6 @@
 ﻿namespace SchoolService.Api.Controllers;
 
-public class SchoolController(IMapper mapper) : BaseController
+public class SchoolController(IMapper mapper, IOptions<ImageOptions> imageOptions) : BaseController
 {
     [HttpGet("[action]/{id}")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SchoolResponse))]
@@ -41,7 +41,8 @@ public class SchoolController(IMapper mapper) : BaseController
 
         if (schoolRequest.Img is not null)
         {
-            var mappingResult = ImageMapper.GetStreamIfValid(schoolRequest.Img);
+            var maxAllowedSizeInMb = imageOptions.Value.MaxSizeInMb;
+            var mappingResult = ImageMapper.GetStreamIfValid(schoolRequest.Img, maxAllowedSizeInMb);
 
             if (mappingResult.IsRight)
             {
