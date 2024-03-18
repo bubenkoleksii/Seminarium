@@ -1,6 +1,4 @@
-﻿using SchoolService.Infrastructure.Persistence.EntityTypeConfigurations;
-
-namespace SchoolService.Infrastructure.Persistence;
+﻿namespace SchoolService.Infrastructure.Persistence;
 
 public abstract class BaseContext : DbContext
 {
