@@ -1,6 +1,4 @@
-﻿using SchoolService.Domain.Enums.School;
-
-namespace SchoolService.Domain.Entities;
+﻿namespace SchoolService.Domain.Entities;
 
 public class School : Entity
 {
