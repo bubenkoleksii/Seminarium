@@ -1,7 +1,6 @@
 ﻿var builder = WebApplication.CreateBuilder(args);
 
-builder.Host.UseSerilog((context, configuration) =>
-    configuration.ReadFrom.Configuration(context.Configuration));
+builder.Host.UseSerilog();
 
 AddServiceLog();
 
@@ -47,6 +46,7 @@ static void AddServiceLog()
 {
     Log.Logger = new LoggerConfiguration()
         .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
-        .WriteTo.File("SchoolServiceLog-.txt", rollingInterval: RollingInterval.Day)
+        .WriteTo.File("Logs\\SchoolServiceLog-.txt", rollingInterval: RollingInterval.Day)
+        .WriteTo.Console()
         .CreateLogger();
 }

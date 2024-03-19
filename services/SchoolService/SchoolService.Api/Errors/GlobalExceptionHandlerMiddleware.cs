@@ -48,6 +48,8 @@ public class GlobalExceptionHandlerMiddleware(RequestDelegate next)
                 }
             }).ToList();
 
+        Log.Error(validationException, "An validation exception occurred.");
+
         return (HttpStatusCode.BadRequest, JsonSerializer.Serialize(problemDetailsList, s_serializerOptions));
     }
 
@@ -59,6 +61,8 @@ public class GlobalExceptionHandlerMiddleware(RequestDelegate next)
             Status = (int)HttpStatusCode.InternalServerError,
             Type = ErrorTypes.Unknown,
         };
+
+        Log.Error("An unhandled exception occurred.");
 
         return (HttpStatusCode.InternalServerError, JsonSerializer.Serialize(internalServerProblemDetails, s_serializerOptions));
     }

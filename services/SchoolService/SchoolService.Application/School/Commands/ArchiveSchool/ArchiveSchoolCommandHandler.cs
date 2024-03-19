@@ -23,8 +23,10 @@ public class ArchiveSchoolCommandHandler : IRequestHandler<ArchiveSchoolCommand,
         {
             await _commandContext.SaveChangesAsync(cancellationToken);
         }
-        catch
+        catch (Exception exception)
         {
+            Log.Error(exception, "An error occurred while archiving the school with ID {Id}.", request.Id);
+
             return new InvalidDatabaseOperationError("school");
         }
 
