@@ -25,8 +25,10 @@ public class CreateSchoolCommandHandler : IRequestHandler<CreateSchoolCommand, E
         {
             await _commandContext.SaveChangesAsync(cancellationToken);
         }
-        catch
+        catch (Exception exception)
         {
+            Log.Error(exception, "An error occurred while creating the school with values {@Request}.", request);
+
             return new InvalidDatabaseOperationError("school");
         }
 

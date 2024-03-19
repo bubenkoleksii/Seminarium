@@ -1,5 +1,9 @@
 ﻿var builder = WebApplication.CreateBuilder(args);
 
+builder.Host.UseSerilog();
+
+AddServiceLog();
+
 builder.Services.AddControllers(options =>
 {
     options.Filters.Add(new ConvertToProblemDetailsFilter());
@@ -13,8 +17,9 @@ builder.Services.AddAutoMapper(configuration =>
     configuration.AddProfile(typeof(CoreMappingProfile));
 });
 
-builder.Services.AddApplication();
 builder.Services.SetupOptions(builder.Configuration);
+
+builder.Services.AddApplication();
 builder.Services.AddPersistence(builder.Configuration);
 
 var app = builder.Build();
@@ -25,6 +30,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseSerilogRequestLogging();
 app.UseGlobalExceptionHandler();
 
 app.UseRouting();
@@ -35,3 +41,12 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+static void AddServiceLog()
+{
+    Log.Logger = new LoggerConfiguration()
+        .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
+        .WriteTo.File("Logs\\SchoolServiceLog-.txt", rollingInterval: RollingInterval.Day)
+        .WriteTo.Console()
+        .CreateLogger();
+}

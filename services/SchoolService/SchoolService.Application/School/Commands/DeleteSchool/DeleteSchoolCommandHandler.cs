@@ -24,8 +24,10 @@ public class DeleteSchoolCommandHandler : IRequestHandler<DeleteSchoolCommand, O
         {
             await _commandContext.SaveChangesAsync(cancellationToken);
         }
-        catch
+        catch (Exception exception)
         {
+            Log.Error(exception, "An error occurred while archiving the school with ID {@Id}.", request.Id);
+
             return new InvalidDatabaseOperationError("school");
         }
 

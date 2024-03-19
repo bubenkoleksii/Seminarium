@@ -23,8 +23,10 @@ public class UnarchiveSchoolCommandHandler : IRequestHandler<UnarchiveSchoolComm
         {
             await _commandContext.SaveChangesAsync(cancellationToken);
         }
-        catch
+        catch (Exception exception)
         {
+            Log.Error(exception, "An error occurred while unarchiving the school with values {@Id}.", request.Id);
+
             return new InvalidDatabaseOperationError("school");
         }
 

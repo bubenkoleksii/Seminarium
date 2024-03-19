@@ -22,7 +22,6 @@ public class UpdateSchoolCommandHandler : IRequestHandler<UpdateSchoolCommand, E
             return new NotFoundByIdError(request.Id, "school");
 
         _mapper.Map(request, entity);
-        entity.LastUpdatedAt = DateTime.UtcNow;
 
         _commandContext.Schools.Update(entity);
 
@@ -30,8 +29,10 @@ public class UpdateSchoolCommandHandler : IRequestHandler<UpdateSchoolCommand, E
         {
             await _commandContext.SaveChangesAsync(cancellationToken);
         }
-        catch
+        catch (Exception exception)
         {
+            Log.Error(exception, "An error occurred while updating the school with values {@Request}.", request);
+
             return new InvalidDatabaseOperationError("school");
         }
 
