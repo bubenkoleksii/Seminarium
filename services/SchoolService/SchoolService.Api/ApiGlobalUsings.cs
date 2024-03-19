@@ -28,3 +28,5 @@ global using SchoolService.Domain.Errors;
 global using SchoolService.Domain.Errors.Invalid;
 global using SchoolService.Domain.Errors.Unsupported;
 global using SchoolService.Infrastructure.Persistence;
+global using Serilog;
+global using Serilog.Events;

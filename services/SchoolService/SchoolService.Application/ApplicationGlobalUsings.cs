@@ -17,3 +17,4 @@ global using SchoolService.Domain.Errors.AlreadyExists;
 global using SchoolService.Domain.Errors.AlreadyExists.School;
 global using SchoolService.Domain.Errors.Invalid;
 global using SchoolService.Domain.Errors.NotFound;
+global using Serilog;
