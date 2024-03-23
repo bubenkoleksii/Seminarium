@@ -1,7 +1,6 @@
 ﻿var builder = WebApplication.CreateBuilder(args);
 
 builder.Host.UseSerilog();
-
 AddServiceLog();
 
 builder.Services.AddControllers(options =>
