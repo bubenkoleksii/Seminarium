@@ -2,8 +2,10 @@
 global using AutoMapper;
 global using FluentValidation;
 global using LanguageExt;
+global using MassTransit;
 global using MediatR;
 global using Microsoft.EntityFrameworkCore;
+global using Microsoft.Extensions.Configuration;
 global using Microsoft.Extensions.DependencyInjection;
 global using SchoolService.Application.Common.Behaviors;
 global using SchoolService.Application.Common.DataContext;

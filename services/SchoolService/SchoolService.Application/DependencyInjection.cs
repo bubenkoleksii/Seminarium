@@ -1,10 +1,16 @@
-﻿using MassTransit;
-
-namespace SchoolService.Application;
+﻿namespace SchoolService.Application;
 
 public static class DependencyInjection
 {
-    public static IServiceCollection AddApplication(this IServiceCollection services)
+    public static IServiceCollection AddApplication(this IServiceCollection services, IConfiguration appConfiguration)
+    {
+        ConfigureMediator(services);
+        ConfigureMassTransit(services, appConfiguration);
+
+        return services;
+    }
+
+    private static void ConfigureMediator(IServiceCollection services)
     {
         try
         {
@@ -21,14 +27,27 @@ public static class DependencyInjection
             Log.Fatal(exception, "An error occurred while mediator initialization.");
             throw;
         }
+    }
 
+    private static void ConfigureMassTransit(IServiceCollection services, IConfiguration appConfiguration)
+    {
         try
         {
-            services.AddMassTransit(x =>
+            services.AddMassTransit(busConfigurator =>
             {
-                x.UsingRabbitMq((context, configuration) =>
+                busConfigurator.SetKebabCaseEndpointNameFormatter();
+
+                busConfigurator.UsingRabbitMq((_, configurator) =>
                 {
-                    configuration.ConfigureEndpoints(context);
+                    var host = new Uri(appConfiguration["RabbitMq:Host"]!);
+                    configurator.Host(host, h =>
+                    {
+                        var username = appConfiguration["RabbitMq:Username"]!;
+                        var password = appConfiguration["RabbitMq:Password"]!;
+
+                        h.Username(username);
+                        h.Password(password);
+                    });
                 });
             });
         }
@@ -37,7 +56,6 @@ public static class DependencyInjection
             Log.Fatal(exception, "An error occurred while mass transit initialization.");
             throw;
         }
-
-        return services;
     }
+
 }

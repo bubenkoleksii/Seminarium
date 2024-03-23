@@ -14,6 +14,7 @@ services:
   rabbitmq:
     image: rabbitmq:3-management
     container_name: rabbitmq
+    hostname: seminarium
     ports:
       - "5672:5672"
       - "15672:15672"

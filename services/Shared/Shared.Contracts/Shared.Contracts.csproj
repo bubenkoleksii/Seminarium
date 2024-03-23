@@ -4,6 +4,15 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <Authors>Oleksii Bubenko</Authors>
+    <Company>Seminarium</Company>
+    <Description>The library containing common contract classes for .NET services of the Seminarium project</Description>
+	  <Product>Seminarium.Shared.Contracts</Product>
+    <Title>Seminarium contracts</Title>
+    <AssemblyVersion>1.0.0.1</AssemblyVersion>
+    <FileVersion>1.0.0.1</FileVersion>
+    <PackageId>Seminarium.Shared.Contracts</PackageId>
   </PropertyGroup>
 
 </Project>
