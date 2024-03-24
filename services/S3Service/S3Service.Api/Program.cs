@@ -1,4 +1,4 @@
-var builder = WebApplication.CreateBuilder(args);
+﻿var builder = WebApplication.CreateBuilder(args);
 
 builder.Host.UseSerilog();
 AddServiceLog();
@@ -7,7 +7,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddMessageBroker();
+builder.Services.AddDependencies(builder.Configuration);
 
 var app = builder.Build();
 

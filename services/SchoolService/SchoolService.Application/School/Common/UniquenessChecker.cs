@@ -8,8 +8,8 @@ internal static class UniquenessChecker
         var existedEntity = commandContext.Schools
             .AsNoTracking()
             .FirstOrDefault(s => s.RegisterCode == entity.RegisterCode ||
-                                 entity.Email != null && string.CompareOrdinal(s.Email, entity.Email) == 0 ||
-                                 entity.Phone != null && s.Phone == entity.Phone);
+                                 (entity.Email != null && entity.Email == s.Email) ||
+                                 (entity.Phone != null && s.Phone == entity.Phone));
 
         if (existedEntity is null)
         {
@@ -23,7 +23,7 @@ internal static class UniquenessChecker
             return true;
         }
 
-        if (string.CompareOrdinal(existedEntity.Email, entity.Email) == 0)
+        if (entity.Email is not null && entity.Email == existedEntity.Email)
         {
             error = new EmailAlreadyExistsError(entity.Email!, "school");
             return true;

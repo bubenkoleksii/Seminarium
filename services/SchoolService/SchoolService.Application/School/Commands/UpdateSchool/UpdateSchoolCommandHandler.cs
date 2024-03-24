@@ -1,14 +1,19 @@
-﻿namespace SchoolService.Application.School.Commands.UpdateSchool;
+﻿using SchoolService.Application.Common.Extensions;
+
+namespace SchoolService.Application.School.Commands.UpdateSchool;
 
 public class UpdateSchoolCommandHandler : IRequestHandler<UpdateSchoolCommand, Either<SchoolModelResponse, Error>>
 {
     private readonly ICommandContext _commandContext;
 
+    private readonly IPublishEndpoint _publishEndpoint;
+
     private readonly IMapper _mapper;
 
-    public UpdateSchoolCommandHandler(ICommandContext commandContext, IMapper mapper)
+    public UpdateSchoolCommandHandler(ICommandContext commandContext, IPublishEndpoint publishEndpoint, IMapper mapper)
     {
         _commandContext = commandContext;
+        _publishEndpoint = publishEndpoint;
         _mapper = mapper;
     }
 
@@ -24,6 +29,12 @@ public class UpdateSchoolCommandHandler : IRequestHandler<UpdateSchoolCommand, E
         _mapper.Map(request, entity);
 
         _commandContext.Schools.Update(entity);
+
+        if (request.Img is not null)
+        {
+            var message = new SaveFile(request.Img.ToArray(), "school", "file.jpg", Guid.NewGuid());
+            await _publishEndpoint.Publish(message, cancellationToken);
+        }
 
         try
         {

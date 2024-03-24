@@ -35,19 +35,19 @@ public static class DependencyInjection
         {
             services.AddMassTransit(busConfigurator =>
             {
+                var rabbitMqOptions = appConfiguration.GetSection(nameof(RabbitMqOptions)).Get<RabbitMqOptions>()!;
+
                 busConfigurator.SetKebabCaseEndpointNameFormatter();
 
-                busConfigurator.UsingRabbitMq((_, configurator) =>
+                busConfigurator.UsingRabbitMq((context, configurator) =>
                 {
-                    var host = new Uri(appConfiguration["RabbitMq:Host"]!);
-                    configurator.Host(host, h =>
+                    configurator.Host(rabbitMqOptions.Host, h =>
                     {
-                        var username = appConfiguration["RabbitMq:Username"]!;
-                        var password = appConfiguration["RabbitMq:Password"]!;
-
-                        h.Username(username);
-                        h.Password(password);
+                        h.Username(rabbitMqOptions.Username);
+                        h.Password(rabbitMqOptions.Password);
                     });
+
+                    configurator.ConfigureEndpoints(context);
                 });
             });
         }
@@ -57,5 +57,4 @@ public static class DependencyInjection
             throw;
         }
     }
-
 }

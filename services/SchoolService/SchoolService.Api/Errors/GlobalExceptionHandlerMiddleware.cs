@@ -24,7 +24,7 @@ public class GlobalExceptionHandlerMiddleware(RequestDelegate next)
         var (code, result) = exception switch
         {
             ValidationException validationException => HandleValidationException(validationException),
-            _ => HandleUnknownException()
+            _ => HandleUnknownException(exception)
         };
 
         context.Response.StatusCode = (int)code;
@@ -53,7 +53,7 @@ public class GlobalExceptionHandlerMiddleware(RequestDelegate next)
         return (HttpStatusCode.BadRequest, JsonSerializer.Serialize(problemDetailsList, s_serializerOptions));
     }
 
-    private static (HttpStatusCode, string) HandleUnknownException()
+    private static (HttpStatusCode, string) HandleUnknownException(Exception exception)
     {
         var internalServerProblemDetails = new ProblemDetails
         {
@@ -62,7 +62,7 @@ public class GlobalExceptionHandlerMiddleware(RequestDelegate next)
             Type = ErrorTypes.Unknown,
         };
 
-        Log.Error("An unhandled exception occurred.");
+        Log.Error(exception, "An unhandled exception occurred.");
 
         return (HttpStatusCode.InternalServerError, JsonSerializer.Serialize(internalServerProblemDetails, s_serializerOptions));
     }

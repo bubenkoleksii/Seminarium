@@ -13,6 +13,7 @@
     <AssemblyVersion>1.0.0.1</AssemblyVersion>
     <FileVersion>1.0.0.1</FileVersion>
     <PackageId>Seminarium.Shared.Contracts</PackageId>
+    <Version>1.0.1</Version>
   </PropertyGroup>
 
 </Project>
