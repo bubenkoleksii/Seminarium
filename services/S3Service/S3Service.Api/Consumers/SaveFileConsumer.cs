@@ -1,10 +1,11 @@
 ﻿namespace S3Service.Api.Consumers;
 
-public class SaveFileConsumer : IConsumer<SaveFile>
+public class SaveFileConsumer : IConsumer<SaveFileCommand>
 {
-    public Task Consume(ConsumeContext<SaveFile> context)
+    public async Task Consume(ConsumeContext<SaveFileCommand> context)
     {
         Log.Information("A file received: {@File}", context.Message);
-        return Task.CompletedTask;
+
+        await context.RespondAsync(new SaveFileSuccess(Url: "asss", Name: "some"));
     }
 }

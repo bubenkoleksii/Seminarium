@@ -6,14 +6,14 @@ public class UpdateSchoolCommandHandler : IRequestHandler<UpdateSchoolCommand, E
 {
     private readonly ICommandContext _commandContext;
 
-    private readonly IPublishEndpoint _publishEndpoint;
+    private readonly IRequestClient<SaveFileCommand> _saveFileClient;
 
     private readonly IMapper _mapper;
 
-    public UpdateSchoolCommandHandler(ICommandContext commandContext, IPublishEndpoint publishEndpoint, IMapper mapper)
+    public UpdateSchoolCommandHandler(ICommandContext commandContext, IRequestClient<SaveFileCommand> saveFileClient, IMapper mapper)
     {
         _commandContext = commandContext;
-        _publishEndpoint = publishEndpoint;
+        _saveFileClient = saveFileClient;
         _mapper = mapper;
     }
 
@@ -32,8 +32,11 @@ public class UpdateSchoolCommandHandler : IRequestHandler<UpdateSchoolCommand, E
 
         if (request.Img is not null)
         {
-            var message = new SaveFile(request.Img.ToArray(), "school", "file.jpg", Guid.NewGuid());
-            await _publishEndpoint.Publish(message, cancellationToken);
+            var command = new SaveFileCommand(request.Img.ToArray(), "school", "file.jpg", Guid.NewGuid());
+            var response = await _saveFileClient.GetResponse<SaveFileSuccess>(command, cancellationToken);
+
+            var result = response.Message;
+            Log.Information(result.Name);
         }
 
         try

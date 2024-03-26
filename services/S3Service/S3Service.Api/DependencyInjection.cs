@@ -18,6 +18,8 @@ public static class DependencyInjection
 
                 busConfigurator.AddConsumer<SaveFileConsumer>();
 
+                busConfigurator.AddRequestClient<string>(new Uri($"exchange:{nameof(SaveFileCommand)}"));
+
                 busConfigurator.UsingRabbitMq((context, configurator) =>
                 {
                     var host = appConfiguration["RabbitMq:Host"]!;
@@ -28,6 +30,10 @@ public static class DependencyInjection
 
                         h.Username(username);
                         h.Password(password);
+
+                        var queueName = appConfiguration["RabbitMq:QueueName"]!;
+                        configurator.ReceiveEndpoint($"{queueName}.{nameof(SaveFileCommand)}",
+                            endpointConfigurator => endpointConfigurator.ConfigureConsumer<SaveFileConsumer>(context));
                     });
 
                     configurator.ConfigureEndpoints(context);
