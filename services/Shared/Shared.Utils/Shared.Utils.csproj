@@ -1,0 +1,36 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <PackageId>Seminarium.Shared.Utils</PackageId>
+    <Title>Seminarium utils</Title>
+    <Version>1.0.0</Version>
+    <Authors>Oleksii Bubenko</Authors>
+    <Company>Seminarium</Company>
+    <Product>Seminarium.Shared.Utils</Product>
+    <Description>The library containing common utils for .NET services of the Seminarium project</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Errors\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AWSSDK.Extensions.NETCore.Setup" Version="3.7.300" />
+    <PackageReference Include="AWSSDK.S3" Version="3.7.307.6" />
+    <PackageReference Include="CaseExtensions" Version="1.1.0" />
+    <PackageReference Include="File.TypeChecker" Version="4.0.0" />
+    <PackageReference Include="FluentValidation" Version="11.9.0" />
+    <PackageReference Include="LanguageExt.Core" Version="4.4.8" />
+    <PackageReference Include="Seminarium.Shared.Contracts" Version="1.0.3" />
+    <PackageReference Include="SonarAnalyzer.CSharp" Version="9.23.0.88079">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+
+</Project>

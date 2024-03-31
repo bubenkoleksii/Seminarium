@@ -1,6 +1,6 @@
 ﻿namespace SchoolService.Api.Controllers;
 
-public class SchoolController(IMapper mapper, IOptions<ImageOptions> imageOptions) : BaseController
+public class SchoolController(IMapper mapper) : BaseController
 {
     [HttpGet("[action]/{id}")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SchoolResponse))]
@@ -19,7 +19,7 @@ public class SchoolController(IMapper mapper, IOptions<ImageOptions> imageOption
 
     [HttpPost("[action]/")]
     [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(SchoolResponse))]
-    [ProducesResponseType(StatusCodes.Status409Conflict, Type = typeof(Error))]
+    [ProducesResponseType(StatusCodes.Status409Conflict)]
     public async Task<IActionResult> Create([FromBody] CreateSchoolRequest schoolRequest)
     {
         var command = mapper.Map<CreateSchoolCommand>(schoolRequest);
@@ -34,24 +34,12 @@ public class SchoolController(IMapper mapper, IOptions<ImageOptions> imageOption
 
     [HttpPut("[action]/")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SchoolResponse))]
-    [ProducesResponseType(StatusCodes.Status409Conflict, Type = typeof(Error))]
-    public async Task<IActionResult> Update([FromForm] UpdateSchoolRequest schoolRequest)
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status409Conflict)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> Update([FromBody] UpdateSchoolRequest schoolRequest)
     {
         var command = mapper.Map<UpdateSchoolCommand>(schoolRequest);
-
-        if (schoolRequest.Img is not null)
-        {
-            var maxAllowedSizeInMb = imageOptions.Value.MaxSizeInMb;
-            var mappingResult = ImageMapper.GetStreamIfValid(schoolRequest.Img, maxAllowedSizeInMb);
-
-            if (mappingResult.IsRight)
-            {
-                var error = (Error)mappingResult;
-                return ErrorActionResultHandler.Handle(error);
-            }
-
-            command.Img = (Stream)mappingResult;
-        }
 
         var result = await Mediator.Send(command);
 
@@ -64,6 +52,7 @@ public class SchoolController(IMapper mapper, IOptions<ImageOptions> imageOption
     [HttpPatch("[action]/{id}")]
     [ProducesResponseType(StatusCodes.Status202Accepted)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Archive(Guid id)
     {
         var command = new ArchiveSchoolCommand(id);
@@ -78,7 +67,7 @@ public class SchoolController(IMapper mapper, IOptions<ImageOptions> imageOption
     [HttpPatch("[action]/{id}")]
     [ProducesResponseType(StatusCodes.Status202Accepted)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [ProducesResponseType(StatusCodes.Status409Conflict, Type = typeof(Error))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Unarchive(Guid id)
     {
         var command = new UnarchiveSchoolCommand(id);
@@ -93,6 +82,7 @@ public class SchoolController(IMapper mapper, IOptions<ImageOptions> imageOption
     [HttpDelete("[action]/{id}")]
     [ProducesResponseType(StatusCodes.Status202Accepted)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Delete(Guid id)
     {
         var command = new DeleteSchoolCommand(id);

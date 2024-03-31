@@ -22,7 +22,5 @@ public class ApiMappingProfile : Profile
     private void ConfigureGlobalMappings()
     {
         CreateMap<Enum, string>().ConvertUsing(e => e.ToString().ToSnakeCase());
-
-        CreateMap<IFormFile, Stream?>().ConvertUsing(_ => null);
     }
 }

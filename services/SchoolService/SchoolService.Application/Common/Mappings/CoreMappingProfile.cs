@@ -4,8 +4,6 @@ public class CoreMappingProfile : Profile
 {
     public CoreMappingProfile()
     {
-        ConfigureGlobalMappings();
-
         ConfigureSchoolMapping();
     }
 
@@ -16,10 +14,5 @@ public class CoreMappingProfile : Profile
         CreateMap<UpdateSchoolCommand, Domain.Entities.School>();
 
         CreateMap<Domain.Entities.School, SchoolModelResponse>();
-    }
-
-    private void ConfigureGlobalMappings()
-    {
-        CreateMap<Stream?, string?>().ConvertUsing(_ => null);
     }
 }

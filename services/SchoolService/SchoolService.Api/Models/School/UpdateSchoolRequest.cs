@@ -30,7 +30,5 @@ public record UpdateSchoolRequest(Guid Id,
 
     bool AreOccupied,
 
-    string? SiteUrl,
-
-    IFormFile? Img
+    string? SiteUrl
 );

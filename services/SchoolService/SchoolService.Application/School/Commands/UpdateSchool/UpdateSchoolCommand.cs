@@ -18,6 +18,5 @@ public class UpdateSchoolCommand : IRequest<Either<SchoolModelResponse, Error>>
     public string? Address { get; init; }
     public bool AreOccupied { get; init; }
     public string? SiteUrl { get; init; }
-    public Stream? Img { get; set; }
 }
 
