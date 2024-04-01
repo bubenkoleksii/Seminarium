@@ -1,7 +1,6 @@
 ﻿var builder = WebApplication.CreateBuilder(args);
 
 builder.Host.UseSerilog();
-
 AddServiceLog();
 
 builder.Services.AddControllers(options =>
@@ -19,7 +18,7 @@ builder.Services.AddAutoMapper(configuration =>
 
 builder.Services.SetupOptions(builder.Configuration);
 
-builder.Services.AddApplication();
+builder.Services.AddApplication(builder.Configuration);
 builder.Services.AddPersistence(builder.Configuration);
 
 var app = builder.Build();

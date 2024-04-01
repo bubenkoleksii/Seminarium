@@ -25,7 +25,7 @@ public class UnarchiveSchoolCommandHandler : IRequestHandler<UnarchiveSchoolComm
         }
         catch (Exception exception)
         {
-            Log.Error(exception, "An error occurred while unarchiving the school with values {@Id}.", request.Id);
+            Log.Error(exception, "An error occurred while unarchiving the school with values {@SchoolId}.", request.Id);
 
             return new InvalidDatabaseOperationError("school");
         }

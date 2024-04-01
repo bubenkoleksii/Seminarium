@@ -11,16 +11,16 @@ public class ApiMappingProfile : Profile
 
     private void ConfigureSchoolMapping()
     {
-        CreateMap<CreateSchoolRequest, CreateSchoolCommand>();
+        CreateMap<CreateSchoolRequest, CreateSchoolCommand>()
+            .ForMember(command => command.Email, act => act.MapFrom(req => req.Email == null ? null : req.Email.ToLower()));
 
-        CreateMap<UpdateSchoolRequest, UpdateSchoolCommand>();
+        CreateMap<UpdateSchoolRequest, UpdateSchoolCommand>()
+            .ForMember(command => command.Email, act => act.MapFrom(req => req.Email == null ? null : req.Email.ToLower()));
 
         CreateMap<SchoolModelResponse, SchoolResponse>();
     }
     private void ConfigureGlobalMappings()
     {
         CreateMap<Enum, string>().ConvertUsing(e => e.ToString().ToSnakeCase());
-
-        CreateMap<IFormFile, Stream?>().ConvertUsing(_ => null);
     }
 }

@@ -25,7 +25,7 @@ namespace SchoolService.Infrastructure.Persistence.Migrations
 
             modelBuilder.Entity("SchoolService.Domain.Entities.School", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<Guid>("SchoolId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
@@ -98,7 +98,7 @@ namespace SchoolService.Infrastructure.Persistence.Migrations
                     b.Property<int>("Type")
                         .HasColumnType("integer");
 
-                    b.HasKey("Id");
+                    b.HasKey("SchoolId");
 
                     b.ToTable("Schools", "public");
                 });

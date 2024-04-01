@@ -1,0 +1,22 @@
+version: '3'
+
+services:
+  postgres-school:
+    image: postgres:latest
+    restart: always
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=${POSTGRES_SCHOOL_PASSWORD}
+    ports:
+      - 5435:5432
+    volumes:
+      - /var/lib/postresql/data
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    hostname: seminarium
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+volumes:
+  pgdata:

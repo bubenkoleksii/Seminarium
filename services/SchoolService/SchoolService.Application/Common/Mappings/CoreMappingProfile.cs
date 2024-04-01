@@ -1,11 +1,11 @@
-﻿namespace SchoolService.Application.Common.Mappings;
+﻿using Profile = AutoMapper.Profile;
+
+namespace SchoolService.Application.Common.Mappings;
 
 public class CoreMappingProfile : Profile
 {
     public CoreMappingProfile()
     {
-        ConfigureGlobalMappings();
-
         ConfigureSchoolMapping();
     }
 
@@ -16,10 +16,5 @@ public class CoreMappingProfile : Profile
         CreateMap<UpdateSchoolCommand, Domain.Entities.School>();
 
         CreateMap<Domain.Entities.School, SchoolModelResponse>();
-    }
-
-    private void ConfigureGlobalMappings()
-    {
-        CreateMap<Stream?, string?>().ConvertUsing(_ => null);
     }
 }

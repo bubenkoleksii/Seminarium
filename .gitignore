@@ -479,3 +479,6 @@ $RECYCLE.BIN/
 infra/prod-k8s/prod-secrets.yml
 infra/prod-k8s/le-issuer-staging.yml
 /SpellingExclusions.dic
+
+# Environment variables
+/.env

@@ -1,0 +1,17 @@
+﻿global using System.Net;
+global using System.Text.Json;
+global using Amazon.S3;
+global using Amazon.S3.Model;
+global using CaseExtensions;
+global using FileTypeChecker;
+global using FileTypeChecker.Extensions;
+global using FluentValidation;
+global using LanguageExt;
+global using Microsoft.AspNetCore.Builder;
+global using Microsoft.AspNetCore.Http;
+global using Microsoft.AspNetCore.Mvc;
+global using Microsoft.AspNetCore.Mvc.Filters;
+global using Shared.Contracts.Errors;
+global using Shared.Contracts.Errors.Invalid;
+global using Shared.Contracts.Errors.Unsupported;
+global using Shared.Contracts.Files;
