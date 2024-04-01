@@ -25,7 +25,7 @@ public class ArchiveSchoolCommandHandler : IRequestHandler<ArchiveSchoolCommand,
         }
         catch (Exception exception)
         {
-            Log.Error(exception, "An error occurred while archiving the school with ID {Id}.", request.Id);
+            Log.Error(exception, "An error occurred while archiving the school with ID {SchoolId}.", request.Id);
 
             return new InvalidDatabaseOperationError("school");
         }

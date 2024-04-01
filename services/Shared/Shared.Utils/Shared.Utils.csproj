@@ -2,12 +2,14 @@
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
+	  <Nullable>enable</Nullable>
+	  <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+	  <ImplicitUsings>enable</ImplicitUsings>
+	  <InvariantGlobalization>true</InvariantGlobalization>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <PackageId>Seminarium.Shared.Utils</PackageId>
     <Title>Seminarium utils</Title>
-    <Version>1.0.0</Version>
+    <Version>1.0.2</Version>
     <Authors>Oleksii Bubenko</Authors>
     <Company>Seminarium</Company>
     <Product>Seminarium.Shared.Utils</Product>
@@ -25,7 +27,7 @@
     <PackageReference Include="File.TypeChecker" Version="4.0.0" />
     <PackageReference Include="FluentValidation" Version="11.9.0" />
     <PackageReference Include="LanguageExt.Core" Version="4.4.8" />
-    <PackageReference Include="Seminarium.Shared.Contracts" Version="1.0.3" />
+    <PackageReference Include="Seminarium.Shared.Contracts" Version="1.0.6" />
     <PackageReference Include="SonarAnalyzer.CSharp" Version="9.23.0.88079">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>

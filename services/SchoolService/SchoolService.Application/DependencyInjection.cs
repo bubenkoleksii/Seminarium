@@ -5,7 +5,10 @@ public static class DependencyInjection
     public static IServiceCollection AddApplication(this IServiceCollection services, IConfiguration appConfiguration)
     {
         ConfigureMediator(services);
+
         ConfigureMassTransit(services, appConfiguration);
+
+        ConfigureS3(services, appConfiguration);
 
         return services;
     }
@@ -54,6 +57,27 @@ public static class DependencyInjection
         catch (Exception exception)
         {
             Log.Fatal(exception, "An error occurred while mass transit initialization.");
+            throw;
+        }
+    }
+
+    private static void ConfigureS3(IServiceCollection services, IConfiguration appConfiguration)
+    {
+        try
+        {
+            var s3Options = appConfiguration.GetSection(nameof(S3Options)).Get<S3Options>()!;
+
+            var credentials = new BasicAWSCredentials(s3Options.AccessKeyId, s3Options.SecretAccessKey);
+            var awsOptions = new AWSOptions { Credentials = credentials, Region = RegionEndpoint.EUCentral1 };
+            services.AddDefaultAWSOptions(awsOptions);
+
+            services.AddAWSService<IAmazonS3>();
+
+            services.AddScoped<IS3Service, S3Service>();
+        }
+        catch (Exception exception)
+        {
+            Log.Fatal(exception, "An error occurred while s3 initialization.");
             throw;
         }
     }

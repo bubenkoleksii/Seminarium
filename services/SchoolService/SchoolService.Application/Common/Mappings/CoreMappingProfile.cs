@@ -1,4 +1,6 @@
-﻿namespace SchoolService.Application.Common.Mappings;
+﻿using Profile = AutoMapper.Profile;
+
+namespace SchoolService.Application.Common.Mappings;
 
 public class CoreMappingProfile : Profile
 {

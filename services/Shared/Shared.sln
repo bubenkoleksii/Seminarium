@@ -5,7 +5,12 @@ VisualStudioVersion = 17.10.34607.79
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shared.Contracts", "Shared.Contracts\Shared.Contracts.csproj", "{2523EFD2-DDF7-4AAD-B35F-BC2EF2A935C7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shared.Utils", "Shared.Utils\Shared.Utils.csproj", "{985068DA-0DA9-4BAB-AC48-077B070781EB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shared.Utils", "Shared.Utils\Shared.Utils.csproj", "{985068DA-0DA9-4BAB-AC48-077B070781EB}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{6F7B98F2-EBB9-4F02-9DA9-5C10CE21917C}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

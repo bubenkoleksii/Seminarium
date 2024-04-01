@@ -1,6 +1,8 @@
-﻿namespace SchoolService.Api.Controllers;
+﻿using SchoolService.Application.School.Commands.DeleteSchoolImage;
 
-public class SchoolController(IMapper mapper) : BaseController
+namespace SchoolService.Api.Controllers;
+
+public class SchoolController(IMapper mapper, IOptions<Shared.Contracts.Options.FileOptions> fileOptions) : BaseController
 {
     [HttpGet("[action]/{id}")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SchoolResponse))]
@@ -47,6 +49,47 @@ public class SchoolController(IMapper mapper) : BaseController
             Left: modelResponse => Ok(mapper.Map<SchoolResponse>(modelResponse)),
             Right: ErrorActionResultHandler.Handle
         );
+    }
+
+    [HttpPatch("[action]/{id}")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(FileSuccess))]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> Image(Guid id, [FromForm] IFormFile image)
+    {
+        var maxAllowedSizeInMb = fileOptions.Value.MaxSizeInMb;
+        var urlExpirationInMin = fileOptions.Value.UrlExpirationInMin;
+
+        var mappingStreamResult = FileMapper.GetStreamIfValid(image, isImage: true, maxAllowedSizeInMb);
+        if (mappingStreamResult.IsRight)
+        {
+            var error = (Error)mappingStreamResult;
+            return ErrorActionResultHandler.Handle(error);
+        }
+        var stream = (Stream)mappingStreamResult;
+
+        var command = new SetSchoolImageCommand(id, image.FileName, stream, urlExpirationInMin);
+        var result = await Mediator.Send(command);
+
+        return result.Match(
+            Left: Ok,
+            Right: ErrorActionResultHandler.Handle
+        );
+    }
+
+    [HttpDelete("[action]/{id}")]
+    [ProducesResponseType(StatusCodes.Status202Accepted)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> Image(Guid id)
+    {
+        var command = new DeleteSchoolImageCommand(id);
+
+        var result = await Mediator.Send(command);
+
+        return result.Match(
+            None: Accepted,
+            Some: ErrorActionResultHandler.Handle);
     }
 
     [HttpPatch("[action]/{id}")]
