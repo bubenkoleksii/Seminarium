@@ -31,6 +31,7 @@ internal static class HostingExtensions
 
                 // options.EmitStaticAudienceClaim = true;
             })
+            .AddInMemoryApiResources(Config.ApiResources)
             .AddInMemoryIdentityResources(Config.IdentityResources)
             .AddInMemoryApiScopes(Config.ApiScopes)
             .AddInMemoryClients(Config.Clients)
