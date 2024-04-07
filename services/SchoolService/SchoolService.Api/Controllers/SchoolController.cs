@@ -1,6 +1,4 @@
-﻿using SchoolService.Application.School.Commands.DeleteSchoolImage;
-
-namespace SchoolService.Api.Controllers;
+﻿namespace SchoolService.Api.Controllers;
 
 public class SchoolController(IMapper mapper, IOptions<Shared.Contracts.Options.FileOptions> fileOptions) : BaseController
 {
@@ -19,6 +17,7 @@ public class SchoolController(IMapper mapper, IOptions<Shared.Contracts.Options.
         );
     }
 
+    [Authorize]
     [HttpPost("[action]/")]
     [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(SchoolResponse))]
     [ProducesResponseType(StatusCodes.Status409Conflict)]

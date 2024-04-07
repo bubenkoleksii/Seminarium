@@ -21,6 +21,8 @@ builder.Services.SetupOptions(builder.Configuration);
 builder.Services.AddApplication(builder.Configuration);
 builder.Services.AddPersistence(builder.Configuration);
 
+builder.Services.AddIdentityAuthentication(builder.Configuration);
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
