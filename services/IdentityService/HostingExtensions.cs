@@ -34,7 +34,7 @@ internal static class HostingExtensions
             .AddInMemoryApiResources(Config.ApiResources)
             .AddInMemoryIdentityResources(Config.IdentityResources)
             .AddInMemoryApiScopes(Config.ApiScopes)
-            .AddInMemoryClients(Config.Clients)
+            .AddInMemoryClients(Config.GetClients(builder.Configuration))
             .AddAspNetIdentity<ApplicationUser>();
 
         builder.Services.ConfigureApplicationCookie(options =>

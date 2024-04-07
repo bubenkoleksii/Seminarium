@@ -7,10 +7,6 @@ namespace IdentityService;
 
 public static class Config
 {
-    private const string ClientUri = "http://localhost:3000/api/auth/callback/id-server";
-
-    private const int TokenLifeTime = 3600 * 24 * 30;
-
     public static IEnumerable<IdentityResource> IdentityResources =>
         new IdentityResource[]
         {
@@ -36,9 +32,12 @@ public static class Config
         }
     };
 
+    public static IEnumerable<Client> GetClients(IConfiguration configuration)
+    {
+        var clientRedirectUri = configuration["ClientUri"]!;
+        var clientTokenLifeTime = configuration.GetValue<int>("TokenLifeTime")!;
 
-    public static IEnumerable<Client> Clients =>
-        new Client[]
+        return new Client[]
         {
             new()
             {
@@ -60,7 +59,7 @@ public static class Config
                 RequirePkce = false,
                 RedirectUris =
                 {
-                    ClientUri
+                    clientRedirectUri
                 },
                 AllowedScopes =
                 {
@@ -69,7 +68,8 @@ public static class Config
                     "SeminariumApp"
                 },
                 AllowOfflineAccess = true,
-                AccessTokenLifetime = TokenLifeTime
+                AccessTokenLifetime = clientTokenLifeTime
             }
         };
+    }
 }
