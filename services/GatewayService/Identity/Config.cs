@@ -1,4 +1,6 @@
-﻿namespace SchoolService.Api.Idenity;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+
+namespace GatewayService.Identity;
 
 public static class Config
 {

@@ -5,7 +5,7 @@ global using Microsoft.AspNetCore.Authentication.JwtBearer;
 global using Microsoft.AspNetCore.Authorization;
 global using Microsoft.AspNetCore.Mvc;
 global using Microsoft.Extensions.Options;
-global using SchoolService.Api.Idenity;
+global using SchoolService.Api.Identity;
 global using SchoolService.Api.Mappings;
 global using SchoolService.Api.Models.School;
 global using SchoolService.Api.Options;
