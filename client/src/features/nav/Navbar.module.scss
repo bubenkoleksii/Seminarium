@@ -1,0 +1,11 @@
+.header {
+  @apply sticky top-0 z-50 flex justify-between px-5 py-3 items-center shadow-md;
+
+  .logo {
+    @apply flex items-center gap-2 cursor-pointer;
+
+    &Text {
+      @apply font-semibold
+    }
+  }
+}
