@@ -14,7 +14,9 @@ const Navbar: FC = () => {
         <h1 className={styles.logoText}>Seminarium</h1>
       </div>
       <div>Middle</div>
-      <div>Right</div>
+      <div>
+        Right
+      </div>
     </header>
   );
 };
