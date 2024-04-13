@@ -1,8 +1,11 @@
 {
-  "Index": {
-    "title": "Hungarian"
-  },
   "Footer": {
     "author": "Olekszij Bubenko"
+  },
+  "Welcome": {
+    "title": "Seminarium — lépjen be az innovatív oktatás világába!",
+    "description": "Seminarium - a tanítási folyamat kezelésének rendszere, ahol a tanároknak lehetőségük van egyedi tananyagok és interaktív órák létrehozására. A mi platformunk szabad kreativitást biztosít a tanároknak az olyan erőforrások fejlesztésében, amelyek megfelelnek a diákjaik igényeinek.",
+    "registrationBtn": "Regisztráció",
+    "joiningRequestBtn": "Csatlakozás az iskolához"
   }
 }

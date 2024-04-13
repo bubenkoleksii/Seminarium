@@ -3,6 +3,7 @@ import { Montserrat } from 'next/font/google';
 import { NextIntlClientProvider, useMessages } from 'next-intl';
 import { Navbar } from '@/features/nav';
 import { Footer } from '@/features/footer';
+import { Sidebar } from '@/features/sidebar';
 
 const montserrat = Montserrat({
   subsets: ['cyrillic', 'latin'],
@@ -23,7 +24,8 @@ export default function LocaleLayout({ children, params: { locale } }) {
         <NextIntlClientProvider messages={messages}>
           <div className="flex flex-col min-h-screen bg-gray-100">
             <Navbar />
-            <main className="flex-grow z-10 container mx-auto px-1 pt-2 pb-5">
+            <main className="flex-grow min-w-screen flex justify-center">
+              {false && <Sidebar />}
               {children}
             </main>
             <Footer />

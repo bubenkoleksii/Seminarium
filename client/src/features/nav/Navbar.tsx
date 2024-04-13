@@ -10,13 +10,11 @@ import styles from './Navbar.module.scss';
 const Navbar: FC = () => {
   return (
     <header className={styles.header}>
-      <div className={styles.logo}>
-        <Logo />
+        <Link href="/" className={styles.logo}>
+          <Logo />
 
-        <Link href="/">
           <h1 className={styles.logoText}>Seminarium</h1>
         </Link>
-      </div>
 
       <div>Middle</div>
 

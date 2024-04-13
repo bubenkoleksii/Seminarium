@@ -1,8 +1,11 @@
 {
-  "Index": {
-    "title": "Text"
-  },
   "Footer": {
     "author": "Oleksii Bubenko"
+  },
+  "Welcome": {
+    "title": "Seminarium — innovativ ta`lim platforumasına uruşuŋ!",
+    "description": "Seminarium - ta`lim jarayonini idare qiluŋ sistemasi, hündeğanlerniŋ, oquvçıların öz beşiğini ve interaktiw şagird oquv maddilirini yaradğan imkaniyeti bar. Bizim platformamız uquvçıların ihtiyaçlarığa javap beren yarattıqları usulda serbest iradı berer.",
+    "registrationBtn": "Qayd etüv",
+    "joiningRequestBtn": "Bir mektep qoşmaq"
   }
 }

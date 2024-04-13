@@ -1,8 +1,11 @@
 {
-  "Index": {
-    "title": "Romanian"
-  },
   "Footer": {
     "author": "Oleksi Bubenko"
+  },
+  "Welcome": {
+    "title": "Seminarium — fă un pas în lumea educației inovatoare!",
+    "description": "Seminarium - sistemul de gestionare a procesului educațional, unde profesorii au posibilitatea să creeze materiale didactice unice și lecții interactive. Platforma noastră oferă profesorilor libertate creativă în dezvoltarea resurselor care să răspundă nevoilor elevilor lor.",
+    "registrationBtn": "Înregistrează-te",
+    "joiningRequestBtn": "Alătură-te școlii"
   }
 }
