@@ -1,3 +1,5 @@
+'use client';
+
 import { Montserrat } from 'next/font/google';
 import Link from 'next/link';
 

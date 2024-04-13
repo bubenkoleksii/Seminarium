@@ -5,7 +5,7 @@
     @apply flex items-center gap-2 cursor-pointer;
 
     &Text {
-      @apply font-semibold
+      @apply font-medium hidden md:block
     }
   }
 }

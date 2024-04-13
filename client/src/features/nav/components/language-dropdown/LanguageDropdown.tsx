@@ -2,19 +2,27 @@
 
 import { FC, Fragment, useState } from 'react';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
+import { useLocale } from 'next-intl';
 import { Menu, Transition } from '@headlessui/react';
 import { ChevronDownIcon } from '@heroicons/react/20/solid';
 import { languages } from './languages';
 
 const LanguageDropdown: FC = () => {
-  const [selectedLanguage, setSelectedLanguage] = useState(languages[0]);
+  const router = useRouter();
+  const activeLocale = useLocale();
+
+  const activeLanguage = languages.find((l) => l.code === activeLocale);
+  const [selectedLanguage, setSelectedLanguage] = useState(activeLanguage);
 
   const handleLanguageSelect = (language) => {
+    const nextLocale = language.code;
+    router.push(`/${nextLocale}`);
     setSelectedLanguage(language);
   };
 
   return (
-    <Menu as="div" className="relative inline-block text-left">
+    <Menu as="div" className="relative inline-block cursor-pointer text-left">
       <div>
         <Menu.Button
           className="inline-flex items-center justify-center rounded-md px-2 py-1 text-sm font-semibold
@@ -51,8 +59,7 @@ const LanguageDropdown: FC = () => {
             {languages.map((language, index) => (
               <Menu.Item key={index}>
                 {({ active }) => (
-                  <a
-                    href="#"
+                  <div
                     className={classNames(
                       active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
                       'flex items-center px-4 py-2 text-sm',
@@ -67,7 +74,7 @@ const LanguageDropdown: FC = () => {
                       className="mr-2 h-5 w-5 rounded-full"
                     />
                     {language.name}
-                  </a>
+                  </div>
                 )}
               </Menu.Item>
             ))}
