@@ -1,76 +1,85 @@
-'use client'
+'use client';
 
-import { FC, useState } from 'react';
+import { FC, Fragment, useState } from 'react';
+import Image from 'next/image';
+import { Menu, Transition } from '@headlessui/react';
+import { ChevronDownIcon } from '@heroicons/react/20/solid';
+import { languages } from './languages';
 
 const LanguageDropdown: FC = () => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [selectedLanguage, setSelectedLanguage] = useState(languages[0]);
 
-  const toggleDropdown = () => {
-    setIsOpen(!isOpen);
-  };
-
-  const closeDropdown = () => {
-    setIsOpen(false);
+  const handleLanguageSelect = (language) => {
+    setSelectedLanguage(language);
   };
 
   return (
-    <div className="relative inline-block text-left" onClick={closeDropdown}>
+    <Menu as="div" className="relative inline-block text-left">
       <div>
-        <span className="rounded-md shadow-sm">
-          <button
-            type="button"
-            className="inline-flex justify-center w-full rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-100"
-            id="language-button"
-            aria-expanded={isOpen}
-            aria-haspopup="true"
-            onClick={toggleDropdown}
-          >
-            Language
-            <svg
-              className="-mr-1 ml-2 h-5 w-5"
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 20 20"
-              fill="currentColor"
-              aria-hidden="true"
-            >
-              <path
-                fillRule="evenodd"
-                d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                clipRule="evenodd"
-              />
-            </svg>
-          </button>
-        </span>
+        <Menu.Button
+          className="inline-flex items-center justify-center rounded-md px-2 py-1 text-sm font-semibold
+          text-gray-900 hover:bg-gray-50 focus:outline-none"
+        >
+          <Image
+            src={selectedLanguage.flag}
+            width={35}
+            height={35}
+            alt={`${selectedLanguage.name} flag`}
+            className="h-5 w-5 rounded-full"
+          />
+          <ChevronDownIcon
+            className="h-4 w-4 text-gray-400"
+            aria-hidden="true"
+          />
+        </Menu.Button>
       </div>
 
-      {isOpen && (
-        <div
-          className="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none"
-          role="menu"
-          aria-orientation="vertical"
-          aria-labelledby="language-button"
+      <Transition
+        as={Fragment}
+        enter="transition ease-out duration-100"
+        enterFrom="transform opacity-0 scale-95"
+        enterTo="transform opacity-100 scale-100"
+        leave="transition ease-in duration-75"
+        leaveFrom="transform opacity-100 scale-100"
+        leaveTo="transform opacity-0 scale-95"
+      >
+        <Menu.Items
+          className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1
+          ring-black ring-opacity-5 focus:outline-none"
         >
-          <div className="py-1" role="none">
-            <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900" role="menuitem">
-              English
-            </a>
-            <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900" role="menuitem">
-              Español
-            </a>
-            <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900" role="menuitem">
-              Français
-            </a>
-            <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900" role="menuitem">
-              Deutsch
-            </a>
-            <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900" role="menuitem">
-              Italiano
-            </a>
+          <div className="py-1">
+            {languages.map((language, index) => (
+              <Menu.Item key={index}>
+                {({ active }) => (
+                  <a
+                    href="#"
+                    className={classNames(
+                      active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
+                      'flex items-center px-4 py-2 text-sm',
+                    )}
+                    onClick={() => handleLanguageSelect(language)}
+                  >
+                    <Image
+                      src={language.flag}
+                      width={25}
+                      height={25}
+                      alt={`${language.name} flag`}
+                      className="mr-2 h-5 w-5 rounded-full"
+                    />
+                    {language.name}
+                  </a>
+                )}
+              </Menu.Item>
+            ))}
           </div>
-        </div>
-      )}
-    </div>
+        </Menu.Items>
+      </Transition>
+    </Menu>
   );
 };
 
 export { LanguageDropdown };
+
+function classNames(...classes) {
+  return classes.filter(Boolean).join(' ');
+}

@@ -14,7 +14,7 @@ const montserrat = Montserrat({
   weights: [300, 400, 500, 600, 700],
 });
 
-export default function LocaleLayout({children, params: { locale }}) {
+export default function LocaleLayout({ children, params: { locale } }) {
   const messages = useMessages();
 
   return (
@@ -27,9 +27,7 @@ export default function LocaleLayout({children, params: { locale }}) {
       <body className={montserrat.className}>
         <NextIntlClientProvider messages={messages}>
           <Navbar />
-          <main className="container mx-auto px-1 pt-5">
-            {children}
-          </main>
+          <main className="container mx-auto px-1 pt-5">{children}</main>
         </NextIntlClientProvider>
       </body>
     </html>
