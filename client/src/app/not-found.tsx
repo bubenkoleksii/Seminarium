@@ -11,7 +11,7 @@ export default function NotFoundPage() {
   return (
     <html>
       <body className={montserrat.className}>
-        <section className="flex h-screen items-center bg-gray-50 p-16">
+        <section className="flex h-screen items-center bg-gray-50 p-16 bg-gray-100">
           <div className="container flex flex-col items-center ">
             <div className="flex max-w-md flex-col gap-6 text-center">
               <h2 className="text-9xl font-extrabold text-gray-600">404</h2>

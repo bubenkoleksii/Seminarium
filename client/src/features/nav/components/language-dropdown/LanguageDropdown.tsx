@@ -26,7 +26,7 @@ const LanguageDropdown: FC = () => {
       <div>
         <Menu.Button
           className="inline-flex items-center justify-center rounded-md px-2 py-1 text-sm font-semibold
-          text-gray-900 hover:bg-gray-50 focus:outline-none"
+          text-gray-900 hover:bg-gray-200 focus:outline-none"
         >
           <Image
             src={selectedLanguage.flag}

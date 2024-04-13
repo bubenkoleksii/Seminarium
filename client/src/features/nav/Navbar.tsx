@@ -1,7 +1,7 @@
 'use client';
 
 import { FC } from 'react';
-
+import Link from 'next/link';
 import { Logo } from '@/components/logo/Logo';
 import { LanguageDropdown } from './components/language-dropdown';
 
@@ -12,7 +12,10 @@ const Navbar: FC = () => {
     <header className={styles.header}>
       <div className={styles.logo}>
         <Logo />
-        <h1 className={styles.logoText}>Seminarium</h1>
+
+        <Link href="/">
+          <h1 className={styles.logoText}>Seminarium</h1>
+        </Link>
       </div>
 
       <div>Middle</div>
