@@ -1,3 +1,5 @@
-export default function Home() {
-  return <div>Content</div>;
+import { redirect } from 'next/navigation';
+
+export default function RootPage() {
+  redirect('/uk');
 }
