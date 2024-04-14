@@ -26,18 +26,6 @@ public class CreateSchoolCommandValidator : AbstractValidator<CreateSchoolComman
             .GreaterThan((uint)0)
             .WithErrorCode(ErrorTitles.Common.LowerZero);
 
-        RuleFor(x => x.Email)
-            .EmailAddress()
-            .WithErrorCode(ErrorTitles.Common.Invalid)
-            .MaximumLength(50)
-            .WithErrorCode(ErrorTitles.Common.TooLong);
-
-        RuleFor(x => x.Phone)
-            .NotEmpty()
-            .WithErrorCode(ErrorTitles.Common.Empty)
-            .MaximumLength(50)
-            .WithErrorCode(ErrorTitles.Common.TooLong);
-
         RuleFor(x => x.Type)
             .NotEmpty()
             .WithErrorCode(ErrorTitles.Common.Empty);

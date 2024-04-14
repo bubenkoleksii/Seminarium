@@ -9,10 +9,6 @@ public record CreateSchoolRequest(
 
     uint GradingSystem,
 
-    string? Email,
-
-    string? Phone,
-
     string Type,
 
     ulong PostalCode,
