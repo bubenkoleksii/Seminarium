@@ -1,18 +1,22 @@
-﻿namespace SchoolService.Domain.Entities;
+﻿using SchoolService.Domain.Enums.JoiningRequest;
 
-public class School : Entity
+namespace SchoolService.Domain.Entities;
+
+public class JoiningRequest : Entity
 {
     public ulong RegisterCode { get; set; }
+
+    public required string RequesterEmail { get; set; }
+
+    public required string RequesterPhone { get; set; }
+
+    public required string RequesterFullName { get; set; }
 
     public required string Name { get; set; }
 
     public string? ShortName { get; set; }
 
     public uint GradingSystem { get; set; }
-
-    public string? Email { get; set; }
-
-    public string? Phone { get; set; }
 
     public SchoolType Type { get; set; }
 
@@ -30,9 +34,5 @@ public class School : Entity
 
     public bool AreOccupied { get; set; }
 
-    public string? SiteUrl { get; set; }
-
-    public string? Img { get; set; }
-
-    public required JoiningRequest JoiningRequest { get; set; }
+    public JoiningRequestStatus Status { get; set; }
 }

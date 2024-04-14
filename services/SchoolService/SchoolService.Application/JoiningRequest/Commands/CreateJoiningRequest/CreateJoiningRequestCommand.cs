@@ -1,9 +1,15 @@
-﻿namespace SchoolService.Application.School.Commands.CreateSchool;
+﻿namespace SchoolService.Application.JoiningRequest.Commands.CreateJoiningRequest;
 
-public record CreateSchoolCommand(
+public record CreateJoiningRequestCommand(
     ulong RegisterCode,
 
     string Name,
+
+    string RequesterEmail,
+
+    string RequesterPhone,
+
+    string RequesterFullName,
 
     string? ShortName,
 
@@ -24,4 +30,4 @@ public record CreateSchoolCommand(
     string? Address,
 
     bool AreOccupied = false
-) : IRequest<Either<SchoolModelResponse, Error>>;
+) : IRequest<Either<JoiningRequestModelResponse, Error>>;
