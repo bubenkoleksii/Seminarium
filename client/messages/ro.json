@@ -1,6 +1,87 @@
 {
+  "JoiningRequest": {
+    "title": "Formular de aderare a instituției de învățământ",
+    "labels": {
+      "requesterEmail": "Adresa dvs. de e-mail",
+      "requesterPhone": "Numărul dvs. de telefon",
+      "requesterFullName": "Numele complet al solicitantului",
+      "registerCode": "Codul de înregistrare fiscală",
+      "name": "Denumirea completă a instituției de învățământ",
+      "shortName": "Denumirea scurtă a instituției",
+      "gradingSystem": "Sistem de evaluare",
+      "type": "Tipul instituției de învățământ",
+      "postalCode": "Cod poștal",
+      "ownershipType": "Tipul de proprietate",
+      "studentsQuantity": "Numărul estimat de elevi",
+      "region": "Regiune",
+      "territorialCommunity": "Comunitatea teritorială",
+      "address": "Adresa",
+      "areOccupied": "În prezent, instituția de învățământ este ocupată",
+      "submit": "Trimiteți cererea de aderare"
+    },
+    "placeholders": {
+      "requesterEmail": "andrii.valko@gmail.com",
+      "requesterPhone": "+380684433210",
+      "requesterFullName": "Valko Andrei Petru",
+      "registerCode": "22054999",
+      "name": "Liceul nr. 3 din Olevsk al Consiliului municipal Olevsk",
+      "shortName": "Liceul nr. 3 din Olevsk",
+      "gradingSystem": "12",
+      "postalCode": "11028",
+      "studentsQuantity": "800",
+      "territorialCommunity": "Comunitatea urbană Olevsk",
+      "address": "Str. Kvitkova, nr. 24b"
+    },
+    "types": {
+      "secondary": "Liceu",
+      "higher": "Instituție de învățământ superior",
+      "vocational": "Școală profesională și tehnică"
+    },
+    "ownershipTypes": {
+      "state": "Stat",
+      "communal": "Comunal",
+      "private": "Privat"
+    },
+    "regions": {
+      "vinnytsia": "Regiunea Vinnytsia",
+      "volyn": "Regiunea Volîn",
+      "dnipropetrovsk": "Regiunea Dnipropetrovsk",
+      "donetsk": "Regiunea Donețk",
+      "zhytomyr": "Regiunea Jîtomîr",
+      "zakarpattia": "Regiunea Transcarpatia",
+      "zaporizhzhia": "Regiunea Zaporojie",
+      "ivanofrankivsk": "Regiunea Ivano-Frankivsk",
+      "kyiv": "Regiunea Kiev",
+      "kirovohrad": "Regiunea Kirovohrad",
+      "luhansk": "Regiunea Luhansk",
+      "lviv": "Regiunea Lvov",
+      "mykolaiv": "Regiunea Mîkolayiv",
+      "odesa": "Regiunea Odesa",
+      "poltava": "Regiunea Poltava",
+      "rivne": "Regiunea Rivne",
+      "sumy": "Regiunea Sumî",
+      "ternopil": "Regiunea Ternopil",
+      "kharkiv": "Regiunea Harkov",
+      "kherson": "Regiunea Herson",
+      "khmelnytskyi": "Regiunea Hmelnițki",
+      "cherkasy": "Regiunea Cerkasî",
+      "chernivtsi": "Regiunea Cernăuți",
+      "chernihiv": "Regiunea Cernihiv",
+      "crimea": "Republica Autonomă Crimeea",
+      "abroad": "Străinătate",
+      "none": "Niciuna"
+    }
+  },
   "Footer": {
     "author": "Oleksi Bubenko"
+  },
+  "Validation": {
+    "required": "Acest câmp este obligatoriu",
+    "email": "Adresa de email este incorectă",
+    "max": "Acest câmp este prea lung, vă rugăm să introduceți un text mai scurt",
+    "min": "Acest câmp este prea scurt, vă rugăm să introduceți un text mai lung",
+    "maxNumber": "Această valoare depășește limita maximă permisă",
+    "minNumber": "Această valoare este mai mică decât minimul permis"
   },
   "Welcome": {
     "title": "Seminarium — fă un pas în lumea educației inovatoare!",
