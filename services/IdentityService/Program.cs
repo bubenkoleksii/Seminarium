@@ -13,8 +13,10 @@ try
 {
     var builder = WebApplication.CreateBuilder(args);
 
+    const string logsOutputTemplate = "[{Timestamp:HH:mm:ss} {Level}] {SourceContext}{NewLine}{Message:lj}{NewLine}{Exception}{NewLine}";
     builder.Host.UseSerilog((ctx, lc) => lc
-        .WriteTo.Console(outputTemplate: "[{Timestamp:HH:mm:ss} {Level}] {SourceContext}{NewLine}{Message:lj}{NewLine}{Exception}{NewLine}")
+        .WriteTo.Console(outputTemplate: logsOutputTemplate)
+        .WriteTo.File("Logs\\IdentityServiceLog-.txt", rollingInterval: RollingInterval.Day, outputTemplate: logsOutputTemplate)
         .Enrich.FromLogContext()
         .ReadFrom.Configuration(ctx.Configuration));
 
@@ -23,7 +25,7 @@ try
         .ConfigurePipeline();
 
     Log.Information("Seeding database...");
-    SeedData.EnsureSeedData(app);
+    SeedData.EnsureSeedData(app, builder.Configuration);
 
     app.UseSerilogRequestLogging();
 

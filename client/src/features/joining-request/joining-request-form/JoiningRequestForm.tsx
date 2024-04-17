@@ -21,7 +21,7 @@ const JoiningRequestForm: FC = () => {
     name: Yup.string().required(v('required')).max(250, v('max')),
     shortName: Yup.string().max(250, v('max')),
     gradingSystem: Yup.number().required(v('required')).max(10000, v('maxNumber')),
-    postalCode: Yup.number().required(v('required')).max(99999, v('maxNumber')),
+    postalCode: Yup.number().required(v('required')).max(999999, v('maxNumber')),
     studentsQuantity: Yup.number().required(v('required')).max(1000000, v('maxNumber')),
     territorialCommunity: Yup.string().max(250, v('max')),
     address: Yup.string().max(250, v('max')),
@@ -29,6 +29,8 @@ const JoiningRequestForm: FC = () => {
 
   const handleSubmit = (values) => {
     replaceEmptyStringsWithNull(values);
+
+    // TODO: send request to server
   };
 
   return (

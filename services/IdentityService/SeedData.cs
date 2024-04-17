@@ -14,7 +14,7 @@ namespace IdentityService;
 
 public class SeedData
 {
-    public static void EnsureSeedData(WebApplication app)
+    public static void EnsureSeedData(WebApplication app, IConfiguration configuration)
     {
         using var scope = app.Services.GetRequiredService<IServiceScopeFactory>().CreateScope();
         var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
@@ -22,36 +22,73 @@ public class SeedData
 
         var userMgr = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
 
+        var roleMgr = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+        EnsureRolesCreated(roleMgr, configuration);
+
         if (userMgr.Users.Any()) return;
 
-        var bob = userMgr.FindByNameAsync("bob").Result;
-        if (bob == null)
+        var rootUserFullName = configuration["RootUser:FullName"]!;
+        var rootUserEmail = configuration["RootUser:Email"]!;
+        var rootUserPassword = configuration["RootUser:Password"]!;
+
+        var rootUser = userMgr.FindByNameAsync(rootUserEmail).Result;
+        if (rootUser == null)
         {
-            bob = new ApplicationUser
+            rootUser = new ApplicationUser
             {
                 Id = Guid.NewGuid().ToString(),
-                UserName = "bob",
-                Email = "BobSmith@email.com",
+                UserName = rootUserEmail,
+                Email = rootUserEmail,
                 EmailConfirmed = true
             };
-            var result = userMgr.CreateAsync(bob, "Pass123$").Result;
+            var result = userMgr.CreateAsync(rootUser, rootUserPassword).Result;
             if (!result.Succeeded)
             {
+                Log.Error("Root user creating failed.");
                 throw new Exception(result.Errors.First().Description);
             }
 
-            result = userMgr.AddClaimsAsync(bob, new Claim[]{
-                new(JwtClaimTypes.Name, "Bob Smith"),
-            }).Result;
+            result = userMgr.AddToRoleAsync(rootUser, "admin").Result;
             if (!result.Succeeded)
             {
+                Log.Error("Root user creating failed.");
                 throw new Exception(result.Errors.First().Description);
             }
-            Log.Debug("bob created");
+
+            result = userMgr.AddClaimsAsync(rootUser, new Claim[]{
+                new(JwtClaimTypes.Name, rootUserFullName),
+                new(JwtClaimTypes.Role, "admin")
+            }).Result;
+
+            if (!result.Succeeded)
+            {
+                Log.Error("Root user creating failed.");
+                throw new Exception(result.Errors.First().Description);
+            }
+            Log.Debug("Root user created.");
         }
         else
         {
-            Log.Debug("bob already exists");
+            Log.Debug("Root user already exists.");
+        }
+    }
+
+    private static void EnsureRolesCreated(RoleManager<IdentityRole> roleMgr, IConfiguration configuration)
+    {
+        var roles = configuration.GetSection("Roles")!.Get<string[]>()!;
+
+        foreach (var roleName in roles)
+        {
+            var role = roleMgr.FindByNameAsync(roleName).Result;
+            if (role == null)
+            {
+                role = new IdentityRole
+                {
+                    Name = roleName
+                };
+
+                _ = roleMgr.CreateAsync(role).Result;
+            }
         }
     }
 }

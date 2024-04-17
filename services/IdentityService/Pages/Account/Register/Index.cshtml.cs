@@ -47,7 +47,7 @@ public class IndexModel : PageModel
             var user = new ApplicationUser
             {
                 UserName = Input.Username,
-                Email = Input.Email,
+                Email = Input.Username,
                 EmailConfirmed = true
             };
 

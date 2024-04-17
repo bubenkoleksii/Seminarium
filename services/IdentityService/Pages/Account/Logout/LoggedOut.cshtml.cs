@@ -2,6 +2,9 @@
 // See LICENSE in the project root for license information.
 
 using Duende.IdentityServer.Services;
+
+using IdentityService.Pages.Account.Logout;
+
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
