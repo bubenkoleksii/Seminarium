@@ -39,6 +39,7 @@ public class SeedData
                 Id = Guid.NewGuid().ToString(),
                 UserName = rootUserEmail,
                 Email = rootUserEmail,
+                FullName = "Root admin",
                 EmailConfirmed = true
             };
             var result = userMgr.CreateAsync(rootUser, rootUserPassword).Result;

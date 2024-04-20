@@ -24,6 +24,7 @@ public static class Config
     {
         new("SeminariumApp", "Seminarium app", new []
         {
+            JwtClaimTypes.Email,
             JwtClaimTypes.Name,
             JwtClaimTypes.Role
         })
