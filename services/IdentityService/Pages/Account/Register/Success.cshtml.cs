@@ -6,17 +6,10 @@ namespace IdentityService.Pages.Account.Register;
 [AllowAnonymous]
 public class SuccessModel : PageModel
 {
-    public required string Name { get; set; }
-
     public required string Email { get; set; }
 
-    public SuccessModel(string name, string email)
+    public void OnGet(string email)
     {
-        Name = name;
         Email = email;
-    }
-
-    public void OnGet()
-    {
     }
 }
