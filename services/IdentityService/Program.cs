@@ -2,6 +2,9 @@
 
 using Serilog;
 
+using Shared.Contracts.Options;
+using Shared.Utils.Mail;
+
 Log.Logger = new LoggerConfiguration()
     .WriteTo.File("Logs\\IdentityServiceLog-.txt", rollingInterval: RollingInterval.Day)
     .WriteTo.Console()
@@ -19,6 +22,9 @@ try
         .WriteTo.File("Logs\\IdentityServiceLog-.txt", rollingInterval: RollingInterval.Day, outputTemplate: logsOutputTemplate)
         .Enrich.FromLogContext()
         .ReadFrom.Configuration(ctx.Configuration));
+
+    builder.Services.Configure<MailOptions>(builder.Configuration.GetSection(nameof(MailOptions)));
+    builder.Services.AddScoped<IMailService, MailService>();
 
     var app = builder
         .ConfigureServices()
