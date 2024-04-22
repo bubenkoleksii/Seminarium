@@ -71,6 +71,7 @@ public class IndexModel : PageModel
             });
 
             RegisterSuccess = true;
+            Serilog.Log.Logger.Information("New user with email @Email was registered.", user.Email);
 
             return RedirectToPage("/Account/Register/Success", new { Email = user.Email });
         }
