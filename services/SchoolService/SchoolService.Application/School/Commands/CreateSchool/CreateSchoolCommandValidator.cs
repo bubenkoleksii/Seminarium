@@ -4,6 +4,12 @@ public class CreateSchoolCommandValidator : AbstractValidator<CreateSchoolComman
 {
     public CreateSchoolCommandValidator()
     {
+        RuleFor(x => x.JoiningRequestId)
+            .NotNull()
+            .WithErrorCode(ErrorTitles.Common.Null)
+            .NotEqual(Guid.Empty)
+            .WithErrorCode(ErrorTitles.Common.Empty);
+
         RuleFor(x => x.RegisterCode)
             .NotEmpty()
             .WithErrorCode(ErrorTitles.Common.Empty)

@@ -1,6 +1,8 @@
 ﻿namespace SchoolService.Api.Models.School;
 
 public record CreateSchoolRequest(
+    Guid JoiningRequestId,
+
     ulong RegisterCode,
 
     string Name,

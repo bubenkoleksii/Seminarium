@@ -1,6 +1,8 @@
 ﻿namespace SchoolService.Application.School.Commands.CreateSchool;
 
 public record CreateSchoolCommand(
+    Guid JoiningRequestId,
+
     ulong RegisterCode,
 
     string Name,

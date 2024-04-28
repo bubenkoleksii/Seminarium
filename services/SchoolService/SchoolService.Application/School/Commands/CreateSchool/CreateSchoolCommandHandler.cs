@@ -16,6 +16,12 @@ public class CreateSchoolCommandHandler : IRequestHandler<CreateSchoolCommand, E
     {
         var entity = _mapper.Map<Domain.Entities.School>(request);
 
+        var joiningRequest = await _commandContext.JoiningRequests.FindAsync(request.JoiningRequestId);
+        if (joiningRequest is null)
+            return new InvalidError("joining request");
+
+        entity.JoiningRequest = joiningRequest;
+
         var isAlreadyExists = UniquenessChecker.GetErrorIfAlreadyExists(_commandContext, entity, out var error);
         if (isAlreadyExists)
             return error!;

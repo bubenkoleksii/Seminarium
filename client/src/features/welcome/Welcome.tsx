@@ -31,7 +31,7 @@ const Welcome: FC = () => {
           <div className="flex justify-center">
             <button
               className="w-200 inline-flex justify-center items-center text-white bg-purple-900 border-0 py-2 px-6 focus:outline-none hover:bg-purple-700 rounded text-lg">
-              <Link href="/">
+              <Link href="http://localhost:5000/Account/Register">
                 {t('registrationBtn')}
               </Link>
             </button>
