@@ -1,14 +1,9 @@
-// Copyright (c) Duende Software. All rights reserved.
-// See LICENSE in the project root for license information.
-
 using Duende.IdentityServer.Services;
-
-using IdentityService.Pages.Account.Logout;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace IdentityService.Pages.Logout;
+namespace IdentityService.Pages.Account.Logout;
 
 [SecurityHeaders]
 [AllowAnonymous]
@@ -32,7 +27,7 @@ public class LoggedOut : PageModel
         {
             AutomaticRedirectAfterSignOut = LogoutOptions.AutomaticRedirectAfterSignOut,
             PostLogoutRedirectUri = logout?.PostLogoutRedirectUri,
-            ClientName = String.IsNullOrEmpty(logout?.ClientName) ? logout?.ClientId : logout?.ClientName,
+            ClientName = string.IsNullOrEmpty(logout?.ClientName) ? logout?.ClientId : logout?.ClientName,
             SignOutIframeUrl = logout?.SignOutIFrameUrl
         };
     }

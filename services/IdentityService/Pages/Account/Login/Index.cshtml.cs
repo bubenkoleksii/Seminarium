@@ -1,11 +1,10 @@
-using Duende.IdentityServer;
+﻿using Duende.IdentityServer;
 using Duende.IdentityServer.Events;
 using Duende.IdentityServer.Models;
 using Duende.IdentityServer.Services;
 using Duende.IdentityServer.Stores;
 
 using IdentityService.Models;
-using IdentityService.Pages.Login;
 
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
@@ -71,17 +70,10 @@ public class Index : PageModel
 
                 await _interaction.DenyAuthorizationAsync(context, AuthorizationError.AccessDenied);
 
-                if (context.IsNativeClient())
-                {
-                    return this.LoadingPage(Input.ReturnUrl);
-                }
+                return context.IsNativeClient() ? this.LoadingPage(Input.ReturnUrl) : Redirect(Input.ReturnUrl ?? "~/");
+            }
 
-                return Redirect(Input.ReturnUrl ?? "~/");
-            }
-            else
-            {
-                return Redirect("~/");
-            }
+            return Redirect("~/");
         }
 
         if (ModelState.IsValid)
@@ -90,6 +82,7 @@ public class Index : PageModel
             if (result.Succeeded)
             {
                 var user = await _userManager.FindByNameAsync(Input.Username!);
+
                 await _events.RaiseAsync(new UserLoginSuccessEvent(user!.UserName, user.Id, user.UserName, clientId: context?.Client.ClientId));
                 Telemetry.Metrics.UserLogin(context?.Client.ClientId, IdentityServerConstants.LocalIdentityProvider);
 
@@ -97,26 +90,20 @@ public class Index : PageModel
                 {
                     ArgumentNullException.ThrowIfNull(Input.ReturnUrl, nameof(Input.ReturnUrl));
 
-                    if (context.IsNativeClient())
-                    {
-                        return this.LoadingPage(Input.ReturnUrl);
-                    }
-
-                    return Redirect(Input.ReturnUrl ?? "~/");
+                    return context.IsNativeClient() ? this.LoadingPage(Input.ReturnUrl) : Redirect(Input.ReturnUrl ?? "~/");
                 }
 
                 if (Url.IsLocalUrl(Input.ReturnUrl))
                 {
                     return Redirect(Input.ReturnUrl);
                 }
-                else if (string.IsNullOrEmpty(Input.ReturnUrl))
+
+                if (string.IsNullOrEmpty(Input.ReturnUrl))
                 {
                     return Redirect("~/");
                 }
-                else
-                {
-                    throw new ArgumentException("invalid return URL");
-                }
+
+                throw new ArgumentException("invalid return URL");
             }
 
             const string error = "invalid credentials";
@@ -126,6 +113,7 @@ public class Index : PageModel
         }
 
         await BuildModelAsync(Input.ReturnUrl);
+        ModelState.AddModelError("Error", "Не вдалось зареєструвати користувача. Будь ласка, перевірте введені дані та спробуйте ще раз");
         return Page();
     }
 
@@ -181,7 +169,7 @@ public class Index : PageModel
         if (client != null)
         {
             allowLocal = client.EnableLocalLogin;
-            if (client.IdentityProviderRestrictions != null && client.IdentityProviderRestrictions.Count != 0)
+            if (client.IdentityProviderRestrictions.Count != 0)
             {
                 providers = providers.Where(provider => client.IdentityProviderRestrictions.Contains(provider.AuthenticationScheme)).ToList();
             }
