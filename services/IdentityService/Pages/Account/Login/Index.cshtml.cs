@@ -19,11 +19,18 @@ namespace IdentityService.Pages.Account.Login;
 public class Index : PageModel
 {
     private readonly UserManager<ApplicationUser> _userManager;
+
     private readonly SignInManager<ApplicationUser> _signInManager;
+
     private readonly IIdentityServerInteractionService _interaction;
+
     private readonly IEventService _events;
+
     private readonly IAuthenticationSchemeProvider _schemeProvider;
+
     private readonly IIdentityProviderStore _identityProviderStore;
+
+    private readonly IConfiguration _configuration;
 
     public ViewModel View { get; set; } = default!;
 
@@ -36,10 +43,11 @@ public class Index : PageModel
         IIdentityProviderStore identityProviderStore,
         IEventService events,
         UserManager<ApplicationUser> userManager,
-        SignInManager<ApplicationUser> signInManager)
+        SignInManager<ApplicationUser> signInManager, IConfiguration configuration)
     {
         _userManager = userManager;
         _signInManager = signInManager;
+        _configuration = configuration;
         _interaction = interaction;
         _schemeProvider = schemeProvider;
         _identityProviderStore = identityProviderStore;
@@ -48,6 +56,11 @@ public class Index : PageModel
 
     public async Task<IActionResult> OnGet(string? returnUrl)
     {
+        Input = new InputModel
+        {
+            ClientHomeUrl = _configuration["ClientHomeUrl"]!
+        };
+
         await BuildModelAsync(returnUrl);
 
         if (View.IsExternalLoginOnly)

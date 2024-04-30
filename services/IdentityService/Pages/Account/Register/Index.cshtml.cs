@@ -71,9 +71,9 @@ public class IndexModel : PageModel
             });
 
             RegisterSuccess = true;
-            Serilog.Log.Logger.Information("New user with email @Email was registered.", user.Email);
+            Serilog.Log.Logger.Information($"New user with email {user.Email} was registered.");
 
-            return RedirectToPage("/Account/Register/Success", new { Email = user.Email });
+            return RedirectToPage("/Account/Register/Success", new { user.Email });
         }
 
         ModelState.AddModelError("Error", "Не вдалось зареєструвати користувача. Будь ласка, перевірте введені дані та спробуйте ще раз");

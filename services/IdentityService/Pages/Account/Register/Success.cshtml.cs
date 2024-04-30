@@ -79,7 +79,7 @@ public class SuccessModel : PageModel
         var baseUrl = $"{Request.Scheme}://{Request.Host}{Request.PathBase}";
         var confirmationLink = $"{baseUrl}/Account/EmailConfirmation?UserId={HttpUtility.UrlEncode(user.Id)}&Token={HttpUtility.UrlEncode(token)}";
 
-        await _mailService.SendAsync("ipz202_bov@student.ztu.edu.ua", EmailTemplate.Subject, EmailTemplate.GetBodyWithConfirmationLink(confirmationLink));
+        await _mailService.SendAsync(Email, EmailTemplate.Subject, EmailTemplate.GetBodyWithConfirmationLink(confirmationLink));
         Serilog.Log.Information($"Confirmation email was sent for user with email: {user.Email}");
     }
 

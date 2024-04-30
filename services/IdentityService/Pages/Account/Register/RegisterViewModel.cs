@@ -26,7 +26,7 @@ public class RegisterViewModel
     [DisplayName("Повне ім'я")]
     public string FullName { get; set; } = string.Empty;
 
-    [Required]
+    [Required(ErrorMessage = "Це поле є обов'язковим")]
     [DisplayName("Ознайомлений із законом \"Про захист персональних даних\" та даю згоду на обробку даних (якщо вам немає 18 років, то узгодьте це з батьками)")]
     [Range(typeof(bool), "true", "true", ErrorMessage = "Для продовження необхідно погодитись із обробкою даних.")]
     public bool AgreeWithProcessing { get; set; }
