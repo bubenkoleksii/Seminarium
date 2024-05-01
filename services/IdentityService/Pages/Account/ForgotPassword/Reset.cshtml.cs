@@ -15,10 +15,16 @@ public class ResetModel : PageModel
 
     private readonly IConfiguration _configuration;
 
-    public ResetModel(IConfiguration configuration, UserManager<ApplicationUser> userManager)
+    private readonly SignInManager<ApplicationUser> _signInManager;
+
+    public ResetModel(
+        IConfiguration configuration,
+        UserManager<ApplicationUser> userManager,
+        SignInManager<ApplicationUser> signInManager)
     {
         _configuration = configuration;
         _userManager = userManager;
+        _signInManager = signInManager;
     }
 
     public string? ClientHomeUrl { get; set; }
@@ -78,8 +84,10 @@ public class ResetModel : PageModel
         var result = await _userManager.ResetPasswordAsync(user, Token, Password);
         if (result.Succeeded)
         {
-            Serilog.Log.Error($"Reset password was success: {user.Email}");
-            return RedirectToPage("/Account/Register/Success", new { user.Email });
+            await _signInManager.SignOutAsync();
+
+            Serilog.Log.Error($"Reset password and sign out were success: {user.Email}");
+            return RedirectToPage("/Account/ForgotPassword/Success", new { user.Email });
         }
 
         Serilog.Log.Error($"Reset password not success: {user.Email}");
