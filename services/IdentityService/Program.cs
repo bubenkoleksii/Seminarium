@@ -1,5 +1,7 @@
 ﻿using IdentityService;
 
+using Microsoft.AspNetCore.Identity;
+
 using Serilog;
 
 using Shared.Contracts.Options;
@@ -25,6 +27,7 @@ try
 
     builder.Services.Configure<MailOptions>(builder.Configuration.GetSection(nameof(MailOptions)));
     builder.Services.AddScoped<IMailService, MailService>();
+    builder.Services.Configure<DataProtectionTokenProviderOptions>(options => options.TokenLifespan = TimeSpan.FromDays(1));
 
     var app = builder
         .ConfigureServices()
