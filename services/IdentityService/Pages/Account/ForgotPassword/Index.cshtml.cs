@@ -46,7 +46,7 @@ public class IndexModel : PageModel
         return Page();
     }
 
-    public async Task<IActionResult> OnPost(string username)
+    public async Task<IActionResult> OnPost()
     {
         ClientHomeUrl = _configuration["ClientHomeUrl"]!;
 
@@ -74,14 +74,11 @@ public class IndexModel : PageModel
 
     private async Task SendResetEmail()
     {
+        IsSent = true;
+
         var user = await _userManager.FindByNameAsync(Username);
-        if (user is null)
-        {
-            IsSent = false;
-            ModelState.AddModelError("Error", "Не вдалось надіслати лист. Будь ласка, перевірте вхідні дані та спробуйте ще раз.");
-            ModelState.AddModelError("Username", "Некоректна адреса електронної пошти");
+        if (user is null || !user.EmailConfirmed)
             return;
-        }
 
         var token = await _userManager.GeneratePasswordResetTokenAsync(user);
 
@@ -90,7 +87,6 @@ public class IndexModel : PageModel
 
         await _mailService.SendAsync("bubenkooleksii@gmail.com", EmailTemplate.Subject, EmailTemplate.GetBodyWithResetLink(resetPasswordLink));
 
-        IsSent = true;
         Serilog.Log.Information($"Reset password email was sent for user with email: {user.Email}");
     }
 
