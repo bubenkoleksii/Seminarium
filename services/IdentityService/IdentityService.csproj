@@ -33,6 +33,5 @@
 
 	<ItemGroup>
 	  <Folder Include="Logs\" />
-	  <Folder Include="Pages\Account\ChangeData\" />
 	</ItemGroup>
 </Project>

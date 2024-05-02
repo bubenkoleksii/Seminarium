@@ -1,0 +1,85 @@
+﻿@page
+@model IdentityService.Pages.Account.ChangeData.IndexModel
+@{
+}
+
+<div>
+    <partial name="_ValidationSummary"/>
+
+    @if (Model.IsSucceeded)
+    {
+        <div class="alert alert-success text-center" role="alert">
+            <div>Ваші дані успішно оновлено</div>
+            
+            @if (Model.IsNeedLogin)
+            {
+                <a class="pt-1 d-block" asp-page="../Login/Index">
+                    Перейти до сторінки входу
+                </a>
+            }
+            else
+            {
+                <a href="@Model.Input.ClientHomeUrl" class="d-flex align-items-center justify-content-center text-muted">
+                    <img src="~/logo.png" height="30" alt="Логотип" class="mr-2">
+                    <h6 class="m-0">
+                        <span>Повернутись на головну сторінку платформи Seminarium</span>
+                    </h6>
+                </a>
+            }
+        </div>
+    }
+
+    @if (Model.IsValid || (Model.IsSucceeded && !Model.IsNeedLogin))
+    {
+        <div class="row">
+            <div class="col-6 offset-3">
+                <div class="card">
+                    <div class="card-header d-flex flex-column align-items-center">
+                        <a href="@Model.Input.ClientHomeUrl" style="text-decoration: none" class="d-flex align-items-center justify-content-center text-muted">
+                            <img src="~/logo.png" height="30" alt="Логотип" class="mr-2">
+                            <h3 class="m-0">
+                                <span>Seminarium</span>
+                            </h3>
+                        </a>
+                        <h2 class="mt-2">Оновлення даних акаунту</h2>
+                        <p class="text-muted">Залиште поля з паролем пустим, якщо не змінюєте його</p>
+                    </div>
+
+                    <div class="card-body">
+                        <form method="post">
+                            <div class="form-group">
+                                <label asp-for="Input.Username"></label>
+                                <input class="form-control" placeholder="andrii.valko@gmail.com" type="email" asp-for="Input.Username">
+                                <span asp-validation-for="Input.Username" class="text-danger"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <label asp-for="Input.FullName"></label>
+                                <input class="form-control" placeholder="Валько Андрій Петрович" asp-for="Input.FullName">
+                                <span asp-validation-for="Input.FullName" class="text-danger"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <label asp-for="Input.OldPassword"></label>
+                                <input type="password" class="form-control" asp-for="Input.OldPassword" autocomplete="off">
+                                <span asp-validation-for="Input.OldPassword" class="text-danger"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <label asp-for="Input.Password"></label>
+                                <input type="password" class="form-control" asp-for="Input.Password" autocomplete="off">
+                                <span asp-validation-for="Input.Password" class="text-danger"></span>
+                            </div>
+
+                            <div class="d-flex align-items-end mt-2">
+                                <button class="btn btn-secondary flex-grow-1" name="Input.Button" value="change-data">
+                                    Оновити дані акаунту
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>

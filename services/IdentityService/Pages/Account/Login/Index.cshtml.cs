@@ -126,7 +126,7 @@ public class Index : PageModel
         }
 
         await BuildModelAsync(Input.ReturnUrl);
-        ModelState.AddModelError("Error", "Не вдалось зареєструвати користувача. Будь ласка, перевірте введені дані та спробуйте ще раз");
+        ModelState.AddModelError("Error", "Не вдалось увійти. Будь ласка, перевірте введені дані та спробуйте ще раз");
         return Page();
     }
 
