@@ -43,6 +43,7 @@ public class IndexModel : PageModel
     public IActionResult OnGet()
     {
         ClientHomeUrl = _configuration["ClientHomeUrl"]!;
+
         return Page();
     }
 
@@ -85,7 +86,7 @@ public class IndexModel : PageModel
         var baseUrl = $"{Request.Scheme}://{Request.Host}{Request.PathBase}";
         var resetPasswordLink = $"{baseUrl}/Account/ForgotPassword/Reset?UserId={HttpUtility.UrlEncode(user.Id)}&Token={HttpUtility.UrlEncode(token)}";
 
-        await _mailService.SendAsync("bubenkooleksii@gmail.com", EmailTemplate.Subject, EmailTemplate.GetBodyWithResetLink(resetPasswordLink));
+        await _mailService.SendAsync(user.Email!, EmailTemplate.Subject, EmailTemplate.GetBodyWithResetLink(resetPasswordLink));
 
         Serilog.Log.Information($"Reset password email was sent for user with email: {user.Email}");
     }

@@ -34,8 +34,8 @@
                                 <label asp-for="Input.Password"></label>
                                 <input type="password" class="form-control" placeholder="Пароль" asp-for="Input.Password" autocomplete="off">
                                 <span asp-validation-for="Input.Password" class="text-danger"></span>
-                                
-                                <a class="pt-1 d-block" asp-page="../ForgotPassword/Index" asp-route-returnUrl="@Model.Input.ReturnUrl">
+
+                                <a class="pt-1 d-block" asp-page="../ForgotPassword/Index">
                                     Забули пароль? Відновіть пароль тут
                                 </a>
                             </div>
