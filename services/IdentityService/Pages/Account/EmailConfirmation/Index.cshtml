@@ -1,0 +1,20 @@
+﻿@page
+@model IdentityService.Pages.Account.EmailConfirmation.IndexModel
+@{
+}
+
+<div class="d-flex justify-content-center mb-2">
+    <img src="~/logo.png" height="30" alt="Логотип" class="mr-2">
+    <h4 class="mb-2">Seminarium</h4>
+</div>
+
+<partial name="_ValidationSummary" />
+
+@if (Model.IsSucceeded)
+{
+    <div class="alert alert-success text-center" role="alert">
+        <div>Вашу електронну пошту успішно підтверджено. Натисніть, щоб увійти на платформу</div>
+
+        <a asp-page="../Login/Index" class="btn btn-primary mt-3">Перейти на сторінку входу</a>
+    </div>
+}

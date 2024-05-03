@@ -33,4 +33,6 @@ public class School : Entity
     public string? SiteUrl { get; set; }
 
     public string? Img { get; set; }
+
+    public required JoiningRequest JoiningRequest { get; set; }
 }

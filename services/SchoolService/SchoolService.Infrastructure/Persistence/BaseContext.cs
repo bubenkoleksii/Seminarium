@@ -7,6 +7,8 @@ public abstract class BaseContext : DbContext
 
     public DbSet<School> Schools { get; set; }
 
+    public DbSet<JoiningRequest> JoiningRequests { get; set; }
+
     protected BaseContext(DbContextOptions options) : base(options)
     {
     }
@@ -15,6 +17,7 @@ public abstract class BaseContext : DbContext
     {
         modelBuilder.HasDefaultSchema(Schema);
         modelBuilder.ApplyConfiguration(new SchoolConfiguration());
+        modelBuilder.ApplyConfiguration(new JoiningRequestConfiguration());
 
         base.OnModelCreating(modelBuilder);
     }

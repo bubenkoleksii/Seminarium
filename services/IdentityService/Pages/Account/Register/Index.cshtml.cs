@@ -1,4 +1,4 @@
-using System.Security.Claims;
+﻿using System.Security.Claims;
 
 using IdentityModel;
 
@@ -17,9 +17,12 @@ public class IndexModel : PageModel
 {
     private readonly UserManager<ApplicationUser> _userManager;
 
-    public IndexModel(UserManager<ApplicationUser> userManager)
+    private readonly IConfiguration _configuration;
+
+    public IndexModel(UserManager<ApplicationUser> userManager, IConfiguration configuration)
     {
         _userManager = userManager;
+        _configuration = configuration;
     }
 
     [BindProperty]
@@ -28,11 +31,11 @@ public class IndexModel : PageModel
     [BindProperty]
     public bool RegisterSuccess { get; set; }
 
-    public IActionResult OnGet(string? returnUrl)
+    public IActionResult OnGet()
     {
         Input = new RegisterViewModel
         {
-            ReturnUrl = returnUrl ?? "/",
+            ClientHomeUrl = _configuration["ClientHomeUrl"]!
         };
 
         return Page();
@@ -40,30 +43,40 @@ public class IndexModel : PageModel
 
     public async Task<IActionResult> OnPost()
     {
-        if (Input.Button != "register") return Redirect("~/");
+        var clientHomeUrl = _configuration["ClientHomeUrl"]!;
+        Input.ClientHomeUrl = clientHomeUrl;
 
-        if (ModelState.IsValid)
+        if (Input.Button != "register") return Redirect(clientHomeUrl);
+
+        if (!ModelState.IsValid)
+            return Page();
+
+        var user = new ApplicationUser
         {
-            var user = new ApplicationUser
+            UserName = Input.Username,
+            Email = Input.Username,
+            FullName = Input.FullName,
+            EmailConfirmed = false
+        };
+
+        var result = await _userManager.CreateAsync(user, Input.Password);
+
+        if (result.Succeeded)
+        {
+            await _userManager.AddClaimsAsync(user, new Claim[]
             {
-                UserName = Input.Username,
-                Email = Input.Email,
-                EmailConfirmed = true
-            };
+                new(JwtClaimTypes.Email, Input.Username),
+                new(JwtClaimTypes.Name, Input.FullName),
+                new(JwtClaimTypes.Role, "user")
+            });
 
-            var result = await _userManager.CreateAsync(user, Input.Password);
+            RegisterSuccess = true;
+            Serilog.Log.Logger.Information($"New user with email {user.Email} was registered.");
 
-            if (result.Succeeded)
-            {
-                await _userManager.AddClaimsAsync(user, new Claim[]
-                {
-                    new(JwtClaimTypes.Name, Input.FullName)
-                });
-
-                RegisterSuccess = true;
-            }
+            return RedirectToPage("/Account/Register/Success", new { user.Email });
         }
 
+        ModelState.AddModelError("Error", "Не вдалось зареєструвати користувача. Будь ласка, перевірте введені дані та спробуйте ще раз");
         return Page();
     }
 }

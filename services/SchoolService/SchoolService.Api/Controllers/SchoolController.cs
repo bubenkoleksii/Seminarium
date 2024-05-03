@@ -17,9 +17,9 @@ public class SchoolController(IMapper mapper, IOptions<Shared.Contracts.Options.
         );
     }
 
-    [Authorize]
     [HttpPost("[action]/")]
     [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(SchoolResponse))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status409Conflict)]
     public async Task<IActionResult> Create([FromBody] CreateSchoolRequest schoolRequest)
     {

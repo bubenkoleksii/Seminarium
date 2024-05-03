@@ -1,4 +1,6 @@
-﻿namespace SchoolService.Api.Mappings;
+﻿using SchoolService.Application.JoiningRequest.Models;
+
+namespace SchoolService.Api.Mappings;
 
 public class ApiMappingProfile : Profile
 {
@@ -7,18 +9,28 @@ public class ApiMappingProfile : Profile
         ConfigureGlobalMappings();
 
         ConfigureSchoolMapping();
+
+        ConfigureJoiningRequestMapping();
     }
 
     private void ConfigureSchoolMapping()
     {
-        CreateMap<CreateSchoolRequest, CreateSchoolCommand>()
-            .ForMember(command => command.Email, act => act.MapFrom(req => req.Email == null ? null : req.Email.ToLower()));
+        CreateMap<CreateSchoolRequest, CreateSchoolCommand>();
 
         CreateMap<UpdateSchoolRequest, UpdateSchoolCommand>()
             .ForMember(command => command.Email, act => act.MapFrom(req => req.Email == null ? null : req.Email.ToLower()));
 
         CreateMap<SchoolModelResponse, SchoolResponse>();
     }
+
+    private void ConfigureJoiningRequestMapping()
+    {
+        CreateMap<CreateJoiningRequest, CreateJoiningRequestCommand>()
+            .ForMember(command => command.RequesterEmail, act => act.MapFrom(req => req.RequesterEmail.ToLower()));
+
+        CreateMap<JoiningRequestModelResponse, JoiningRequestResponse>();
+    }
+
     private void ConfigureGlobalMappings()
     {
         CreateMap<Enum, string>().ConvertUsing(e => e.ToString().ToSnakeCase());

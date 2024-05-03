@@ -12,7 +12,7 @@ using SchoolService.Infrastructure.Persistence;
 namespace SchoolService.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(CommandContext))]
-    [Migration("20240317152111_InitialMigration")]
+    [Migration("20240414120743_InitialMigration")]
     partial class InitialMigration
     {
         /// <inheritdoc />
@@ -25,6 +25,88 @@ namespace SchoolService.Infrastructure.Persistence.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
+
+            modelBuilder.Entity("SchoolService.Domain.Entities.JoiningRequest", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Address")
+                        .HasMaxLength(250)
+                        .HasColumnType("character varying(250)");
+
+                    b.Property<bool>("AreOccupied")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<long>("GradingSystem")
+                        .HasColumnType("bigint");
+
+                    b.Property<bool>("IsArchived")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTime?>("LastArchivedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime?>("LastUpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(250)
+                        .HasColumnType("character varying(250)");
+
+                    b.Property<int>("OwnershipType")
+                        .HasColumnType("integer");
+
+                    b.Property<decimal>("PostalCode")
+                        .HasColumnType("numeric(20,0)");
+
+                    b.Property<int>("Region")
+                        .HasColumnType("integer");
+
+                    b.Property<decimal>("RegisterCode")
+                        .HasColumnType("numeric(20,0)");
+
+                    b.Property<string>("RequesterEmail")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
+
+                    b.Property<string>("RequesterFullName")
+                        .IsRequired()
+                        .HasMaxLength(250)
+                        .HasColumnType("character varying(250)");
+
+                    b.Property<string>("RequesterPhone")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
+
+                    b.Property<string>("ShortName")
+                        .HasMaxLength(250)
+                        .HasColumnType("character varying(250)");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("integer");
+
+                    b.Property<long>("StudentsQuantity")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("TerritorialCommunity")
+                        .HasMaxLength(250)
+                        .HasColumnType("character varying(250)");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("JoiningRequest", "public");
+                });
 
             modelBuilder.Entity("SchoolService.Domain.Entities.School", b =>
                 {
@@ -55,6 +137,9 @@ namespace SchoolService.Infrastructure.Persistence.Migrations
 
                     b.Property<bool>("IsArchived")
                         .HasColumnType("boolean");
+
+                    b.Property<Guid>("JoiningRequestId")
+                        .HasColumnType("uuid");
 
                     b.Property<DateTime?>("LastArchivedAt")
                         .HasColumnType("timestamp with time zone");
@@ -103,7 +188,20 @@ namespace SchoolService.Infrastructure.Persistence.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("JoiningRequestId");
+
                     b.ToTable("Schools", "public");
+                });
+
+            modelBuilder.Entity("SchoolService.Domain.Entities.School", b =>
+                {
+                    b.HasOne("SchoolService.Domain.Entities.JoiningRequest", "JoiningRequest")
+                        .WithMany()
+                        .HasForeignKey("JoiningRequestId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("JoiningRequest");
                 });
 #pragma warning restore 612, 618
         }

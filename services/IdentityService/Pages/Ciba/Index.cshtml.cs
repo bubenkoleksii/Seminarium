@@ -1,15 +1,13 @@
-// Copyright (c) Duende Software. All rights reserved.
-// See LICENSE in the project root for license information.
-
 using Duende.IdentityServer.Models;
 using Duende.IdentityServer.Services;
+
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace IdentityService.Pages.Ciba;
 
-[AllowAnonymous]
+[Authorize(Roles = "Admin")]
 [SecurityHeaders]
 public class IndexModel : PageModel
 {
@@ -36,7 +34,7 @@ public class IndexModel : PageModel
         {
             LoginRequest = result;
         }
-        
+
         return Page();
     }
 }

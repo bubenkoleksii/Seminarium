@@ -1,12 +1,16 @@
-// Copyright (c) Duende Software. All rights reserved.
-// See LICENSE in the project root for license information.
+
+
 
 using System.Security.Claims;
+
 using Duende.IdentityServer;
 using Duende.IdentityServer.Events;
 using Duende.IdentityServer.Services;
+
 using IdentityModel;
+
 using IdentityService.Models;
+
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -38,19 +42,19 @@ public class Callback : PageModel
         _logger = logger;
         _events = events;
     }
-        
+
     public async Task<IActionResult> OnGet()
     {
         // read external identity from the temporary cookie
         var result = await HttpContext.AuthenticateAsync(IdentityServerConstants.ExternalCookieAuthenticationScheme);
         if (result.Succeeded != true)
         {
-            throw new InvalidOperationException($"External authentication error: { result.Failure }");
+            throw new InvalidOperationException($"External authentication error: {result.Failure}");
         }
 
-        var externalUser = result.Principal ?? 
+        var externalUser = result.Principal ??
             throw new InvalidOperationException("External authentication produced a null Principal");
-		
+
         if (_logger.IsEnabled(LogLevel.Debug))
         {
             var externalClaims = externalUser.Claims.Select(c => $"{c.Type}: {c.Value}");
@@ -70,13 +74,10 @@ public class Callback : PageModel
 
         // find external user
         var user = await _userManager.FindByLoginAsync(provider, providerUserId);
-        if (user == null)
-        {
-            // this might be where you might initiate a custom workflow for user registration
-            // in this sample we don't show how that would be done, as our sample implementation
-            // simply auto-provisions new external user
-            user = await AutoProvisionUserAsync(provider, providerUserId, externalUser.Claims);
-        }
+        // this might be where you might initiate a custom workflow for user registration
+        // in this sample we don't show how that would be done, as our sample implementation
+        // simply auto-provisions new external user
+        user ??= await AutoProvisionUserAsync(provider, providerUserId, externalUser.Claims);
 
         // this allows us to collect any additional claims or properties
         // for the specific protocols used and store them in the local auth cookie.
@@ -84,7 +85,7 @@ public class Callback : PageModel
         var additionalLocalClaims = new List<Claim>();
         var localSignInProps = new AuthenticationProperties();
         CaptureExternalLoginContext(result, additionalLocalClaims, localSignInProps);
-            
+
         // issue authentication cookie for user
         await _signInManager.SignInWithClaimsAsync(user, localSignInProps, additionalLocalClaims);
 
@@ -116,9 +117,10 @@ public class Callback : PageModel
     private async Task<ApplicationUser> AutoProvisionUserAsync(string provider, string providerUserId, IEnumerable<Claim> claims)
     {
         var sub = Guid.NewGuid().ToString();
-            
+
         var user = new ApplicationUser
         {
+            FullName = "",
             Id = sub,
             UserName = sub, // don't need a username, since the user will be using an external provider to login
         };
@@ -130,7 +132,7 @@ public class Callback : PageModel
         {
             user.Email = email;
         }
-            
+
         // create a list of claims that we want to transfer into our store
         var filtered = new List<Claim>();
 

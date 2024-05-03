@@ -14,6 +14,7 @@ global using Microsoft.Extensions.DependencyInjection;
 global using Microsoft.Extensions.Options;
 global using SchoolService.Application.Common.Behaviors;
 global using SchoolService.Application.Common.DataContext;
+global using SchoolService.Application.JoiningRequest.Models;
 global using SchoolService.Application.School.Commands.CreateSchool;
 global using SchoolService.Application.School.Commands.UpdateSchool;
 global using SchoolService.Application.School.Common;

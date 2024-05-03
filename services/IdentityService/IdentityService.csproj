@@ -15,6 +15,10 @@
 		<PackageReference Include="Microsoft.IdentityModel.Tokens" Version="7.5.0" />
 
 		<PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.2" />
+
+		<PackageReference Include="Seminarium.Shared.Contracts" Version="1.0.7" />
+
+		<PackageReference Include="Seminarium.Shared.Utils" Version="1.0.3" />
 		<PackageReference Include="Serilog.AspNetCore" Version="8.0.1" />
 
 		<PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="8.0.3" />

@@ -1,19 +1,18 @@
-// Copyright (c) Duende Software. All rights reserved.
-// See LICENSE in the project root for license information.
-
 using Duende.IdentityServer.Events;
 using Duende.IdentityServer.Extensions;
 using Duende.IdentityServer.Models;
 using Duende.IdentityServer.Services;
 using Duende.IdentityServer.Validation;
+
 using IdentityModel;
+
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace IdentityService.Pages.Consent;
 
-[Authorize]
+[Authorize(Roles = "Admin")]
 [SecurityHeaders]
 public class Index : PageModel
 {
@@ -204,7 +203,7 @@ public class Index : PageModel
 
     private static ScopeViewModel CreateScopeViewModel(ParsedScopeValue parsedScopeValue, ApiScope apiScope, bool check)
     {
-		var displayName = apiScope.DisplayName ?? apiScope.Name;
+        var displayName = apiScope.DisplayName ?? apiScope.Name;
         if (!String.IsNullOrWhiteSpace(parsedScopeValue.ParsedParameter))
         {
             displayName += ":" + parsedScopeValue.ParsedParameter;

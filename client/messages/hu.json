@@ -1,6 +1,87 @@
 {
+  "JoiningRequest": {
+    "title": "Iskolai csatlakozási űrlap",
+    "labels": {
+      "requesterEmail": "Az Ön e-mail címe",
+      "requesterPhone": "Az Ön telefonszáma",
+      "requesterFullName": "A kérelmező teljes neve",
+      "registerCode": "Adószám",
+      "name": "Az oktatási intézmény teljes neve",
+      "shortName": "Az intézmény rövid neve",
+      "gradingSystem": "Osztályozási rendszer",
+      "type": "Az oktatási intézmény típusa",
+      "postalCode": "Irányítószám",
+      "ownershipType": "A tulajdon típusa",
+      "studentsQuantity": "Becsült diáklétszám",
+      "region": "Régió",
+      "territorialCommunity": "Helyi közösség",
+      "address": "Cím",
+      "areOccupied": "Jelenleg az oktatási intézmény elfoglalt",
+      "submit": "Csatlakozási kérelem küldése"
+    },
+    "placeholders": {
+      "requesterEmail": "andrii.valko@gmail.com",
+      "requesterPhone": "+380684433210",
+      "requesterFullName": "Valko András Péter",
+      "registerCode": "22054999",
+      "name": "Olevska középiskola №3 Olevska városi tanács",
+      "shortName": "Olevska középiskola №3",
+      "gradingSystem": "12",
+      "postalCode": "11028",
+      "studentsQuantity": "800",
+      "territorialCommunity": "Olevska városi közösség",
+      "address": "Kvitkova utca 24/b"
+    },
+    "ownershipTypes": {
+      "state": "Állami",
+      "communal": "Közösségi",
+      "private": "Magán"
+    },
+    "types": {
+      "secondary": "Középiskola",
+      "higher": "Felsőoktatási intézmény",
+      "vocational": "Szak- és szakközépiskola"
+    },
+    "regions": {
+      "vinnytsia": "Vinnyicja megye",
+      "volyn": "Volinszka megye",
+      "dnipropetrovsk": "Dnyipropetrovszka megye",
+      "donetsk": "Donyecki megye",
+      "zhytomyr": "Zsitomir megye",
+      "zakarpattia": "Kárpátalja",
+      "zaporizhzhia": "Zaporizska megye",
+      "ivanofrankivsk": "Ivano-Frankivszka megye",
+      "kyiv": "Kijev megye",
+      "kirovohrad": "Kirovohradszka megye",
+      "luhansk": "Luhanszk megye",
+      "lviv": "Lembergi megye",
+      "mykolaiv": "Mikolajiv megye",
+      "odesa": "Odessza megye",
+      "poltava": "Poltavszka megye",
+      "rivne": "Rovno megye",
+      "sumy": "Szumy megye",
+      "ternopil": "Ternopil megye",
+      "kharkiv": "Harkiv megye",
+      "kherson": "Hereszon megye",
+      "khmelnytskyi": "Hmelnickij megye",
+      "cherkasy": "Csernyihiv megye",
+      "chernivtsi": "Csernovic megye",
+      "chernihiv": "Csernyihiv megye",
+      "crimea": "Krími autonóm köztársaság",
+      "abroad": "Külföld",
+      "none": "Egyik sem"
+    }
+  },
   "Footer": {
     "author": "Olekszij Bubenko"
+  },
+  "Validation": {
+    "required": "Ez a mező kötelező",
+    "email": "Helytelen e-mail cím",
+    "max": "Ez a mező túl hosszú, adjon meg rövidebbet",
+    "min": "Ez a mező túl rövid, adjon meg hosszabbat",
+    "maxNumber": "Ez az érték túllépi a megengedettet",
+    "minNumber": "Ez az érték kisebb, mint a megengedett minimum"
   },
   "Welcome": {
     "title": "Seminarium — lépjen be az innovatív oktatás világába!",

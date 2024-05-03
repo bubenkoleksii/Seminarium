@@ -15,7 +15,6 @@ public class S3Service(IAmazonS3 s3Client) : IS3Service
         }
     }
 
-
     public async Task<Either<FileSuccess, Error>> UploadOne(SaveFileRequest request)
     {
         try

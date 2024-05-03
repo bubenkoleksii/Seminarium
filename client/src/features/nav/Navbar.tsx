@@ -3,7 +3,7 @@
 import { FC } from 'react';
 import Link from 'next/link';
 import { Logo } from '@/components/logo/Logo';
-import { LanguageDropdown } from './components/language-dropdown';
+import { LanguageDropdown } from './language-dropdown';
 
 import styles from './Navbar.module.scss';
 

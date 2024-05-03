@@ -24,6 +24,7 @@ public static class Config
     {
         new("SeminariumApp", "Seminarium app", new []
         {
+            JwtClaimTypes.Email,
             JwtClaimTypes.Name,
             JwtClaimTypes.Role
         })
@@ -36,6 +37,7 @@ public static class Config
     {
         var clientRedirectUri = configuration["ClientUri"]!;
         var clientTokenLifeTime = configuration.GetValue<int>("TokenLifeTime")!;
+        var clientSecret = configuration["ClientSecret"]!;
 
         return new Client[]
         {
@@ -55,7 +57,10 @@ public static class Config
             {
                 ClientId = "next",
                 AllowedGrantTypes = GrantTypes.CodeAndClientCredentials,
-                RequireClientSecret = false,
+                ClientSecrets =
+                {
+                    new Secret(clientSecret.Sha256())
+                },
                 RequirePkce = false,
                 RedirectUris =
                 {

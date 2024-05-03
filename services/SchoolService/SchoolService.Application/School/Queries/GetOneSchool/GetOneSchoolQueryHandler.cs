@@ -1,4 +1,4 @@
-﻿namespace SchoolService.Application.School.Queries;
+﻿namespace SchoolService.Application.School.Queries.GetOneSchool;
 
 public class GetOneSchoolQueryHandler : IRequestHandler<GetOneSchoolQuery, Either<SchoolModelResponse, Error>>
 {

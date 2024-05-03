@@ -1,7 +1,8 @@
-// Copyright (c) Duende Software. All rights reserved.
-// See LICENSE in the project root for license information.
+
+
 
 using Duende.IdentityServer.Models;
+
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -17,7 +18,7 @@ public static class Extensions
     {
         var provider = context.RequestServices.GetRequiredService<IAuthenticationHandlerProvider>();
         var handler = await provider.GetHandlerAsync(context, scheme);
-        return (handler is IAuthenticationSignOutHandler);
+        return handler is IAuthenticationSignOutHandler;
     }
 
     /// <summary>

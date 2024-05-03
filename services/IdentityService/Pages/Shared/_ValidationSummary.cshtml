@@ -1,7 +1,6 @@
-﻿@if (ViewContext.ModelState.IsValid == false)
+﻿@if (ViewContext.ModelState.ContainsKey("Error"))
 {
     <div class="alert alert-danger">
-        <strong>Error</strong>
-        <div asp-validation-summary="All" class="danger"></div>
+        <div>@Html.ValidationMessage("Error", new { @class = "danger" })</div>
     </div>
 }

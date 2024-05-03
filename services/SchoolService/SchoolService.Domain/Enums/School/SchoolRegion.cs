@@ -28,5 +28,5 @@ public enum SchoolRegion
     Chernihiv = 24,
     Crimea = 25,
     Abroad = 26,
-    None = 27
+    None = 27,
 }

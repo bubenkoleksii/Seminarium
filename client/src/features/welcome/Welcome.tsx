@@ -1,8 +1,11 @@
 import { FC } from 'react';
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import Image from 'next/image';
+import Link from 'next/link';
+import { routes } from '@/shared/constants';
 
 const Welcome: FC = () => {
+  const activeLocale = useLocale();
   const t = useTranslations('Welcome');
 
   return (
@@ -28,11 +31,15 @@ const Welcome: FC = () => {
           <div className="flex justify-center">
             <button
               className="w-200 inline-flex justify-center items-center text-white bg-purple-900 border-0 py-2 px-6 focus:outline-none hover:bg-purple-700 rounded text-lg">
-              {t('registrationBtn')}
+              <Link href="http://localhost:5000/Account/Register">
+                {t('registrationBtn')}
+              </Link>
             </button>
             <button
               className="w-200 ml-4 inline-flex justify-center items-center text-gray-700 bg-gray-200 border-0 py-2 px-6 focus:outline-none hover:bg-gray-300 rounded text-lg">
-              {t('joiningRequestBtn')}
+              <Link href={routes.getCreateJoiningRequest(activeLocale)}>
+                {t('joiningRequestBtn')}
+              </Link>
             </button>
           </div>
         </div>

@@ -2,7 +2,7 @@
 
 import { FC, Fragment, useState } from 'react';
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname, useSearchParams } from 'next/navigation';
 import { useLocale } from 'next-intl';
 import { Menu, Transition } from '@headlessui/react';
 import { ChevronDownIcon } from '@heroicons/react/20/solid';
@@ -10,6 +10,8 @@ import { languages } from './languages';
 
 const LanguageDropdown: FC = () => {
   const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
   const activeLocale = useLocale();
 
   const activeLanguage = languages.find((l) => l.code === activeLocale);
@@ -17,7 +19,11 @@ const LanguageDropdown: FC = () => {
 
   const handleLanguageSelect = (language) => {
     const nextLocale = language.code;
-    router.push(`/${nextLocale}`);
+
+    const newPath = pathname.replace(/^\/[a-zA-Z]+\b/, `/${nextLocale}`);
+    const queryPath = searchParams.toString() ? `?${searchParams.toString()}` : '';
+    router.push(`${newPath}${queryPath}`);
+
     setSelectedLanguage(language);
   };
 

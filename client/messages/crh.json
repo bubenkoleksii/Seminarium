@@ -1,6 +1,87 @@
 {
+  "JoiningRequest": {
+    "title": "Təlim kursu forması",
+    "labels": {
+      "requesterEmail": "Siznin elektron poçta adresi",
+      "requesterPhone": "Siznin telefon nomeri",
+      "requesterFullName": "Siznin toluğu atı-sını",
+      "registerCode": "Kodı",
+      "name": "Toluğu atı",
+      "shortName": "Qısqa atı",
+      "gradingSystem": "Bahs etme sistem",
+      "type": "Təlim kursu törе",
+      "postalCode": "Poşta indeksi",
+      "ownershipType": "Milli başlık törе",
+      "studentsQuantity": "Muzakеrе еtilgеn oquvçular sanı",
+      "region": "Region",
+      "territorialCommunity": "Mаhаllе",
+      "address": "Meken-jay",
+      "areOccupied": "Aluştyrıla alat gеrеk dеp çıgaryldı",
+      "submit": "Qoşulma sorğusını gönder"
+    },
+    "placeholders": {
+      "requesterEmail": "andrii.valko@gmail.com",
+      "requesterPhone": "+380684433210",
+      "requesterFullName": "Valko Andriy Petrovıç",
+      "registerCode": "22054999",
+      "name": "Olevska №3 Lyceum Olevska şehir konseyi",
+      "shortName": "Olevska №3 Lyceum",
+      "gradingSystem": "12",
+      "postalCode": "11028",
+      "studentsQuantity": "800",
+      "territorialCommunity": "Olevska şehir toplumu",
+      "address": "Kvitkova caddesi, 24b"
+    },
+    "types": {
+      "secondary": "Orta mektep",
+      "higher": "Uluğ mektep",
+      "vocational": "Kasaba ve texnik mektep"
+    },
+    "ownershipTypes": {
+      "state": "Dövlät",
+      "communal": "Topluşuç",
+      "private": "Shəxsi"
+    },
+    "regions": {
+      "vinnytsia": "Vinnitsa İl",
+      "volyn": "Volin İl",
+      "dnipropetrovsk": "Dnipropetrovsk İl",
+      "donetsk": "Donetsk İl",
+      "zhytomyr": "Jitomir İl",
+      "zakarpattia": "Zakarpattia İl",
+      "zaporizhzhia": "Zaporizhzhia İl",
+      "ivanofrankivsk": "Ivano-Frankivsk İl",
+      "kyiv": "Kyiv İl",
+      "kirovohrad": "Kirovohrad İl",
+      "luhansk": "Luhansk İl",
+      "lviv": "Lviv İl",
+      "mykolaiv": "Mykolaiv İl",
+      "odesa": "Odesa İl",
+      "poltava": "Poltava İl",
+      "rivne": "Rivne İl",
+      "sumy": "Sumy İl",
+      "ternopil": "Ternopil İl",
+      "kharkiv": "Harkiv İl",
+      "kherson": "Herson İl",
+      "khmelnytskyi": "Khmelnytskyi İl",
+      "cherkasy": "Cherkasy İl",
+      "chernivtsi": "Chernivtsi İl",
+      "chernihiv": "Chernihiv İl",
+      "crimea": "Qırım Muhtar Cumhuriyeti",
+      "abroad": "Xarici ölkə",
+      "none": "Heç biri"
+    }
+  },
   "Footer": {
     "author": "Oleksii Bubenko"
+  },
+  "Validation": {
+    "required": "Bu qutu majburiyatlı",
+    "email": "Elektron poçta adresi yalnış",
+    "max": "Bu qutu uzun, qısa metni daxil edin",
+    "min": "Bu qutu qısa, uzun metni daxil edin",
+    "maxNumber": "Bu qiymət imkan verilən maksimumu aşır",
+    "minNumber": "Bu qiymət imkan verilən minimumdan kiçikdir"
   },
   "Welcome": {
     "title": "Seminarium — innovativ ta`lim platforumasına uruşuŋ!",
