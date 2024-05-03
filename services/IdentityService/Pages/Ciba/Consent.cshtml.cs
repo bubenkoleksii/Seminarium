@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace IdentityService.Pages.Ciba;
 
-[Authorize]
+[Authorize(Roles = "Admin")]
 [SecurityHeaders]
 public class Consent : PageModel
 {

@@ -18,7 +18,7 @@ using Microsoft.Extensions.Options;
 namespace IdentityService.Pages.Device;
 
 [SecurityHeaders]
-[Authorize]
+[Authorize(Roles = "Admin")]
 public class Index : PageModel
 {
     private readonly IDeviceFlowInteractionService _interaction;

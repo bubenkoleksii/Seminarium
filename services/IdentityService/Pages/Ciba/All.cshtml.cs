@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 namespace IdentityService.Pages.Ciba;
 
 [SecurityHeaders]
-[Authorize]
+[Authorize(Roles = "Admin")]
 public class AllModel : PageModel
 {
     public IEnumerable<BackchannelUserLoginRequest> Logins { get; set; } = default!;

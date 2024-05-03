@@ -1,6 +1,3 @@
-
-
-
 using Duende.IdentityServer.Models;
 using Duende.IdentityServer.Services;
 using Duende.IdentityServer.Stores;
@@ -8,62 +5,60 @@ using Duende.IdentityServer.Stores;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace IdentityService.Pages.ServerSideSessions
+namespace IdentityService.Pages.ServerSideSessions;
+
+public class IndexModel : PageModel
 {
-    public class IndexModel : PageModel
+    private readonly ISessionManagementService? _sessionManagementService;
+
+    public IndexModel(ISessionManagementService? sessionManagementService = null)
     {
-        private readonly ISessionManagementService? _sessionManagementService;
+        _sessionManagementService = sessionManagementService;
+    }
 
-        public IndexModel(ISessionManagementService? sessionManagementService = null)
+    public QueryResult<UserSession>? UserSessions { get; set; }
+
+    [BindProperty(SupportsGet = true)]
+    public string? DisplayNameFilter { get; set; }
+
+    [BindProperty(SupportsGet = true)]
+    public string? SessionIdFilter { get; set; }
+
+    [BindProperty(SupportsGet = true)]
+    public string? SubjectIdFilter { get; set; }
+
+    [BindProperty(SupportsGet = true)]
+    public string? Token { get; set; }
+
+    [BindProperty(SupportsGet = true)]
+    public string? Prev { get; set; }
+
+    public async Task OnGet()
+    {
+        if (_sessionManagementService != null)
         {
-            _sessionManagementService = sessionManagementService;
-        }
-
-        public QueryResult<UserSession>? UserSessions { get; set; }
-
-        [BindProperty(SupportsGet = true)]
-        public string? DisplayNameFilter { get; set; }
-
-        [BindProperty(SupportsGet = true)]
-        public string? SessionIdFilter { get; set; }
-
-        [BindProperty(SupportsGet = true)]
-        public string? SubjectIdFilter { get; set; }
-
-        [BindProperty(SupportsGet = true)]
-        public string? Token { get; set; }
-
-        [BindProperty(SupportsGet = true)]
-        public string? Prev { get; set; }
-
-        public async Task OnGet()
-        {
-            if (_sessionManagementService != null)
+            UserSessions = await _sessionManagementService.QuerySessionsAsync(new SessionQuery
             {
-                UserSessions = await _sessionManagementService.QuerySessionsAsync(new SessionQuery
-                {
-                    ResultsToken = Token,
-                    RequestPriorResults = Prev == "true",
-                    DisplayName = DisplayNameFilter,
-                    SessionId = SessionIdFilter,
-                    SubjectId = SubjectIdFilter
-                });
-            }
-        }
-
-        [BindProperty]
-        public string? SessionId { get; set; }
-
-        public async Task<IActionResult> OnPost()
-        {
-            ArgumentNullException.ThrowIfNull(_sessionManagementService);
-
-            await _sessionManagementService.RemoveSessionsAsync(new RemoveSessionsContext
-            {
-                SessionId = SessionId,
+                ResultsToken = Token,
+                RequestPriorResults = Prev == "true",
+                DisplayName = DisplayNameFilter,
+                SessionId = SessionIdFilter,
+                SubjectId = SubjectIdFilter
             });
-            return RedirectToPage("/ServerSideSessions/Index", new { Token, DisplayNameFilter, SessionIdFilter, SubjectIdFilter, Prev });
         }
     }
-}
 
+    [BindProperty]
+    public string? SessionId { get; set; }
+
+    public async Task<IActionResult> OnPost()
+    {
+        ArgumentNullException.ThrowIfNull(_sessionManagementService);
+
+        await _sessionManagementService.RemoveSessionsAsync(new RemoveSessionsContext
+        {
+            SessionId = SessionId,
+        });
+        return RedirectToPage("/ServerSideSessions/Index", new { Token, DisplayNameFilter, SessionIdFilter, SubjectIdFilter, Prev });
+    }
+}

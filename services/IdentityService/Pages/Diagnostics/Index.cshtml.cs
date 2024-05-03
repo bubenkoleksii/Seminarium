@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 namespace IdentityService.Pages.Diagnostics;
 
 [SecurityHeaders]
-[Authorize]
+[Authorize(Roles = "Admin")]
 public class Index : PageModel
 {
     public ViewModel View { get; set; } = default!;
