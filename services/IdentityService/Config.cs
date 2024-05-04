@@ -73,7 +73,8 @@ public static class Config
                     "SeminariumApp"
                 },
                 AllowOfflineAccess = true,
-                AccessTokenLifetime = clientTokenLifeTime
+                AccessTokenLifetime = clientTokenLifeTime,
+                AlwaysIncludeUserClaimsInIdToken = true,
             }
         };
     }
