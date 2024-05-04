@@ -7,7 +7,6 @@ import { routes } from '@/shared/constants';
 const Welcome: FC = () => {
   const activeLocale = useLocale();
   const t = useTranslations('Welcome');
-
   return (
     <section className="text-gray-700 body-font flex">
       <div className="flex px-5 py-10 lg:flex-row flex-col gap-8 items-center justify-center">

@@ -20,7 +20,7 @@ export default function LocaleLayout({ children, params: { locale } }) {
         <title>Seminarium</title>
       </head>
 
-      <body className={montserrat.className}>
+      <body className={montserrat.className} suppressHydrationWarning={true}>
         <NextIntlClientProvider messages={messages}>
           <div className="flex flex-col min-h-screen bg-gray-100">
             <Navbar />
