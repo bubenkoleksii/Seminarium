@@ -1,7 +1,7 @@
 export const routes = {
   getCreateJoiningRequest: (locale) => `${locale}/create-joining-request`,
   registration: 'registration',
-}
+};
 
 export const school = {
   type: {
@@ -42,5 +42,5 @@ export const school = {
     crimea: 'crimea',
     abroad: 'abroad',
     none: 'none',
-  }
-}
+  },
+};

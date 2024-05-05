@@ -1,19 +1,19 @@
-import { FC } from "react";
+import { FC } from 'react';
 import { Cloud } from 'lucide-react';
 import Link from 'next/link';
 
 const Sidebar: FC = () => {
   return (
-    <div className="sidebar bg-white h-screen w-12 flex flex-col justify-start items-center bg-gray-100">
+    <div className="sidebar flex h-screen w-12 flex-col items-center justify-start bg-gray-100 bg-white">
       <Link
         href="/"
-        className="text-gray-800 w-full h-12 flex items-center justify-center hover:bg-gray-200 transition duration-300"
+        className="flex h-12 w-full items-center justify-center text-gray-800 transition duration-300 hover:bg-gray-200"
       >
         <Cloud color="#3B0764" size={20} />
       </Link>
       <Link
         href="/"
-        className="text-gray-800 w-full h-12 flex items-center justify-center hover:bg-gray-200 transition duration-300"
+        className="flex h-12 w-full items-center justify-center text-gray-800 transition duration-300 hover:bg-gray-200"
       >
         <Cloud color="#3B0764" size={20} />
       </Link>
