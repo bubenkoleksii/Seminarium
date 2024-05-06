@@ -38,6 +38,16 @@ try
 
     app.UseSerilogRequestLogging();
 
+    app.UseRouting();
+
+    app.UseEndpoints(endpoints =>
+    {
+        endpoints.MapControllerRoute(
+            name: "signout",
+            pattern: "Account/Signout",
+            defaults: new { controller = "Account", action = "Signout" });
+    });
+
     app.Run();
 }
 catch (Exception ex) when (ex is not HostAbortedException)
