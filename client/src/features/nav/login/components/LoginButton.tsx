@@ -1,17 +1,20 @@
 import { FC } from 'react';
 import { Button } from 'flowbite-react';
 import { signIn } from 'next-auth/react';
+import { useTranslations } from 'next-intl';
 
 const LoginButton: FC = () => {
-  const handleClick = () => {
+  const t = useTranslations('Auth');
+
+  const handle = () => {
     signIn('id-server', {
       callbackUrl: '/',
     });
   };
 
   return (
-    <Button onClick={handleClick} outline gradientDuoTone="purpleToPink">
-      Login
+    <Button gradientDuoTone="purpleToPink" onClick={handle}>
+      <span className="text-white">{t('loginBtn')}</span>
     </Button>
   );
 };

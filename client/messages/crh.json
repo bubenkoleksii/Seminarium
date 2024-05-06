@@ -1,4 +1,9 @@
 {
+  "Auth": {
+    "registrationBtn": "Qayd etüv",
+    "loginBtn": "Kerçes",
+    "logoutBtn": "Çıgu"
+  },
   "JoiningRequest": {
     "title": "Təlim kursu forması",
     "labels": {

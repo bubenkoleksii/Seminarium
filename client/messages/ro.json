@@ -1,4 +1,9 @@
 {
+  "Auth": {
+    "registrationBtn": "Înregistrare",
+    "loginBtn": "Autentificare",
+    "logoutBtn": "Deconectare"
+  },
   "JoiningRequest": {
     "title": "Formular de aderare a instituției de învățământ",
     "labels": {

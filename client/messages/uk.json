@@ -1,4 +1,9 @@
 {
+  "Auth": {
+    "registrationBtn": "Зареєструватись",
+    "loginBtn": "Увійти",
+    "logoutBtn": "Вийти"
+  },
   "JoiningRequest": {
     "title": "Форма приєднання навчального закладу",
     "labels": {

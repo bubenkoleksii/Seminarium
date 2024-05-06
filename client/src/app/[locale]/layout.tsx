@@ -5,6 +5,7 @@ import { Footer } from '@/features/footer';
 import { Sidebar } from '@/features/sidebar';
 import Head from 'next/head';
 import { Metadata } from 'next';
+import { TopLoader } from '@/components/loader';
 
 const montserrat = Montserrat({
   subsets: ['cyrillic', 'latin'],
@@ -33,6 +34,8 @@ export default function LocaleLayout({ children, params: { locale } }) {
       </Head>
 
       <body className={montserrat.className} suppressHydrationWarning={true}>
+        <TopLoader />
+
         <NextIntlClientProvider messages={messages}>
             <div className="flex min-h-screen flex-col bg-gray-100">
               <Navbar />
@@ -43,6 +46,7 @@ export default function LocaleLayout({ children, params: { locale } }) {
               <Footer />
             </div>
         </NextIntlClientProvider>
+
       </body>
     </html>
   );

@@ -4,12 +4,20 @@ import { Menu, Transition } from '@headlessui/react';
 import { ChevronDownIcon } from '@heroicons/react/20/solid';
 import Image from 'next/image';
 import { LuLogOut } from "react-icons/lu";
+import { signOut } from 'next-auth/react';
+import { useTranslations } from 'next-intl';
 
 interface CurrentUserPopoverProps {
   user: CurrentUser
 }
 
 const CurrentUserPopover: FC<CurrentUserPopoverProps> = ({ user }) => {
+  const t = useTranslations();
+
+  const handleLogout = () => {
+    signOut( { callbackUrl: '', redirect: true } );
+  }
+
   return (
     <Menu as="div" className="relative inline-block cursor-pointer text-left">
       <div>
@@ -63,8 +71,11 @@ const CurrentUserPopover: FC<CurrentUserPopoverProps> = ({ user }) => {
           }
 
           <Menu.Item>
-              <div className="p-2 flex items-center gap-2 font-medium rounded-b-lg hover:bg-gray-100">
-                <div>Вийти</div>
+              <div
+                onClick={handleLogout}
+                className="p-2 flex items-center gap-2 font-medium rounded-b-lg hover:bg-gray-100"
+              >
+                <div>{t('Auth.logoutBtn')}</div>
                 <LuLogOut />
               </div>
           </Menu.Item>

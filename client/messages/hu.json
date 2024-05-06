@@ -1,4 +1,9 @@
 {
+  "Auth": {
+    "registrationBtn": "Regisztráció",
+    "loginBtn": "Belépés",
+    "logoutBtn": "Kijelentkezés"
+  },
   "JoiningRequest": {
     "title": "Iskolai csatlakozási űrlap",
     "labels": {
