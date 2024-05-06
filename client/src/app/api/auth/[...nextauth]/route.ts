@@ -1,6 +1,8 @@
-import NextAuth, { type NextAuthOptions } from 'next-auth';
+import NextAuth, { type NextAuthOptions, Session } from 'next-auth';
 import DuendeIdentityServer6 from 'next-auth/providers/duende-identity-server6';
 import jwt from 'jsonwebtoken';
+import axios from 'axios';
+import { type JWT } from 'next-auth/jwt';
 
 export const authOptions: NextAuthOptions = {
   session: {
@@ -21,7 +23,7 @@ export const authOptions: NextAuthOptions = {
     }),
   ],
   callbacks: {
-    async jwt({ token, profile, account, user }) {
+    async jwt({ token, profile, account }) {
       if (profile) {
         token.username = profile['preferred_username'];
       }
@@ -44,6 +46,14 @@ export const authOptions: NextAuthOptions = {
       }
 
       return session;
+    },
+  },
+  events: {
+    async signOut({ session, token }) {
+      await axios.get(process.env.AUTH_ISSUER_LOGOT);
+
+      token = {} as JWT;
+      session = {} as Session;
     },
   },
 };

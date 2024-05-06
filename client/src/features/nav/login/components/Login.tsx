@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import { FC } from 'react';
 import { LoginButton } from './LoginButton';
@@ -15,10 +15,11 @@ const Login: FC = () => {
 
   return (
     <>
-      {status === 'unauthenticated'
-        ? <LoginButton />
-        : currentUser && <CurrentUserPopover user={currentUser} />
-      }
+      {status === 'unauthenticated' ? (
+        <LoginButton />
+      ) : (
+        currentUser && <CurrentUserPopover user={currentUser} />
+      )}
     </>
   );
 };

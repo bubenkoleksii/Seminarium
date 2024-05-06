@@ -3,20 +3,23 @@ import { CurrentUser } from '../types';
 import { Menu, Transition } from '@headlessui/react';
 import { ChevronDownIcon } from '@heroicons/react/20/solid';
 import Image from 'next/image';
-import { LuLogOut } from "react-icons/lu";
+import { LuLogOut } from 'react-icons/lu';
 import { signOut } from 'next-auth/react';
 import { useTranslations } from 'next-intl';
 
 interface CurrentUserPopoverProps {
-  user: CurrentUser
+  user: CurrentUser;
 }
 
 const CurrentUserPopover: FC<CurrentUserPopoverProps> = ({ user }) => {
   const t = useTranslations();
 
   const handleLogout = () => {
-    signOut( { callbackUrl: '', redirect: true } );
-  }
+    signOut({
+      callbackUrl: '/api/signout',
+      redirect: true,
+    });
+  };
 
   return (
     <Menu as="div" className="relative inline-block cursor-pointer text-left">
@@ -54,30 +57,30 @@ const CurrentUserPopover: FC<CurrentUserPopoverProps> = ({ user }) => {
         >
           <div className="cursor-default">
             <Menu.Item>
-              <div className="p-2 font-bold text-xs">
+              <div className="p-2 text-xs font-bold">
                 <p>{user.name}</p>
               </div>
             </Menu.Item>
           </div>
 
-          {user.email &&
+          {user.email && (
             <div className="cursor-default">
               <Menu.Item>
-                <div className="p-2 text-xs flex">
+                <div className="flex p-2 text-xs">
                   <p>{user.email}</p>
                 </div>
               </Menu.Item>
             </div>
-          }
+          )}
 
           <Menu.Item>
-              <div
-                onClick={handleLogout}
-                className="p-2 flex items-center gap-2 font-medium rounded-b-lg hover:bg-gray-100"
-              >
-                <div>{t('Auth.logoutBtn')}</div>
-                <LuLogOut />
-              </div>
+            <div
+              onClick={handleLogout}
+              className="flex items-center gap-2 rounded-b-lg p-2 font-medium hover:bg-gray-100"
+            >
+              <div>{t('Auth.logoutBtn')}</div>
+              <LuLogOut />
+            </div>
           </Menu.Item>
         </Menu.Items>
       </Transition>

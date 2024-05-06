@@ -16,7 +16,6 @@ const TopLoader: FC = () => {
       zIndex={1600}
       showAtBottom={false}
     />
-
   );
 };
 

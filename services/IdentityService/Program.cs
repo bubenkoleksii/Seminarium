@@ -28,6 +28,11 @@ try
     builder.Services.Configure<MailOptions>(builder.Configuration.GetSection(nameof(MailOptions)));
     builder.Services.AddScoped<IMailService, MailService>();
     builder.Services.Configure<DataProtectionTokenProviderOptions>(options => options.TokenLifespan = TimeSpan.FromDays(1));
+    builder.Services.Configure<SecurityStampValidatorOptions>(options =>
+    {
+        options.ValidationInterval = TimeSpan.FromMinutes(1);
+    });
+    builder.Services.AddHttpContextAccessor();
 
     var app = builder
         .ConfigureServices()

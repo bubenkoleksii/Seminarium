@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import { FC } from 'react';
 import Link from 'next/link';
@@ -21,7 +21,7 @@ const Navbar: FC = () => {
 
         <div>Middle</div>
 
-        <div className="flex justify-center items-center gap-4">
+        <div className="flex items-center justify-center gap-4">
           <LanguageDropdown />
           <Login />
         </div>

@@ -37,16 +37,15 @@ export default function LocaleLayout({ children, params: { locale } }) {
         <TopLoader />
 
         <NextIntlClientProvider messages={messages}>
-            <div className="flex min-h-screen flex-col bg-gray-100">
-              <Navbar />
-              <main className="min-w-screen flex flex-grow justify-center">
-                {false && <Sidebar />}
-                {children}
-              </main>
-              <Footer />
-            </div>
+          <div className="flex min-h-screen flex-col bg-gray-100">
+            <Navbar />
+            <main className="min-w-screen flex flex-grow justify-center">
+              {false && <Sidebar />}
+              {children}
+            </main>
+            <Footer />
+          </div>
         </NextIntlClientProvider>
-
       </body>
     </html>
   );
