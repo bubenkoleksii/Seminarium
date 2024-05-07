@@ -1,4 +1,6 @@
-﻿namespace SchoolService.Application.JoiningRequest.Commands.CreateJoiningRequest;
+﻿using SchoolService.Domain.Enums.JoiningRequest;
+
+namespace SchoolService.Application.JoiningRequest.Commands.CreateJoiningRequest;
 
 public class CreateJoiningRequestCommandHandler : IRequestHandler<CreateJoiningRequestCommand, Either<JoiningRequestModelResponse, Error>>
 {
@@ -21,7 +23,7 @@ public class CreateJoiningRequestCommandHandler : IRequestHandler<CreateJoiningR
             .FirstOrDefaultAsync(r => r.RequesterEmail == request.RequesterEmail || r.RegisterCode == request.RegisterCode,
                 cancellationToken: cancellationToken);
 
-        if (existedEntity != null)
+        if (existedEntity != null && existedEntity.Status != JoiningRequestStatus.Rejected)
             return new AlreadyExistsError("joining request");
 
         await _commandContext.JoiningRequests.AddAsync(entity, cancellationToken);

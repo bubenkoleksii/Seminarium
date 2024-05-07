@@ -17,7 +17,7 @@ public class GetOneJoiningRequestHandler : IRequestHandler<GetOneJoiningRequestQ
         var entity = await _queryContext.JoiningRequests
             .FirstOrDefaultAsync(s => s.Id == request.Id, cancellationToken: CancellationToken.None);
 
-        if (entity is null)
+        if (entity is null || entity.Status == )
             return new NotFoundByIdError(request.Id, "joining request");
 
         var joiningRequestResponse = _mapper.Map<JoiningRequestModelResponse>(entity);

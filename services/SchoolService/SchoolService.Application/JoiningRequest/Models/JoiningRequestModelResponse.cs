@@ -5,6 +5,8 @@ namespace SchoolService.Application.JoiningRequest.Models;
 public record JoiningRequestModelResponse(
     Guid Id,
 
+    Guid? SchoolId,
+
     DateTime CreatedAt,
 
     DateTime? LastUpdatedAt,
