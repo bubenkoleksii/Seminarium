@@ -31,6 +31,8 @@ public class ApiMappingProfile : Profile
         CreateMap<JoiningRequestModelResponse, JoiningRequestResponse>();
 
         CreateMap<GetAllJoiningRequestsParams, GetAllJoiningRequestsQuery>();
+
+        CreateMap<GetAllJoiningRequestsModelResponse, GetAllJoiningRequestsResponse>();
     }
 
     private void ConfigureGlobalMappings()

@@ -5,5 +5,9 @@ public record GetAllJoiningRequestsParams(
 
     bool? SortByDateAsc,
 
-    string? Region
+    string? Region,
+
+    int Skip,
+
+    int? Take
 );

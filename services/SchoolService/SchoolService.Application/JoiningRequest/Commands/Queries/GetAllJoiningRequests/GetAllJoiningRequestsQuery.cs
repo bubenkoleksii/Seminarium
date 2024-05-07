@@ -5,5 +5,9 @@ public record GetAllJoiningRequestsQuery(
 
     bool? SortByDateAsc,
 
-    SchoolRegion? Region
-) : IRequest<IEnumerable<JoiningRequestModelResponse>>;
+    SchoolRegion? Region,
+
+    int Skip,
+
+    int? Take
+) : IRequest<GetAllJoiningRequestsModelResponse>;

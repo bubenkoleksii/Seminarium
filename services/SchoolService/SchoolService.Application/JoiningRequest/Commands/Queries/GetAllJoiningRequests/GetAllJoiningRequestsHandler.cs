@@ -1,7 +1,9 @@
 ﻿namespace SchoolService.Application.JoiningRequest.Commands.Queries.GetAllJoiningRequests;
 
-public class GetAllJoiningRequestsHandler : IRequestHandler<GetAllJoiningRequestsQuery, IEnumerable<JoiningRequestModelResponse>>
+public class GetAllJoiningRequestsHandler : IRequestHandler<GetAllJoiningRequestsQuery, GetAllJoiningRequestsModelResponse>
 {
+    private const int DefaultTake = 5;
+
     private readonly IQueryContext _queryContext;
 
     private readonly IMapper _mapper;
@@ -12,11 +14,21 @@ public class GetAllJoiningRequestsHandler : IRequestHandler<GetAllJoiningRequest
         _mapper = mapper;
     }
 
-    public async Task<IEnumerable<JoiningRequestModelResponse>> Handle(GetAllJoiningRequestsQuery request, CancellationToken cancellationToken)
+    public async Task<GetAllJoiningRequestsModelResponse> Handle(GetAllJoiningRequestsQuery request, CancellationToken cancellationToken)
     {
+        var take = request.Take ?? DefaultTake;
+
         var entities = await _queryContext.JoiningRequests.ToListAsync(cancellationToken: cancellationToken);
 
         var joiningRequestsResponse = _mapper.Map<IEnumerable<JoiningRequestModelResponse>>(entities);
-        return joiningRequestsResponse;
+
+        var response = new GetAllJoiningRequestsModelResponse(
+            Entries: joiningRequestsResponse,
+            Total: 1,
+            Skip: 1,
+            Take: take
+        );
+
+        return response;
     }
 }

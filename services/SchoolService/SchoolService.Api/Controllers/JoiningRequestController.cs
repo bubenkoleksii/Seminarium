@@ -18,14 +18,14 @@ public class JoiningRequestController(IMapper mapper) : BaseController
     }
 
     [HttpGet("[action]/")]
-    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<JoiningRequestResponse>))]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GetAllJoiningRequestsResponse))]
     public async Task<IActionResult> GetAll([FromQuery] GetAllJoiningRequestsParams filterParams)
     {
         var query = mapper.Map<GetAllJoiningRequestsQuery>(filterParams);
 
         var result = await Mediator.Send(query);
 
-        return Ok(mapper.Map<IEnumerable<JoiningRequestResponse>>(result));
+        return Ok(mapper.Map<GetAllJoiningRequestsResponse>(result));
     }
 
     [HttpPost("[action]/")]
