@@ -12,8 +12,8 @@ using SchoolService.Infrastructure.Persistence;
 namespace SchoolService.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(CommandContext))]
-    [Migration("20240414120743_InitialMigration")]
-    partial class InitialMigration
+    [Migration("20240507154309_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -86,12 +86,17 @@ namespace SchoolService.Infrastructure.Persistence.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("character varying(50)");
 
+                    b.Property<Guid?>("SchoolId")
+                        .HasColumnType("uuid");
+
                     b.Property<string>("ShortName")
                         .HasMaxLength(250)
                         .HasColumnType("character varying(250)");
 
                     b.Property<int>("Status")
-                        .HasColumnType("integer");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasDefaultValue(0);
 
                     b.Property<long>("StudentsQuantity")
                         .HasColumnType("bigint");
@@ -105,7 +110,7 @@ namespace SchoolService.Infrastructure.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("JoiningRequest", "public");
+                    b.ToTable("JoiningRequests", "public");
                 });
 
             modelBuilder.Entity("SchoolService.Domain.Entities.School", b =>
@@ -139,6 +144,9 @@ namespace SchoolService.Infrastructure.Persistence.Migrations
                         .HasColumnType("boolean");
 
                     b.Property<Guid>("JoiningRequestId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("JoiningRequestId1")
                         .HasColumnType("uuid");
 
                     b.Property<DateTime?>("LastArchivedAt")
@@ -188,7 +196,7 @@ namespace SchoolService.Infrastructure.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("JoiningRequestId");
+                    b.HasIndex("JoiningRequestId1");
 
                     b.ToTable("Schools", "public");
                 });
@@ -197,7 +205,7 @@ namespace SchoolService.Infrastructure.Persistence.Migrations
                 {
                     b.HasOne("SchoolService.Domain.Entities.JoiningRequest", "JoiningRequest")
                         .WithMany()
-                        .HasForeignKey("JoiningRequestId")
+                        .HasForeignKey("JoiningRequestId1")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

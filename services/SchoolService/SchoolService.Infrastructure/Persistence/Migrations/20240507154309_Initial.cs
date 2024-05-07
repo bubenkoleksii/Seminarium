@@ -1,11 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
 namespace SchoolService.Infrastructure.Persistence.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialMigration : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -14,16 +15,17 @@ namespace SchoolService.Infrastructure.Persistence.Migrations
                 name: "public");
 
             migrationBuilder.CreateTable(
-                name: "JoiningRequest",
+                name: "JoiningRequests",
                 schema: "public",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    SchoolId = table.Column<Guid>(type: "uuid", nullable: true),
                     RegisterCode = table.Column<decimal>(type: "numeric(20,0)", nullable: false),
-                    Name = table.Column<string>(type: "character varying(250)", maxLength: 250, nullable: false),
                     RequesterEmail = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
                     RequesterPhone = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
                     RequesterFullName = table.Column<string>(type: "character varying(250)", maxLength: 250, nullable: false),
+                    Name = table.Column<string>(type: "character varying(250)", maxLength: 250, nullable: false),
                     ShortName = table.Column<string>(type: "character varying(250)", maxLength: 250, nullable: true),
                     GradingSystem = table.Column<long>(type: "bigint", nullable: false),
                     Type = table.Column<int>(type: "integer", nullable: false),
@@ -34,7 +36,7 @@ namespace SchoolService.Infrastructure.Persistence.Migrations
                     TerritorialCommunity = table.Column<string>(type: "character varying(250)", maxLength: 250, nullable: true),
                     Address = table.Column<string>(type: "character varying(250)", maxLength: 250, nullable: true),
                     AreOccupied = table.Column<bool>(type: "boolean", nullable: false),
-                    Status = table.Column<int>(type: "integer", nullable: false),
+                    Status = table.Column<int>(type: "integer", nullable: false, defaultValue: 0),
                     IsArchived = table.Column<bool>(type: "boolean", nullable: false),
                     LastArchivedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
@@ -42,7 +44,7 @@ namespace SchoolService.Infrastructure.Persistence.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_JoiningRequest", x => x.Id);
+                    table.PrimaryKey("PK_JoiningRequests", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -51,6 +53,8 @@ namespace SchoolService.Infrastructure.Persistence.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    JoiningRequestId = table.Column<Guid>(type: "uuid", nullable: false),
+                    JoiningRequestId1 = table.Column<Guid>(type: "uuid", nullable: false),
                     RegisterCode = table.Column<decimal>(type: "numeric(20,0)", nullable: false),
                     Name = table.Column<string>(type: "character varying(250)", maxLength: 250, nullable: false),
                     ShortName = table.Column<string>(type: "character varying(250)", maxLength: 250, nullable: true),
@@ -67,7 +71,6 @@ namespace SchoolService.Infrastructure.Persistence.Migrations
                     AreOccupied = table.Column<bool>(type: "boolean", nullable: false),
                     SiteUrl = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: true),
                     Img = table.Column<string>(type: "character varying(250)", maxLength: 250, nullable: true),
-                    JoiningRequestId = table.Column<Guid>(type: "uuid", nullable: false),
                     IsArchived = table.Column<bool>(type: "boolean", nullable: false),
                     LastArchivedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
@@ -77,19 +80,19 @@ namespace SchoolService.Infrastructure.Persistence.Migrations
                 {
                     table.PrimaryKey("PK_Schools", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Schools_JoiningRequest_JoiningRequestId",
-                        column: x => x.JoiningRequestId,
+                        name: "FK_Schools_JoiningRequests_JoiningRequestId1",
+                        column: x => x.JoiningRequestId1,
                         principalSchema: "public",
-                        principalTable: "JoiningRequest",
+                        principalTable: "JoiningRequests",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Schools_JoiningRequestId",
+                name: "IX_Schools_JoiningRequestId1",
                 schema: "public",
                 table: "Schools",
-                column: "JoiningRequestId");
+                column: "JoiningRequestId1");
         }
 
         /// <inheritdoc />
@@ -100,7 +103,7 @@ namespace SchoolService.Infrastructure.Persistence.Migrations
                 schema: "public");
 
             migrationBuilder.DropTable(
-                name: "JoiningRequest",
+                name: "JoiningRequests",
                 schema: "public");
         }
     }

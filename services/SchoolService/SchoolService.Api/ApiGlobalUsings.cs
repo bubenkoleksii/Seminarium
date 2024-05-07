@@ -2,7 +2,6 @@
 global using CaseExtensions;
 global using MediatR;
 global using Microsoft.AspNetCore.Authentication.JwtBearer;
-global using Microsoft.AspNetCore.Authorization;
 global using Microsoft.AspNetCore.Mvc;
 global using Microsoft.Extensions.Options;
 global using SchoolService.Api.Identity;
@@ -13,6 +12,7 @@ global using SchoolService.Api.Options;
 global using SchoolService.Application;
 global using SchoolService.Application.Common.Mappings;
 global using SchoolService.Application.JoiningRequest.Commands.CreateJoiningRequest;
+global using SchoolService.Application.JoiningRequest.Commands.Queries.GetOneJoiningRequest;
 global using SchoolService.Application.School.Commands.ArchiveSchool;
 global using SchoolService.Application.School.Commands.CreateSchool;
 global using SchoolService.Application.School.Commands.DeleteSchool;
