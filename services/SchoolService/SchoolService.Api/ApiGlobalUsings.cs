@@ -12,6 +12,7 @@ global using SchoolService.Api.Options;
 global using SchoolService.Application;
 global using SchoolService.Application.Common.Mappings;
 global using SchoolService.Application.JoiningRequest.Commands.CreateJoiningRequest;
+global using SchoolService.Application.JoiningRequest.Commands.Queries.GetAllJoiningRequests;
 global using SchoolService.Application.JoiningRequest.Commands.Queries.GetOneJoiningRequest;
 global using SchoolService.Application.School.Commands.ArchiveSchool;
 global using SchoolService.Application.School.Commands.CreateSchool;

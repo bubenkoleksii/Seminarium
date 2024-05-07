@@ -29,6 +29,8 @@ public class ApiMappingProfile : Profile
             .ForMember(command => command.RequesterEmail, act => act.MapFrom(req => req.RequesterEmail.ToLower()));
 
         CreateMap<JoiningRequestModelResponse, JoiningRequestResponse>();
+
+        CreateMap<GetAllJoiningRequestsParams, GetAllJoiningRequestsQuery>();
     }
 
     private void ConfigureGlobalMappings()

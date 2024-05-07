@@ -1,6 +1,4 @@
-﻿using SchoolService.Domain.Enums.JoiningRequest;
-
-namespace SchoolService.Domain.Entities;
+﻿namespace SchoolService.Domain.Entities;
 
 public class JoiningRequest : Entity
 {
