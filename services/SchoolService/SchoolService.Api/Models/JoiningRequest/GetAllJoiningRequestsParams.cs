@@ -7,7 +7,7 @@ public record GetAllJoiningRequestsParams(
 
     string? Region,
 
-    int Skip,
+    uint Skip,
 
-    int? Take
+    uint? Take
 );

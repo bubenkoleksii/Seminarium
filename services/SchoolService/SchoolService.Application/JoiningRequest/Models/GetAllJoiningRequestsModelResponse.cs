@@ -3,9 +3,9 @@
 public record GetAllJoiningRequestsModelResponse(
     IEnumerable<JoiningRequestModelResponse> Entries,
 
-    int Total,
+    ulong Total,
 
-    int Skip,
+    uint Skip,
 
-    int Take
+    uint Take
 );

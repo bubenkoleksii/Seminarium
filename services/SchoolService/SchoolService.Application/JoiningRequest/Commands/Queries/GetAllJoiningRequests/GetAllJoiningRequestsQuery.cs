@@ -7,7 +7,7 @@ public record GetAllJoiningRequestsQuery(
 
     SchoolRegion? Region,
 
-    int Skip,
+    uint Skip,
 
-    int? Take
+    uint? Take
 ) : IRequest<GetAllJoiningRequestsModelResponse>;
