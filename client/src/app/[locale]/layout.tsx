@@ -2,7 +2,7 @@ import { Montserrat } from 'next/font/google';
 import { NextIntlClientProvider, useMessages } from 'next-intl';
 import { Navbar } from '@/features/nav';
 import { Footer } from '@/features/footer';
-import { Sidebar } from '@/features/sidebar';
+import { AdminSidebar } from '@/features/sidebar';
 import Head from 'next/head';
 import { Metadata } from 'next';
 import { TopLoader } from '@/components/loader';
@@ -40,7 +40,6 @@ export default function LocaleLayout({ children, params: { locale } }) {
           <div className="flex min-h-screen flex-col bg-gray-100">
             <Navbar />
             <main className="min-w-screen flex flex-grow justify-center">
-              {false && <Sidebar />}
               {children}
             </main>
             <Footer />

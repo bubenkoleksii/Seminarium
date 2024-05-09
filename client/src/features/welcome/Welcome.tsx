@@ -1,14 +1,22 @@
-import { FC, useEffect } from 'react';
+import { FC } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
 import Image from 'next/image';
 import Link from 'next/link';
 import { routes } from '@/shared/constants';
-import { signIn, useSession } from 'next-auth/react';
+import { useSession } from 'next-auth/react';
+import { redirect } from 'next/navigation';
 
 const Welcome: FC = () => {
   const activeLocale = useLocale();
-  const { status } = useSession();
+  const { status, data } = useSession();
   const t = useTranslations('Welcome');
+
+  const currentUser = data?.user;
+  if (currentUser) {
+    currentUser.role === 'admin'
+      ? redirect(`${activeLocale}/admin`)
+      : redirect(`${activeLocale}/`);
+  }
 
   return (
     <section className="body-font flex text-gray-700">
