@@ -3,8 +3,8 @@ import Image from 'next/image';
 
 const Loader: FC = () => {
   return (
-    <div className="relative flex items-center justify-center">
-      <div className="absolute h-24 w-24 animate-spin rounded-full border-b-4 border-t-4 border-purple-500"></div>
+    <div className="absolute inset-0 flex items-center justify-center bg-gray-200">
+      <div className="relative h-24 w-24 animate-spin rounded-full border-b-4 border-t-4 border-purple-500"></div>
 
       <Image
         alt="loader"

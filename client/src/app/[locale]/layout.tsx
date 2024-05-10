@@ -2,7 +2,6 @@ import { Montserrat } from 'next/font/google';
 import { NextIntlClientProvider, useMessages } from 'next-intl';
 import { Navbar } from '@/features/nav';
 import { Footer } from '@/features/footer';
-import { AdminSidebar } from '@/features/sidebar';
 import Head from 'next/head';
 import { Metadata } from 'next';
 import { TopLoader } from '@/components/loader';

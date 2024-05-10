@@ -21,7 +21,7 @@ const AdminSidebar: FC = () => {
   };
 
   return (
-    <div className="sidebar flex h-screen w-12 flex-col items-center justify-start bg-gray-50">
+    <div className="sidebar flex h-screen w-[20px] flex-col items-center justify-start bg-gray-50">
       <Link
         href={`/${activeLocale}/${AdminRoutes.Profile}/`}
         className={`flex h-12 w-full items-center justify-center 
