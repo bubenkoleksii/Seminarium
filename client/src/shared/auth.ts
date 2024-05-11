@@ -1,4 +1,4 @@
-import type { NextApiRequest } from "next";
+import type { NextApiRequest } from 'next';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 import { getToken } from 'next-auth/jwt';
@@ -26,8 +26,8 @@ export const getCurrentUserToken = async () => {
     cookies: Object.fromEntries(
       cookies()
         .getAll()
-        .map(c => [c.name, c.value])
-    )
+        .map((c) => [c.name, c.value]),
+    ),
   } as NextApiRequest;
 
   return await getToken({ req });

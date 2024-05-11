@@ -1,4 +1,4 @@
-import { CurrentTab } from '@/features/admin/types';
+import { CurrentTab } from '../constants';
 import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
 import { immer } from 'zustand/middleware/immer';

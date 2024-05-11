@@ -8,7 +8,7 @@ async function getHeaders() {
   const headers: any = { 'Content-type': 'application/json' };
 
   if (token) {
-    headers.Authorization = 'Bearer ' + token.access_token
+    headers.Authorization = 'Bearer ' + token.access_token;
   }
 
   return headers;
@@ -17,12 +17,12 @@ async function getHeaders() {
 async function get<T>(url: string) {
   const requestOptions: AxiosRequestConfig = {
     method: 'GET',
-    headers: await getHeaders()
-  }
+    headers: await getHeaders(),
+  };
 
   return (await axios.get<T>(baseUrl + url, requestOptions)).data;
 }
 
 export const api = {
-  get
+  get,
 };
