@@ -5,6 +5,7 @@
 
 * {
   color: #2d2d2d;
+  word-wrap: break-word;
 }
 
 html, body {

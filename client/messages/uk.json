@@ -6,10 +6,11 @@
   },
   "JoiningRequest": {
     "title": "Форма приєднання навчального закладу",
+    "listTitle": "Запити навчальних закладів на приєднання",
     "labels": {
-      "requesterEmail": "Ваша електронна пошта",
-      "requesterPhone": "Ваш номер телефону",
-      "requesterFullName": "Ваше повне ім'я",
+      "requesterEmail": "Електронна пошта",
+      "requesterPhone": "Номер телефону",
+      "requesterFullName": "Повне ім'я",
       "registerCode": "Код ЄДРПОУ",
       "name": "Повне найменування навчального закладу",
       "shortName": "Коротке найменування закладу",
@@ -22,7 +23,14 @@
       "territorialCommunity": "Територіальна громада",
       "address": "Адреса",
       "areOccupied": "Наразі навчальний заклад окупований",
-      "submit": "Надіслати запит на приєднання"
+      "submit": "Надіслати запит на приєднання",
+      "details": "Детальніше",
+      "status": {
+        "label": "Статус",
+        "created": "Новий",
+        "rejected": "Відхилений",
+        "approved": "Підтверджений"
+      }
     },
     "placeholders": {
       "requesterEmail": "andrii.valko@gmail.com",
@@ -74,7 +82,7 @@
       "chernihiv": "Чернігівська область",
       "crimea": "Автономна Республіка Крим",
       "abroad": "За кордоном",
-      "none": "Жодне з переліченого"
+      "none": "Жодна з перелічених"
     }
   },
   "Footer": {

@@ -25,5 +25,5 @@ export interface JoiningRequestResponse {
   territorialCommunity?: string | null;
   address?: string | null;
   areOccupied: boolean;
-  status: string;
+  status: 'created' | 'rejected' | 'approved';
 }

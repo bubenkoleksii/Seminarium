@@ -9,3 +9,19 @@ export const replaceEmptyStringsWithNull = (values) => {
 export function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
 }
+
+export function getColorByStatus(status: string) {
+  if (status === 'approved') {
+    return `text-[#1A9B06FF]`
+  }
+
+  if (status === 'rejected') {
+    return `text-[#C00210F2]`
+  }
+
+  if (status === 'created') {
+    return `text-purple-950`
+  }
+
+  return `text-[#2d2d2d]`;
+}

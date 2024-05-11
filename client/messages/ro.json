@@ -6,6 +6,7 @@
   },
   "JoiningRequest": {
     "title": "Formular de aderare a instituției de învățământ",
+    "listTitle": "Запити навчальних закладів на приєднання",
     "labels": {
       "requesterEmail": "Adresa dvs. de e-mail",
       "requesterPhone": "Numărul dvs. de telefon",

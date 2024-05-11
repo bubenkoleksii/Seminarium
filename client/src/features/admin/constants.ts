@@ -3,7 +3,7 @@ export const enum CurrentTab {
   JoiningRequest = 'joining_request',
 }
 
-export const enum AdminRoutes {
+export const enum AdminClientPaths {
   Profile = 'admin',
   JoiningRequests = 'admin/joining_requests',
 }

@@ -7,10 +7,13 @@ import { getAll } from '../../api/joiningRequestApi';
 import { useQuery } from '@tanstack/react-query';
 import { Loader } from '@/components/loader';
 import { JoiningRequestsItem } from '@/features/admin/components/joining-request/JoiningRequestsItem';
-import { Table } from "flowbite-react";
+import { Table } from 'flowbite-react';
 import { useMediaQuery } from 'react-responsive';
+import { useTranslations } from 'next-intl';
 
 const JoiningRequests: FC = () => {
+  const t = useTranslations('JoiningRequest');
+
   const setCurrentTab = useAdminStore((store) => store.setCurrentTab);
   const isDesktopOrLaptop = useMediaQuery({ query: '(min-width: 1280px)' });
 
@@ -23,42 +26,48 @@ const JoiningRequests: FC = () => {
     setCurrentTab(CurrentTab.JoiningRequest);
   }, [setCurrentTab]);
 
-  if (isLoading) return (
-    <>
-      <h2>Joining requests</h2>
-      <Loader />
-    </>
-  );
+  if (isLoading) {
+    return (
+      <>
+        <h2 className="mb-4 text-center text-xl font-bold">{t('listTitle')}</h2>
+        <Loader />
+      </>
+    );
+  } else {
+    window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
+  }
 
   return (
-    <div className="p-4">
-      <h2 className="text-xl font-bold mb-4">Joining requests</h2>
+    <div className="p-3">
+      <h2 className="mb-4 text-center text-xl font-bold">{t('listTitle')}</h2>
 
-      <Table hoverable>
-        {isDesktopOrLaptop
-          ? <>
-            <Table.Head>
-              <Table.HeadCell>Name</Table.HeadCell>
-              <Table.HeadCell>Requester</Table.HeadCell>
-              <Table.HeadCell>Email</Table.HeadCell>
-              <Table.HeadCell>Phone</Table.HeadCell>
-              <Table.HeadCell>Region</Table.HeadCell>
-              <Table.HeadCell>Status</Table.HeadCell>
-              <Table.HeadCell>Details</Table.HeadCell>
-            </Table.Head>
-            <Table.Body className="divide-y">
-              {data && data.entries.map((entry) => (
-                <JoiningRequestsItem key={entry.id} item={entry} />
+      <div className="flex items-center justify-center">
+          {isDesktopOrLaptop ? (
+            <Table hoverable>
+              <Table.Head>
+                <Table.HeadCell>{t('labels.name')}</Table.HeadCell>
+                <Table.HeadCell>{t('labels.requesterFullName')}</Table.HeadCell>
+                <Table.HeadCell>{t('labels.requesterEmail')}</Table.HeadCell>
+                <Table.HeadCell>{t('labels.requesterPhone')}</Table.HeadCell>
+                <Table.HeadCell>{t('labels.region')}</Table.HeadCell>
+                <Table.HeadCell>{t('labels.status.label')}</Table.HeadCell>
+                <Table.HeadCell></Table.HeadCell>
+              </Table.Head>
+              <Table.Body className="divide-y">
+                {data &&
+                  data.entries.map((entry, idx) => (
+                    <JoiningRequestsItem key={entry.id} item={entry} index={idx}/>
+                  ))}
+              </Table.Body>
+            </Table>
+          ) : (
+            <div className="font-medium w-[100%]">
+              {data && data.entries.map((entry, idx) => (
+                <JoiningRequestsItem key={entry.id} item={entry} index={idx} />
               ))}
-            </Table.Body>
-          </>
-          : <Table.Body>
-            {data && data.entries.map((entry) => (
-              <JoiningRequestsItem key={entry.id} item={entry} />
-            ))}
-          </Table.Body>
-        }
-      </Table>
+          </div>
+          )}
+      </div>
     </div>
   );
 };

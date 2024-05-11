@@ -4,7 +4,7 @@ import { FC } from 'react';
 import { GitPullRequestArrow, User } from 'lucide-react';
 import Link from 'next/link';
 import { useAdminStore } from '@/features/admin/store/adminStore';
-import { AdminRoutes, CurrentTab } from '../constants';
+import { AdminClientPaths, CurrentTab } from '../constants';
 import { useLocale } from 'next-intl';
 
 const AdminSidebar: FC = () => {
@@ -14,7 +14,7 @@ const AdminSidebar: FC = () => {
   return (
     <div className="sidebar flex h-screen flex-col items-center justify-start bg-gray-50">
       <Link
-        href={`/${activeLocale}/${AdminRoutes.Profile}/`}
+        href={`/${activeLocale}/${AdminClientPaths.Profile}/`}
         className={`flex h-[50px] w-[50px] items-center justify-center 
          ${currentTab === CurrentTab.Profile ? `bg-purple-950` : `bg-gray-50 hover:bg-gray-200`} 
          text-gray-800 transition duration-300`}
@@ -26,7 +26,7 @@ const AdminSidebar: FC = () => {
       </Link>
 
       <Link
-        href={`/${activeLocale}/${AdminRoutes.JoiningRequests}/`}
+        href={`/${activeLocale}/${AdminClientPaths.JoiningRequests}/`}
         className={`flex h-[50px] w-[50px] items-center justify-center 
          ${currentTab === CurrentTab.JoiningRequest ? `bg-purple-950` : `bg-gray-50 hover:bg-gray-200`} 
          text-gray-800 transition duration-300`}
