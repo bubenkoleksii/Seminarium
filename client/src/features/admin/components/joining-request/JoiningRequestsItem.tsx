@@ -33,15 +33,13 @@ const JoiningRequestsItem: FC<JoiningRequestsItemProps> = ({ item, index }) => {
             </span>
           </Table.Cell>
           <Table.Cell>
-            <Table.Cell>
-              <Button gradientMonochrome="purple">
-                <Link href={`/${activeLocale}/${AdminClientPaths.JoiningRequests}/${item.id}`}
-                      className="text-white"
-                >
-                  {t('labels.details')}
-                </Link>
-              </Button>
-            </Table.Cell>
+            <Button gradientMonochrome="purple">
+              <Link href={`/${activeLocale}/${AdminClientPaths.JoiningRequests}/${item.id}`}
+                    className="text-white"
+              >
+                {t('labels.details')}
+              </Link>
+            </Button>
           </Table.Cell>
         </Table.Row>
       ) : (

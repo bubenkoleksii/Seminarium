@@ -17,7 +17,7 @@ const LoginButton: FC = () => {
   return (
     <Button gradientDuoTone="purpleToPink"
             onClick={handle}
-            size={isPhone ? 'xs' : 'lg'}
+            size={isPhone ? 'xs' : 'md'}
     >
       <span className="text-white">{t('loginBtn')}</span>
     </Button>

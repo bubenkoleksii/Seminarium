@@ -1,5 +1,6 @@
+import type { ApiError } from '@/shared/types';
 import { getCurrentUserToken } from './auth';
-import axios, { AxiosRequestConfig } from 'axios';
+import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
 
 const baseUrl = process.env.API_GATEWAY_URL;
 
@@ -14,13 +15,42 @@ async function getHeaders() {
   return headers;
 }
 
-async function get<T>(url: string) {
-  const requestOptions: AxiosRequestConfig = {
+async function get(url: string) {
+  const requestOptions = {
     method: 'GET',
     headers: await getHeaders(),
   };
 
-  return (await axios.get<T>(baseUrl + url, requestOptions)).data;
+  const response = await fetch(baseUrl + url, requestOptions);
+  return await handleResponse(response);
+}
+
+async function handleResponse(response: Response) {
+  const text = await response.text();
+
+  let data;
+  try {
+    data = JSON.parse(text);
+  } catch (error) {
+    data = text;
+  }
+
+  if (response.ok) {
+    return data || response.statusText;
+  } else {
+    const error: ApiError = {
+      title: data.title,
+      type: data.type,
+      status: data.status,
+      detail: data.detail,
+      params: data.params,
+      message: typeof data === 'string' && data.length > 0
+        ? data
+        : response.statusText
+    }
+
+    return { error };
+  }
 }
 
 export const api = {

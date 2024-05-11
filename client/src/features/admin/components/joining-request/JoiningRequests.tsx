@@ -17,7 +17,7 @@ const JoiningRequests: FC = () => {
   const setCurrentTab = useAdminStore((store) => store.setCurrentTab);
   const isDesktopOrLaptop = useMediaQuery({ query: '(min-width: 1280px)' });
 
-  const { data, status, isLoading, isError, error } = useQuery({
+  const { data, isLoading, error, status } = useQuery({
     queryKey: ['joiningRequests'],
     queryFn: () => getAll(),
   });
@@ -54,8 +54,7 @@ const JoiningRequests: FC = () => {
                 <Table.HeadCell></Table.HeadCell>
               </Table.Head>
               <Table.Body className="divide-y">
-                {data &&
-                  data.entries.map((entry, idx) => (
+                {data && data.entries.map((entry, idx) => (
                     <JoiningRequestsItem key={entry.id} item={entry} index={idx}/>
                   ))}
               </Table.Body>

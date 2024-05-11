@@ -1,3 +1,5 @@
+import { JoiningRequest } from '@/features/admin';
+
 type Props = {
   params: {
     id: string;
@@ -5,5 +7,9 @@ type Props = {
 };
 
 export default function MyComponent({ params }: Props) {
-  return <div>Joining request one {params.id}</div>;
+  return (
+    <div className="p-3">
+      <JoiningRequest id={params.id} />
+    </div>
+  )
 }
