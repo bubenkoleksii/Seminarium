@@ -11,3 +11,15 @@
 html, body {
   max-width: 100%;
 }
+
+.emoji-error {
+  position: relative;
+  animation: custom-move 2.5s infinite;
+  margin: auto;
+}
+
+@keyframes custom-move {
+  33%   {top: 0px;}
+  66%  {top: 20px;}
+  100%  {top: 0px}
+}

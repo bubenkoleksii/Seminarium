@@ -10,21 +10,24 @@ import { JoiningRequestsItem } from '@/features/admin/components/joining-request
 import { Table } from 'flowbite-react';
 import { useMediaQuery } from 'react-responsive';
 import { useTranslations } from 'next-intl';
+import { Error } from '@/components/error';
+import { useSetCurrentTab } from '@/features/admin/hooks';
 
 const JoiningRequests: FC = () => {
   const t = useTranslations('JoiningRequest');
 
-  const setCurrentTab = useAdminStore((store) => store.setCurrentTab);
   const isDesktopOrLaptop = useMediaQuery({ query: '(min-width: 1280px)' });
 
-  const { data, isLoading, error, status } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ['joiningRequests'],
     queryFn: () => getAll(),
   });
 
-  useEffect(() => {
-    setCurrentTab(CurrentTab.JoiningRequest);
-  }, [setCurrentTab]);
+  useSetCurrentTab(CurrentTab.JoiningRequest);
+
+  if (data && data.error) {
+    return <Error error={data.error} />
+  }
 
   if (isLoading) {
     return (

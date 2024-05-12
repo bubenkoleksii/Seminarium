@@ -5,8 +5,9 @@ import { useTranslations } from 'next-intl';
 import { useQuery } from '@tanstack/react-query';
 import { getOne } from '@/features/admin/api/joiningRequestApi';
 import { Loader } from '@/components/loader';
-import { PagedJoiningRequests } from '@/features/admin/types/joiningRequestTypes';
-import { ApiError } from '@/shared/types';
+import { Error } from '@/components/error';
+import { useSetCurrentTab } from '@/features/admin/hooks';
+import { CurrentTab } from '@/features/admin/constants';
 
 interface JoiningRequestProps {
   id: string;
@@ -15,10 +16,16 @@ interface JoiningRequestProps {
 const JoiningRequest: FC<JoiningRequestProps> = ({ id }) => {
   const t = useTranslations('JoiningRequest');
 
-  const { data, isLoading, error, isError, status } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ['joiningRequest', id],
     queryFn: () => getOne(id),
   });
+
+  useSetCurrentTab(CurrentTab.JoiningRequest);
+
+  if (data && data.error) {
+    return <Error error={data.error} />
+  }
 
   if (isLoading) {
     return (

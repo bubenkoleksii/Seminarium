@@ -14,6 +14,7 @@ export default function AdminLayout({ children }: PropsWithChildren) {
         <AdminSidebar />
         <div className="w-[100%]">{children}</div>
       </div>
+
       <ScrollToTop style={{ backgroundColor: '#7e3af2' }}
                    color="white"
                    smooth
