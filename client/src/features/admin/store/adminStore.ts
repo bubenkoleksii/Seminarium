@@ -13,7 +13,10 @@ export const useAdminStore = create<AdminStore>()(
     devtools(
       (set) => ({
         currentTab: CurrentTab.Profile,
-        setCurrentTab: (tab: CurrentTab) => set({ currentTab: tab }),
+        setCurrentTab: (tab: CurrentTab) =>
+          set((state) => {
+            state.currentTab = tab;
+          }),
       }),
       { name: 'Admin store' },
     ),

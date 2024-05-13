@@ -13,10 +13,10 @@ const errorComponents = {
   404: <NotFound />,
   400: <BadRequest />,
   401: <Unauthorized />,
-  403: <Forbidden />
+  403: <Forbidden />,
 };
 
 const Error: FC<ErrorProps> = ({ error }) =>
-  errorComponents[error.status] || <Internal />
+  errorComponents[error.status] || <Internal />;
 
 export { Error };

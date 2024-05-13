@@ -6,6 +6,7 @@ import { useLocale, useTranslations } from 'next-intl';
 import { getColorByStatus } from '@/shared/helpers';
 import Link from 'next/link';
 import { AdminClientPaths } from '@/features/admin/constants';
+import { mediaQueries } from '@/shared/constants';
 
 interface JoiningRequestsItemProps {
   item: JoiningRequestResponse;
@@ -15,13 +16,16 @@ interface JoiningRequestsItemProps {
 const JoiningRequestsItem: FC<JoiningRequestsItemProps> = ({ item, index }) => {
   const activeLocale = useLocale();
   const t = useTranslations('JoiningRequest');
-  const isDesktopOrLaptop = useMediaQuery({ query: '(min-width: 1280px)' });
+  const isDesktopOrLaptop = useMediaQuery({
+    query: mediaQueries.desktopOrLaptop,
+  });
 
   const statusColor = getColorByStatus(item.status);
+
   return (
     <>
       {isDesktopOrLaptop ? (
-        <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800 font-medium">
+        <Table.Row className="bg-white font-medium dark:border-gray-700 dark:bg-gray-800">
           <Table.Cell>{item.name}</Table.Cell>
           <Table.Cell>{item.requesterFullName}</Table.Cell>
           <Table.Cell>{item.requesterEmail}</Table.Cell>
@@ -34,8 +38,9 @@ const JoiningRequestsItem: FC<JoiningRequestsItemProps> = ({ item, index }) => {
           </Table.Cell>
           <Table.Cell>
             <Button gradientMonochrome="purple">
-              <Link href={`/${activeLocale}/${AdminClientPaths.JoiningRequests}/${item.id}`}
-                    className="text-white"
+              <Link
+                href={`/${activeLocale}/${AdminClientPaths.JoiningRequests}/${item.id}`}
+                className="text-white"
               >
                 {t('labels.details')}
               </Link>
@@ -44,56 +49,61 @@ const JoiningRequestsItem: FC<JoiningRequestsItemProps> = ({ item, index }) => {
         </Table.Row>
       ) : (
         <>
-          <h6 className="py-2 font-bold text-lg text-center">
-            <span className="text-sm color-gray-500 font-normal mr-1"># {index + 1}</span>
+          <h6 className="py-2 text-center text-lg font-bold">
+            <span className="color-gray-500 mr-1 text-sm font-normal">
+              # {index + 1}
+            </span>
             {item.name}
           </h6>
           <div className="flex">
-            <div className="w-1/2 text-xs font-semibold bg-purple-100 flex justify-center py-2 px-4 border border-gray-200">
+            <div className="flex w-1/2 justify-center border border-gray-200 bg-purple-100 px-4 py-2 text-xs font-semibold">
               <span className="text-center">{t('labels.status.label')}</span>
             </div>
-            <div className="w-1/2 text-xs font-medium flex justify-center py-2 px-4 border border-gray-200">
+            <div className="flex w-1/2 justify-center border border-gray-200 px-4 py-2 text-xs font-medium">
               <span className={`${statusColor} font-bold`}>
                 {t(`labels.status.${item.status}`)}
               </span>
             </div>
           </div>
           <div className="flex">
-            <div className="w-1/2 text-xs font-semibold bg-purple-100 flex justify-center py-2 px-4 border border-gray-200">
-              <span className="text-center">{t('labels.requesterFullName')}</span>
+            <div className="flex w-1/2 justify-center border border-gray-200 bg-purple-100 px-4 py-2 text-xs font-semibold">
+              <span className="text-center">
+                {t('labels.requesterFullName')}
+              </span>
             </div>
-            <div className="w-1/2 text-xs font-medium flex justify-center py-2 px-4 border border-gray-200">
+            <div className="flex w-1/2 justify-center border border-gray-200 px-4 py-2 text-xs font-medium">
               {item.requesterFullName}
             </div>
           </div>
           <div className="flex">
-            <div className="w-1/2 text-xs font-semibold bg-purple-100 flex justify-center py-2 px-4 border border-gray-200">
+            <div className="flex w-1/2 justify-center border border-gray-200 bg-purple-100 px-4 py-2 text-xs font-semibold">
               <span className="text-center">{t('labels.requesterEmail')}</span>
             </div>
-            <div className="w-1/2 text-xs whitespace-normal font-medium flex justify-center py-2 px-4 border border-gray-200">
+            <div className="flex w-1/2 justify-center whitespace-normal border border-gray-200 px-4 py-2 text-xs font-medium">
               {item.requesterEmail}
             </div>
           </div>
           <div className="flex">
-            <div className="w-1/2 text-xs font-semibold bg-purple-100 flex justify-center py-2 px-4 border border-gray-200">
+            <div className="flex w-1/2 justify-center border border-gray-200 bg-purple-100 px-4 py-2 text-xs font-semibold">
               <span className="text-center">{t('labels.requesterPhone')}</span>
             </div>
-            <div className="w-1/2 text-xs font-medium flex justify-center py-2 px-4 border border-gray-200">
+            <div className="flex w-1/2 justify-center border border-gray-200 px-4 py-2 text-xs font-medium">
               {item.requesterPhone}
             </div>
           </div>
           <div className="flex">
-            <div className="w-1/2 text-xs font-semibold bg-purple-100 flex justify-center py-2 px-4 border border-gray-200">
+            <div className="flex w-1/2 justify-center border border-gray-200 bg-purple-100 px-4 py-2 text-xs font-semibold">
               <span className="text-center">{t('labels.region')}</span>
             </div>
-            <div className="w-1/2 text-xs font-medium flex justify-center py-2 px-4 border border-gray-200">
+            <div className="flex w-1/2 justify-center border border-gray-200 px-4 py-2 text-xs font-medium">
               {t(`regions.${item.region}`)}
             </div>
           </div>
-          <div className="flex mt-2">
+          <div className="mt-2 flex">
             <Button gradientMonochrome="purple" fullSized>
-              <Link href={`/${activeLocale}/${AdminClientPaths.JoiningRequests}/${item.id}`}
-                    className="text-white"
+              <Link
+                href={`/${activeLocale}/${AdminClientPaths.JoiningRequests}/${item.id}`}
+                className="text-white"
               >
                 {t('labels.details')}
               </Link>

@@ -1,7 +1,8 @@
 'use client';
 
-import { FC, useEffect } from 'react';
-import { useAdminStore } from '../../store/adminStore';
+import { FC } from 'react';
+import type { ApiResponse } from '@/shared/types';
+import type { PagedJoiningRequests } from '@/features/admin/types/joiningRequestTypes';
 import { CurrentTab } from '../../constants';
 import { getAll } from '../../api/joiningRequestApi';
 import { useQuery } from '@tanstack/react-query';
@@ -11,22 +12,30 @@ import { Table } from 'flowbite-react';
 import { useMediaQuery } from 'react-responsive';
 import { useTranslations } from 'next-intl';
 import { Error } from '@/components/error';
-import { useSetCurrentTab } from '@/features/admin/hooks';
+import { useSetCurrentTab } from '@/shared/hooks';
+import { mediaQueries } from '@/shared/constants';
 
 const JoiningRequests: FC = () => {
   const t = useTranslations('JoiningRequest');
 
-  const isDesktopOrLaptop = useMediaQuery({ query: '(min-width: 1280px)' });
-
-  const { data, isLoading } = useQuery({
+  const { data, isLoading } = useQuery<ApiResponse<PagedJoiningRequests>>({
     queryKey: ['joiningRequests'],
     queryFn: () => getAll(),
   });
 
   useSetCurrentTab(CurrentTab.JoiningRequest);
 
+  const isDesktopOrLaptop = useMediaQuery({
+    query: mediaQueries.desktopOrLaptop,
+  });
+
   if (data && data.error) {
-    return <Error error={data.error} />
+    return (
+      <>
+        <h2 className="mb-4 text-center text-xl font-bold">{t('listTitle')}</h2>
+        <Error error={data.error} />
+      </>
+    );
   }
 
   if (isLoading) {
@@ -45,30 +54,36 @@ const JoiningRequests: FC = () => {
       <h2 className="mb-4 text-center text-xl font-bold">{t('listTitle')}</h2>
 
       <div className="flex items-center justify-center">
-          {isDesktopOrLaptop ? (
-            <Table hoverable>
-              <Table.Head>
-                <Table.HeadCell>{t('labels.name')}</Table.HeadCell>
-                <Table.HeadCell>{t('labels.requesterFullName')}</Table.HeadCell>
-                <Table.HeadCell>{t('labels.requesterEmail')}</Table.HeadCell>
-                <Table.HeadCell>{t('labels.requesterPhone')}</Table.HeadCell>
-                <Table.HeadCell>{t('labels.region')}</Table.HeadCell>
-                <Table.HeadCell>{t('labels.status.label')}</Table.HeadCell>
-                <Table.HeadCell></Table.HeadCell>
-              </Table.Head>
-              <Table.Body className="divide-y">
-                {data && data.entries.map((entry, idx) => (
-                    <JoiningRequestsItem key={entry.id} item={entry} index={idx}/>
-                  ))}
-              </Table.Body>
-            </Table>
-          ) : (
-            <div className="font-medium w-[100%]">
-              {data && data.entries.map((entry, idx) => (
+        {isDesktopOrLaptop ? (
+          <Table hoverable>
+            <Table.Head>
+              <Table.HeadCell>{t('labels.name')}</Table.HeadCell>
+              <Table.HeadCell>{t('labels.requesterFullName')}</Table.HeadCell>
+              <Table.HeadCell>{t('labels.requesterEmail')}</Table.HeadCell>
+              <Table.HeadCell>{t('labels.requesterPhone')}</Table.HeadCell>
+              <Table.HeadCell>{t('labels.region')}</Table.HeadCell>
+              <Table.HeadCell>{t('labels.status.label')}</Table.HeadCell>
+              <Table.HeadCell></Table.HeadCell>
+            </Table.Head>
+            <Table.Body className="divide-y">
+              {data &&
+                data.entries.map((entry, idx) => (
+                  <JoiningRequestsItem
+                    key={entry.id}
+                    item={entry}
+                    index={idx}
+                  />
+                ))}
+            </Table.Body>
+          </Table>
+        ) : (
+          <div className="w-[100%] font-medium">
+            {data &&
+              data.entries.map((entry, idx) => (
                 <JoiningRequestsItem key={entry.id} item={entry} index={idx} />
               ))}
           </div>
-          )}
+        )}
       </div>
     </div>
   );

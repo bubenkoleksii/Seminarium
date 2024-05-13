@@ -8,16 +8,39 @@ import { Login } from './login';
 
 import styles from './Navbar.module.scss';
 import { SessionProvider } from 'next-auth/react';
+import { useNavStore } from './store/navStore';
+import { useRouter, usePathname } from 'next/navigation';
 
 const Navbar: FC = () => {
+  const sidebarOpen = useNavStore(store => store.sidebarOpen);
+  const setSidebarOpen = useNavStore(store => store.setSidebarOpen);
+  const pathname = usePathname();
+  const router = useRouter();
+
+  const showSidebar = () => {
+    const pathsWithSidebar = [
+      'admin',
+    ]
+
+    if (pathsWithSidebar.some(path => pathname.includes(path)))
+      setSidebarOpen(!sidebarOpen);
+    else {
+      router.push('/');
+    }
+  }
+
   return (
     <header className={styles.header}>
       <SessionProvider>
-        <Link href="/" className={styles.logo}>
-          <Logo />
+        <div className={styles.logo}>
+          <div onClick={showSidebar}>
+            <Logo />
+          </div>
 
-          <h1 className={styles.logoText}>Seminarium</h1>
-        </Link>
+          <Link href="/">
+            <h1 className={styles.logoText}>Seminarium</h1>
+          </Link>
+        </div>
 
         <div>Middle</div>
 

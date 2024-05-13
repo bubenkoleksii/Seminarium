@@ -10,22 +10,20 @@ const Internal: FC<InternalProps> = ({ message }) => {
   const t = useTranslations('Error');
 
   return (
-    <div className="bg-gray-100 h-screen flex justify-center">
-      <div className="mt-24 m-auto">
+    <div className="flex h-screen justify-center bg-gray-100">
+      <div className="m-auto mt-24">
         <div className="emoji-error">
           <Image
             alt="internal error"
             src="/errors/500.svg"
             height={160}
             width={260}
-            className="rounded-full m-auto"
+            className="m-auto rounded-full"
           />
         </div>
 
-        <div class="font-bold tracking-widest mt-4 flex flex-col gap-3 justify-center">
-          <span class="text-gray-700 text-xl">
-            {t('internal')}
-          </span>
+        <div class="mt-4 flex flex-col justify-center gap-3 font-bold tracking-widest">
+          <span class="text-xl text-gray-700">{t('internal')}</span>
         </div>
       </div>
     </div>

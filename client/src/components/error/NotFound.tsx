@@ -10,20 +10,20 @@ const NotFound: FC<NotFoundProps> = ({ message }) => {
   const t = useTranslations('Error');
 
   return (
-    <div className="bg-gray-100 h-screen flex justify-center">
-      <div className="mt-8 m-auto">
+    <div className="flex h-screen justify-center bg-gray-100">
+      <div className="m-auto mt-8">
         <div className="emoji-error">
           <Image
             alt="Not Found"
             src="/errors/404.svg"
             height={160}
             width={260}
-            className="rounded-full m-auto"
+            className="m-auto rounded-full"
           />
         </div>
 
-        <div class="font-bold tracking-widest mt-4 flex flex-col gap-3 justify-center">
-          <span class="text-gray-700 text-2xl text-center p-2 text-xl">
+        <div class="mt-4 flex flex-col justify-center gap-3 font-bold tracking-widest">
+          <span class="p-2 text-center text-2xl text-xl text-gray-700">
             {message ? message : t('notFound')}
           </span>
         </div>

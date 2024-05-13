@@ -5,4 +5,6 @@ export type ApiError = {
   status: number;
   message?: string;
   params?: string[];
-}
+};
+
+export type ApiResponse<T> = T | string | { error };

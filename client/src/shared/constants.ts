@@ -44,3 +44,8 @@ export const school = {
     none: 'none',
   },
 };
+
+export const mediaQueries = {
+  phone: '(max-width: 768px)',
+  desktopOrLaptop: '(min-width: 1280px)',
+};

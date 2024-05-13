@@ -44,10 +44,11 @@ async function handleResponse(response: Response) {
       status: data.status,
       detail: data.detail,
       params: data.params,
-      message: typeof data === 'string' && data.length > 0
-        ? data
-        : response.statusText
-    }
+      message:
+        typeof data === 'string' && data.length > 0
+          ? data
+          : response.statusText,
+    };
 
     return { error };
   }

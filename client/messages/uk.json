@@ -1,4 +1,10 @@
 {
+  "AdminContentTabs": {
+    "profile": "Профіль",
+    "joiningRequest": "Запити на приєднання",
+    "home": "На головну",
+    "hide": "Приховати панель"
+  },
   "Auth": {
     "registrationBtn": "Зареєструватись",
     "loginBtn": "Увійти",
@@ -26,6 +32,7 @@
       "areOccupied": "Наразі навчальний заклад окупований",
       "submit": "Надіслати запит на приєднання",
       "details": "Детальніше",
+      "detailInfo": "Детальна інформація",
       "status": {
         "label": "Статус",
         "created": "Новий",

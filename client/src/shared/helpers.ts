@@ -10,17 +10,17 @@ export function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
 }
 
-export function getColorByStatus(status: string) {
+export function getColorByStatus(status?: string | null) {
   if (status === 'approved') {
-    return `text-[#1A9B06FF]`
+    return `text-[#1A9B06FF]`;
   }
 
   if (status === 'rejected') {
-    return `text-[#C00210F2]`
+    return `text-[#C00210F2]`;
   }
 
   if (status === 'created') {
-    return `text-purple-950`
+    return `text-purple-950`;
   }
 
   return `text-[#2d2d2d]`;

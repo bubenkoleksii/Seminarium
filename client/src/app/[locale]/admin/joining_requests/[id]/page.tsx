@@ -11,5 +11,5 @@ export default function MyComponent({ params }: Props) {
     <div className="p-3">
       <JoiningRequest id={params.id} />
     </div>
-  )
+  );
 }

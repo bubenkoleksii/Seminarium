@@ -1,41 +1,90 @@
 'use client';
 
 import { FC } from 'react';
-import { GitPullRequestArrow, User } from 'lucide-react';
+import { GitPullRequestArrow, User, Home, ChevronsLeft } from 'lucide-react';
 import Link from 'next/link';
 import { useAdminStore } from '@/features/admin/store/adminStore';
 import { AdminClientPaths, CurrentTab } from '../constants';
-import { useLocale } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
+import { Tooltip } from 'flowbite-react';
+import { useScrollOffset } from '@/shared/hooks';
+import { useNavStore } from '@/features/nav';
 
 const AdminSidebar: FC = () => {
+  const t = useTranslations('AdminContentTabs');
   const activeLocale = useLocale();
+
   const currentTab = useAdminStore((state) => state.currentTab);
+  const sidebarOpen = useNavStore(store => store.sidebarOpen);
+  const setSidebarOpen = useNavStore(store => store.setSidebarOpen);
+
+  const topOffset = useScrollOffset();
 
   return (
-    <div className="sidebar flex h-screen flex-col items-center justify-start bg-gray-50">
-      <Link
-        href={`/${activeLocale}/${AdminClientPaths.Profile}/`}
-        className={`flex h-[50px] w-[50px] items-center justify-center 
+    <div
+      style={{
+        paddingTop: `${topOffset}px`,
+        display: !sidebarOpen ? 'none' : 'block',
+    }}
+      className={`flex h-screen flex-col items-center justify-start bg-gray-50`}
+    >
+      <Tooltip content={t('profile')} placement="right" style="light">
+        <Link
+          href={`/${activeLocale}/${AdminClientPaths.Profile}/`}
+          className={`flex h-[50px] w-[50px] items-center justify-center 
          ${currentTab === CurrentTab.Profile ? `bg-purple-950` : `bg-gray-50 hover:bg-gray-200`} 
          text-gray-800 transition duration-300`}
-      >
-        <User
-          color={`${currentTab === CurrentTab.Profile ? `#f9fafb` : `#3B0764`}`}
-          size={20}
-        />
-      </Link>
+        >
+          <User
+            color={`${currentTab === CurrentTab.Profile ? `#f9fafb` : `#3B0764`}`}
+            size={20}
+          />
+        </Link>
+      </Tooltip>
 
-      <Link
-        href={`/${activeLocale}/${AdminClientPaths.JoiningRequests}/`}
-        className={`flex h-[50px] w-[50px] items-center justify-center 
-         ${currentTab === CurrentTab.JoiningRequest ? `bg-purple-950` : `bg-gray-50 hover:bg-gray-200`} 
-         text-gray-800 transition duration-300`}
-      >
-        <GitPullRequestArrow
-          color={`${currentTab === CurrentTab.JoiningRequest ? `#f9fafb` : `#3B0764`}`}
-          size={20}
-        />
-      </Link>
+      <Tooltip content={t('joiningRequest')} placement="right" style="light">
+        <Link
+          href={`/${activeLocale}/${AdminClientPaths.JoiningRequests}/`}
+          className={`flex h-[50px] w-[50px] items-center justify-center 
+           ${
+             currentTab === CurrentTab.JoiningRequest
+               ? `bg-purple-950`
+               : `bg-gray-50 hover:bg-gray-200`
+           } 
+           text-gray-800 transition duration-300`}
+        >
+          <GitPullRequestArrow
+            color={`${currentTab === CurrentTab.JoiningRequest ? `#f9fafb` : `#3B0764`}`}
+            size={20}
+          />
+        </Link>
+      </Tooltip>
+
+      <Tooltip content={t('home')} placement="right" style="light">
+        <Link
+          href={`/${activeLocale}/`}
+          className={`flex h-[50px] mt-[50px] w-[50px] items-center justify-center bg-gray-50 hover:bg-gray-200 
+          text-gray-800 transition duration-300`}
+        >
+          <Home
+            color={`#3B0764`}
+            size={20}
+          />
+        </Link>
+      </Tooltip>
+
+      <Tooltip content={t('hide')} placement="right" style="light">
+        <div
+          onClick={() => setSidebarOpen(false)}
+          className={`flex h-[50px] w-[50px] cursor-pointer items-center justify-center bg-gray-50 hover:bg-gray-200 
+          text-gray-800 transition duration-300`}
+        >
+          <ChevronsLeft
+            color={`#3B0764`}
+            size={20}
+          />
+        </div>
+      </Tooltip>
     </div>
   );
 };
