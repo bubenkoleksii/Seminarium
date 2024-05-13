@@ -11,6 +11,7 @@ import { Error } from '@/components/error';
 import { useSetCurrentTab } from '@/shared/hooks';
 import { CurrentTab } from '@/features/admin/constants';
 import { getColorByStatus } from '@/shared/helpers';
+import { DateTime } from '@/components/date-time';
 
 interface JoiningRequestProps {
   id: string;
@@ -53,14 +54,14 @@ const JoiningRequest: FC<JoiningRequestProps> = ({ id }) => {
       <h2 className="mb-4 text-center text-xl font-bold">{t('oneTitle')}</h2>
 
       <h6 className="py-2 text-center font-bold">
-        <p className="color-gray-500 mr-1 text-sm font-normal lg:text-lg">
+        <p className="color-gray-500 mr-1 text-sm lg:text-lg font-normal">
           {t('labels.name')}
         </p>
-        {data.name}
+        <span className="lg:text-2xl text-purple-950">{data.name}</span>
       </h6>
 
       <h6 className="py-2 text-center font-bold">
-        <p className="color-gray-500 mr-1 text-sm font-normal lg:text-lg">
+        <p className="color-gray-500 lg:text-lg mr-1 text-sm font-normal">
           {t('labels.detailInfo')}
         </p>
       </h6>
@@ -72,6 +73,27 @@ const JoiningRequest: FC<JoiningRequestProps> = ({ id }) => {
         <div className="flex w-1/2 justify-center border border-gray-200 px-4 py-2 font-medium">
           <span className={`${statusColor} font-bold`}>
             {t(`labels.status.${data.status}`)}
+          </span>
+        </div>
+      </div>
+
+      <div className="flex text-xs lg:text-lg">
+        <div className="flex w-1/2 justify-center border border-gray-200 bg-purple-100 px-4 py-2 font-semibold">
+          <span className="text-center">{t('labels.id')}</span>
+        </div>
+        <div className="flex w-1/2 justify-center border border-gray-200 px-4 py-2 font-medium">
+          <span>
+            {data.id}
+          </span>
+        </div>
+      </div>
+      <div className="flex text-xs lg:text-lg">
+        <div className="flex w-1/2 justify-center border border-gray-200 bg-purple-100 px-4 py-2 font-semibold">
+          <span className="text-center">{t('labels.createdAt')}</span>
+        </div>
+        <div className="flex w-1/2 justify-center border border-gray-200 px-4 py-2 font-medium">
+          <span>
+            <DateTime date={data.createdAt} />
           </span>
         </div>
       </div>
