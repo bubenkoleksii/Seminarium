@@ -14,6 +14,7 @@ import { useTranslations } from 'next-intl';
 import { Error } from '@/components/error';
 import { useSetCurrentTab } from '@/shared/hooks';
 import { mediaQueries } from '@/shared/constants';
+import { SearchInput } from '@/components/search-input';
 
 const JoiningRequests: FC = () => {
   const t = useTranslations('JoiningRequest');
@@ -49,9 +50,19 @@ const JoiningRequests: FC = () => {
     window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
   }
 
+  const handleSearch = (value: string) => {
+    console.log(value);
+  }
+
   return (
     <div className="p-3">
       <h2 className="mb-4 text-center text-xl font-bold">{t('listTitle')}</h2>
+
+      <SearchInput
+        maxLength={200}
+        placeholder={t('placeholders.shortName')}
+        onSubmit={handleSearch}
+      />
 
       <div className="flex items-center justify-center">
         {isDesktopOrLaptop ? (
@@ -62,6 +73,7 @@ const JoiningRequests: FC = () => {
               <Table.HeadCell>{t('labels.requesterEmail')}</Table.HeadCell>
               <Table.HeadCell>{t('labels.requesterPhone')}</Table.HeadCell>
               <Table.HeadCell>{t('labels.region')}</Table.HeadCell>
+              <Table.HeadCell>{t('labels.createdAt')}</Table.HeadCell>
               <Table.HeadCell>{t('labels.status.label')}</Table.HeadCell>
               <Table.HeadCell></Table.HeadCell>
             </Table.Head>

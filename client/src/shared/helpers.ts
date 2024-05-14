@@ -10,12 +10,14 @@ export function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
 }
 
-export function getColorByStatus(status?: string | null) {
-  if (status === 'approved') {
+type Status = 'approved' | 'ok' | 'rejected' | 'danger' | 'created';
+
+export function getColorByStatus(status?: Status | null) {
+  if (status === 'approved' || status === 'ok') {
     return `text-[#1A9B06FF]`;
   }
 
-  if (status === 'rejected') {
+  if (status === 'rejected' || status === 'danger') {
     return `text-[#C00210F2]`;
   }
 

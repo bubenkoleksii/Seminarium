@@ -7,6 +7,7 @@ import { getColorByStatus } from '@/shared/helpers';
 import Link from 'next/link';
 import { AdminClientPaths } from '@/features/admin/constants';
 import { mediaQueries } from '@/shared/constants';
+import { DateTime } from '@/components/date-time';
 
 interface JoiningRequestsItemProps {
   item: JoiningRequestResponse;
@@ -30,7 +31,12 @@ const JoiningRequestsItem: FC<JoiningRequestsItemProps> = ({ item, index }) => {
           <Table.Cell>{item.requesterFullName}</Table.Cell>
           <Table.Cell>{item.requesterEmail}</Table.Cell>
           <Table.Cell>{item.requesterPhone}</Table.Cell>
-          <Table.Cell>{t(`regions.${item.region}`)}</Table.Cell>
+          <Table.Cell>
+            {item.region === 'none' ? '-' : t(`regions.${item.region}`)}
+          </Table.Cell>
+          <Table.Cell>
+            <DateTime date={item.createdAt} />
+          </Table.Cell>
           <Table.Cell>
             <span className={`${statusColor} font-bold`}>
               {t(`labels.status.${item.status}`)}
@@ -55,6 +61,7 @@ const JoiningRequestsItem: FC<JoiningRequestsItemProps> = ({ item, index }) => {
             </span>
             {item.name}
           </h6>
+
           <div className="flex">
             <div className="flex w-1/2 justify-center border border-gray-200 bg-purple-100 px-4 py-2 text-xs font-semibold">
               <span className="text-center">{t('labels.status.label')}</span>
@@ -65,6 +72,18 @@ const JoiningRequestsItem: FC<JoiningRequestsItemProps> = ({ item, index }) => {
               </span>
             </div>
           </div>
+
+          <div className="flex">
+            <div className="flex w-1/2 justify-center border border-gray-200 bg-purple-100 px-4 py-2 text-xs font-semibold">
+              <span className="text-center">{t('labels.createdAt')}</span>
+            </div>
+            <div className="flex w-1/2 justify-center border border-gray-200 px-4 py-2 text-xs font-medium">
+              <span>
+                <DateTime date={item.createdAt} />
+              </span>
+            </div>
+          </div>
+
           <div className="flex">
             <div className="flex w-1/2 justify-center border border-gray-200 bg-purple-100 px-4 py-2 text-xs font-semibold">
               <span className="text-center">
@@ -75,6 +94,7 @@ const JoiningRequestsItem: FC<JoiningRequestsItemProps> = ({ item, index }) => {
               {item.requesterFullName}
             </div>
           </div>
+
           <div className="flex">
             <div className="flex w-1/2 justify-center border border-gray-200 bg-purple-100 px-4 py-2 text-xs font-semibold">
               <span className="text-center">{t('labels.requesterEmail')}</span>
@@ -83,6 +103,7 @@ const JoiningRequestsItem: FC<JoiningRequestsItemProps> = ({ item, index }) => {
               {item.requesterEmail}
             </div>
           </div>
+
           <div className="flex">
             <div className="flex w-1/2 justify-center border border-gray-200 bg-purple-100 px-4 py-2 text-xs font-semibold">
               <span className="text-center">{t('labels.requesterPhone')}</span>
@@ -91,14 +112,16 @@ const JoiningRequestsItem: FC<JoiningRequestsItemProps> = ({ item, index }) => {
               {item.requesterPhone}
             </div>
           </div>
+
           <div className="flex">
             <div className="flex w-1/2 justify-center border border-gray-200 bg-purple-100 px-4 py-2 text-xs font-semibold">
               <span className="text-center">{t('labels.region')}</span>
             </div>
             <div className="flex w-1/2 justify-center border border-gray-200 px-4 py-2 text-xs font-medium">
-              {t(`regions.${item.region}`)}
+              {item.region === 'none' ? '-' : t(`regions.${item.region}`)}
             </div>
           </div>
+
           <div className="mt-2 flex">
             <Button gradientMonochrome="purple" fullSized>
               <Link
@@ -109,7 +132,10 @@ const JoiningRequestsItem: FC<JoiningRequestsItemProps> = ({ item, index }) => {
               </Link>
             </Button>
           </div>
-          <hr className="mx-auto mb-4 h-[3px] rounded border-0 bg-gray-200 dark:bg-gray-700 md:my-5" />
+          <hr
+            className="mx-auto mb-4 h-[3px] rounded border-0 bg-gray-200
+          dark:bg-gray-700 md:my-5"
+          />
         </>
       )}
     </>

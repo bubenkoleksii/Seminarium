@@ -10,9 +10,9 @@ export default function AdminLayout({ children }: PropsWithChildren) {
     defaultOptions: {
       queries: {
         staleTime: 1000 * 60,
-      }
-    }
-   });
+      },
+    },
+  });
 
   return (
     <QueryClientProvider client={queryClient}>

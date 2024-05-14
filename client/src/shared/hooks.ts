@@ -14,15 +14,16 @@ export const useSetCurrentTab = (currentTab) => {
 export const useScrollOffset = () => {
   const [topOffset, setTopOffset] = useState(0);
 
-  useEffect(() => {
-    const handleScroll = () => {
-      const offset =
-        window.pageYOffset ||
-        document.documentElement.scrollTop ||
-        document.body.scrollTop;
-      setTopOffset(offset);
-    };
+  const handleScroll = () => {
+    const offset =
+      window.pageYOffset ||
+      document.documentElement.scrollTop ||
+      document.body.scrollTop;
 
+    setTopOffset(offset);
+  };
+
+  useEffect(() => {
     window.addEventListener('scroll', handleScroll);
 
     return () => {

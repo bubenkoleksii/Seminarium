@@ -15,8 +15,8 @@ const AdminSidebar: FC = () => {
   const activeLocale = useLocale();
 
   const currentTab = useAdminStore((state) => state.currentTab);
-  const sidebarOpen = useNavStore(store => store.sidebarOpen);
-  const setSidebarOpen = useNavStore(store => store.setSidebarOpen);
+  const sidebarOpen = useNavStore((store) => store.sidebarOpen);
+  const setSidebarOpen = useNavStore((store) => store.setSidebarOpen);
 
   const topOffset = useScrollOffset();
 
@@ -25,7 +25,8 @@ const AdminSidebar: FC = () => {
       style={{
         paddingTop: `${topOffset}px`,
         display: !sidebarOpen ? 'none' : 'block',
-    }}
+        transition: 'padding-top 0.7s ease',
+      }}
       className={`flex h-screen flex-col items-center justify-start bg-gray-50`}
     >
       <Tooltip content={t('profile')} placement="right" style="light">
@@ -63,26 +64,20 @@ const AdminSidebar: FC = () => {
       <Tooltip content={t('home')} placement="right" style="light">
         <Link
           href={`/${activeLocale}/`}
-          className={`flex h-[50px] mt-[50px] w-[50px] items-center justify-center bg-gray-50 hover:bg-gray-200 
-          text-gray-800 transition duration-300`}
+          className={`mt-[50px] flex h-[50px] w-[50px] items-center justify-center bg-gray-50 text-gray-800 
+          transition duration-300 hover:bg-gray-200`}
         >
-          <Home
-            color={`#3B0764`}
-            size={20}
-          />
+          <Home color={`#3B0764`} size={20} />
         </Link>
       </Tooltip>
 
       <Tooltip content={t('hide')} placement="right" style="light">
         <div
           onClick={() => setSidebarOpen(false)}
-          className={`flex h-[50px] w-[50px] cursor-pointer items-center justify-center bg-gray-50 hover:bg-gray-200 
-          text-gray-800 transition duration-300`}
+          className={`flex h-[50px] w-[50px] cursor-pointer items-center justify-center bg-gray-50 text-gray-800 
+          transition duration-300 hover:bg-gray-200`}
         >
-          <ChevronsLeft
-            color={`#3B0764`}
-            size={20}
-          />
+          <ChevronsLeft color={`#3B0764`} size={20} />
         </div>
       </Tooltip>
     </div>
