@@ -34,6 +34,9 @@ const JoiningRequestForm: FC = () => {
       .max(1000000, v('maxNumber')),
     territorialCommunity: Yup.string().max(250, v('max')),
     address: Yup.string().max(250, v('max')),
+    type: Yup.string().required(v('required')),
+    region: Yup.string().required(v('required')),
+    ownershipType: Yup.string().required(v('required'))
   });
 
   const handleSubmit = (values) => {
@@ -52,11 +55,11 @@ const JoiningRequestForm: FC = () => {
         name: '',
         shortName: '',
         gradingSystem: '',
-        type: school.type.secondary,
+        type: '',
         postalCode: '',
-        ownershipType: school.ownershipType.state,
+        ownershipType: '',
         studentsQuantity: '',
-        region: school.region.kyiv,
+        region: '',
         territorialCommunity: '',
         address: '',
         areOccupied: false,
@@ -65,7 +68,7 @@ const JoiningRequestForm: FC = () => {
       onSubmit={handleSubmit}
     >
       <div className={styles.container}>
-        <h2 className="mb-4 text-center text-2xl font-semibold">
+        <h2 className="mb-4 text-center text-2xl text-gray-950 font-semibold">
           {t('title')}
         </h2>
         <Form className={styles.form}>
@@ -195,6 +198,8 @@ const JoiningRequestForm: FC = () => {
               {t('labels.type')}
             </label>
             <Field as="select" id="type" className={styles.select} name="type">
+              <option value="">
+              </option>
               {Object.values(school.type).map((value, index) => (
                 <option key={index} value={value}>
                   {t(`types.${value}`)}
@@ -234,6 +239,8 @@ const JoiningRequestForm: FC = () => {
               className={styles.select}
               name="ownershipType"
             >
+              <option value="">
+              </option>
               {Object.values(school.ownershipType).map((value, index) => (
                 <option key={index} value={value}>
                   {t(`ownershipTypes.${value}`)}
@@ -273,6 +280,8 @@ const JoiningRequestForm: FC = () => {
               className={styles.select}
               name="region"
             >
+              <option value="">
+              </option>
               {Object.values(school.region).map((value, index) => (
                 <option key={index} value={value}>
                   {t(`regions.${value}`)}
