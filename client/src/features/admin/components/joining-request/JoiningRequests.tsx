@@ -1,7 +1,7 @@
 'use client';
 
 import { FC, useEffect, useState } from 'react';
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import type { ApiResponse } from '@/shared/types';
 import type { PagedJoiningRequests } from '@/features/admin/types/joiningRequestTypes';
 import { CurrentTab } from '../../constants';
@@ -17,6 +17,7 @@ import { useSetCurrentTab } from '@/shared/hooks';
 import { mediaQueries, school } from '@/shared/constants';
 import { SearchInput } from '@/components/search-input';
 import { buildQueryString } from '@/shared/helpers';
+import { Limit, Pagination } from '@/components/pagination';
 
 interface JoiningRequestsProps {
   regionParameter?: string,
@@ -35,7 +36,6 @@ const JoiningRequests: FC<JoiningRequestsProps> = ({
 
   const [search, setSearch] = useState<string>(searchParameter || '');
   const handleSearch = (value: string) => {
-    console.log('searc', value);
     setSearch(value);
   }
 
@@ -172,41 +172,62 @@ const JoiningRequests: FC<JoiningRequestsProps> = ({
             ))}
           </select>
         </div>
+
+        <div className="relative w-md">
+          <Limit limitOptions={[4, 8, 12]} currentLimit={12} onChangeLimit={(limit) => console.log(limit)} />
+        </div>
       </div>
 
-      <div className="flex items-center justify-center mt-3">
-        {isDesktopOrLaptop ? (
-          <Table hoverable>
-            <Table.Head>
-              <Table.HeadCell>{t('labels.name')}</Table.HeadCell>
-              <Table.HeadCell>{t('labels.requesterFullName')}</Table.HeadCell>
-              <Table.HeadCell>{t('labels.requesterEmail')}</Table.HeadCell>
-              <Table.HeadCell>{t('labels.requesterPhone')}</Table.HeadCell>
-              <Table.HeadCell>{t('labels.region')}</Table.HeadCell>
-              <Table.HeadCell>{t('labels.createdAt')}</Table.HeadCell>
-              <Table.HeadCell>{t('labels.status.label')}</Table.HeadCell>
-              <Table.HeadCell></Table.HeadCell>
-            </Table.Head>
-            <Table.Body className="divide-y">
-              {data &&
-                data.entries.map((entry, idx) => (
-                  <JoiningRequestsItem
-                    key={entry.id}
-                    item={entry}
-                    index={idx}
-                  />
-                ))}
-            </Table.Body>
-          </Table>
-        ) : (
-          <div className="w-[100%] font-medium">
-            {data &&
-              data.entries.map((entry, idx) => (
-                <JoiningRequestsItem key={entry.id} item={entry} index={idx} />
-              ))}
+      {data && data.entries.length === 0
+        ? <>
+          <h2 className="mb-4 text-center text-xl font-bold">{t('listTitle')}</h2>
+          <div className="mt-16 font-semibold flex justify-center items-center">
+            {t('labels.notFound')}
           </div>
-        )}
-      </div>
+        </>
+        :
+        <>
+          <div className="flex items-center justify-center mt-3">
+            {isDesktopOrLaptop ? (
+              <Table hoverable>
+                <Table.Head>
+                  <Table.HeadCell>{t('labels.name')}</Table.HeadCell>
+                  <Table.HeadCell>{t('labels.requesterFullName')}</Table.HeadCell>
+                  <Table.HeadCell>{t('labels.requesterEmail')}</Table.HeadCell>
+                  <Table.HeadCell>{t('labels.requesterPhone')}</Table.HeadCell>
+                  <Table.HeadCell>{t('labels.region')}</Table.HeadCell>
+                  <Table.HeadCell>{t('labels.createdAt')}</Table.HeadCell>
+                  <Table.HeadCell>{t('labels.status.label')}</Table.HeadCell>
+                  <Table.HeadCell></Table.HeadCell>
+                </Table.Head>
+                <Table.Body className="divide-y">
+                  {data &&
+                    data.entries.map((entry, idx) => (
+                      <JoiningRequestsItem
+                        key={entry.id}
+                        item={entry}
+                        index={idx}
+                      />
+                    ))}
+                </Table.Body>
+              </Table>
+            ) : (
+              <div className="w-[100%] font-medium">
+                {data &&
+                  data.entries.map((entry, idx) => (
+                    <JoiningRequestsItem key={entry.id} item={entry} index={idx} />
+                  ))}
+              </div>
+            )}
+          </div>
+
+          {data.entries && data.entries.length <= data.totalCount &&
+            <div className="mt-4">
+              <Pagination currentPage={8} totalCount={1} limit={4} onChangePage={(page) => console.log(page)} />
+            </div>
+          }
+        </>
+      }
     </div>
   );
 };
