@@ -1,6 +1,5 @@
 import type { ApiError } from '@/shared/types';
 import { getCurrentUserToken } from './auth';
-import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
 
 const baseUrl = process.env.API_GATEWAY_URL;
 
@@ -21,7 +20,10 @@ async function get(url: string) {
     headers: await getHeaders(),
   };
 
+  console.log(url, '1');
+
   const response = await fetch(baseUrl + url, requestOptions);
+
   return await handleResponse(response);
 }
 

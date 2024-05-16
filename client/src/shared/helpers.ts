@@ -1,3 +1,16 @@
+export function buildQueryString(params) {
+  let queryString = '';
+
+  for (const key in params) {
+    if (params.hasOwnProperty(key) && params[key] !== undefined && params[key] !== '') {
+      queryString += `${key}=${encodeURIComponent(params[key])}&`;
+    }
+  }
+
+  queryString = queryString.slice(0, -1);
+  return queryString;
+}
+
 export const replaceEmptyStringsWithNull = (values) => {
   Object.keys(values).forEach((key) => {
     if (typeof values[key] === 'string' && values[key] === '') {

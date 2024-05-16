@@ -6,7 +6,7 @@ type Props = {
   };
 };
 
-export default function MyComponent({ params }: Props) {
+export default function JoiningRequestPage({ params }: Props) {
   return (
     <div className="p-3">
       <JoiningRequest id={params.id} />

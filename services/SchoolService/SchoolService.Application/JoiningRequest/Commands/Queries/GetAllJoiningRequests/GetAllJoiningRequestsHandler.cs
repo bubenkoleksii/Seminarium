@@ -2,7 +2,7 @@
 
 public class GetAllJoiningRequestsHandler : IRequestHandler<GetAllJoiningRequestsQuery, GetAllJoiningRequestsModelResponse>
 {
-    private const uint DefaultTake = 10;
+    private const uint DefaultTake = 5;
 
     private readonly IQueryContext _queryContext;
 

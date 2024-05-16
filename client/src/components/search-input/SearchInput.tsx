@@ -1,19 +1,25 @@
-import React, { ChangeEvent, FC, FormEvent, useState } from 'react';
+import { ChangeEvent, FC, FormEvent, useState } from 'react';
 import { useTranslations } from 'next-intl';
+import { X } from 'lucide-react';
 
 interface SearchInputProps {
   placeholder?: string;
+  value?: string;
   onSubmit: (searchValue: string) => void;
   size?: 'small' | 'medium' | 'large';
   maxLength?: number;
 }
 
-const SearchInput: FC<SearchInputProps> =  ({ placeholder, onSubmit, maxLength, size = 'medium' }) => {
+const SearchInput: FC<SearchInputProps> =  ({ placeholder, value, onSubmit, maxLength, size = 'medium' }) => {
   const t = useTranslations('SearchInput');
-  const [searchValue, setSearchValue] = useState<string>('');
+  const [searchValue, setSearchValue] = useState<string>(value || '');
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setSearchValue(e.target.value);
+    const value = e.target.value;
+    setSearchValue(value);
+
+    if (!value)
+      onSubmit('');
   };
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
@@ -21,6 +27,12 @@ const SearchInput: FC<SearchInputProps> =  ({ placeholder, onSubmit, maxLength, 
 
     onSubmit(searchValue);
   };
+
+  const handleClear = () => {
+    setSearchValue('');
+
+    onSubmit('');
+};
 
   const getSizeClassName = () => {
     switch (size) {
@@ -66,6 +78,11 @@ const SearchInput: FC<SearchInputProps> =  ({ placeholder, onSubmit, maxLength, 
           onChange={handleInputChange}
           required
         />
+        <div onClick={handleClear}
+          className={`cursor-pointer absolute end-24 bottom-4`}
+        >
+          <X color="#6b6b77" />
+        </div>
         <button
           type="submit"
           className={`text-white absolute end-2.5 bottom-2 bg-purple-950 hover:bg-purple-900 

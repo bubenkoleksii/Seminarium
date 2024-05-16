@@ -1,9 +1,21 @@
 import { JoiningRequests } from '@/features/admin';
 
-export default function JoiningRequestsPage() {
+type Props = {
+  searchParams: {
+    region: string,
+    sortByDateAsc: string,
+    schoolName: string
+  }
+}
+
+export default function JoiningRequestsPage({ searchParams }: Props) {
   return (
     <div className="p-3">
-      <JoiningRequests />
+      <JoiningRequests
+        sortByDateAscParameter={searchParams.sortByDateAsc}
+        regionParameter={searchParams.region}
+        searchParameter={searchParams.schoolName}
+      />
     </div>
   );
 }
