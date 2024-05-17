@@ -2,7 +2,9 @@ export function buildQueryString(params) {
   let queryString = '';
 
   for (const key in params) {
-    if (params.hasOwnProperty(key) && params[key] !== undefined && params[key] !== '') {
+    if (params.hasOwnProperty(key) &&
+      params[key] !== undefined && params[key] !== null && params[key] !== ''
+    ) {
       queryString += `${key}=${encodeURIComponent(params[key])}&`;
     }
   }

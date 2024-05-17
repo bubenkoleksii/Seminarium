@@ -17,7 +17,9 @@ const Pagination: FC<PaginationProps> = (
   const pagesCount: number = Math.ceil(totalCount / limit);
 
   const firstPages: number[] = [1, 2];
-  const lastPages: number[] = [pagesCount - 1, pagesCount];
+  let lastPages = [pagesCount - 1, pagesCount];
+  lastPages = lastPages.some(item => firstPages.includes(item)) ? [] : lastPages;
+
   const middlePage: number = currentPage < Math.ceil(pagesCount / 2)
     ? currentPage + Math.ceil(currentPage / 2)
     : currentPage + Math.floor((pagesCount - 1 - currentPage) / 2);
@@ -99,10 +101,10 @@ const Pagination: FC<PaginationProps> = (
               </>
             }
 
-            {lastPages[0] - middlePage !== 1 &&
+            {lastPages.length > 0 && lastPages[0] - middlePage !== 1 &&
               <span>...</span>
             }
-            {lastPages.map((page) => (
+            {lastPages.length > 0 && lastPages.map((page) => (
               <button
                 key={page}
                 className={page === currentPage ? "h-12 bg-purple-950 text-white px-4 py-2 rounded" : "text-gray-800 h-12 bg-white px-4 py-2 rounded cursor-pointer transition-colors hover:bg-gray-200"}

@@ -22,13 +22,17 @@ import { Limit, Pagination } from '@/components/pagination';
 interface JoiningRequestsProps {
   regionParameter?: string,
   sortByDateAscParameter?: string,
-  searchParameter?: string
+  searchParameter?: string,
+  limitParameter?: number,
+  pageParameter?: number,
 }
 
 const JoiningRequests: FC<JoiningRequestsProps> = ({
     regionParameter,
     sortByDateAscParameter,
-    searchParameter
+    searchParameter,
+    limitParameter,
+    pageParameter
 }) => {
   const t = useTranslations('JoiningRequest');
   const pathname = usePathname();
@@ -56,14 +60,34 @@ const JoiningRequests: FC<JoiningRequestsProps> = ({
     setFilterByRegion('');
   }
 
+  const limitOptions = [4, 8, 12];
+  const [limit, setLimit] = useState<number>(limitParameter || limitOptions[0])
+  const handleLimit = (value: number) => {
+    setLimit(value);
+  }
+
+  const defaultPage = 1;
+  const [page, setPage] = useState<number>(pageParameter || defaultPage);
+  const handlePage = (value: number) => {
+    setPage(value);
+  }
+
+  const skip = ((pageParameter || defaultPage) - 1) * (limitParameter || limitOptions[0]);
+  console.log('skip', skip);
+
   const buildQuery = () => buildQueryString({
     region: regionParameter,
     sortByDateAsc: sortByDateAscParameter,
-    schoolName: searchParameter
+    schoolName: searchParameter,
+    take: limitParameter,
+    skip
   });
 
   const { data, isLoading } = useQuery<ApiResponse<PagedJoiningRequests>>({
-    queryKey: ['joiningRequests', regionParameter, sortByDateAscParameter, searchParameter],
+    queryKey: ['joiningRequests',
+      regionParameter, sortByDateAscParameter, searchParameter,
+      limitParameter, pageParameter
+    ],
     queryFn: () => getAll(buildQuery()),
   });
 
@@ -78,6 +102,8 @@ const JoiningRequests: FC<JoiningRequestsProps> = ({
 
     if (search) params.set('schoolName', search);
     if (filterByRegion) params.set('region', filterByRegion);
+    if (limit) params.set('take', limit.toString());
+    if (page) params.set('page', page.toString());
 
     if (sortByDate) {
       const sortByDateParameter = sortByDate === 'asc' ? 'true' : 'false';
@@ -85,7 +111,7 @@ const JoiningRequests: FC<JoiningRequestsProps> = ({
     }
 
     replace(`${pathname}?${params.toString()}`)
-  }, [search, sortByDate, filterByRegion]);
+  }, [search, sortByDate, filterByRegion, limit, page]);
 
   if (data && data.error) {
     return (
@@ -174,13 +200,26 @@ const JoiningRequests: FC<JoiningRequestsProps> = ({
         </div>
 
         <div className="relative w-md">
-          <Limit limitOptions={[4, 8, 12]} currentLimit={12} onChangeLimit={(limit) => console.log(limit)} />
+          <Limit
+            limitOptions={limitOptions}
+            currentLimit={limit}
+            onChangeLimit={(limit) => handleLimit(limit)}
+          />
         </div>
       </div>
 
+      {data && data.entries.length !== data.total &&
+        <div className="mt-4">
+          <Pagination
+            currentPage={page}
+            totalCount={data.total}
+            limit={data.take}
+            onChangePage={(page) => handlePage(page)} />
+        </div>
+      }
+
       {data && data.entries.length === 0
         ? <>
-          <h2 className="mb-4 text-center text-xl font-bold">{t('listTitle')}</h2>
           <div className="mt-16 font-semibold flex justify-center items-center">
             {t('labels.notFound')}
           </div>
@@ -220,12 +259,6 @@ const JoiningRequests: FC<JoiningRequestsProps> = ({
               </div>
             )}
           </div>
-
-          {data.entries && data.entries.length <= data.totalCount &&
-            <div className="mt-4">
-              <Pagination currentPage={8} totalCount={1} limit={4} onChangePage={(page) => console.log(page)} />
-            </div>
-          }
         </>
       }
     </div>

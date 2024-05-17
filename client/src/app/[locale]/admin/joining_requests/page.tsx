@@ -4,7 +4,9 @@ type Props = {
   searchParams: {
     region: string,
     sortByDateAsc: string,
-    schoolName: string
+    schoolName: string,
+    take: string,
+    page: string,
   }
 }
 
@@ -15,6 +17,8 @@ export default function JoiningRequestsPage({ searchParams }: Props) {
         sortByDateAscParameter={searchParams.sortByDateAsc}
         regionParameter={searchParams.region}
         searchParameter={searchParams.schoolName}
+        limitParameter={Number(searchParams.take)}
+        pageParameter={Number(searchParams.page)}
       />
     </div>
   );

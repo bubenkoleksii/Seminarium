@@ -22,8 +22,8 @@ const BadRequest: FC<BadRequestProps> = ({ message }) => {
           />
         </div>
 
-        <div class="mt-4 flex flex-col justify-center gap-3 font-bold tracking-widest">
-          <span class="p-2 text-center text-2xl text-xl text-gray-700">
+        <div className="mt-4 flex flex-col justify-center gap-3 font-bold tracking-widest">
+          <span className="p-2 text-center text-2xl text-xl text-gray-700">
             {message ? message : t('badRequest')}
           </span>
         </div>
