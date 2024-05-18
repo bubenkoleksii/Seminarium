@@ -28,6 +28,9 @@ public class GetAllJoiningRequestsHandler : IRequestHandler<GetAllJoiningRequest
                 : dbQuery.OrderByDescending(r => r.CreatedAt);
         }
 
+        if (request.Status.HasValue)
+            dbQuery = dbQuery.Where(r => r.Status == request.Status);
+
         if (request.Region.HasValue)
             dbQuery = dbQuery.Where(r => r.Region == request.Region);
 

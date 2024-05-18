@@ -7,6 +7,8 @@ public record GetAllJoiningRequestsParams(
 
     string? Region,
 
+    string? Status,
+
     uint Skip,
 
     uint? Take

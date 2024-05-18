@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { JoiningRequestResponse } from '../../types/joiningRequestTypes';
+import { JoiningRequestResponse } from '../../../types/joiningRequestTypes';
 import { Table, Button } from 'flowbite-react';
 import { useMediaQuery } from 'react-responsive';
 import { useLocale, useTranslations } from 'next-intl';

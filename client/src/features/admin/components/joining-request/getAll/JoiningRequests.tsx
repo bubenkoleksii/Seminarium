@@ -4,11 +4,11 @@ import { FC, useEffect, useState } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import type { ApiResponse } from '@/shared/types';
 import type { PagedJoiningRequests } from '@/features/admin/types/joiningRequestTypes';
-import { CurrentTab } from '../../constants';
-import { getAll } from '../../api/joiningRequestApi';
+import { adminQueries, CurrentTab } from '../../../constants';
+import { getAll } from '../../../api/joiningRequestApi';
 import { useQuery } from '@tanstack/react-query';
 import { Loader } from '@/components/loader';
-import { JoiningRequestsItem } from '@/features/admin/components/joining-request/JoiningRequestsItem';
+import { JoiningRequestsItem } from '@/features/admin/components/joining-request/getAll/JoiningRequestsItem';
 import { Table } from 'flowbite-react';
 import { useMediaQuery } from 'react-responsive';
 import { useTranslations } from 'next-intl';
@@ -23,6 +23,7 @@ interface JoiningRequestsProps {
   regionParameter?: string,
   sortByDateAscParameter?: string,
   searchParameter?: string,
+  statusParameter?: string,
   limitParameter?: number,
   pageParameter?: number,
 }
@@ -31,6 +32,7 @@ const JoiningRequests: FC<JoiningRequestsProps> = ({
     regionParameter,
     sortByDateAscParameter,
     searchParameter,
+    statusParameter,
     limitParameter,
     pageParameter
 }) => {
@@ -41,6 +43,14 @@ const JoiningRequests: FC<JoiningRequestsProps> = ({
   const [search, setSearch] = useState<string>(searchParameter || '');
   const handleSearch = (value: string) => {
     setSearch(value);
+  }
+
+  const [status, setStatus] = useState<string>(statusParameter || '');
+  const handleStatus = (value: string) => {
+    setStatus(value);
+  }
+  const handleStatusClear = () => {
+    setStatus('');
   }
 
   const [sortByDate, setSortByDate] = useState<string>(sortByDateAscParameter || '');
@@ -73,22 +83,23 @@ const JoiningRequests: FC<JoiningRequestsProps> = ({
   }
 
   const skip = ((pageParameter || defaultPage) - 1) * (limitParameter || limitOptions[0]);
-  console.log('skip', skip);
 
   const buildQuery = () => buildQueryString({
     region: regionParameter,
     sortByDateAsc: sortByDateAscParameter,
     schoolName: searchParameter,
+    status: statusParameter,
     take: limitParameter,
     skip
   });
 
   const { data, isLoading } = useQuery<ApiResponse<PagedJoiningRequests>>({
-    queryKey: ['joiningRequests',
-      regionParameter, sortByDateAscParameter, searchParameter,
+    queryKey: [adminQueries.getAllJoiningRequests,
+      regionParameter, sortByDateAscParameter, searchParameter, statusParameter,
       limitParameter, pageParameter
     ],
     queryFn: () => getAll(buildQuery()),
+    retry: adminQueries.options.retry
   });
 
   useSetCurrentTab(CurrentTab.JoiningRequest);
@@ -101,6 +112,7 @@ const JoiningRequests: FC<JoiningRequestsProps> = ({
     const params = new URLSearchParams();
 
     if (search) params.set('schoolName', search);
+    if (status) params.set('status', status);
     if (filterByRegion) params.set('region', filterByRegion);
     if (limit) params.set('take', limit.toString());
     if (page) params.set('page', page.toString());
@@ -111,7 +123,7 @@ const JoiningRequests: FC<JoiningRequestsProps> = ({
     }
 
     replace(`${pathname}?${params.toString()}`)
-  }, [search, sortByDate, filterByRegion, limit, page]);
+  }, [search, status, sortByDate, filterByRegion, limit, page]);
 
   if (data && data.error) {
     return (
@@ -173,6 +185,36 @@ const JoiningRequests: FC<JoiningRequestsProps> = ({
         </div>
 
         <div className="relative w-md">
+          <label className="block mb-1 font-medium text-gray-700 text-center relative">
+            {t('labels.status.filterLabel')}
+            <span onClick={() => handleStatusClear()}
+                  className="text-sm pt-1 ml-2 text-purple-700 cursor-pointer hover:text-red-700"
+            >
+              {t('labels.clear')}
+            </span>
+          </label>
+          <select
+            id="date"
+            className="block w-[300px] px-4 py-2 border border-gray-300 rounded-lg
+            appearance-none focus:outline-none focus:border-purple-950 focus:ring-1 focus:ring-purple-950"
+            name="type"
+            value={status}
+            onChange={(e) => handleStatus(e.target.value)}
+          >
+            <option value=""></option>
+            <option value={'created'}>
+              {t(`labels.status.created`)}
+            </option>
+            <option value={'rejected'}>
+              {t(`labels.status.rejected`)}
+            </option>
+            <option value={'approved'}>
+              {t(`labels.status.approved`)}
+            </option>
+          </select>
+        </div>
+
+        <div className="relative w-md">
           <label onClick={() => handleFilterByRegionClear()}
             className="block mb-1 font-medium text-gray-700 text-center relative"
           >
@@ -209,7 +251,7 @@ const JoiningRequests: FC<JoiningRequestsProps> = ({
       </div>
 
       {data && data.entries.length !== data.total &&
-        <div className="mt-4">
+        <div className="mt-6">
           <Pagination
             currentPage={page}
             totalCount={data.total}

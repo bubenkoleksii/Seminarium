@@ -3,16 +3,17 @@
 import { FC } from 'react';
 import type { ApiResponse } from '@/shared/types';
 import type { JoiningRequestResponse } from '@/features/admin/types/joiningRequestTypes';
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import { useQuery } from '@tanstack/react-query';
 import { getOne } from '@/features/admin/api/joiningRequestApi';
 import { Loader } from '@/components/loader';
 import { Error } from '@/components/error';
 import { useSetCurrentTab } from '@/shared/hooks';
-import { CurrentTab } from '@/features/admin/constants';
+import { AdminClientPaths, adminQueries, CurrentTab } from '@/features/admin/constants';
 import { getColorByStatus } from '@/shared/helpers';
 import { DateTime } from '@/components/date-time';
 import { Button } from 'flowbite-react';
+import { useRouter } from 'next/navigation';
 
 interface JoiningRequestProps {
   id: string;
@@ -20,10 +21,14 @@ interface JoiningRequestProps {
 
 const JoiningRequest: FC<JoiningRequestProps> = ({ id }) => {
   const t = useTranslations('JoiningRequest');
+  const { replace } = useRouter();
+  const activeLocale = useLocale();
 
   const { data, isLoading } = useQuery<ApiResponse<JoiningRequestResponse>>({
-    queryKey: ['joiningRequest', id],
+    queryKey: [adminQueries.getOneJoiningRequest, id],
     queryFn: () => getOne(id),
+    enabled: !!id,
+    retry: adminQueries.options.retry
   });
 
   useSetCurrentTab(CurrentTab.JoiningRequest);
@@ -31,7 +36,14 @@ const JoiningRequest: FC<JoiningRequestProps> = ({ id }) => {
   if (data && data.error) {
     return (
       <>
-        <h2 className="mb-4 text-center text-xl font-bold">{t('oneTitle')}</h2>
+        <h2 className="mb-4 text-center text-xl font-bold">
+          {t('oneTitle')}
+          <span onClick={() => replace(`/${activeLocale}/${AdminClientPaths.JoiningRequests}/`)}
+                className="text-sm pt-1 ml-2 text-purple-700 cursor-pointer hover:text-red-700"
+          >
+              {t('labels.toMain')}
+        </span>
+        </h2>
         <Error error={data.error} />
       </>
     );
@@ -40,7 +52,14 @@ const JoiningRequest: FC<JoiningRequestProps> = ({ id }) => {
   if (isLoading) {
     return (
       <>
-        <h2 className="mb-4 text-center text-xl font-bold">{t('oneTitle')}</h2>
+        <h2 className="mb-4 text-center text-xl font-bold">
+          {t('oneTitle')}
+          <span onClick={() => replace(`/${activeLocale}/${AdminClientPaths.JoiningRequests}/`)}
+                className="text-sm pt-1 ml-2 text-purple-700 cursor-pointer hover:text-red-700"
+          >
+              {t('labels.toMain')}
+        </span>
+        </h2>
         <Loader />
       </>
     );
@@ -53,7 +72,14 @@ const JoiningRequest: FC<JoiningRequestProps> = ({ id }) => {
 
   return (
     <div className="p-3">
-      <h2 className="mb-4 text-center text-xl font-bold">{t('oneTitle')}</h2>
+      <h2 className="mb-4 text-center text-xl font-bold">
+        {t('oneTitle')}
+        <span onClick={() => replace(`/${activeLocale}/${AdminClientPaths.JoiningRequests}/`)}
+              className="text-sm pt-1 ml-2 text-purple-700 cursor-pointer hover:text-red-700"
+        >
+              {t('labels.toMain')}
+        </span>
+      </h2>
 
       <h6 className="py-2 text-center font-bold">
         <p className="color-gray-500 mr-1 text-sm font-normal lg:text-lg">

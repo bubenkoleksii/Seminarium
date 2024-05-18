@@ -5,6 +5,7 @@ type Props = {
     region: string,
     sortByDateAsc: string,
     schoolName: string,
+    status: string,
     take: string,
     page: string,
   }
@@ -17,6 +18,7 @@ export default function JoiningRequestsPage({ searchParams }: Props) {
         sortByDateAscParameter={searchParams.sortByDateAsc}
         regionParameter={searchParams.region}
         searchParameter={searchParams.schoolName}
+        statusParameter={searchParams.status}
         limitParameter={Number(searchParams.take)}
         pageParameter={Number(searchParams.page)}
       />

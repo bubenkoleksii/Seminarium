@@ -7,3 +7,15 @@ export const enum AdminClientPaths {
   Profile = 'admin',
   JoiningRequests = 'admin/joining_requests',
 }
+
+export const adminQueries = {
+  getOneJoiningRequest: 'joiningRequest',
+  getAllJoiningRequests: 'joiningRequests',
+  options: {
+    retry: 2
+  }
+}
+
+export const adminMutations = {
+
+}
