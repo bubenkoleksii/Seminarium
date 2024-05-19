@@ -1,19 +1,25 @@
 'use client';
 
-import { FC } from 'react';
+import { FC, useState } from 'react';
 import type { ApiResponse } from '@/shared/types';
 import type { JoiningRequestResponse } from '@/features/admin/types/joiningRequestTypes';
 import { useLocale, useTranslations } from 'next-intl';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { getOne } from '@/features/admin/api/joiningRequestApi';
 import { Loader } from '@/components/loader';
 import { Error } from '@/components/error';
 import { useSetCurrentTab } from '@/shared/hooks';
-import { AdminClientPaths, adminQueries, CurrentTab } from '@/features/admin/constants';
+import {
+  AdminClientPaths,
+  adminQueries,
+  CurrentTab,
+} from '@/features/admin/constants';
 import { getColorByStatus } from '@/shared/helpers';
 import { DateTime } from '@/components/date-time';
 import { Button } from 'flowbite-react';
 import { useRouter } from 'next/navigation';
+import { toast } from 'react-hot-toast';
+import { ProveModal } from '@/components/modal';
 
 interface JoiningRequestProps {
   id: string;
@@ -24,12 +30,23 @@ const JoiningRequest: FC<JoiningRequestProps> = ({ id }) => {
   const { replace } = useRouter();
   const activeLocale = useLocale();
 
+  const [disproveOpenModal, setDisproveOpenModal] = useState(false);
+  const handleOpenDisproveModal = () => {
+    setDisproveOpenModal(true);
+  };
+  const handleCloseDisproveModal = (confirmed: boolean) => {
+    setDisproveOpenModal(false);
+    console.log('confirm', confirmed);
+  };
+
   const { data, isLoading } = useQuery<ApiResponse<JoiningRequestResponse>>({
     queryKey: [adminQueries.getOneJoiningRequest, id],
     queryFn: () => getOne(id),
     enabled: !!id,
-    retry: adminQueries.options.retry
+    retry: adminQueries.options.retry,
   });
+
+  const { mutation: disproveMutation, isPending } = useMutation()
 
   useSetCurrentTab(CurrentTab.JoiningRequest);
 
@@ -38,11 +55,14 @@ const JoiningRequest: FC<JoiningRequestProps> = ({ id }) => {
       <>
         <h2 className="mb-4 text-center text-xl font-bold">
           {t('oneTitle')}
-          <span onClick={() => replace(`/${activeLocale}/${AdminClientPaths.JoiningRequests}/`)}
-                className="text-sm pt-1 ml-2 text-purple-700 cursor-pointer hover:text-red-700"
+          <span
+            onClick={() =>
+              replace(`/${activeLocale}/${AdminClientPaths.JoiningRequests}/`)
+            }
+            className="ml-2 cursor-pointer pt-1 text-sm text-purple-700 hover:text-red-700"
           >
-              {t('labels.toMain')}
-        </span>
+            {t('labels.toMain')}
+          </span>
         </h2>
         <Error error={data.error} />
       </>
@@ -54,11 +74,14 @@ const JoiningRequest: FC<JoiningRequestProps> = ({ id }) => {
       <>
         <h2 className="mb-4 text-center text-xl font-bold">
           {t('oneTitle')}
-          <span onClick={() => replace(`/${activeLocale}/${AdminClientPaths.JoiningRequests}/`)}
-                className="text-sm pt-1 ml-2 text-purple-700 cursor-pointer hover:text-red-700"
+          <span
+            onClick={() =>
+              replace(`/${activeLocale}/${AdminClientPaths.JoiningRequests}/`)
+            }
+            className="ml-2 cursor-pointer pt-1 text-sm text-purple-700 hover:text-red-700"
           >
-              {t('labels.toMain')}
-        </span>
+            {t('labels.toMain')}
+          </span>
         </h2>
         <Loader />
       </>
@@ -74,12 +97,21 @@ const JoiningRequest: FC<JoiningRequestProps> = ({ id }) => {
     <div className="p-3">
       <h2 className="mb-4 text-center text-xl font-bold">
         {t('oneTitle')}
-        <span onClick={() => replace(`/${activeLocale}/${AdminClientPaths.JoiningRequests}/`)}
-              className="text-sm pt-1 ml-2 text-purple-700 cursor-pointer hover:text-red-700"
+        <span
+          onClick={() =>
+            replace(`/${activeLocale}/${AdminClientPaths.JoiningRequests}/`)
+          }
+          className="ml-2 cursor-pointer pt-1 text-sm text-purple-700 hover:text-red-700"
         >
-              {t('labels.toMain')}
+          {t('labels.toMain')}
         </span>
       </h2>
+
+      <ProveModal
+        open={disproveOpenModal}
+        text={t('labels.rejectMessage')}
+        onClose={handleCloseDisproveModal}
+      />
 
       <h6 className="py-2 text-center font-bold">
         <p className="color-gray-500 mr-1 text-sm font-normal lg:text-lg">
@@ -257,17 +289,29 @@ const JoiningRequest: FC<JoiningRequestProps> = ({ id }) => {
         </div>
       </div>
 
-      <div className="flex pt-4 text-xs lg:text-lg justify-center">
-        <div className="flex w-1/2 pr-2 w-[40%]">
-          {data.status === 'created' &&
-            <Button gradientMonochrome="failure" fullSized>
-              <span className="text-white">{t('labels.rejectBtn')}</span>
+      <div className="flex justify-center pt-4 text-xs lg:text-lg">
+        <div className="flex w-1/2 w-[40%] pr-2">
+          {data.status === 'created' && (
+            <Button
+              gradientMonochrome="failure"
+              fullSized
+            >
+              <span
+                className="text-white"
+                onClick={handleOpenDisproveModal}
+              >
+                {t('labels.rejectBtn')}
+              </span>
             </Button>
-          }
+          )}
         </div>
-        <div className="flex w-1/2 pl-2 w-[40%]">
+        <div className="flex w-1/2 w-[40%] pl-2">
           <Button gradientMonochrome="success" fullSized>
-            <span className="text-white">{t('labels.approveBtn')}</span>
+            <span
+              className="text-white"
+            >
+              {t('labels.approveBtn')}
+            </span>
           </Button>
         </div>
       </div>

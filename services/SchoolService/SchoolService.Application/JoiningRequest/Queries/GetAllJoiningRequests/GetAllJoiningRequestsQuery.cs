@@ -1,6 +1,4 @@
-﻿using SchoolService.Domain.Enums.JoiningRequest;
-
-namespace SchoolService.Application.JoiningRequest.Commands.Queries.GetAllJoiningRequests;
+﻿namespace SchoolService.Application.JoiningRequest.Queries.GetAllJoiningRequests;
 
 public record GetAllJoiningRequestsQuery(
     string? SchoolName,

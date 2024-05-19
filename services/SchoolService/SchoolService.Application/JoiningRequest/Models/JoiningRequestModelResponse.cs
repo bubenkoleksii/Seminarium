@@ -1,6 +1,4 @@
-﻿using SchoolService.Domain.Enums.JoiningRequest;
-
-namespace SchoolService.Application.JoiningRequest.Models;
+﻿namespace SchoolService.Application.JoiningRequest.Models;
 
 public record JoiningRequestModelResponse(
     Guid Id,

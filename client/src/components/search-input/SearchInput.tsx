@@ -10,7 +10,13 @@ interface SearchInputProps {
   maxLength?: number;
 }
 
-const SearchInput: FC<SearchInputProps> =  ({ placeholder, value, onSubmit, maxLength, size = 'medium' }) => {
+const SearchInput: FC<SearchInputProps> = ({
+  placeholder,
+  value,
+  onSubmit,
+  maxLength,
+  size = 'medium',
+}) => {
   const t = useTranslations('SearchInput');
   const [searchValue, setSearchValue] = useState<string>(value || '');
 
@@ -18,8 +24,7 @@ const SearchInput: FC<SearchInputProps> =  ({ placeholder, value, onSubmit, maxL
     const value = e.target.value;
     setSearchValue(value);
 
-    if (!value)
-      onSubmit('');
+    if (!value) onSubmit('');
   };
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
@@ -32,7 +37,7 @@ const SearchInput: FC<SearchInputProps> =  ({ placeholder, value, onSubmit, maxL
     setSearchValue('');
 
     onSubmit('');
-};
+  };
 
   const getSizeClassName = () => {
     switch (size) {
@@ -46,11 +51,11 @@ const SearchInput: FC<SearchInputProps> =  ({ placeholder, value, onSubmit, maxL
   };
 
   return (
-    <form onSubmit={handleSubmit} className="max-w-xl mx-auto">
+    <form onSubmit={handleSubmit} className="mx-auto max-w-xl">
       <div className="relative">
-        <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+        <div className="pointer-events-none absolute inset-y-0 start-0 flex items-center ps-3">
           <svg
-            className="w-4 h-4 text-gray-500 dark:text-gray-400"
+            className="h-4 w-4 text-gray-500 dark:text-gray-400"
             aria-hidden="true"
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -69,25 +74,24 @@ const SearchInput: FC<SearchInputProps> =  ({ placeholder, value, onSubmit, maxL
           type="search"
           id="default-search"
           maxLength={maxLength}
-          className={`block w-full h-[55px] p-4 ps-10 text-gray-900 border border-gray-300 
-            rounded-lg bg-gray-50 focus:ring-purple-950 focus:border-purple-950 dark:bg-gray-700 
-            ${getSizeClassName()}`
-          }
+          className={`block h-[55px] w-full rounded-lg border border-gray-300 bg-gray-50 p-4 
+            ps-10 text-gray-900 focus:border-purple-950 focus:ring-purple-950 dark:bg-gray-700 
+            ${getSizeClassName()}`}
           placeholder={placeholder || ''}
           value={searchValue}
           onChange={handleInputChange}
           required
         />
-        <div onClick={handleClear}
-          className={`cursor-pointer absolute end-24 bottom-4`}
+        <div
+          onClick={handleClear}
+          className={`absolute bottom-4 end-24 cursor-pointer`}
         >
           <X color="#6b6b77" />
         </div>
         <button
           type="submit"
-          className={`text-white absolute end-2.5 bottom-2 bg-purple-950 hover:bg-purple-900 
-            focus:outline-none focus:ring-blue-300 font-medium rounded-lg p-2`
-          }
+          className={`absolute bottom-2 end-2.5 rounded-lg bg-purple-950 p-2 
+            font-medium text-white hover:bg-purple-900 focus:outline-none focus:ring-blue-300`}
         >
           {t('label')}
         </button>

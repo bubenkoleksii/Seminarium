@@ -12,10 +12,8 @@ export const adminQueries = {
   getOneJoiningRequest: 'joiningRequest',
   getAllJoiningRequests: 'joiningRequests',
   options: {
-    retry: 2
-  }
-}
+    retry: 2,
+  },
+};
 
-export const adminMutations = {
-
-}
+export const adminMutations = {};

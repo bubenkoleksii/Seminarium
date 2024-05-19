@@ -7,12 +7,16 @@ interface LimitProps {
   onChangeLimit: (limit: number) => void;
 }
 
-const Limit: FC<LimitProps> = ({ limitOptions, currentLimit, onChangeLimit }) => {
-  const t = useTranslations('Pagination')
+const Limit: FC<LimitProps> = ({
+  limitOptions,
+  currentLimit,
+  onChangeLimit,
+}) => {
+  const t = useTranslations('Pagination');
 
   return (
-    <div className="flex flex-col w-[300px] items-center">
-      <label className="block mb-1 font-medium text-gray-700 text-center relative">
+    <div className="flex w-[300px] flex-col items-center">
+      <label className="relative mb-1 block text-center font-medium text-gray-700">
         {t('limit')}
       </label>
 
@@ -20,9 +24,10 @@ const Limit: FC<LimitProps> = ({ limitOptions, currentLimit, onChangeLimit }) =>
         {limitOptions.map((option) => (
           <button
             key={option}
-            className={option === currentLimit ?
-              "mx-2 px-4 py-2 bg-purple-950 text-white rounded cursor-pointer"
-              : "mx-2 px-4 py-2 bg-white text-gray-800 rounded cursor-pointer hover:bg-gray-200"
+            className={
+              option === currentLimit
+                ? 'mx-2 cursor-pointer rounded bg-purple-950 px-4 py-2 text-white'
+                : 'mx-2 cursor-pointer rounded bg-white px-4 py-2 text-gray-800 hover:bg-gray-200'
             }
             onClick={() => onChangeLimit(option)}
           >

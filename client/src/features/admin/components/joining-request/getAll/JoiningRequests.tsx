@@ -20,21 +20,21 @@ import { buildQueryString } from '@/shared/helpers';
 import { Limit, Pagination } from '@/components/pagination';
 
 interface JoiningRequestsProps {
-  regionParameter?: string,
-  sortByDateAscParameter?: string,
-  searchParameter?: string,
-  statusParameter?: string,
-  limitParameter?: number,
-  pageParameter?: number,
+  regionParameter?: string;
+  sortByDateAscParameter?: string;
+  searchParameter?: string;
+  statusParameter?: string;
+  limitParameter?: number | null;
+  pageParameter?: number | null;
 }
 
 const JoiningRequests: FC<JoiningRequestsProps> = ({
-    regionParameter,
-    sortByDateAscParameter,
-    searchParameter,
-    statusParameter,
-    limitParameter,
-    pageParameter
+  regionParameter,
+  sortByDateAscParameter,
+  searchParameter,
+  statusParameter,
+  limitParameter,
+  pageParameter,
 }) => {
   const t = useTranslations('JoiningRequest');
   const pathname = usePathname();
@@ -43,63 +43,74 @@ const JoiningRequests: FC<JoiningRequestsProps> = ({
   const [search, setSearch] = useState<string>(searchParameter || '');
   const handleSearch = (value: string) => {
     setSearch(value);
-  }
+  };
 
   const [status, setStatus] = useState<string>(statusParameter || '');
   const handleStatus = (value: string) => {
     setStatus(value);
-  }
+  };
   const handleStatusClear = () => {
     setStatus('');
-  }
+  };
 
-  const [sortByDate, setSortByDate] = useState<string>(sortByDateAscParameter || '');
+  const [sortByDate, setSortByDate] = useState<string>(
+    sortByDateAscParameter || '',
+  );
   const handleSortByDate = (value: string) => {
     setSortByDate(value);
-  }
+  };
   const handleSortByDateClear = () => {
-    if (sortByDate)
-      setSortByDate('');
-  }
+    if (sortByDate) setSortByDate('');
+  };
 
-  const [filterByRegion, setFilterByRegion] = useState<string>(regionParameter || '');
+  const [filterByRegion, setFilterByRegion] = useState<string>(
+    regionParameter || '',
+  );
   const handleFilterByRegion = (value: string) => {
     setFilterByRegion(value);
-  }
+  };
   const handleFilterByRegionClear = () => {
     setFilterByRegion('');
-  }
-
-  const limitOptions = [4, 8, 12];
-  const [limit, setLimit] = useState<number>(limitParameter || limitOptions[0])
-  const handleLimit = (value: number) => {
-    setLimit(value);
-  }
+  };
 
   const defaultPage = 1;
   const [page, setPage] = useState<number>(pageParameter || defaultPage);
   const handlePage = (value: number) => {
     setPage(value);
-  }
+  };
 
-  const skip = ((pageParameter || defaultPage) - 1) * (limitParameter || limitOptions[0]);
+  const limitOptions = [4, 8, 12];
+  const [limit, setLimit] = useState<number>(limitParameter || limitOptions[0]);
+  const handleLimit = (value: number) => {
+    setLimit(value);
+    setPage(defaultPage);
+  };
 
-  const buildQuery = () => buildQueryString({
-    region: regionParameter,
-    sortByDateAsc: sortByDateAscParameter,
-    schoolName: searchParameter,
-    status: statusParameter,
-    take: limitParameter,
-    skip
-  });
+  const skip =
+    ((pageParameter || defaultPage) - 1) * (limitParameter || limitOptions[0]);
+
+  const buildQuery = () =>
+    buildQueryString({
+      region: regionParameter,
+      sortByDateAsc: sortByDateAscParameter,
+      schoolName: searchParameter,
+      status: statusParameter,
+      take: limitParameter,
+      skip,
+    });
 
   const { data, isLoading } = useQuery<ApiResponse<PagedJoiningRequests>>({
-    queryKey: [adminQueries.getAllJoiningRequests,
-      regionParameter, sortByDateAscParameter, searchParameter, statusParameter,
-      limitParameter, pageParameter
+    queryKey: [
+      adminQueries.getAllJoiningRequests,
+      regionParameter,
+      sortByDateAscParameter,
+      searchParameter,
+      statusParameter,
+      limitParameter,
+      pageParameter,
     ],
     queryFn: () => getAll(buildQuery()),
-    retry: adminQueries.options.retry
+    retry: adminQueries.options.retry,
   });
 
   useSetCurrentTab(CurrentTab.JoiningRequest);
@@ -119,20 +130,20 @@ const JoiningRequests: FC<JoiningRequestsProps> = ({
 
     if (sortByDate) {
       const sortByDateParameter = sortByDate === 'asc' ? 'true' : 'false';
-      params.set('sortByDateAsc', sortByDateParameter)
+      params.set('sortByDateAsc', sortByDateParameter);
     }
 
-    replace(`${pathname}?${params.toString()}`)
-  }, [search, status, sortByDate, filterByRegion, limit, page]);
-
-  if (data && data.error) {
-    return (
-      <>
-        <h2 className="mb-4 text-center text-xl font-bold">{t('listTitle')}</h2>
-        <Error error={data.error} />
-      </>
-    );
-  }
+    replace(`${pathname}?${params.toString()}`);
+  }, [
+    search,
+    status,
+    sortByDate,
+    replace,
+    pathname,
+    filterByRegion,
+    limit,
+    page,
+  ]);
 
   if (isLoading) {
     return (
@@ -145,89 +156,93 @@ const JoiningRequests: FC<JoiningRequestsProps> = ({
     window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
   }
 
+  if (data && data.error) {
+    return (
+      <>
+        <h2 className="mb-4 text-center text-xl font-bold">{t('listTitle')}</h2>
+        <Error error={data.error} />
+      </>
+    );
+  }
+
   return (
     <div className="p-3">
       <h2 className="mb-4 text-center text-xl font-bold">{t('listTitle')}</h2>
 
-        <SearchInput
-          maxLength={200}
-          value={search}
-          placeholder={t('placeholders.shortName')}
-          onSubmit={handleSearch}
-        />
+      <SearchInput
+        maxLength={200}
+        value={search}
+        placeholder={t('placeholders.shortName')}
+        onSubmit={handleSearch}
+      />
 
-      <div className={`mt-4 mb-4 flex justify-center items-center ${isDesktopOrLaptop ? 'flex-row gap-8' : 'flex-col gap-6' }`}>
-        <div className="relative w-md">
-          <label className="block mb-1 font-medium text-gray-700 text-center relative">
+      <div
+        className={`mb-4 mt-4 flex items-center justify-center ${isDesktopOrLaptop ? 'flex-row gap-8' : 'flex-col gap-6'}`}
+      >
+        <div className="w-md relative">
+          <label className="relative mb-1 block text-center font-medium text-gray-700">
             {t('labels.dateSorter.label')}
-            <span onClick={() => handleSortByDateClear()}
-              className="text-sm pt-1 ml-2 text-purple-700 cursor-pointer hover:text-red-700"
+            <span
+              onClick={() => handleSortByDateClear()}
+              className="ml-2 cursor-pointer pt-1 text-sm text-purple-700 hover:text-red-700"
             >
               {t('labels.clear')}
             </span>
           </label>
           <select
             id="date"
-            className="block w-[300px] px-4 py-2 border border-gray-300 rounded-lg
-            appearance-none focus:outline-none focus:border-purple-950 focus:ring-1 focus:ring-purple-950"
+            className="block w-[300px] appearance-none rounded-lg border border-gray-300 px-4
+            py-2 focus:border-purple-950 focus:outline-none focus:ring-1 focus:ring-purple-950"
             name="type"
             value={sortByDate}
             onChange={(e) => handleSortByDate(e.target.value)}
           >
             <option value=""></option>
-            <option value={'desc'}>
-              {t(`labels.dateSorter.desc`)}
-            </option>
-            <option value={'asc'}>
-              {t(`labels.dateSorter.asc`)}
-            </option>
+            <option value={'desc'}>{t(`labels.dateSorter.desc`)}</option>
+            <option value={'asc'}>{t(`labels.dateSorter.asc`)}</option>
           </select>
         </div>
 
-        <div className="relative w-md">
-          <label className="block mb-1 font-medium text-gray-700 text-center relative">
+        <div className="w-md relative">
+          <label className="relative mb-1 block text-center font-medium text-gray-700">
             {t('labels.status.filterLabel')}
-            <span onClick={() => handleStatusClear()}
-                  className="text-sm pt-1 ml-2 text-purple-700 cursor-pointer hover:text-red-700"
+            <span
+              onClick={() => handleStatusClear()}
+              className="ml-2 cursor-pointer pt-1 text-sm text-purple-700 hover:text-red-700"
             >
               {t('labels.clear')}
             </span>
           </label>
           <select
             id="date"
-            className="block w-[300px] px-4 py-2 border border-gray-300 rounded-lg
-            appearance-none focus:outline-none focus:border-purple-950 focus:ring-1 focus:ring-purple-950"
+            className="block w-[300px] appearance-none rounded-lg border border-gray-300 px-4
+            py-2 focus:border-purple-950 focus:outline-none focus:ring-1 focus:ring-purple-950"
             name="type"
             value={status}
             onChange={(e) => handleStatus(e.target.value)}
           >
             <option value=""></option>
-            <option value={'created'}>
-              {t(`labels.status.created`)}
-            </option>
-            <option value={'rejected'}>
-              {t(`labels.status.rejected`)}
-            </option>
-            <option value={'approved'}>
-              {t(`labels.status.approved`)}
-            </option>
+            <option value={'created'}>{t(`labels.status.created`)}</option>
+            <option value={'rejected'}>{t(`labels.status.rejected`)}</option>
+            <option value={'approved'}>{t(`labels.status.approved`)}</option>
           </select>
         </div>
 
-        <div className="relative w-md">
-          <label onClick={() => handleFilterByRegionClear()}
-            className="block mb-1 font-medium text-gray-700 text-center relative"
+        <div className="w-md relative">
+          <label
+            onClick={() => handleFilterByRegionClear()}
+            className="relative mb-1 block text-center font-medium text-gray-700"
           >
             {t('labels.regionFilter')}
-            <span className="text-sm pt-1 ml-2 text-purple-700 cursor-pointer hover:text-red-700">
+            <span className="ml-2 cursor-pointer pt-1 text-sm text-purple-700 hover:text-red-700">
               {t('labels.clear')}
             </span>
           </label>
 
           <select
             id="region"
-            className="block w-[300px] px-4 py-2 border border-gray-300 rounded-lg appearance-none focus:outline-none
-            focus:border-purple-950 focus:ring-1 focus:ring-purple-950"
+            className="block w-[300px] appearance-none rounded-lg border border-gray-300 px-4 py-2 focus:border-purple-950
+            focus:outline-none focus:ring-1 focus:ring-purple-950"
             name="type"
             value={filterByRegion}
             onChange={(e) => handleFilterByRegion(e.target.value)}
@@ -241,7 +256,7 @@ const JoiningRequests: FC<JoiningRequestsProps> = ({
           </select>
         </div>
 
-        <div className="relative w-md">
+        <div className="w-md relative">
           <Limit
             limitOptions={limitOptions}
             currentLimit={limit}
@@ -250,30 +265,33 @@ const JoiningRequests: FC<JoiningRequestsProps> = ({
         </div>
       </div>
 
-      {data && data.entries.length !== data.total &&
+      {data && data.entries.length !== data.total && (
         <div className="mt-6">
           <Pagination
             currentPage={page}
             totalCount={data.total}
             limit={data.take}
-            onChangePage={(page) => handlePage(page)} />
+            onChangePage={(page) => handlePage(page)}
+          />
         </div>
-      }
+      )}
 
-      {data && data.entries.length === 0
-        ? <>
-          <div className="mt-16 font-semibold flex justify-center items-center">
+      {data && data.entries.length === 0 ? (
+        <>
+          <div className="mt-16 flex items-center justify-center font-semibold">
             {t('labels.notFound')}
           </div>
         </>
-        :
+      ) : (
         <>
-          <div className="flex items-center justify-center mt-3">
+          <div className="mt-3 flex items-center justify-center">
             {isDesktopOrLaptop ? (
               <Table hoverable>
                 <Table.Head>
                   <Table.HeadCell>{t('labels.name')}</Table.HeadCell>
-                  <Table.HeadCell>{t('labels.requesterFullName')}</Table.HeadCell>
+                  <Table.HeadCell>
+                    {t('labels.requesterFullName')}
+                  </Table.HeadCell>
                   <Table.HeadCell>{t('labels.requesterEmail')}</Table.HeadCell>
                   <Table.HeadCell>{t('labels.requesterPhone')}</Table.HeadCell>
                   <Table.HeadCell>{t('labels.region')}</Table.HeadCell>
@@ -296,13 +314,17 @@ const JoiningRequests: FC<JoiningRequestsProps> = ({
               <div className="w-[100%] font-medium">
                 {data &&
                   data.entries.map((entry, idx) => (
-                    <JoiningRequestsItem key={entry.id} item={entry} index={idx} />
+                    <JoiningRequestsItem
+                      key={entry.id}
+                      item={entry}
+                      index={idx}
+                    />
                   ))}
               </div>
             )}
           </div>
         </>
-      }
+      )}
     </div>
   );
 };

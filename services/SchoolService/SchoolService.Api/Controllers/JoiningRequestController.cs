@@ -42,4 +42,19 @@ public class JoiningRequestController(IMapper mapper) : BaseController
             Right: ErrorActionResultHandler.Handle
         );
     }
+
+    [HttpPatch("[action]/{id}")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(RejectJoiningRequestResponse))]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> Reject(Guid id, [FromBody] RejectJoiningRequest joiningRequest)
+    {
+        var command = new RejectJoiningRequestCommand(id, joiningRequest.Message);
+
+        var result = await Mediator.Send(command);
+
+        return result.Match(
+            Left: modelResponse => Ok(mapper.Map<RejectJoiningRequestResponse>(modelResponse)),
+            Right: ErrorActionResultHandler.Handle
+        );
+    }
 }

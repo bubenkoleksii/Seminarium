@@ -19,5 +19,10 @@ public class SchoolConfiguration : IEntityTypeConfiguration<School>
         builder.Property(school => school.Img).HasDefaultValue(null);
 
         builder.HasQueryFilter(school => !school.IsArchived);
+
+        builder.HasOne(school => school.JoiningRequest)
+            .WithOne(joiningRequest => joiningRequest.School)
+            .HasForeignKey<School>(school => school.JoiningRequestId)
+            .IsRequired();
     }
 }

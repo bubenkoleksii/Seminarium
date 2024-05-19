@@ -1,4 +1,4 @@
-﻿namespace SchoolService.Application.JoiningRequest.Commands.Queries.GetOneJoiningRequest;
+﻿namespace SchoolService.Application.JoiningRequest.Queries.GetOneJoiningRequest;
 
 public class GetOneJoiningRequestHandler : IRequestHandler<GetOneJoiningRequestQuery, Either<JoiningRequestModelResponse, Error>>
 {

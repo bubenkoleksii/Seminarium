@@ -1,5 +1,4 @@
-﻿using SchoolService.Application.JoiningRequest.Commands.CreateJoiningRequest;
-using Profile = AutoMapper.Profile;
+﻿using Profile = AutoMapper.Profile;
 
 namespace SchoolService.Application.Common.Mappings;
 
@@ -26,5 +25,7 @@ public class CoreMappingProfile : Profile
         CreateMap<CreateJoiningRequestCommand, Domain.Entities.JoiningRequest>();
 
         CreateMap<Domain.Entities.JoiningRequest, JoiningRequestModelResponse>();
+
+        CreateMap<Domain.Entities.JoiningRequest, RejectJoiningRequestModelResponse>();
     }
 }

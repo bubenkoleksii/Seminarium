@@ -1,15 +1,24 @@
 'use client';
 
-import { FC } from 'react';
-import { useTranslations } from 'next-intl';
+import styles from './JoiningRequestForm.module.scss';
+
+import { FC, useState } from 'react';
+import { useLocale, useTranslations } from 'next-intl';
+import { toast } from 'react-hot-toast';
 import { school } from '@/shared/constants';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
-
-import styles from './JoiningRequestForm.module.scss';
 import { replaceEmptyStringsWithNull } from '@/shared/helpers';
+import { useMutation } from '@tanstack/react-query';
+import { createJoiningRequest } from '@/features/joining-request/api';
+import { Loader } from '@/components/loader';
+import { createJoiningRequestSuccessRoute } from '@/features/joining-request/constants';
+import { useRouter } from 'next/navigation';
+import { ProveModal } from '@/components/modal';
 
 const JoiningRequestForm: FC = () => {
+  const activeLocale = useLocale();
+  const { replace } = useRouter();
   const t = useTranslations('JoiningRequest');
   const v = useTranslations('Validation');
 
@@ -36,45 +45,108 @@ const JoiningRequestForm: FC = () => {
     address: Yup.string().max(250, v('max')),
     type: Yup.string().required(v('required')),
     region: Yup.string().required(v('required')),
-    ownershipType: Yup.string().required(v('required'))
+    ownershipType: Yup.string().required(v('required')),
   });
 
+  const [formValues, setFormValues] = useState(null);
+  const [openModal, setOpenModal] = useState(false);
+  const handleOpenModal = () => {
+    setOpenModal(true);
+  };
+  const handleCloseModal = (confirmed: boolean) => {
+    setOpenModal(false);
+
+    if (formValues && confirmed) {
+      mutate(formValues);
+    } else {
+      toast.success(t('labels.disproved'), { duration: 2000 });
+    }
+  };
   const handleSubmit = (values) => {
     replaceEmptyStringsWithNull(values);
+    handleOpenModal();
 
-    // TODO: send request to server
+    setFormValues(values);
   };
+
+  const {
+    mutate,
+    isPending,
+    reset: resetMutation,
+  } = useMutation({
+    mutationFn: createJoiningRequest,
+    onSuccess: (response) => {
+      if (response && response.error) {
+        const errorMessages = {
+          400: t(`labels.validation`),
+          409: t('labels.alreadyExists'),
+        };
+
+        toast.error(
+          errorMessages[response.error.status] || t('labels.internal'),
+          { duration: 10000 },
+        );
+      } else {
+        toast.success(t('labels.success'), { duration: 1500 });
+
+        const { id, requesterEmail: email } = response;
+        const successRoute = `/${activeLocale}/${createJoiningRequestSuccessRoute}/${id}/${email}`;
+        replace(successRoute);
+      }
+    },
+  });
+
+  if (isPending) {
+    return (
+      <>
+        <h2 className="mb-4 text-center text-2xl font-semibold text-gray-950">
+          {t('title')}
+        </h2>
+        <Loader />
+      </>
+    );
+  }
 
   return (
     <Formik
-      initialValues={{
-        requesterEmail: '',
-        requesterPhone: '',
-        requesterFullName: '',
-        registerCode: '',
-        name: '',
-        shortName: '',
-        gradingSystem: '',
-        type: '',
-        postalCode: '',
-        ownershipType: '',
-        studentsQuantity: '',
-        region: '',
-        territorialCommunity: '',
-        address: '',
-        areOccupied: false,
-      }}
+      initialValues={
+        formValues
+          ? formValues
+          : {
+              requesterEmail: '',
+              requesterPhone: '',
+              requesterFullName: '',
+              registerCode: '',
+              name: '',
+              shortName: '',
+              gradingSystem: '',
+              type: '',
+              postalCode: '',
+              ownershipType: '',
+              studentsQuantity: '',
+              region: '',
+              territorialCommunity: '',
+              address: '',
+              areOccupied: false,
+            }
+      }
       validationSchema={validationSchema}
       onSubmit={handleSubmit}
     >
       <div className={styles.container}>
-        <h2 className="mb-4 text-center text-2xl text-gray-950 font-semibold">
+        <h2 className="mb-4 text-center text-2xl font-semibold text-gray-950">
           {t('title')}
         </h2>
+        <ProveModal
+          open={openModal}
+          text={t('labels.prove')}
+          onClose={handleCloseModal}
+        />
         <Form className={styles.form}>
           <div>
             <label htmlFor="requesterEmail" className={styles.label}>
-              {t('labels.requesterEmail')}
+              <span>{t('labels.requesterEmail')}</span>
+              <span className="ml-1 text-md text-red-500">*</span>
             </label>
             <Field
               placeholder={t('placeholders.requesterEmail')}
@@ -93,6 +165,7 @@ const JoiningRequestForm: FC = () => {
           <div>
             <label htmlFor="requesterPhone" className={styles.label}>
               {t('labels.requesterPhone')}
+              <span className="ml-1 text-md text-red-500">*</span>
             </label>
             <Field
               placeholder={t('placeholders.requesterPhone')}
@@ -111,6 +184,7 @@ const JoiningRequestForm: FC = () => {
           <div>
             <label htmlFor="requesterFullName" className={styles.label}>
               {t('labels.requesterFullName')}
+              <span className="ml-1 text-md text-red-500">*</span>
             </label>
             <Field
               placeholder={t('placeholders.requesterFullName')}
@@ -128,6 +202,7 @@ const JoiningRequestForm: FC = () => {
           <div>
             <label htmlFor="registerCode" className={styles.label}>
               {t('labels.registerCode')}
+              <span className="ml-1 text-md text-red-500">*</span>
             </label>
             <Field
               placeholder={t('placeholders.registerCode')}
@@ -145,6 +220,7 @@ const JoiningRequestForm: FC = () => {
           <div>
             <label htmlFor="name" className={styles.label}>
               {t('labels.name')}
+              <span className="ml-1 text-md text-red-500">*</span>
             </label>
             <Field
               placeholder={t('placeholders.name')}
@@ -179,6 +255,7 @@ const JoiningRequestForm: FC = () => {
           <div>
             <label htmlFor="gradingSystem" className={styles.label}>
               {t('labels.gradingSystem')}
+              <span className="ml-1 text-md text-red-500">*</span>
             </label>
             <Field
               placeholder={t('placeholders.gradingSystem')}
@@ -196,10 +273,10 @@ const JoiningRequestForm: FC = () => {
           <div>
             <label htmlFor="type" className={styles.label}>
               {t('labels.type')}
+              <span className="ml-1 text-md text-red-500">*</span>
             </label>
             <Field as="select" id="type" className={styles.select} name="type">
-              <option value="">
-              </option>
+              <option value=""></option>
               {Object.values(school.type).map((value, index) => (
                 <option key={index} value={value}>
                   {t(`types.${value}`)}
@@ -215,6 +292,7 @@ const JoiningRequestForm: FC = () => {
           <div>
             <label htmlFor="postalCode" className={styles.label}>
               {t('labels.postalCode')}
+              <span className="ml-1 text-md text-red-500">*</span>
             </label>
             <Field
               placeholder={t('placeholders.postalCode')}
@@ -232,6 +310,7 @@ const JoiningRequestForm: FC = () => {
           <div>
             <label htmlFor="ownershipType" className={styles.label}>
               {t('labels.ownershipType')}
+              <span className="ml-1 text-md text-red-500">*</span>
             </label>
             <Field
               as="select"
@@ -239,8 +318,7 @@ const JoiningRequestForm: FC = () => {
               className={styles.select}
               name="ownershipType"
             >
-              <option value="">
-              </option>
+              <option value=""></option>
               {Object.values(school.ownershipType).map((value, index) => (
                 <option key={index} value={value}>
                   {t(`ownershipTypes.${value}`)}
@@ -256,6 +334,7 @@ const JoiningRequestForm: FC = () => {
           <div>
             <label htmlFor="studentsQuantity" className={styles.label}>
               {t('labels.studentsQuantity')}
+              <span className="ml-1 text-md text-red-500">*</span>
             </label>
             <Field
               placeholder={t('placeholders.studentsQuantity')}
@@ -273,6 +352,7 @@ const JoiningRequestForm: FC = () => {
           <div>
             <label htmlFor="region" className={styles.label}>
               {t('labels.region')}
+              <span className="ml-1 text-md text-red-500">*</span>
             </label>
             <Field
               as="select"
@@ -280,8 +360,7 @@ const JoiningRequestForm: FC = () => {
               className={styles.select}
               name="region"
             >
-              <option value="">
-              </option>
+              <option value=""></option>
               {Object.values(school.region).map((value, index) => (
                 <option key={index} value={value}>
                   {t(`regions.${value}`)}
@@ -314,6 +393,7 @@ const JoiningRequestForm: FC = () => {
           <div>
             <label htmlFor="address" className={styles.label}>
               {t('labels.address')}
+              <span className="ml-1 text-md text-red-500">*</span>
             </label>
             <Field
               placeholder={t('placeholders.address')}
@@ -343,7 +423,11 @@ const JoiningRequestForm: FC = () => {
             </label>
           </div>
           <div>
-            <button type="submit" className={styles.button}>
+            <button
+              onClick={() => resetMutation()}
+              type="submit"
+              className={styles.button}
+            >
               {t('labels.submit')}
             </button>
           </div>

@@ -5,6 +5,7 @@ import { Footer } from '@/features/footer';
 import Head from 'next/head';
 import { Metadata } from 'next';
 import { TopLoader } from '@/components/loader';
+import { Toaster } from 'react-hot-toast';
 
 const montserrat = Montserrat({
   subsets: ['cyrillic', 'latin'],
@@ -36,6 +37,8 @@ export default function LocaleLayout({ children, params: { locale } }) {
         <TopLoader />
 
         <NextIntlClientProvider messages={messages}>
+          <Toaster position="top-right" />
+
           <div className="flex min-h-screen flex-col bg-gray-100">
             <Navbar />
             <main className="min-w-screen flex flex-grow justify-center">

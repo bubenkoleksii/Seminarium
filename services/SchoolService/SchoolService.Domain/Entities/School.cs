@@ -4,7 +4,7 @@ public class School : Entity
 {
     public Guid JoiningRequestId { get; set; }
 
-    public virtual required JoiningRequest JoiningRequest { get; set; }
+    public required JoiningRequest JoiningRequest { get; set; }
 
     public ulong RegisterCode { get; set; }
 

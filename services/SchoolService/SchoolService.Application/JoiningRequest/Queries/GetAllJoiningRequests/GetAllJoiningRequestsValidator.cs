@@ -1,4 +1,4 @@
-﻿namespace SchoolService.Application.JoiningRequest.Commands.Queries.GetAllJoiningRequests;
+﻿namespace SchoolService.Application.JoiningRequest.Queries.GetAllJoiningRequests;
 
 public class GetAllJoiningRequestsValidator : AbstractValidator<GetAllJoiningRequestsQuery>
 {

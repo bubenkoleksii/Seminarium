@@ -1,6 +1,4 @@
-﻿using SchoolService.Application.JoiningRequest.Models;
-
-namespace SchoolService.Api.Mappings;
+﻿namespace SchoolService.Api.Mappings;
 
 public class ApiMappingProfile : Profile
 {
@@ -33,6 +31,8 @@ public class ApiMappingProfile : Profile
         CreateMap<GetAllJoiningRequestsParams, GetAllJoiningRequestsQuery>();
 
         CreateMap<GetAllJoiningRequestsModelResponse, GetAllJoiningRequestsResponse>();
+
+        CreateMap<RejectJoiningRequestModelResponse, RejectJoiningRequestResponse>();
     }
 
     private void ConfigureGlobalMappings()

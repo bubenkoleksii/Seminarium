@@ -1,0 +1,1 @@
+export { ProveModal } from './ProveModal';

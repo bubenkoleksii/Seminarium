@@ -38,6 +38,11 @@ const Welcome: FC = () => {
           </h1>
           <p className="mb-8 leading-relaxed">{t('description')}</p>
           <div className="flex justify-center gap-4">
+            <button className="w-200 inline-flex items-center justify-center rounded border-0 bg-gray-200 px-6 py-2 text-lg text-gray-700 hover:bg-gray-300 focus:outline-none">
+              <Link href={routes.getCreateJoiningRequest(activeLocale)}>
+                {t('joiningRequestBtn')}
+              </Link>
+            </button>
             {status === 'unauthenticated' && (
               <button className="w-200 inline-flex items-center justify-center rounded border-0 bg-purple-900 px-6 py-2 text-lg text-white hover:bg-purple-700 focus:outline-none">
                 <Link href="http://localhost:5000/Account/Register">
@@ -45,11 +50,6 @@ const Welcome: FC = () => {
                 </Link>
               </button>
             )}
-            <button className="w-200 inline-flex items-center justify-center rounded border-0 bg-gray-200 px-6 py-2 text-lg text-gray-700 hover:bg-gray-300 focus:outline-none">
-              <Link href={routes.getCreateJoiningRequest(activeLocale)}>
-                {t('joiningRequestBtn')}
-              </Link>
-            </button>
           </div>
         </div>
       </div>

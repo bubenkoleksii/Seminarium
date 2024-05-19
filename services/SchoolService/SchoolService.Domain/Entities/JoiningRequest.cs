@@ -4,6 +4,8 @@ public class JoiningRequest : Entity
 {
     public Guid? SchoolId { get; set; }
 
+    public School? School { get; set; }
+
     public ulong RegisterCode { get; set; }
 
     public required string RequesterEmail { get; set; }
