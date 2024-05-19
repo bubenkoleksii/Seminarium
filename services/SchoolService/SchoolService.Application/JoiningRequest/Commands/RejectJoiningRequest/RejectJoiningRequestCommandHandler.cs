@@ -23,6 +23,12 @@ public class RejectJoiningRequestCommandHandler : IRequestHandler<RejectJoiningR
         if (entity is null)
             return new NotFoundByIdError(request.Id, "joining request");
 
+        if (entity.Status != JoiningRequestStatus.Created)
+            return new InvalidError("joining request")
+            {
+                Params = new List<string>(1) { "status" }
+            };
+
         entity.Status = JoiningRequestStatus.Rejected;
         _commandContext.JoiningRequests.Update(entity);
 

@@ -9,7 +9,7 @@ import { school } from '@/shared/constants';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { replaceEmptyStringsWithNull } from '@/shared/helpers';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useIsMutating } from '@tanstack/react-query';
 import { createJoiningRequest } from '@/features/joining-request/api';
 import { Loader } from '@/components/loader';
 import { createJoiningRequestSuccessRoute } from '@/features/joining-request/constants';
@@ -19,6 +19,9 @@ import { ProveModal } from '@/components/modal';
 const JoiningRequestForm: FC = () => {
   const activeLocale = useLocale();
   const { replace } = useRouter();
+
+  const isMutating = useIsMutating();
+
   const t = useTranslations('JoiningRequest');
   const v = useTranslations('Validation');
 
@@ -71,10 +74,10 @@ const JoiningRequestForm: FC = () => {
 
   const {
     mutate,
-    isPending,
     reset: resetMutation,
   } = useMutation({
     mutationFn: createJoiningRequest,
+    mutationKey: ['createJoiningRequest'],
     onSuccess: (response) => {
       if (response && response.error) {
         const errorMessages = {
@@ -96,7 +99,7 @@ const JoiningRequestForm: FC = () => {
     },
   });
 
-  if (isPending) {
+  if (isMutating) {
     return (
       <>
         <h2 className="mb-4 text-center text-2xl font-semibold text-gray-950">

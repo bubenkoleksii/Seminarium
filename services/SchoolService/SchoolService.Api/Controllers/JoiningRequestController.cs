@@ -45,6 +45,7 @@ public class JoiningRequestController(IMapper mapper) : BaseController
 
     [HttpPatch("[action]/{id}")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(RejectJoiningRequestResponse))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Reject(Guid id, [FromBody] RejectJoiningRequest joiningRequest)
     {

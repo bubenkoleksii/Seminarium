@@ -19,7 +19,7 @@ html, body {
 }
 
 @keyframes custom-move {
-  33%   {top: 0px;}
+  33%   {top: 0;}
   66%  {top: 20px;}
-  100%  {top: 0px}
+  100%  {top: 0}
 }

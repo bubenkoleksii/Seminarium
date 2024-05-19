@@ -27,3 +27,12 @@ export interface JoiningRequestResponse {
   areOccupied: boolean;
   status: 'created' | 'rejected' | 'approved';
 }
+
+export interface RejectRequest {
+  message?: string | null;
+}
+
+export interface RejectResponse {
+  id: string,
+  status: 'created' | 'rejected' | 'approved';
+}

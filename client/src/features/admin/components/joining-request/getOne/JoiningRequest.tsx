@@ -2,15 +2,18 @@
 
 import { FC, useState } from 'react';
 import type { ApiResponse } from '@/shared/types';
-import type { JoiningRequestResponse } from '@/features/admin/types/joiningRequestTypes';
+import type {
+  JoiningRequestResponse,
+  RejectRequest
+} from '@/features/admin/types/joiningRequestTypes';
 import { useLocale, useTranslations } from 'next-intl';
-import { useMutation, useQuery } from '@tanstack/react-query';
-import { getOne } from '@/features/admin/api/joiningRequestApi';
+import { useIsMutating, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { getOne, reject } from '@/features/admin/api/joiningRequestApi';
 import { Loader } from '@/components/loader';
 import { Error } from '@/components/error';
 import { useSetCurrentTab } from '@/shared/hooks';
 import {
-  AdminClientPaths,
+  AdminClientPaths, adminMutations,
   adminQueries,
   CurrentTab,
 } from '@/features/admin/constants';
@@ -19,7 +22,7 @@ import { DateTime } from '@/components/date-time';
 import { Button } from 'flowbite-react';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-hot-toast';
-import { ProveModal } from '@/components/modal';
+import { ProveModal, InputModal } from '@/components/modal';
 
 interface JoiningRequestProps {
   id: string;
@@ -27,8 +30,36 @@ interface JoiningRequestProps {
 
 const JoiningRequest: FC<JoiningRequestProps> = ({ id }) => {
   const t = useTranslations('JoiningRequest');
+
+  const queryClient = useQueryClient();
+  const isMutating = useIsMutating();
+
   const { replace } = useRouter();
   const activeLocale = useLocale();
+
+  const [textOpenModal, setTextOpenModal] = useState(false);
+  const handleOpenTextModal = () => {
+    setTextOpenModal(true);
+  };
+  const handleCloseTextModal = ({ proved, text }: { proved: boolean, text: string | null }) => {
+    setTextOpenModal(false);
+
+    if (proved) {
+      const request: {
+        id: string,
+        data: RejectRequest,
+      } = {
+        id: id,
+        data: {
+          message: text
+        }
+      }
+
+      disproveMutate(request);
+
+      resetDisproveMutation();
+    }
+  };
 
   const [disproveOpenModal, setDisproveOpenModal] = useState(false);
   const handleOpenDisproveModal = () => {
@@ -36,7 +67,10 @@ const JoiningRequest: FC<JoiningRequestProps> = ({ id }) => {
   };
   const handleCloseDisproveModal = (confirmed: boolean) => {
     setDisproveOpenModal(false);
-    console.log('confirm', confirmed);
+
+    if (confirmed) {
+      handleOpenTextModal();
+    }
   };
 
   const { data, isLoading } = useQuery<ApiResponse<JoiningRequestResponse>>({
@@ -46,7 +80,32 @@ const JoiningRequest: FC<JoiningRequestProps> = ({ id }) => {
     retry: adminQueries.options.retry,
   });
 
-  const { mutation: disproveMutation, isPending } = useMutation()
+  const {
+    mutate: disproveMutate,
+    reset: resetDisproveMutation
+  } = useMutation({
+    mutationFn: reject,
+    mutationKey: [adminMutations.rejectJoiningRequest],
+    retry: adminMutations.options.retry,
+    onSuccess: (response) => {
+      if (response && response.error) {
+        const errorMessages = {
+          400: t('labels.validation'),
+          404: t('labels.oneNotFound'),
+        }
+
+        toast.error(
+          errorMessages[response.error.status] || t('labels.internal')
+        );
+      } else {
+        toast.success(t('labels.rejectSuccess'));
+
+        queryClient.invalidateQueries({
+          queryKey: [adminQueries.getOneJoiningRequest, id],
+        });
+      }
+    }
+  });
 
   useSetCurrentTab(CurrentTab.JoiningRequest);
 
@@ -69,7 +128,7 @@ const JoiningRequest: FC<JoiningRequestProps> = ({ id }) => {
     );
   }
 
-  if (isLoading) {
+  if (isLoading || isMutating) {
     return (
       <>
         <h2 className="mb-4 text-center text-xl font-bold">
@@ -111,6 +170,12 @@ const JoiningRequest: FC<JoiningRequestProps> = ({ id }) => {
         open={disproveOpenModal}
         text={t('labels.rejectMessage')}
         onClose={handleCloseDisproveModal}
+      />
+
+      <InputModal
+        open={textOpenModal}
+        label={t('labels.disproveMessage')}
+        onClose={handleCloseTextModal}
       />
 
       <h6 className="py-2 text-center font-bold">
@@ -290,29 +355,42 @@ const JoiningRequest: FC<JoiningRequestProps> = ({ id }) => {
       </div>
 
       <div className="flex justify-center pt-4 text-xs lg:text-lg">
-        <div className="flex w-1/2 w-[40%] pr-2">
-          {data.status === 'created' && (
-            <Button
-              gradientMonochrome="failure"
-              fullSized
-            >
-              <span
-                className="text-white"
-                onClick={handleOpenDisproveModal}
-              >
-                {t('labels.rejectBtn')}
+        <div className="flex w-full justify-center">
+          {data.status === 'created' ? (
+            <>
+              <div className="flex w-1/2 pr-2">
+                <Button
+                  onClick={handleOpenDisproveModal}
+                  gradientMonochrome="failure"
+                  fullSized
+                >
+                  <span
+                    className="text-white"
+                  >
+                    {t('labels.rejectBtn')}
+                  </span>
+                </Button>
+              </div>
+
+              <div className="flex w-1/2 pl-2">
+                <Button gradientMonochrome="success" fullSized>
+                  <span className="text-white">
+                    {t('labels.approveBtn')}
+                  </span>
+                </Button>
+              </div>
+            </>
+          ) : (
+            data.status !== 'approved' && (
+              <div className="w-full flex justify-center">
+                <Button gradientMonochrome="success" fullSized>
+              <span className="text-white">
+                {t('labels.approveBtn')}
               </span>
-            </Button>
+                </Button>
+              </div>
+            )
           )}
-        </div>
-        <div className="flex w-1/2 w-[40%] pl-2">
-          <Button gradientMonochrome="success" fullSized>
-            <span
-              className="text-white"
-            >
-              {t('labels.approveBtn')}
-            </span>
-          </Button>
         </div>
       </div>
     </div>

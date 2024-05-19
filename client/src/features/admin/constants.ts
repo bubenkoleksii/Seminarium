@@ -16,4 +16,9 @@ export const adminQueries = {
   },
 };
 
-export const adminMutations = {};
+export const adminMutations = {
+  rejectJoiningRequest: 'rejectJoiningRequest',
+  options: {
+    retry: 2,
+  }
+};
