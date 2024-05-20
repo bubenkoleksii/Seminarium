@@ -98,7 +98,7 @@ const JoiningRequest: FC<JoiningRequestProps> = ({ id }) => {
           errorMessages[response.error.status] || t('labels.internal')
         );
       } else {
-        toast.success(t('labels.rejectSuccess'));
+        toast.success(t('labels.rejectSuccess'), { duration: 4000 });
 
         queryClient.invalidateQueries({
           queryKey: [adminQueries.getOneJoiningRequest, id],

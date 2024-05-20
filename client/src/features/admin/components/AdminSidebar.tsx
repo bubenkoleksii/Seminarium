@@ -1,7 +1,13 @@
 'use client';
 
 import { FC } from 'react';
-import { GitPullRequestArrow, User, Home, ChevronsLeft } from 'lucide-react';
+import {
+  GitPullRequestArrow,
+  User,
+  Home,
+  ChevronsLeft,
+  School
+} from 'lucide-react';
 import Link from 'next/link';
 import { useAdminStore } from '@/features/admin/store/adminStore';
 import { AdminClientPaths, CurrentTab } from '../constants';
@@ -56,6 +62,24 @@ const AdminSidebar: FC = () => {
         >
           <GitPullRequestArrow
             color={`${currentTab === CurrentTab.JoiningRequest ? `#f9fafb` : `#3B0764`}`}
+            size={20}
+          />
+        </Link>
+      </Tooltip>
+
+      <Tooltip content={t('school')} placement="right" style="light">
+        <Link
+          href={`/${activeLocale}/${AdminClientPaths.Schools}/`}
+          className={`flex h-[50px] w-[50px] items-center justify-center 
+           ${
+            currentTab === CurrentTab.School
+              ? `bg-purple-950`
+              : `bg-gray-50 hover:bg-gray-200`
+          } 
+           text-gray-800 transition duration-300`}
+        >
+          <School
+            color={`${currentTab === CurrentTab.School ? `#f9fafb` : `#3B0764`}`}
             size={20}
           />
         </Link>

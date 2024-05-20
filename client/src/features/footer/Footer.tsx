@@ -6,7 +6,7 @@ const Footer: FC = () => {
   return (
     <footer className="bg-gray-200 px-4 py-2 text-xs shadow-md">
       <div>{t('author')}</div>
-      <div>© 2024</div>
+      <div>© 2024, {t('name')}</div>
     </footer>
   );
 };

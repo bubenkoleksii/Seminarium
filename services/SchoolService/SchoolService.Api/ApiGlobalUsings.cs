@@ -16,14 +16,13 @@ global using SchoolService.Application.JoiningRequest.Commands.RejectJoiningRequ
 global using SchoolService.Application.JoiningRequest.Models;
 global using SchoolService.Application.JoiningRequest.Queries.GetAllJoiningRequests;
 global using SchoolService.Application.JoiningRequest.Queries.GetOneJoiningRequest;
-global using SchoolService.Application.School.Commands.ArchiveSchool;
 global using SchoolService.Application.School.Commands.CreateSchool;
 global using SchoolService.Application.School.Commands.DeleteSchool;
 global using SchoolService.Application.School.Commands.DeleteSchoolImage;
 global using SchoolService.Application.School.Commands.SetSchoolImage;
-global using SchoolService.Application.School.Commands.UnarchiveSchool;
 global using SchoolService.Application.School.Commands.UpdateSchool;
 global using SchoolService.Application.School.Models;
+global using SchoolService.Application.School.Queries.GetAllSchools;
 global using SchoolService.Application.School.Queries.GetOneSchool;
 global using SchoolService.Infrastructure.Persistence;
 global using Serilog;

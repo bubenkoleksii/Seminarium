@@ -19,6 +19,10 @@ public class ApiMappingProfile : Profile
             .ForMember(command => command.Email, act => act.MapFrom(req => req.Email == null ? null : req.Email.ToLower()));
 
         CreateMap<SchoolModelResponse, SchoolResponse>();
+
+        CreateMap<GetAllSchoolsParams, GetAllSchoolsQuery>();
+
+        CreateMap<GetAllSchoolsModelResponse, GetAllSchoolsResponse>();
     }
 
     private void ConfigureJoiningRequestMapping()

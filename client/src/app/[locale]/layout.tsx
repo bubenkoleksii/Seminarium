@@ -37,7 +37,7 @@ export default function LocaleLayout({ children, params: { locale } }) {
         <TopLoader />
 
         <NextIntlClientProvider messages={messages}>
-          <Toaster position="top-right" />
+          <Toaster position="top-center" />
 
           <div className="flex min-h-screen flex-col bg-gray-100">
             <Navbar />

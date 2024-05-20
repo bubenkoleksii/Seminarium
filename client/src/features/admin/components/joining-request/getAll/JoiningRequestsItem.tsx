@@ -126,7 +126,7 @@ const JoiningRequestsItem: FC<JoiningRequestsItemProps> = ({ item, index }) => {
             <Button gradientMonochrome="purple" fullSized>
               <Link
                 href={`/${activeLocale}/${AdminClientPaths.JoiningRequests}/${item.id}`}
-                className="text-white"
+                className="text-white w-[100%]"
               >
                 {t('labels.details')}
               </Link>

@@ -1,11 +1,13 @@
 export const enum CurrentTab {
   Profile = 'profile',
   JoiningRequest = 'joining_request',
+  School = 'school',
 }
 
 export const enum AdminClientPaths {
   Profile = 'admin',
   JoiningRequests = 'admin/joining_requests',
+  Schools = 'admin/schools'
 }
 
 export const adminQueries = {
