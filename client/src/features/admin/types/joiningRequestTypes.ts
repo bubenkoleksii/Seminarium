@@ -33,6 +33,6 @@ export interface RejectRequest {
 }
 
 export interface RejectResponse {
-  id: string,
+  id: string;
   status: 'created' | 'rejected' | 'approved';
 }

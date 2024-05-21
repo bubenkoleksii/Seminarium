@@ -6,7 +6,7 @@ import {
   User,
   Home,
   ChevronsLeft,
-  School
+  School,
 } from 'lucide-react';
 import Link from 'next/link';
 import { useAdminStore } from '@/features/admin/store/adminStore';
@@ -72,10 +72,10 @@ const AdminSidebar: FC = () => {
           href={`/${activeLocale}/${AdminClientPaths.Schools}/`}
           className={`flex h-[50px] w-[50px] items-center justify-center 
            ${
-            currentTab === CurrentTab.School
-              ? `bg-purple-950`
-              : `bg-gray-50 hover:bg-gray-200`
-          } 
+             currentTab === CurrentTab.School
+               ? `bg-purple-950`
+               : `bg-gray-50 hover:bg-gray-200`
+           } 
            text-gray-800 transition duration-300`}
         >
           <School

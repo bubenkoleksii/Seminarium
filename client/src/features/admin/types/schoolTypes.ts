@@ -1,0 +1,28 @@
+export interface PagesSchoolsResponse {
+  entries: SchoolResponse[];
+  total: number;
+  skip: number;
+  take: number;
+}
+
+export interface SchoolResponse {
+  id: string;
+  createdAt: string;
+  lastUpdatedAt?: string;
+  registerCode: number;
+  name: string;
+  shortName?: string;
+  gradingSystem: number;
+  email?: string;
+  phone?: string;
+  type: string;
+  postalCode: number;
+  ownershipType: string;
+  studentsQuantity: number;
+  region: string;
+  territorialCommunity?: string;
+  address?: string;
+  areOccupied: boolean;
+  siteUrl?: string;
+  img?: string;
+}

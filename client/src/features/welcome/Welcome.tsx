@@ -15,7 +15,7 @@ const Welcome: FC = () => {
   if (currentUser) {
     currentUser.role === 'admin'
       ? redirect(`${activeLocale}/admin`)
-      : redirect(`${activeLocale}/`);
+      : redirect(`${activeLocale}/admin`);
   }
 
   return (

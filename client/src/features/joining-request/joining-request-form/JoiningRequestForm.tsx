@@ -72,10 +72,7 @@ const JoiningRequestForm: FC = () => {
     setFormValues(values);
   };
 
-  const {
-    mutate,
-    reset: resetMutation,
-  } = useMutation({
+  const { mutate, reset: resetMutation } = useMutation({
     mutationFn: createJoiningRequest,
     mutationKey: ['createJoiningRequest'],
     onSuccess: (response) => {
@@ -149,7 +146,7 @@ const JoiningRequestForm: FC = () => {
           <div>
             <label htmlFor="requesterEmail" className={styles.label}>
               <span>{t('labels.requesterEmail')}</span>
-              <span className="ml-1 text-md text-red-500">*</span>
+              <span className="text-md ml-1 text-red-500">*</span>
             </label>
             <Field
               placeholder={t('placeholders.requesterEmail')}
@@ -168,7 +165,7 @@ const JoiningRequestForm: FC = () => {
           <div>
             <label htmlFor="requesterPhone" className={styles.label}>
               {t('labels.requesterPhone')}
-              <span className="ml-1 text-md text-red-500">*</span>
+              <span className="text-md ml-1 text-red-500">*</span>
             </label>
             <Field
               placeholder={t('placeholders.requesterPhone')}
@@ -187,7 +184,7 @@ const JoiningRequestForm: FC = () => {
           <div>
             <label htmlFor="requesterFullName" className={styles.label}>
               {t('labels.requesterFullName')}
-              <span className="ml-1 text-md text-red-500">*</span>
+              <span className="text-md ml-1 text-red-500">*</span>
             </label>
             <Field
               placeholder={t('placeholders.requesterFullName')}
@@ -205,7 +202,7 @@ const JoiningRequestForm: FC = () => {
           <div>
             <label htmlFor="registerCode" className={styles.label}>
               {t('labels.registerCode')}
-              <span className="ml-1 text-md text-red-500">*</span>
+              <span className="text-md ml-1 text-red-500">*</span>
             </label>
             <Field
               placeholder={t('placeholders.registerCode')}
@@ -223,7 +220,7 @@ const JoiningRequestForm: FC = () => {
           <div>
             <label htmlFor="name" className={styles.label}>
               {t('labels.name')}
-              <span className="ml-1 text-md text-red-500">*</span>
+              <span className="text-md ml-1 text-red-500">*</span>
             </label>
             <Field
               placeholder={t('placeholders.name')}
@@ -258,7 +255,7 @@ const JoiningRequestForm: FC = () => {
           <div>
             <label htmlFor="gradingSystem" className={styles.label}>
               {t('labels.gradingSystem')}
-              <span className="ml-1 text-md text-red-500">*</span>
+              <span className="text-md ml-1 text-red-500">*</span>
             </label>
             <Field
               placeholder={t('placeholders.gradingSystem')}
@@ -276,7 +273,7 @@ const JoiningRequestForm: FC = () => {
           <div>
             <label htmlFor="type" className={styles.label}>
               {t('labels.type')}
-              <span className="ml-1 text-md text-red-500">*</span>
+              <span className="text-md ml-1 text-red-500">*</span>
             </label>
             <Field as="select" id="type" className={styles.select} name="type">
               <option value=""></option>
@@ -295,7 +292,7 @@ const JoiningRequestForm: FC = () => {
           <div>
             <label htmlFor="postalCode" className={styles.label}>
               {t('labels.postalCode')}
-              <span className="ml-1 text-md text-red-500">*</span>
+              <span className="text-md ml-1 text-red-500">*</span>
             </label>
             <Field
               placeholder={t('placeholders.postalCode')}
@@ -313,7 +310,7 @@ const JoiningRequestForm: FC = () => {
           <div>
             <label htmlFor="ownershipType" className={styles.label}>
               {t('labels.ownershipType')}
-              <span className="ml-1 text-md text-red-500">*</span>
+              <span className="text-md ml-1 text-red-500">*</span>
             </label>
             <Field
               as="select"
@@ -337,7 +334,7 @@ const JoiningRequestForm: FC = () => {
           <div>
             <label htmlFor="studentsQuantity" className={styles.label}>
               {t('labels.studentsQuantity')}
-              <span className="ml-1 text-md text-red-500">*</span>
+              <span className="text-md ml-1 text-red-500">*</span>
             </label>
             <Field
               placeholder={t('placeholders.studentsQuantity')}
@@ -355,7 +352,7 @@ const JoiningRequestForm: FC = () => {
           <div>
             <label htmlFor="region" className={styles.label}>
               {t('labels.region')}
-              <span className="ml-1 text-md text-red-500">*</span>
+              <span className="text-md ml-1 text-red-500">*</span>
             </label>
             <Field
               as="select"
@@ -396,7 +393,7 @@ const JoiningRequestForm: FC = () => {
           <div>
             <label htmlFor="address" className={styles.label}>
               {t('labels.address')}
-              <span className="ml-1 text-md text-red-500">*</span>
+              <span className="text-md ml-1 text-red-500">*</span>
             </label>
             <Field
               placeholder={t('placeholders.address')}

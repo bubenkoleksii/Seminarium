@@ -11,12 +11,12 @@ export default function ErrorPage() {
   return (
     <html>
       <body className={montserrat.className}>
-        <section class="flex h-full items-center dark:bg-gray-50 dark:text-gray-800 sm:p-16">
-          <div class="container mx-auto my-8 flex flex-col items-center justify-center space-y-8 px-5 text-center sm:max-w-md">
+        <section className="flex h-full items-center dark:bg-gray-50 dark:text-gray-800 sm:p-16">
+          <div className="container mx-auto my-8 flex flex-col items-center justify-center space-y-8 px-5 text-center sm:max-w-md">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 512 512"
-              class="h-40 w-40 dark:text-gray-400"
+              className="h-40 w-40 dark:text-gray-400"
             >
               <path
                 fill="currentColor"
@@ -38,7 +38,7 @@ export default function ErrorPage() {
                 points="383.958 182.63 360.042 161.37 338.671 185.412 314.63 164.042 293.37 187.958 317.412 209.329 296.042 233.37 319.958 254.63 341.329 230.588 365.37 251.958 386.63 228.042 362.588 206.671 383.958 182.63"
               ></polygon>
             </svg>
-            <p class="text-3xl">
+            <p className="text-3xl">
               Упс, виглядає так, що на наших серверах виникла проблема
             </p>
             <Link

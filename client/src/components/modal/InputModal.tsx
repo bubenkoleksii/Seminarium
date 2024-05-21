@@ -2,7 +2,7 @@ import { FC, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { Label, Modal, Textarea, Button } from 'flowbite-react';
 
-type Result = { proved: boolean; text: string | null }
+type Result = { proved: boolean; text: string | null };
 
 interface InputModalProps {
   open: boolean;
@@ -11,7 +11,12 @@ interface InputModalProps {
   required?: boolean;
 }
 
-const InputModal: FC<InputModalProps> = ({ open, label, onClose, required = false }) => {
+const InputModal: FC<InputModalProps> = ({
+  open,
+  label,
+  onClose,
+  required = false,
+}) => {
   const t = useTranslations('Modal');
 
   const [inputValue, setInputValue] = useState('');

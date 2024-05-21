@@ -8,7 +8,7 @@ import { adminQueries, CurrentTab } from '../../../constants';
 import { getAll } from '../../../api/joiningRequestApi';
 import { useQuery } from '@tanstack/react-query';
 import { Loader } from '@/components/loader';
-import { JoiningRequestsItem } from '@/features/admin/components/joining-request/getAll/JoiningRequestsItem';
+import { JoiningRequestsItem } from './JoiningRequestsItem';
 import { Table } from 'flowbite-react';
 import { useMediaQuery } from 'react-responsive';
 import { useTranslations } from 'next-intl';

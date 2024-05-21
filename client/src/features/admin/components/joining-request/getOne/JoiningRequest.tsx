@@ -4,16 +4,22 @@ import { FC, useState } from 'react';
 import type { ApiResponse } from '@/shared/types';
 import type {
   JoiningRequestResponse,
-  RejectRequest
+  RejectRequest,
 } from '@/features/admin/types/joiningRequestTypes';
 import { useLocale, useTranslations } from 'next-intl';
-import { useIsMutating, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import {
+  useIsMutating,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from '@tanstack/react-query';
 import { getOne, reject } from '@/features/admin/api/joiningRequestApi';
 import { Loader } from '@/components/loader';
 import { Error } from '@/components/error';
 import { useSetCurrentTab } from '@/shared/hooks';
 import {
-  AdminClientPaths, adminMutations,
+  AdminClientPaths,
+  adminMutations,
   adminQueries,
   CurrentTab,
 } from '@/features/admin/constants';
@@ -41,19 +47,25 @@ const JoiningRequest: FC<JoiningRequestProps> = ({ id }) => {
   const handleOpenTextModal = () => {
     setTextOpenModal(true);
   };
-  const handleCloseTextModal = ({ proved, text }: { proved: boolean, text: string | null }) => {
+  const handleCloseTextModal = ({
+    proved,
+    text,
+  }: {
+    proved: boolean;
+    text: string | null;
+  }) => {
     setTextOpenModal(false);
 
     if (proved) {
       const request: {
-        id: string,
-        data: RejectRequest,
+        id: string;
+        data: RejectRequest;
       } = {
         id: id,
         data: {
-          message: text
-        }
-      }
+          message: text,
+        },
+      };
 
       disproveMutate(request);
 
@@ -80,10 +92,7 @@ const JoiningRequest: FC<JoiningRequestProps> = ({ id }) => {
     retry: adminQueries.options.retry,
   });
 
-  const {
-    mutate: disproveMutate,
-    reset: resetDisproveMutation
-  } = useMutation({
+  const { mutate: disproveMutate, reset: resetDisproveMutation } = useMutation({
     mutationFn: reject,
     mutationKey: [adminMutations.rejectJoiningRequest],
     retry: adminMutations.options.retry,
@@ -92,10 +101,10 @@ const JoiningRequest: FC<JoiningRequestProps> = ({ id }) => {
         const errorMessages = {
           400: t('labels.validation'),
           404: t('labels.oneNotFound'),
-        }
+        };
 
         toast.error(
-          errorMessages[response.error.status] || t('labels.internal')
+          errorMessages[response.error.status] || t('labels.internal'),
         );
       } else {
         toast.success(t('labels.rejectSuccess'), { duration: 4000 });
@@ -104,7 +113,7 @@ const JoiningRequest: FC<JoiningRequestProps> = ({ id }) => {
           queryKey: [adminQueries.getOneJoiningRequest, id],
         });
       }
-    }
+    },
   });
 
   useSetCurrentTab(CurrentTab.JoiningRequest);
@@ -364,29 +373,21 @@ const JoiningRequest: FC<JoiningRequestProps> = ({ id }) => {
                   gradientMonochrome="failure"
                   fullSized
                 >
-                  <span
-                    className="text-white"
-                  >
-                    {t('labels.rejectBtn')}
-                  </span>
+                  <span className="text-white">{t('labels.rejectBtn')}</span>
                 </Button>
               </div>
 
               <div className="flex w-1/2 pl-2">
                 <Button gradientMonochrome="success" fullSized>
-                  <span className="text-white">
-                    {t('labels.approveBtn')}
-                  </span>
+                  <span className="text-white">{t('labels.approveBtn')}</span>
                 </Button>
               </div>
             </>
           ) : (
             data.status !== 'approved' && (
-              <div className="w-full flex justify-center">
+              <div className="flex w-full justify-center">
                 <Button gradientMonochrome="success" fullSized>
-              <span className="text-white">
-                {t('labels.approveBtn')}
-              </span>
+                  <span className="text-white">{t('labels.approveBtn')}</span>
                 </Button>
               </div>
             )

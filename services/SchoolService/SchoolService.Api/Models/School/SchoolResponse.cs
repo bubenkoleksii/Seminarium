@@ -3,6 +3,12 @@
 public record SchoolResponse(
     Guid Id,
 
+    Guid JoiningRequestId,
+
+    DateTime CreatedAt,
+
+    DateTime? LastUpdatedAt,
+
     ulong RegisterCode,
 
     string Name,

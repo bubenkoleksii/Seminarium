@@ -16,7 +16,14 @@ const errorComponents = {
   403: <Forbidden />,
 };
 
-const Error: FC<ErrorProps> = ({ error }) =>
-  errorComponents[error.status] || <Internal />;
+const errorComponentsByMessage = {
+  'Unauthorized': <Unauthorized />,
+}
+
+const Error: FC<ErrorProps> = ({ error }) => {
+  return errorComponents[error.status] ||
+    errorComponentsByMessage[error.message] ||
+    <Internal />;
+}
 
 export { Error };
