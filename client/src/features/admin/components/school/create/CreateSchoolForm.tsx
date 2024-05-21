@@ -1,36 +1,35 @@
 'use client';
 
-import styles from './JoiningRequestForm.module.scss';
-import { FC, useState } from 'react';
+import styles from './CreateSchoolForm.module.scss';
+import { FC } from 'react';
+import type { CreateSchoolRequest, CreateSchoolRequestWithId } from '@/features/admin/types/schoolTypes';
+import { AdminClientPaths, adminMutations } from '@/features/admin/constants';
 import { useLocale, useTranslations } from 'next-intl';
-import { toast } from 'react-hot-toast';
-import { school } from '@/shared/constants';
+import { useRouter } from 'next/navigation';
+import { school as schoolConstants } from '@/shared/constants';
+import { school as schoolRoutes } from '@/features/admin/routes';
+import { useIsMutating, useMutation } from '@tanstack/react-query';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
-import { replaceEmptyStringsWithNull } from '@/shared/helpers';
-import { useMutation, useIsMutating } from '@tanstack/react-query';
-import { createJoiningRequest } from '@/features/joining-request/api';
 import { Loader } from '@/components/loader';
-import { createJoiningRequestSuccessRoute } from '@/features/joining-request/constants';
-import { useRouter } from 'next/navigation';
-import { ProveModal } from '@/components/modal';
+import { create } from '@/features/admin/api/schoolApi';
+import { toast } from 'react-hot-toast';
+import { replaceEmptyStringsWithNull } from '@/shared/helpers';
 
-const JoiningRequestForm: FC = () => {
+type CreateSchoolFormProps = {
+  joiningRequestId: string;
+  school: CreateSchoolRequest
+}
+
+const CreateSchoolForm: FC<CreateSchoolFormProps> = ({ joiningRequestId, school }) => {
+  const t = useTranslations('School');
+  const v = useTranslations('Validation');
   const activeLocale = useLocale();
   const { replace } = useRouter();
 
   const isMutating = useIsMutating();
 
-  const t = useTranslations('JoiningRequest');
-  const v = useTranslations('Validation');
-
   const validationSchema = Yup.object().shape({
-    requesterEmail: Yup.string()
-      .email(v('email'))
-      .required(v('required'))
-      .max(50, v('max')),
-    requesterPhone: Yup.string().required(v('required')).max(50, v('max')),
-    requesterFullName: Yup.string().required(v('required')).max(250, v('max')),
     registerCode: Yup.string().required(v('required')),
     name: Yup.string().required(v('required')).max(250, v('max')),
     shortName: Yup.string().max(250, v('max')),
@@ -50,56 +49,65 @@ const JoiningRequestForm: FC = () => {
     ownershipType: Yup.string().required(v('required')),
   });
 
-  const [formValues, setFormValues] = useState(null);
-  const [openModal, setOpenModal] = useState(false);
-  const handleOpenModal = () => {
-    setOpenModal(true);
-  };
-  const handleCloseModal = (confirmed: boolean) => {
-    setOpenModal(false);
-
-    if (formValues && confirmed) {
-      mutate(formValues);
-    } else {
-      toast.success(t('labels.disproved'), { duration: 2000 });
-    }
-  };
   const handleSubmit = (values) => {
     replaceEmptyStringsWithNull(values);
-    handleOpenModal();
 
-    setFormValues(values);
-  };
+    const request: CreateSchoolRequestWithId = {
+      joiningRequestId,
+      registerCode: values.registerCode,
+      name: values.name,
+      shortName: values.shortName,
+      gradingSystem: values.gradingSystem,
+      studentsQuantity: values.studentsQuantity,
+      type: values.type,
+      postalCode: values.postalCode,
+      ownershipType: values.ownershipType,
+      region: values.region,
+      territorialCommunity: values.territorialCommunity,
+      address: values.address,
+      areOccupied: values.areOccupied === `true`,
+    };
 
-  const { mutate, reset: resetMutation } = useMutation({
-    mutationFn: createJoiningRequest,
-    mutationKey: ['createJoiningRequest'],
+    mutate(request);
+  }
+
+  const { mutate, isPending, reset: resetMutation } = useMutation({
+    mutationFn: create,
+    mutationKey: [adminMutations.createSchool],
     onSuccess: (response) => {
       if (response && response.error) {
         const errorMessages = {
-          400: t(`labels.validation`),
+          400: t('labels.validation'),
           409: t('labels.alreadyExists'),
-        };
+        }
 
         toast.error(
           errorMessages[response.error.status] || t('labels.internal'),
-          { duration: 10000 },
-        );
+          { duration: 4000 },
+        )
       } else {
-        toast.success(t('labels.success'), { duration: 1500 });
+        toast.success(t('labels.createSuccess'), { duration: 1500 });
 
-        const { id, requesterEmail: email } = response;
-        const successRoute = `/${activeLocale}/${createJoiningRequestSuccessRoute}/${id}/${email}`;
+        const { id } = response;
+        const successRoute = `/${activeLocale}/${schoolRoutes.getOne(id)}`;
         replace(successRoute);
       }
-    },
+    }
   });
 
-  if (isMutating) {
+  if (isPending || isMutating) {
     return (
       <>
-        <h2 className="mb-4 text-center text-2xl font-semibold text-gray-950">
-          {t('title')}
+        <h2 className="mb-4 text-center text-xl font-bold">
+          {t('createTitle')}
+          <span
+            onClick={() =>
+              replace(`/${activeLocale}/${AdminClientPaths.JoiningRequests}/${joiningRequestId}`)
+            }
+            className="ml-2 cursor-pointer pt-1 text-sm text-purple-700 hover:text-red-700"
+          >
+          {t('labels.toRequest')}
+        </span>
         </h2>
         <Loader />
       </>
@@ -108,96 +116,24 @@ const JoiningRequestForm: FC = () => {
 
   return (
     <Formik
-      initialValues={
-        formValues
-          ? formValues
-          : {
-              requesterEmail: '',
-              requesterPhone: '',
-              requesterFullName: '',
-              registerCode: '',
-              name: '',
-              shortName: '',
-              gradingSystem: '',
-              type: '',
-              postalCode: '',
-              ownershipType: '',
-              studentsQuantity: '',
-              region: '',
-              territorialCommunity: '',
-              address: '',
-              areOccupied: false,
-            }
-      }
+      initialValues={school}
       validationSchema={validationSchema}
       onSubmit={handleSubmit}
     >
       <div className={styles.container}>
-        <h2 className="mb-4 text-center text-2xl font-semibold text-gray-950">
-          {t('title')}
+        <h2 className="mb-4 text-center text-xl font-bold">
+          {t('createTitle')}
+          <span
+            onClick={() =>
+              replace(`/${activeLocale}/${AdminClientPaths.JoiningRequests}/${joiningRequestId}`)
+            }
+            className="ml-2 cursor-pointer pt-1 text-sm text-purple-700 hover:text-red-700"
+          >
+          {t('labels.toRequest')}
+        </span>
         </h2>
-        <ProveModal
-          open={openModal}
-          text={t('labels.prove')}
-          onClose={handleCloseModal}
-        />
+
         <Form className={styles.form}>
-          <div>
-            <label htmlFor="requesterEmail" className={styles.label}>
-              <span>{t('labels.requesterEmail')}</span>
-              <span className="text-md ml-1 text-red-500">*</span>
-            </label>
-            <Field
-              placeholder={t('placeholders.requesterEmail')}
-              type="email"
-              id="requesterEmail"
-              name="requesterEmail"
-              autoComplete="email"
-              className={styles.input}
-            />
-            <ErrorMessage
-              name="requesterEmail"
-              component="div"
-              className={styles.error}
-            />
-          </div>
-          <div>
-            <label htmlFor="requesterPhone" className={styles.label}>
-              {t('labels.requesterPhone')}
-              <span className="text-md ml-1 text-red-500">*</span>
-            </label>
-            <Field
-              placeholder={t('placeholders.requesterPhone')}
-              type="tel"
-              id="requesterPhone"
-              name="requesterPhone"
-              autoComplete="tel"
-              className={styles.input}
-            />
-            <ErrorMessage
-              name="requesterPhone"
-              component="div"
-              className={styles.error}
-            />
-          </div>
-          <div>
-            <label htmlFor="requesterFullName" className={styles.label}>
-              {t('labels.requesterFullName')}
-              <span className="text-md ml-1 text-red-500">*</span>
-            </label>
-            <Field
-              placeholder={t('placeholders.requesterFullName')}
-              type="text"
-              id="requesterFullName"
-              name="requesterFullName"
-              className={styles.input}
-            />
-            <ErrorMessage
-              name="requesterFullName"
-              component="div"
-              className={styles.error}
-            />
-          </div>
           <div>
             <label htmlFor="registerCode" className={styles.label}>
               {t('labels.registerCode')}
@@ -276,7 +212,7 @@ const JoiningRequestForm: FC = () => {
             </label>
             <Field as="select" id="type" className={styles.select} name="type">
               <option value=""></option>
-              {Object.values(school.type).map((value, index) => (
+              {Object.values(schoolConstants.type).map((value, index) => (
                 <option key={index} value={value}>
                   {t(`types.${value}`)}
                 </option>
@@ -318,7 +254,7 @@ const JoiningRequestForm: FC = () => {
               name="ownershipType"
             >
               <option value=""></option>
-              {Object.values(school.ownershipType).map((value, index) => (
+              {Object.values(schoolConstants.ownershipType).map((value, index) => (
                 <option key={index} value={value}>
                   {t(`ownershipTypes.${value}`)}
                 </option>
@@ -360,7 +296,7 @@ const JoiningRequestForm: FC = () => {
               name="region"
             >
               <option value=""></option>
-              {Object.values(school.region).map((value, index) => (
+              {Object.values(schoolConstants.region).map((value, index) => (
                 <option key={index} value={value}>
                   {t(`regions.${value}`)}
                 </option>
@@ -436,4 +372,4 @@ const JoiningRequestForm: FC = () => {
   );
 };
 
-export { JoiningRequestForm };
+export { CreateSchoolForm };

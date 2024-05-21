@@ -23,7 +23,7 @@ import {
   adminQueries,
   CurrentTab,
 } from '@/features/admin/constants';
-import { getColorByStatus } from '@/shared/helpers';
+import { buildQueryString, getColorByStatus } from '@/shared/helpers';
 import { DateTime } from '@/components/date-time';
 import { Button } from 'flowbite-react';
 import { useRouter } from 'next/navigation';
@@ -119,6 +119,26 @@ const JoiningRequest: FC<JoiningRequestProps> = ({ id }) => {
   });
 
   useSetCurrentTab(CurrentTab.JoiningRequest);
+
+  const navigateToCreateSchool = () => {
+    const query = buildQueryString({
+      registerCode: data.registerCode,
+      name: data.name,
+      shortName: data.shortName,
+      gradingSystem: data.gradingSystem,
+      type: data.type,
+      postalCode: data.postalCode,
+      ownershipType: data.ownershipType,
+      studentsQuantity: data.studentsQuantity,
+      region: data.region,
+      territorialCommunity: data.territorialCommunity,
+      address: data.address,
+      areOccupied: data.areOccupied
+    });
+
+    const link = `/${activeLocale}/${AdminClientPaths.CreateSchool}/${data.id}?${query}`;
+    replace(link);
+  }
 
   if (data && data.error) {
     return (
@@ -380,7 +400,7 @@ const JoiningRequest: FC<JoiningRequestProps> = ({ id }) => {
               </div>
 
               <div className="flex w-1/2 pl-2">
-                <Button gradientMonochrome="success" fullSized>
+                <Button onClick={navigateToCreateSchool} gradientMonochrome="success" fullSized>
                   <span className="text-white">{t('labels.approveBtn')}</span>
                 </Button>
               </div>
@@ -388,7 +408,7 @@ const JoiningRequest: FC<JoiningRequestProps> = ({ id }) => {
           ) : (
             data.status !== 'approved' && (
               <div className="flex w-full justify-center">
-                <Button gradientMonochrome="success" fullSized>
+                <Button onClick={navigateToCreateSchool} gradientMonochrome="success" fullSized>
                   <span className="text-white">{t('labels.approveBtn')}</span>
                 </Button>
               </div>

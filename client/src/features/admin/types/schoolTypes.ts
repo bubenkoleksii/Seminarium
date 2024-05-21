@@ -26,3 +26,22 @@ export interface SchoolResponse {
   siteUrl?: string;
   img?: string;
 }
+
+export interface CreateSchoolRequest {
+  registerCode: number;
+  name: string;
+  shortName?: string;
+  gradingSystem: number;
+  type: string;
+  postalCode: number;
+  ownershipType: string;
+  studentsQuantity: number;
+  region: string;
+  territorialCommunity?: string;
+  address?: string;
+  areOccupied: boolean;
+}
+
+export interface CreateSchoolRequestWithId extends CreateSchoolRequest {
+  joiningRequestId: string;
+}

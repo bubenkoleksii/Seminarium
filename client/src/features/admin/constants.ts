@@ -8,6 +8,7 @@ export const enum AdminClientPaths {
   Profile = 'admin',
   JoiningRequests = 'admin/joining_requests',
   Schools = 'admin/schools',
+  CreateSchool = 'admin/schools/create'
 }
 
 export const adminQueries = {
@@ -22,6 +23,7 @@ export const adminQueries = {
 
 export const adminMutations = {
   rejectJoiningRequest: 'rejectJoiningRequest',
+  createSchool: 'createSchool',
   options: {
     retry: 2,
   },
