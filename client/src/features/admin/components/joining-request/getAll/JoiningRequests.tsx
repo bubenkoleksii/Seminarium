@@ -11,9 +11,9 @@ import { Loader } from '@/components/loader';
 import { JoiningRequestsItem } from './JoiningRequestsItem';
 import { Table } from 'flowbite-react';
 import { useMediaQuery } from 'react-responsive';
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import { Error } from '@/components/error';
-import { useSetCurrentTab } from '@/shared/hooks';
+import { useAuthRedirectByRole, useSetCurrentTab } from '@/shared/hooks';
 import { mediaQueries, school } from '@/shared/constants';
 import { SearchInput } from '@/components/search-input';
 import { buildQueryString } from '@/shared/helpers';
@@ -37,8 +37,12 @@ const JoiningRequests: FC<JoiningRequestsProps> = ({
   pageParameter,
 }) => {
   const t = useTranslations('JoiningRequest');
+  const activeLocale = useLocale();
+
   const pathname = usePathname();
   const { replace } = useRouter();
+
+  const { isUserLoading } = useAuthRedirectByRole(activeLocale, 'admin');
 
   const [search, setSearch] = useState<string>(searchParameter || '');
   const handleSearch = (value: string) => {
@@ -145,7 +149,7 @@ const JoiningRequests: FC<JoiningRequestsProps> = ({
     page,
   ]);
 
-  if (isLoading) {
+  if (isLoading || isUserLoading) {
     return (
       <>
         <h2 className="mb-4 text-center text-xl font-bold">{t('listTitle')}</h2>

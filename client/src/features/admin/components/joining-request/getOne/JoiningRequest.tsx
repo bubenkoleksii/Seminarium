@@ -16,7 +16,7 @@ import {
 import { getOne, reject } from '@/features/admin/api/joiningRequestApi';
 import { Loader } from '@/components/loader';
 import { Error } from '@/components/error';
-import { useSetCurrentTab } from '@/shared/hooks';
+import { useAuthRedirectByRole, useSetCurrentTab } from '@/shared/hooks';
 import {
   AdminClientPaths,
   adminMutations,
@@ -42,6 +42,8 @@ const JoiningRequest: FC<JoiningRequestProps> = ({ id }) => {
 
   const { replace } = useRouter();
   const activeLocale = useLocale();
+
+  const { isUserLoading } = useAuthRedirectByRole(activeLocale, 'admin');
 
   const [textOpenModal, setTextOpenModal] = useState(false);
   const handleOpenTextModal = () => {
@@ -137,7 +139,7 @@ const JoiningRequest: FC<JoiningRequestProps> = ({ id }) => {
     );
   }
 
-  if (isLoading || isMutating) {
+  if (isLoading || isMutating || isUserLoading) {
     return (
       <>
         <h2 className="mb-4 text-center text-xl font-bold">

@@ -1,4 +1,7 @@
+'use client';
+
 import { JoiningRequest } from '@/features/admin';
+import { SessionProvider } from 'next-auth/react';
 
 type Props = {
   params: {
@@ -9,7 +12,9 @@ type Props = {
 export default function JoiningRequestPage({ params }: Props) {
   return (
     <div className="p-3">
-      <JoiningRequest id={params.id} />
+      <SessionProvider>
+        <JoiningRequest id={params.id} />
+      </SessionProvider>
     </div>
   );
 }

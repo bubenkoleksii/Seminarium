@@ -1,9 +1,14 @@
+'use client';
+
 import { AdminProfile } from '@/features/admin';
+import { SessionProvider } from 'next-auth/react';
 
 export default function AdminPage() {
   return (
-    <div className="max-w-screen-md p-3">
-      <AdminProfile />
+    <div className="p-3">
+      <SessionProvider>
+        <AdminProfile />
+      </SessionProvider>
     </div>
   );
 }

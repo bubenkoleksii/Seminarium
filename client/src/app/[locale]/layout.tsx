@@ -36,17 +36,17 @@ export default function LocaleLayout({ children, params: { locale } }) {
       <body className={montserrat.className} suppressHydrationWarning={true}>
         <TopLoader />
 
-        <NextIntlClientProvider messages={messages}>
-          <Toaster position="top-center" />
+          <NextIntlClientProvider messages={messages}>
+            <Toaster position="top-center" />
 
-          <div className="flex min-h-screen flex-col bg-gray-100">
-            <Navbar />
-            <main className="min-w-screen flex flex-grow justify-center">
-              {children}
-            </main>
-            <Footer />
-          </div>
-        </NextIntlClientProvider>
+            <div className="flex min-h-screen flex-col bg-gray-100">
+              <Navbar />
+              <main className="min-w-screen flex flex-grow justify-center">
+                {children}
+              </main>
+              <Footer />
+            </div>
+          </NextIntlClientProvider>
       </body>
     </html>
   );

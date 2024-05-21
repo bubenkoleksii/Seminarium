@@ -1,9 +1,9 @@
 'use client';
 
 import { FC, useEffect, useState } from 'react';
-import { useSetCurrentTab } from '@/shared/hooks';
+import { useAuthRedirectByRole, useSetCurrentTab } from '@/shared/hooks';
 import { adminQueries, CurrentTab } from '@/features/admin/constants';
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import { usePathname, useRouter } from 'next/navigation';
 import { buildQueryString } from '@/shared/helpers';
 import { mediaQueries, school } from '@/shared/constants';
@@ -35,8 +35,12 @@ const Schools: FC<SchoolsProps> = ({
   pageParameter,
 }) => {
   const t = useTranslations('School');
+  const activeLocale = useLocale();
+
   const pathname = usePathname();
   const { replace } = useRouter();
+
+  const { isUserLoading } = useAuthRedirectByRole(activeLocale, 'admin');
 
   const [search, setSearch] = useState<string>(searchParameter || '');
   const handleSearch = (value: string) => {
@@ -131,7 +135,7 @@ const Schools: FC<SchoolsProps> = ({
     page,
   ]);
 
-  if (isLoading) {
+  if (isLoading || isUserLoading) {
     return (
       <>
         <h2 className="mb-4 text-center text-xl font-bold">{t('listTitle')}</h2>
