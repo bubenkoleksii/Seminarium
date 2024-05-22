@@ -186,7 +186,7 @@ const JoiningRequest: FC<JoiningRequestProps> = ({ id }) => {
   const occupiedColor = getColorByStatus(data.areOccupied ? 'danger' : 'ok');
 
   return (
-    <div className="p-3">
+    <div className="p-3 mb-4">
       <h2 className="mb-4 text-center text-xl font-bold">
         {t('oneTitle')}
         <span

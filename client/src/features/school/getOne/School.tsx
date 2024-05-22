@@ -90,7 +90,7 @@ const School: FC<SchoolProps> = ({ id }) => {
   const occupiedColor = getColorByStatus(data.areOccupied ? 'danger' : 'ok');
 
   return (
-    <div className="p-3 w-[90%]">
+    <div className="p-3 w-[90%] mb-4">
       <h2 className="mb-4 mt-2 text-center text-xl font-bold">
         {t('oneTitle')}
 
