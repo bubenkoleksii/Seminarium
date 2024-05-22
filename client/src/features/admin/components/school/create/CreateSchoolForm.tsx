@@ -18,6 +18,7 @@ import { Loader } from '@/components/loader';
 import { create } from '@/features/admin/api/schoolApi';
 import { toast } from 'react-hot-toast';
 import { replaceEmptyStringsWithNull } from '@/shared/helpers';
+import { useAuthRedirectByRole } from '@/shared/hooks';
 
 type CreateSchoolFormProps = {
   joiningRequestId: string;
@@ -33,6 +34,7 @@ const CreateSchoolForm: FC<CreateSchoolFormProps> = ({
   const activeLocale = useLocale();
   const { replace } = useRouter();
 
+  const { isUserLoading } = useAuthRedirectByRole(activeLocale, 'admin');
   const isMutating = useIsMutating();
 
   const validationSchema = Yup.object().shape({
@@ -105,7 +107,7 @@ const CreateSchoolForm: FC<CreateSchoolFormProps> = ({
     },
   });
 
-  if (isPending || isMutating) {
+  if (isPending || isMutating || isUserLoading) {
     return (
       <>
         <h2 className="mb-4 text-center text-xl font-bold">

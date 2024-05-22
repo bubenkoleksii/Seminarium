@@ -7,6 +7,7 @@ export interface PagesSchoolsResponse {
 
 export interface SchoolResponse {
   id: string;
+  joiningRequestId: string;
   createdAt: string;
   lastUpdatedAt?: string;
   registerCode: number;
