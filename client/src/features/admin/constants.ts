@@ -8,7 +8,7 @@ export const enum AdminClientPaths {
   Profile = 'admin',
   JoiningRequests = 'admin/joining_requests',
   Schools = 'admin/schools',
-  CreateSchool = 'admin/schools/create'
+  CreateSchool = 'admin/schools/create',
 }
 
 export const adminQueries = {

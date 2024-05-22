@@ -135,12 +135,12 @@ const JoiningRequest: FC<JoiningRequestProps> = ({ id }) => {
       region: data.region,
       territorialCommunity: data.territorialCommunity,
       address: data.address,
-      areOccupied: data.areOccupied
+      areOccupied: data.areOccupied,
     });
 
     const link = `/${activeLocale}/${AdminClientPaths.CreateSchool}/${data.id}?${query}`;
     replace(link);
-  }
+  };
 
   if (data && data.error) {
     return (
@@ -402,7 +402,11 @@ const JoiningRequest: FC<JoiningRequestProps> = ({ id }) => {
               </div>
 
               <div className="flex w-1/2 pl-2">
-                <Button onClick={navigateToCreateSchool} gradientMonochrome="success" fullSized>
+                <Button
+                  onClick={navigateToCreateSchool}
+                  gradientMonochrome="success"
+                  fullSized
+                >
                   <span className="text-white">{t('labels.approveBtn')}</span>
                 </Button>
               </div>
@@ -410,13 +414,17 @@ const JoiningRequest: FC<JoiningRequestProps> = ({ id }) => {
           ) : (
             data.status !== 'approved' && (
               <div className="flex w-full justify-center">
-                <Button onClick={navigateToCreateSchool} gradientMonochrome="success" fullSized>
+                <Button
+                  onClick={navigateToCreateSchool}
+                  gradientMonochrome="success"
+                  fullSized
+                >
                   <span className="text-white">{t('labels.approveBtn')}</span>
                 </Button>
               </div>
             )
           )}
-          {data.schoolId &&
+          {data.schoolId && (
             <div className="flex w-full justify-center">
               <Button gradientMonochrome="purple" fullSized>
                 <Link
@@ -427,7 +435,7 @@ const JoiningRequest: FC<JoiningRequestProps> = ({ id }) => {
                 </Link>
               </Button>
             </div>
-          }
+          )}
         </div>
       </div>
     </div>

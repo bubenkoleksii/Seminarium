@@ -8,4 +8,4 @@ export const school = {
   getAll: `/school/getAll`,
   getOne: (id: string) => `/school/${id}`,
   create: `/school/create`,
-}
+};

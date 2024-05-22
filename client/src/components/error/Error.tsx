@@ -17,13 +17,14 @@ const errorComponents = {
 };
 
 const errorComponentsByMessage = {
-  'Unauthorized': <Unauthorized />,
-}
+  Unauthorized: <Unauthorized />,
+};
 
 const Error: FC<ErrorProps> = ({ error }) => {
-  return errorComponents[error.status] ||
-    errorComponentsByMessage[error.message] ||
-    <Internal />;
-}
+  return (
+    errorComponents[error.status] ||
+    errorComponentsByMessage[error.message] || <Internal />
+  );
+};
 
 export { Error };

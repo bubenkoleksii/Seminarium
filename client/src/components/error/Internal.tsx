@@ -23,7 +23,9 @@ const Internal: FC<InternalProps> = ({ message }) => {
         </div>
 
         <div className="mt-4 flex flex-col justify-center gap-3 font-bold tracking-widest">
-          <span className="text-xl text-gray-700">{message || t('internal')}</span>
+          <span className="text-xl text-gray-700">
+            {message || t('internal')}
+          </span>
         </div>
       </div>
     </div>

@@ -7,12 +7,15 @@ import { CreateSchoolForm } from '@/features/admin';
 
 type CreateSchoolPageProps = {
   params: {
-    id: string
-  }
-  searchParams: CreateSchoolRequest
-}
+    id: string;
+  };
+  searchParams: CreateSchoolRequest;
+};
 
-const CreateSchoolPage: FC<CreateSchoolPageProps> = ({ params, searchParams }) => {
+const CreateSchoolPage: FC<CreateSchoolPageProps> = ({
+  params,
+  searchParams,
+}) => {
   return (
     <div className="min-w-screen flex justify-center p-3">
       <SessionProvider>

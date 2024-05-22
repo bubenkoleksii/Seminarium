@@ -21,17 +21,24 @@ export const useAuthRedirectByRole = (activeLocale, requiredRole = null) => {
       } else if (requiredRole) {
         if (requiredRole === 'admin' && currentUser?.role !== 'admin') {
           router.replace(`/${activeLocale}/access-denied/403`);
-        } else if (requiredRole === 'user' && !(currentUser?.role === 'user' || currentUser?.role === 'admin')) {
+        } else if (
+          requiredRole === 'user' &&
+          !(currentUser?.role === 'user' || currentUser?.role === 'admin')
+        ) {
           router.replace(`/${activeLocale}/access-denied/403`);
         }
       }
       setIsLoading(false);
     };
 
-    if (userStatus === 'unauthenticated' || (userStatus === 'authenticated' && requiredRole && (
-      (requiredRole === 'admin' && currentUser?.role !== 'admin') ||
-      (requiredRole === 'user' && !(currentUser?.role === 'user' || currentUser?.role === 'admin'))
-    ))) {
+    if (
+      userStatus === 'unauthenticated' ||
+      (userStatus === 'authenticated' &&
+        requiredRole &&
+        ((requiredRole === 'admin' && currentUser?.role !== 'admin') ||
+          (requiredRole === 'user' &&
+            !(currentUser?.role === 'user' || currentUser?.role === 'admin'))))
+    ) {
       if (attemptCount < 2) {
         setTimeout(() => {
           setAttemptCount(attemptCount + 1);
@@ -42,13 +49,23 @@ export const useAuthRedirectByRole = (activeLocale, requiredRole = null) => {
     } else {
       setIsLoading(false);
     }
-  }, [userStatus, currentUser, activeLocale, requiredRole, attemptCount, router]);
+  }, [
+    userStatus,
+    currentUser,
+    activeLocale,
+    requiredRole,
+    attemptCount,
+    router,
+  ]);
 
   useEffect(() => {
-    if (userStatus === 'authenticated' && (!requiredRole ||
-      (requiredRole === 'admin' && currentUser?.role === 'admin') ||
-      (requiredRole === 'user' &&
-        (currentUser?.role === 'user' || currentUser?.role === 'admin')))) {
+    if (
+      userStatus === 'authenticated' &&
+      (!requiredRole ||
+        (requiredRole === 'admin' && currentUser?.role === 'admin') ||
+        (requiredRole === 'user' &&
+          (currentUser?.role === 'user' || currentUser?.role === 'admin')))
+    ) {
       setIsLoading(false);
     }
   }, [userStatus, currentUser, requiredRole]);

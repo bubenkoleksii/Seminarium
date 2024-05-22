@@ -125,15 +125,7 @@ const Schools: FC<SchoolsProps> = ({
     }
 
     replace(`${pathname}?${params.toString()}`);
-  }, [
-    search,
-    sortByDate,
-    replace,
-    pathname,
-    filterByRegion,
-    limit,
-    page,
-  ]);
+  }, [search, sortByDate, replace, pathname, filterByRegion, limit, page]);
 
   if (isLoading || isUserLoading) {
     return (
@@ -267,11 +259,7 @@ const Schools: FC<SchoolsProps> = ({
                 <Table.Body className="divide-y">
                   {data &&
                     data.entries.map((entry, idx) => (
-                      <SchoolItem
-                        key={entry.id}
-                        item={entry}
-                        index={idx}
-                      />
+                      <SchoolItem key={entry.id} item={entry} index={idx} />
                     ))}
                 </Table.Body>
               </Table>
@@ -279,11 +267,7 @@ const Schools: FC<SchoolsProps> = ({
               <div className="w-[100%] font-medium">
                 {data &&
                   data.entries.map((entry, idx) => (
-                    <SchoolItem
-                      key={entry.id}
-                      item={entry}
-                      index={idx}
-                    />
+                    <SchoolItem key={entry.id} item={entry} index={idx} />
                   ))}
               </div>
             )}

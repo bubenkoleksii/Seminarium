@@ -10,8 +10,9 @@ import { api } from '@/shared/api';
 import { school } from '@/features/admin/routes';
 
 type GetAll = (query?: string) => Promise<ApiResponse<PagesSchoolsResponse>>;
-type Create = (data: CreateSchoolRequestWithId) => Promise<ApiResponse<SchoolResponse>>;
-
+type Create = (
+  data: CreateSchoolRequestWithId,
+) => Promise<ApiResponse<SchoolResponse>>;
 
 export const getAll: GetAll = (query?: string) =>
   api.get(`${school.getAll}?${query}`);

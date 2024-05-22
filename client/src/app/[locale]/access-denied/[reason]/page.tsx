@@ -10,10 +10,7 @@ type Props = {
 const AccessDeniedPage: FC = ({ params }: Props) => {
   return (
     <div className="p-3">
-      {params.reason === '401'
-        ? <Unauthorized/>
-        : <Forbidden />
-      }
+      {params.reason === '401' ? <Unauthorized /> : <Forbidden />}
     </div>
   );
 };

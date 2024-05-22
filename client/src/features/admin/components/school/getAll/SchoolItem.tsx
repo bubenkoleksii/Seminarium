@@ -5,8 +5,8 @@ import { mediaQueries } from '@/shared/constants';
 import { useMediaQuery } from 'react-responsive';
 import { Button, Table } from 'flowbite-react';
 import { DateTime } from '@/components/date-time';
-import { AdminClientPaths } from '@/features/admin/constants';
 import Link from 'next/link';
+import { school } from '@/features/admin/routes';
 
 interface SchoolItemProps {
   item: SchoolResponse;
@@ -39,7 +39,7 @@ const SchoolItem: FC<SchoolItemProps> = ({ item, index }) => {
           <Table.Cell>
             <Button gradientMonochrome="purple">
               <Link
-                href={`/${activeLocale}/${AdminClientPaths.Schools}/${item.id}`}
+                href={`/${activeLocale}/${school.getOne(item.id)}`}
                 className="text-white"
               >
                 {t('labels.details')}
@@ -69,9 +69,7 @@ const SchoolItem: FC<SchoolItemProps> = ({ item, index }) => {
 
           <div className="flex">
             <div className="flex w-1/2 justify-center border border-gray-200 bg-purple-100 px-4 py-2 text-xs font-semibold">
-              <span className="text-center">
-                {t('labels.registerCode')}
-              </span>
+              <span className="text-center">{t('labels.registerCode')}</span>
             </div>
             <div className="flex w-1/2 justify-center border border-gray-200 px-4 py-2 text-xs font-medium">
               {item.registerCode}
@@ -80,7 +78,9 @@ const SchoolItem: FC<SchoolItemProps> = ({ item, index }) => {
 
           <div className="flex">
             <div className="flex w-1/2 justify-center border border-gray-200 bg-purple-100 px-4 py-2 text-xs font-semibold">
-              <span className="text-center">{t('labels.studentsQuantity')}</span>
+              <span className="text-center">
+                {t('labels.studentsQuantity')}
+              </span>
             </div>
             <div className="flex w-1/2 justify-center border border-gray-200 px-4 py-2 text-xs font-medium">
               {item.studentsQuantity}
@@ -117,7 +117,7 @@ const SchoolItem: FC<SchoolItemProps> = ({ item, index }) => {
           <div className="mt-2 flex">
             <Button gradientMonochrome="purple" fullSized>
               <Link
-                href={`/${activeLocale}/${AdminClientPaths.JoiningRequests}/${item.id}`}
+                href={`/${activeLocale}/${school.getOne(item.id)}`}
                 className="w-[100%] text-white"
               >
                 {t('labels.details')}

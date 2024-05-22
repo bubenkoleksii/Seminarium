@@ -2,7 +2,10 @@
 
 import styles from './CreateSchoolForm.module.scss';
 import { FC } from 'react';
-import type { CreateSchoolRequest, CreateSchoolRequestWithId } from '@/features/admin/types/schoolTypes';
+import type {
+  CreateSchoolRequest,
+  CreateSchoolRequestWithId,
+} from '@/features/admin/types/schoolTypes';
 import { AdminClientPaths, adminMutations } from '@/features/admin/constants';
 import { useLocale, useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
@@ -18,10 +21,13 @@ import { replaceEmptyStringsWithNull } from '@/shared/helpers';
 
 type CreateSchoolFormProps = {
   joiningRequestId: string;
-  school: CreateSchoolRequest
-}
+  school: CreateSchoolRequest;
+};
 
-const CreateSchoolForm: FC<CreateSchoolFormProps> = ({ joiningRequestId, school }) => {
+const CreateSchoolForm: FC<CreateSchoolFormProps> = ({
+  joiningRequestId,
+  school,
+}) => {
   const t = useTranslations('School');
   const v = useTranslations('Validation');
   const activeLocale = useLocale();
@@ -69,9 +75,13 @@ const CreateSchoolForm: FC<CreateSchoolFormProps> = ({ joiningRequestId, school 
     };
 
     mutate(request);
-  }
+  };
 
-  const { mutate, isPending, reset: resetMutation } = useMutation({
+  const {
+    mutate,
+    isPending,
+    reset: resetMutation,
+  } = useMutation({
     mutationFn: create,
     mutationKey: [adminMutations.createSchool],
     onSuccess: (response) => {
@@ -79,12 +89,12 @@ const CreateSchoolForm: FC<CreateSchoolFormProps> = ({ joiningRequestId, school 
         const errorMessages = {
           400: t('labels.validation'),
           409: t('labels.alreadyExists'),
-        }
+        };
 
         toast.error(
           errorMessages[response.error.status] || t('labels.internal'),
           { duration: 4000 },
-        )
+        );
       } else {
         toast.success(t('labels.createSuccess'), { duration: 1500 });
 
@@ -92,7 +102,7 @@ const CreateSchoolForm: FC<CreateSchoolFormProps> = ({ joiningRequestId, school 
         const successRoute = `/${activeLocale}/${schoolRoutes.getOne(id)}`;
         replace(successRoute);
       }
-    }
+    },
   });
 
   if (isPending || isMutating) {
@@ -102,12 +112,14 @@ const CreateSchoolForm: FC<CreateSchoolFormProps> = ({ joiningRequestId, school 
           {t('createTitle')}
           <span
             onClick={() =>
-              replace(`/${activeLocale}/${AdminClientPaths.JoiningRequests}/${joiningRequestId}`)
+              replace(
+                `/${activeLocale}/${AdminClientPaths.JoiningRequests}/${joiningRequestId}`,
+              )
             }
             className="ml-2 cursor-pointer pt-1 text-sm text-purple-700 hover:text-red-700"
           >
-          {t('labels.toRequest')}
-        </span>
+            {t('labels.toRequest')}
+          </span>
         </h2>
         <Loader />
       </>
@@ -125,12 +137,14 @@ const CreateSchoolForm: FC<CreateSchoolFormProps> = ({ joiningRequestId, school 
           {t('createTitle')}
           <span
             onClick={() =>
-              replace(`/${activeLocale}/${AdminClientPaths.JoiningRequests}/${joiningRequestId}`)
+              replace(
+                `/${activeLocale}/${AdminClientPaths.JoiningRequests}/${joiningRequestId}`,
+              )
             }
             className="ml-2 cursor-pointer pt-1 text-sm text-purple-700 hover:text-red-700"
           >
-          {t('labels.toRequest')}
-        </span>
+            {t('labels.toRequest')}
+          </span>
         </h2>
 
         <Form className={styles.form}>
@@ -254,11 +268,13 @@ const CreateSchoolForm: FC<CreateSchoolFormProps> = ({ joiningRequestId, school 
               name="ownershipType"
             >
               <option value=""></option>
-              {Object.values(schoolConstants.ownershipType).map((value, index) => (
-                <option key={index} value={value}>
-                  {t(`ownershipTypes.${value}`)}
-                </option>
-              ))}
+              {Object.values(schoolConstants.ownershipType).map(
+                (value, index) => (
+                  <option key={index} value={value}>
+                    {t(`ownershipTypes.${value}`)}
+                  </option>
+                ),
+              )}
             </Field>
             <ErrorMessage
               name="ownershipType"
