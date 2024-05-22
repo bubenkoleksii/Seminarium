@@ -4,11 +4,14 @@ public class CreateSchoolCommandHandler : IRequestHandler<CreateSchoolCommand, E
 {
     private readonly ICommandContext _commandContext;
 
+    private readonly IMailService _mailService;
+
     private readonly IMapper _mapper;
 
-    public CreateSchoolCommandHandler(ICommandContext commandContext, IMapper mapper)
+    public CreateSchoolCommandHandler(ICommandContext commandContext, IMailService mailService, IMapper mapper)
     {
         _commandContext = commandContext;
+        _mailService = mailService;
         _mapper = mapper;
     }
 
@@ -20,6 +23,7 @@ public class CreateSchoolCommandHandler : IRequestHandler<CreateSchoolCommand, E
         if (joiningRequest is null)
             return new InvalidError("joining request");
 
+        joiningRequest.Status = JoiningRequestStatus.Approved;
         entity.JoiningRequest = joiningRequest;
 
         var isAlreadyExists = UniquenessChecker.GetErrorIfAlreadyExists(_commandContext, entity, out var error);
@@ -36,6 +40,18 @@ public class CreateSchoolCommandHandler : IRequestHandler<CreateSchoolCommand, E
             Log.Error(exception, "An error occurred while creating the school with values {@Request}.", request);
 
             return new InvalidDatabaseOperationError("school");
+        }
+
+        try
+        {
+            await _mailService.SendAsync(
+                joiningRequest.RequesterEmail,
+                EmailTemplates.AcceptJoiningRequest.Subject,
+                EmailTemplates.AcceptJoiningRequest.GetTemplate(joiningRequest.Id, entity.Name));
+        }
+        catch (Exception exception)
+        {
+            Log.Error(exception, "An error occurred while send email to {@Email} after accepting joining request.", joiningRequest.RequesterEmail);
         }
 
         var schoolResponse = _mapper.Map<SchoolModelResponse>(entity);
