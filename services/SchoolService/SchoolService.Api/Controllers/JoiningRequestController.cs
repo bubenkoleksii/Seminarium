@@ -1,7 +1,10 @@
-﻿namespace SchoolService.Api.Controllers;
+﻿using Microsoft.AspNetCore.Authorization;
+
+namespace SchoolService.Api.Controllers;
 
 public class JoiningRequestController(IMapper mapper) : BaseController
 {
+    [Authorize(Roles = "Admin")]
     [HttpGet("[action]/{id}")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(JoiningRequestResponse))]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -17,6 +20,7 @@ public class JoiningRequestController(IMapper mapper) : BaseController
         );
     }
 
+    [Authorize(Roles = "Admin")]
     [HttpGet("[action]/")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GetAllJoiningRequestsResponse))]
     public async Task<IActionResult> GetAll([FromQuery] GetAllJoiningRequestsParams filterParams)
@@ -28,6 +32,7 @@ public class JoiningRequestController(IMapper mapper) : BaseController
         return Ok(mapper.Map<GetAllJoiningRequestsResponse>(result));
     }
 
+    [AllowAnonymous]
     [HttpPost("[action]/")]
     [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(JoiningRequestResponse))]
     [ProducesResponseType(StatusCodes.Status409Conflict)]
@@ -43,6 +48,7 @@ public class JoiningRequestController(IMapper mapper) : BaseController
         );
     }
 
+    [Authorize(Roles = "Admin")]
     [HttpPatch("[action]/{id}")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(RejectJoiningRequestResponse))]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
