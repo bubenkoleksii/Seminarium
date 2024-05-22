@@ -29,6 +29,8 @@ import { Button } from 'flowbite-react';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-hot-toast';
 import { ProveModal, InputModal } from '@/components/modal';
+import { school as schoolRoutes } from '@/features/admin/routes';
+import Link from 'next/link';
 
 interface JoiningRequestProps {
   id: string;
@@ -414,6 +416,18 @@ const JoiningRequest: FC<JoiningRequestProps> = ({ id }) => {
               </div>
             )
           )}
+          {data.schoolId &&
+            <div className="flex w-full justify-center">
+              <Button gradientMonochrome="purple" fullSized>
+                <Link
+                  href={`/${activeLocale}/${schoolRoutes.getOne(data.schoolId)}`}
+                  className="text-white"
+                >
+                  {t('labels.toSchool')}
+                </Link>
+              </Button>
+            </div>
+          }
         </div>
       </div>
     </div>
