@@ -19,4 +19,4 @@ export interface SchoolResponse {
   areOccupied: boolean;
   siteUrl?: string;
   img?: string;
-};
+}
