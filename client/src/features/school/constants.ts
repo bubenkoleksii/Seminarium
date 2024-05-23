@@ -4,6 +4,9 @@ export const getOneSchoolRoute =
 export const updateSchoolRoute =
   '/school/update';
 
+export const removeSchoolRoute =
+  '/school/delete';
+
 export const schoolsClientPath = 'admin/schools';
 
 export const joiningRequestClientPath = '/admin/joining_requests';

@@ -1,17 +1,18 @@
 'use client';
 
-import { FC } from 'react';
+import { FC, useState } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
 import { useAuthRedirectByRole } from '@/shared/hooks';
 import { useRouter } from 'next/navigation';
-import { useQuery } from '@tanstack/react-query';
+import { useIsMutating, useMutation, useQuery } from '@tanstack/react-query';
 import { ApiResponse } from '@/shared/types';
-import { getOne } from '../api';
+import { getOne, remove } from '../api';
 import {
+  removeSchoolRoute,
   getOneSchoolRoute,
   joiningRequestClientPath,
   schoolsClientPath,
-  updateSchoolClientPath
+  updateSchoolClientPath,
 } from '../constants';
 import { SchoolResponse } from '../types';
 import { Loader } from '@/components/loader';
@@ -22,8 +23,9 @@ import { mediaQueries } from '@/shared/constants';
 import { useMediaQuery } from 'react-responsive';
 import { DateTime } from '@/components/date-time';
 import { Button } from 'flowbite-react';
-import { school as schoolRoutes } from '@/features/admin/routes';
 import Link from 'next/link';
+import { ProveModal } from '@/components/modal';
+import { toast } from 'react-hot-toast';
 
 interface SchoolProps {
   id: string;
@@ -34,6 +36,7 @@ const School: FC<SchoolProps> = ({ id }) => {
 
   const { replace } = useRouter();
   const activeLocale = useLocale();
+  const isMutating = useIsMutating();
 
   const { isUserLoading, user } = useAuthRedirectByRole(activeLocale, 'user');
 
@@ -43,9 +46,31 @@ const School: FC<SchoolProps> = ({ id }) => {
     enabled: !!id,
   });
 
+  const { mutate: deleteMutate } = useMutation({
+    mutationFn: remove,
+    mutationKey: [removeSchoolRoute, id],
+    onSuccess: (response) => {
+      if (response && response.error) {
+        const errorMessages = {
+          404: t('labels.oneNotFound'),
+        };
+        
+        toast.error(
+          errorMessages[response.error.status] || t('labels.internal')
+        );
+      } else {
+        toast.success(t('labels.deleteSuccess'), { duration: 2500 });
+
+        replace(`/${activeLocale}/${schoolsClientPath}`);
+      }
+    }
+  });
+
+  const [deleteOpenModal, setDeleteOpenModal] = useState(false);
+
   const isPhone = useMediaQuery({ query: mediaQueries.phone });
 
-  if (isLoading || isUserLoading) {
+  if (isLoading || isUserLoading || isMutating) {
     return (
       <>
         <h2 className="mb-4 mt-2 text-center text-xl font-bold">
@@ -91,6 +116,18 @@ const School: FC<SchoolProps> = ({ id }) => {
       </div>
     );
   }
+
+  const handleOpenDeleteModal = () => {
+    setDeleteOpenModal(true);
+  };
+  const handleCloseDeleteModal = (confirmed: boolean) => {
+    setDeleteOpenModal(false);
+
+    if (!confirmed)
+      return;
+
+    deleteMutate(data.id)
+  };
 
   const occupiedColor = getColorByStatus(data.areOccupied ? 'danger' : 'ok');
 
@@ -329,9 +366,25 @@ const School: FC<SchoolProps> = ({ id }) => {
         </div>
       </div>
 
+      <ProveModal
+        open={deleteOpenModal}
+        text={t('labels.proveDelete')}
+        onClose={handleCloseDeleteModal}
+      />
+
       {user?.role === 'admin' ? (
-        <div className="flex">
-          <div className="pt-2 pr-2 flex w-1/2 justify-center">
+        <div className={`flex ${isPhone ? 'flex-col' : 'flex-row'}`}>
+          <div className={`pt-2 pr-2 pl-2 flex ${isPhone ? 'w-full order-3' : 'w-1/3'} justify-center`}>
+            <Button onClick={handleOpenDeleteModal} gradientMonochrome="failure" fullSized>
+              <span
+                className="text-white"
+              >
+                {t('labels.delete')}
+              </span>
+            </Button>
+          </div>
+
+          <div className={`pt-2 pr-2 pl-2 flex ${isPhone ? 'w-full order-2' : 'w-1/3'} justify-center`}>
             <Button gradientMonochrome="purple" fullSized>
               <Link
                 href={`/${activeLocale}/${joiningRequestClientPath}/${data.joiningRequestId}`}
@@ -342,7 +395,7 @@ const School: FC<SchoolProps> = ({ id }) => {
             </Button>
           </div>
 
-          <div className="pt-2 pl-2 flex w-1/2 justify-center">
+          <div className={`pt-2 pr-2 pl-2 flex ${isPhone ? 'w-full order-1' : 'w-1/3'} justify-center`}>
             <Button
               gradientMonochrome="lime"
               fullSized
@@ -357,8 +410,15 @@ const School: FC<SchoolProps> = ({ id }) => {
         </div>
       ) : (
         <div className="flex w-full justify-center">
-          <Button gradientMonochrome="lime" fullSized>
-            {t('labels.update')}
+          <Button
+            gradientMonochrome="lime"
+            fullSized
+          >
+            <Link
+              href={`/${activeLocale}/${updateSchoolClientPath}/${data.id}?${buildUpdateQuery()}`}
+            >
+              {t('labels.update')}
+            </Link>
           </Button>
         </div>
       )}
