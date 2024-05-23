@@ -6,11 +6,16 @@ import { useAuthRedirectByRole } from '@/shared/hooks';
 import { useRouter } from 'next/navigation';
 import { useQuery } from '@tanstack/react-query';
 import { ApiResponse } from '@/shared/types';
-import { getOne } from './api';
-import { getOneSchoolRoute, joiningRequestClientPath, schoolsClientPath } from './constants';
-import { SchoolResponse } from './types';
+import { getOne } from '../api';
+import {
+  getOneSchoolRoute,
+  joiningRequestClientPath,
+  schoolsClientPath,
+  updateSchoolClientPath
+} from '../constants';
+import { SchoolResponse } from '../types';
 import { Loader } from '@/components/loader';
-import { getColorByStatus } from '@/shared/helpers';
+import { buildQueryString, getColorByStatus } from '@/shared/helpers';
 import { Error } from '@/components/error';
 import { CustomImage } from '@/components/custom-image';
 import { mediaQueries } from '@/shared/constants';
@@ -88,6 +93,27 @@ const School: FC<SchoolProps> = ({ id }) => {
   }
 
   const occupiedColor = getColorByStatus(data.areOccupied ? 'danger' : 'ok');
+
+  const buildUpdateQuery = () => {
+    return buildQueryString({
+      id: data.id,
+      registerCode: data.registerCode,
+      name: data.name,
+      shortName: data.shortName,
+      gradingSystem: data.gradingSystem,
+      email: data.email,
+      phone: data.phone,
+      type: data.type,
+      postalCode: data.postalCode,
+      ownershipType: data.ownershipType,
+      studentsQuantity: data.studentsQuantity,
+      region: data.region,
+      territorialCommunity: data.territorialCommunity,
+      address: data.address,
+      areOccupied: data.areOccupied,
+      siteUrl: data.siteUrl
+    });
+  }
 
   return (
     <div className="p-3 w-[90%] mb-4">
@@ -284,7 +310,7 @@ const School: FC<SchoolProps> = ({ id }) => {
                 href={data.siteUrl}
                 className="text-blue-500 hover:text-blue-700 underline"
               >
-                asasasa
+                {data.siteUrl}
               </Link>
              : '-'
             }
@@ -303,7 +329,7 @@ const School: FC<SchoolProps> = ({ id }) => {
         </div>
       </div>
 
-      {user?.role === 'admin' && (
+      {user?.role === 'admin' ? (
         <div className="flex">
           <div className="pt-2 pr-2 flex w-1/2 justify-center">
             <Button gradientMonochrome="purple" fullSized>
@@ -317,10 +343,23 @@ const School: FC<SchoolProps> = ({ id }) => {
           </div>
 
           <div className="pt-2 pl-2 flex w-1/2 justify-center">
-            <Button gradientMonochrome="lime" fullSized>
-              {t('labels.update')}
+            <Button
+              gradientMonochrome="lime"
+              fullSized
+            >
+              <Link
+                href={`/${activeLocale}/${updateSchoolClientPath}/${data.id}?${buildUpdateQuery()}`}
+              >
+                {t('labels.update')}
+              </Link>
             </Button>
           </div>
+        </div>
+      ) : (
+        <div className="flex w-full justify-center">
+          <Button gradientMonochrome="lime" fullSized>
+            {t('labels.update')}
+          </Button>
         </div>
       )}
     </div>
