@@ -18,7 +18,7 @@ public class SchoolController(IMapper mapper, IOptions<Shared.Contracts.Options.
         );
     }
 
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "admin")]
     [HttpGet("[action]/")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GetAllSchoolsResponse))]
     public async Task<IActionResult> GetAll([FromQuery] GetAllSchoolsParams filterParams)
@@ -30,7 +30,7 @@ public class SchoolController(IMapper mapper, IOptions<Shared.Contracts.Options.
         return Ok(mapper.Map<GetAllSchoolsResponse>(result));
     }
 
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = Constants.AdminRole)]
     [HttpPost("[action]/")]
     [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(SchoolResponse))]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -107,7 +107,7 @@ public class SchoolController(IMapper mapper, IOptions<Shared.Contracts.Options.
             Some: ErrorActionResultHandler.Handle);
     }
 
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = Constants.AdminRole)]
     [HttpDelete("[action]/{id}")]
     [ProducesResponseType(StatusCodes.Status202Accepted)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
