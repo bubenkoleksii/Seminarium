@@ -21,6 +21,11 @@ const CurrentUserPopover: FC<CurrentUserPopoverProps> = ({ user }) => {
     });
   };
 
+  let profileImg;
+  if (user.role === 'admin') {
+    profileImg = '/profile/admin.png';
+  }
+
   return (
     <Menu as="div" className="relative inline-block cursor-pointer text-left">
       <div>
@@ -29,7 +34,7 @@ const CurrentUserPopover: FC<CurrentUserPopoverProps> = ({ user }) => {
           text-gray-900 hover:bg-gray-200 focus:outline-none"
         >
           <Image
-            src="/profile/profile.svg"
+            src={profileImg}
             width={35}
             height={35}
             alt={`Profile image`}
@@ -58,7 +63,7 @@ const CurrentUserPopover: FC<CurrentUserPopoverProps> = ({ user }) => {
           <div className="cursor-default">
             <Menu.Item>
               <div className="p-2 text-xs font-bold">
-                <p>{user.name}</p>
+                <p>{user.name} {user.role === 'admin' ? '(Адмін)' : ''}</p>
               </div>
             </Menu.Item>
           </div>

@@ -16,7 +16,7 @@ interface UploadFileProps {
   isRequired?: boolean;
   isMultiple?: boolean;
   isImage?: boolean;
-  label?: string,
+  label?: string;
   onSubmit: (values: { files: File | File[] }) => void;
 }
 
@@ -32,11 +32,15 @@ const UploadFile: FC<UploadFileProps> = ({
 
   const isPhone = useMediaQuery({ query: mediaQueries.phone });
 
-  const allowedExtensions = isImage ? ALLOWED_IMAGE_EXTENSIONS : ALLOWED_FILE_EXTENSIONS;
+  const allowedExtensions = isImage
+    ? ALLOWED_IMAGE_EXTENSIONS
+    : ALLOWED_FILE_EXTENSIONS;
   const maxSize = isImage ? MAX_IMAGE_FILE_SIZE : MAX_FILE_SIZE;
 
   const validateFile = (file: File) => {
-    if (!allowedExtensions.some(ext => file?.name?.toLowerCase().endsWith(ext))) {
+    if (
+      !allowedExtensions.some((ext) => file?.name?.toLowerCase().endsWith(ext))
+    ) {
       return 'invalidExt';
     }
 
@@ -47,12 +51,12 @@ const UploadFile: FC<UploadFileProps> = ({
 
   const handleFileChange = (
     event: ChangeEvent<HTMLInputElement>,
-    setFieldValue: (field: string, value: any) => void
+    setFieldValue: (field: string, value: any) => void,
   ) => {
     const files = Array.from(event.currentTarget.files || []);
 
     if (isMultiple) {
-      files.forEach(file => {
+      files.forEach((file) => {
         const error = validateFile(file);
         if (error) {
           setError(error);
@@ -86,7 +90,11 @@ const UploadFile: FC<UploadFileProps> = ({
           return;
         }
 
-        if (isMultiple && Array.isArray(values.files) && values.files.length === 0) {
+        if (
+          isMultiple &&
+          Array.isArray(values.files) &&
+          values.files.length === 0
+        ) {
           setError('filesRequired');
           return;
         }
@@ -98,9 +106,10 @@ const UploadFile: FC<UploadFileProps> = ({
       }}
     >
       {({ setFieldValue }) => (
-        <Form className="flex flex-col items-center p-1 rounded-md">
-          <div className="mb-4">
-            <Label className="text-center"
+        <Form className="flex flex-col items-center rounded-md p-1">
+          <div className="mb-1">
+            <Label
+              className="text-center"
               htmlFor="file-upload"
               value={title}
             />
@@ -111,12 +120,16 @@ const UploadFile: FC<UploadFileProps> = ({
               sizing={isPhone ? `sm` : ``}
               accept={allowedExtensions.join(', ')}
               multiple={isMultiple}
-              onChange={event => handleFileChange(event, setFieldValue)}
-              className="rounded-md custom-file-input"
+              onChange={(event) => handleFileChange(event, setFieldValue)}
+              className="custom-file-input rounded-md"
             />
-            <ErrorMessage name="files" component="div" className="text-red-500 mt-1" />
+            <ErrorMessage
+              name="files"
+              component="div"
+              className="mt-1 text-red-500"
+            />
 
-            {error && <p className="text-red-500 text-sm">{t(error)}</p>}
+            {error && <p className="text-sm text-red-500">{t(error)}</p>}
           </div>
         </Form>
       )}

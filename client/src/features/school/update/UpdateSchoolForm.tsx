@@ -4,25 +4,34 @@ import { FC, useState } from 'react';
 import type { UpdateSchoolRequest } from '@/features/school/types';
 import { useLocale, useTranslations } from 'next-intl';
 import { useAuthRedirectByRole } from '@/shared/hooks';
-import { useIsMutating, useMutation, useQueryClient } from '@tanstack/react-query';
+import {
+  useIsMutating,
+  useMutation,
+  useQueryClient,
+} from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import * as Yup from 'yup';
 import { Loader } from '@/components/loader';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import styles from '@/features/admin/components/school/create/CreateSchoolForm.module.scss';
 import { mediaQueries, school as schoolConstants } from '@/shared/constants';
-import { update, updateImage } from '@/features/school/api';
-import { getOneSchoolRoute, imageRoute, updateSchoolRoute } from '@/features/school/constants';
+import { removeImage, update, updateImage } from '@/features/school/api';
+import {
+  getOneSchoolRoute,
+  imageRoute,
+  updateSchoolRoute,
+} from '@/features/school/constants';
 import { toast } from 'react-hot-toast';
 import { replaceEmptyStringsWithNull } from '@/shared/helpers';
 import { CustomImage } from '@/components/custom-image';
 import { useMediaQuery } from 'react-responsive';
 import { UploadFile } from '@/components/file-upload';
+import { Button } from 'flowbite-react';
 
 type UpdateSchoolFormProps = {
   id: string;
   school: UpdateSchoolRequest;
-}
+};
 
 const UpdateSchoolForm: FC<UpdateSchoolFormProps> = ({ id, school }) => {
   const t = useTranslations('School');
@@ -38,9 +47,7 @@ const UpdateSchoolForm: FC<UpdateSchoolFormProps> = ({ id, school }) => {
   const [img, setImg] = useState<string | undefined>(school.img);
 
   const validationSchema = Yup.object().shape({
-    email: Yup.string()
-      .email(v('email'))
-      .max(250, v('max')),
+    email: Yup.string().email(v('email')).max(250, v('max')),
     phone: Yup.string().max(250, v('max')),
     site: Yup.string().max(250, v('max')),
     registerCode: Yup.string().required(v('required')),
@@ -62,7 +69,11 @@ const UpdateSchoolForm: FC<UpdateSchoolFormProps> = ({ id, school }) => {
     ownershipType: Yup.string().required(v('required')),
   });
 
-  const { mutate, isPending, reset: resetMutation } = useMutation({
+  const {
+    mutate,
+    isPending,
+    reset: resetMutation,
+  } = useMutation({
     mutationFn: update,
     mutationKey: [updateSchoolRoute],
     onSuccess: (response) => {
@@ -71,14 +82,17 @@ const UpdateSchoolForm: FC<UpdateSchoolFormProps> = ({ id, school }) => {
           404: t('labels.updateNotFound'),
           409: t('labels.updateAlreadyExists'),
           400: t('labels.validation'),
-        }
+        };
 
-        toast.error(errorMessages[response.error.status] || t('labels.internal'), {
-          duration: 6000
-        });
+        toast.error(
+          errorMessages[response.error.status] || t('labels.internal'),
+          {
+            duration: 6000,
+          },
+        );
       } else {
         toast.success(t('labels.updateSuccess'), {
-          duration: 2000
+          duration: 2000,
         });
 
         queryClient.invalidateQueries({
@@ -87,36 +101,69 @@ const UpdateSchoolForm: FC<UpdateSchoolFormProps> = ({ id, school }) => {
 
         replace(`/${activeLocale}/school/${id}`);
       }
-    }
+    },
   });
 
   const { mutate: imageMutate, isPending: imagePending } = useMutation({
     mutationFn: updateImage,
-    mutationKey: [imageRoute, id],
+    mutationKey: [imageRoute + 'update', id],
     onSuccess: (response) => {
       if (response && response.error) {
         const errorMessages = {
           404: t('labels.updateNotFound'),
           400: t('labels.validation'),
-        }
+        };
 
-        toast.error(errorMessages[response.error.status] || t('labels.internal'), {
-          duration: 6000
-        });
+        toast.error(
+          errorMessages[response.error.status] || t('labels.internal'),
+          {
+            duration: 6000,
+          },
+        );
       } else {
-        toast.success(t('labels.updateSuccess'), {
-          duration: 2000
+        toast.success(t('labels.updateImageSuccess'), {
+          duration: 2000,
         });
 
         queryClient.invalidateQueries({
           queryKey: [getOneSchoolRoute, id],
         });
 
-        console.log(response);
         setImg(response.url);
       }
-    }
+    },
   });
+
+  const { mutate: imageDeleteMutate, isPending: imageDeletePending } =
+    useMutation({
+      mutationFn: removeImage,
+      mutationKey: [imageRoute + 'delete', id],
+      onSuccess: (response) => {
+        if (response && response.error) {
+          const errorMessages = {
+            404: t('labels.updateNotFound'),
+            400: t('labels.validation'),
+          };
+
+          toast.error(
+            errorMessages[response.error.status] || t('labels.internal'),
+            {
+              duration: 6000,
+            },
+          );
+        } else {
+          toast.success(t('labels.deleteImageSuccess'), {
+            duration: 2000,
+          });
+
+          queryClient.invalidateQueries({
+            queryKey: [getOneSchoolRoute, id],
+          });
+
+          setImg('');
+        }
+      },
+    });
 
   const handleSubmit = (values) => {
     replaceEmptyStringsWithNull(values);
@@ -137,11 +184,11 @@ const UpdateSchoolForm: FC<UpdateSchoolFormProps> = ({ id, school }) => {
       territorialCommunity: values.territorialCommunity,
       address: values.address,
       areOccupied: values.areOccupied === `true`,
-      siteUrl: values.siteUrl
+      siteUrl: values.siteUrl,
     };
 
     mutate(request);
-  }
+  };
 
   const handleImageSubmit = (values: { files: File }) => {
     const formData = new FormData();
@@ -149,23 +196,25 @@ const UpdateSchoolForm: FC<UpdateSchoolFormProps> = ({ id, school }) => {
 
     imageMutate({
       id: school.id,
-      data: formData
+      data: formData,
     });
   };
 
   const isPhone = useMediaQuery({ query: mediaQueries.phone });
 
-  if (isPending || imagePending || isMutating || isUserLoading) {
+  if (
+    isPending ||
+    imagePending ||
+    imageDeletePending ||
+    isMutating ||
+    isUserLoading
+  ) {
     return (
       <>
         <h2 className="mb-4 mt-2 text-center text-xl font-bold">
           {t('updateTitle')}
           <span
-            onClick={() =>
-              replace(
-                `/${activeLocale}/schools/${id}`,
-              )
-            }
+            onClick={() => replace(`/${activeLocale}/school/${id}`)}
             className="ml-2 cursor-pointer pt-1 text-sm text-purple-700 hover:text-red-700"
           >
             {t('back')}
@@ -182,35 +231,39 @@ const UpdateSchoolForm: FC<UpdateSchoolFormProps> = ({ id, school }) => {
       validationSchema={validationSchema}
       onSubmit={handleSubmit}
     >
-
       <div className={styles.container}>
         <h2 className="mb-4 mt-2 text-center text-xl font-bold">
           {t('updateTitle')}
           <span
-            onClick={() =>
-              replace(
-                `/${activeLocale}/schools/${id}`,
-              )
-            }
+            onClick={() => replace(`/${activeLocale}/school/${id}`)}
             className="ml-2 cursor-pointer pt-1 text-sm text-purple-700 hover:text-red-700"
           >
             {t('back')}
           </span>
         </h2>
 
-        <div className="flex flex-col justify-center items-center">
+        <div className="mb-4 flex flex-col items-center justify-center">
           <CustomImage
             src={img || `/school/school.jpg`}
-            alt='School image'
+            alt="School image"
             width={isPhone ? 200 : 500}
             height={isPhone ? 150 : 300}
           />
 
-          <UploadFile
-            isImage={true}
-            label={t('updateImage')}
-            onSubmit={handleImageSubmit}
-          />
+          <div className="flex flex-col items-center justify-center">
+            <UploadFile
+              isImage={true}
+              label={t('updateImage')}
+              onSubmit={handleImageSubmit}
+            />
+
+            <Button
+              onClick={() => imageDeleteMutate(id)}
+              gradientMonochrome="failure"
+            >
+              <span className="text-white">{t('labels.deleteImage')}</span>
+            </Button>
+          </div>
         </div>
 
         <Form className={styles.form}>
