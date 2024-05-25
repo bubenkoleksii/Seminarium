@@ -1,6 +1,8 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+
 using IdentityService.Models;
+
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;

@@ -1,6 +1,12 @@
 {
+  "Auth": {
+    "registrationBtn": "Regisztráció",
+    "loginBtn": "Belépés",
+    "logoutBtn": "Kijelentkezés"
+  },
   "JoiningRequest": {
     "title": "Iskolai csatlakozási űrlap",
+    "listTitle": "Запити навчальних закладів на приєднання",
     "labels": {
       "requesterEmail": "Az Ön e-mail címe",
       "requesterPhone": "Az Ön telefonszáma",

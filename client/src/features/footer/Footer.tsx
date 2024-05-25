@@ -4,9 +4,9 @@ import { useTranslations } from 'next-intl';
 const Footer: FC = () => {
   const t = useTranslations('Footer');
   return (
-    <footer className="bg-gray-200 shadow-md text-xs py-2 px-4">
-      <div>© 2024</div>
-      <div>© {t('author')}</div>
+    <footer className="bg-gray-200 px-4 py-2 text-xs shadow-md">
+      <div>{t('author')}</div>
+      <div>© 2024, {t('name')}</div>
     </footer>
   );
 };

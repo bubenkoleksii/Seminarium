@@ -10,9 +10,13 @@
 	<ItemGroup>
 		<PackageReference Include="Duende.IdentityServer.AspNetIdentity" Version="7.0.3" />
 
+		<PackageReference Include="Microsoft.AspNet.Mvc" Version="5.3.0" />
+
 		<PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="8.0.3" />
 
 		<PackageReference Include="Microsoft.IdentityModel.Tokens" Version="7.5.0" />
+
+		<PackageReference Include="Microsoft.Owin.Host.SystemWeb" Version="4.2.2" />
 
 		<PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.2" />
 

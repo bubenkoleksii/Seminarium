@@ -83,6 +83,9 @@ namespace SchoolService.Infrastructure.Persistence.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("character varying(50)");
 
+                    b.Property<Guid?>("SchoolId")
+                        .HasColumnType("uuid");
+
                     b.Property<string>("ShortName")
                         .HasMaxLength(250)
                         .HasColumnType("character varying(250)");
@@ -103,6 +106,9 @@ namespace SchoolService.Infrastructure.Persistence.Migrations
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("SchoolId")
+                        .IsUnique();
 
                     b.ToTable("JoiningRequests", "public");
                 });
@@ -187,20 +193,22 @@ namespace SchoolService.Infrastructure.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("JoiningRequestId");
-
                     b.ToTable("Schools", "public");
+                });
+
+            modelBuilder.Entity("SchoolService.Domain.Entities.JoiningRequest", b =>
+                {
+                    b.HasOne("SchoolService.Domain.Entities.School", "School")
+                        .WithOne("JoiningRequest")
+                        .HasForeignKey("SchoolService.Domain.Entities.JoiningRequest", "SchoolId");
+
+                    b.Navigation("School");
                 });
 
             modelBuilder.Entity("SchoolService.Domain.Entities.School", b =>
                 {
-                    b.HasOne("SchoolService.Domain.Entities.JoiningRequest", "JoiningRequest")
-                        .WithMany()
-                        .HasForeignKey("JoiningRequestId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                    b.Navigation("JoiningRequest")
                         .IsRequired();
-
-                    b.Navigation("JoiningRequest");
                 });
 #pragma warning restore 612, 618
         }

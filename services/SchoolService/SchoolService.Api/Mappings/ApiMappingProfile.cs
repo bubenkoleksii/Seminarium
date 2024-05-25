@@ -1,6 +1,4 @@
-﻿using SchoolService.Application.JoiningRequest.Models;
-
-namespace SchoolService.Api.Mappings;
+﻿namespace SchoolService.Api.Mappings;
 
 public class ApiMappingProfile : Profile
 {
@@ -21,6 +19,10 @@ public class ApiMappingProfile : Profile
             .ForMember(command => command.Email, act => act.MapFrom(req => req.Email == null ? null : req.Email.ToLower()));
 
         CreateMap<SchoolModelResponse, SchoolResponse>();
+
+        CreateMap<GetAllSchoolsParams, GetAllSchoolsQuery>();
+
+        CreateMap<GetAllSchoolsModelResponse, GetAllSchoolsResponse>();
     }
 
     private void ConfigureJoiningRequestMapping()
@@ -29,6 +31,12 @@ public class ApiMappingProfile : Profile
             .ForMember(command => command.RequesterEmail, act => act.MapFrom(req => req.RequesterEmail.ToLower()));
 
         CreateMap<JoiningRequestModelResponse, JoiningRequestResponse>();
+
+        CreateMap<GetAllJoiningRequestsParams, GetAllJoiningRequestsQuery>();
+
+        CreateMap<GetAllJoiningRequestsModelResponse, GetAllJoiningRequestsResponse>();
+
+        CreateMap<RejectJoiningRequestModelResponse, RejectJoiningRequestResponse>();
     }
 
     private void ConfigureGlobalMappings()

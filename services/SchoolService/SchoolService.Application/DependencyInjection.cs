@@ -5,10 +5,11 @@ public static class DependencyInjection
     public static IServiceCollection AddApplication(this IServiceCollection services, IConfiguration appConfiguration)
     {
         ConfigureMediator(services);
-
         ConfigureMassTransit(services, appConfiguration);
-
         ConfigureS3(services, appConfiguration);
+
+        services.Configure<MailOptions>(appConfiguration.GetSection(nameof(MailOptions)));
+        services.AddScoped<IMailService, MailService>();
 
         return services;
     }

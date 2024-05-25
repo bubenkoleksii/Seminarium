@@ -15,7 +15,13 @@ public class JoiningRequestConfiguration : IEntityTypeConfiguration<JoiningReque
         builder.Property(request => request.TerritorialCommunity).HasMaxLength(250);
         builder.Property(request => request.Address).HasMaxLength(250);
         builder.Property(request => request.Status).HasDefaultValue(JoiningRequestStatus.Created);
+        builder.Property(request => request.SchoolId).HasDefaultValue(null);
 
         builder.HasQueryFilter(request => !request.IsArchived);
+
+        builder.HasOne(joiningRequest => joiningRequest.School)
+            .WithOne(school => school.JoiningRequest)
+            .HasForeignKey<JoiningRequest>(joiningRequest => joiningRequest.SchoolId)
+            .IsRequired(required: false);
     }
 }

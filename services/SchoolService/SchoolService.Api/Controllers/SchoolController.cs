@@ -2,6 +2,7 @@
 
 public class SchoolController(IMapper mapper, IOptions<Shared.Contracts.Options.FileOptions> fileOptions) : BaseController
 {
+    [Authorize]
     [HttpGet("[action]/{id}")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SchoolResponse))]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -17,6 +18,19 @@ public class SchoolController(IMapper mapper, IOptions<Shared.Contracts.Options.
         );
     }
 
+    [Authorize(Roles = "admin")]
+    [HttpGet("[action]/")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GetAllSchoolsResponse))]
+    public async Task<IActionResult> GetAll([FromQuery] GetAllSchoolsParams filterParams)
+    {
+        var query = mapper.Map<GetAllSchoolsQuery>(filterParams);
+
+        var result = await Mediator.Send(query);
+
+        return Ok(mapper.Map<GetAllSchoolsResponse>(result));
+    }
+
+    [Authorize(Roles = Constants.AdminRole)]
     [HttpPost("[action]/")]
     [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(SchoolResponse))]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -33,10 +47,10 @@ public class SchoolController(IMapper mapper, IOptions<Shared.Contracts.Options.
         );
     }
 
+    [Authorize]
     [HttpPut("[action]/")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SchoolResponse))]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [ProducesResponseType(StatusCodes.Status409Conflict)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Update([FromBody] UpdateSchoolRequest schoolRequest)
     {
@@ -76,6 +90,7 @@ public class SchoolController(IMapper mapper, IOptions<Shared.Contracts.Options.
         );
     }
 
+    [Authorize]
     [HttpDelete("[action]/{id}")]
     [ProducesResponseType(StatusCodes.Status202Accepted)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -91,36 +106,7 @@ public class SchoolController(IMapper mapper, IOptions<Shared.Contracts.Options.
             Some: ErrorActionResultHandler.Handle);
     }
 
-    [HttpPatch("[action]/{id}")]
-    [ProducesResponseType(StatusCodes.Status202Accepted)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> Archive(Guid id)
-    {
-        var command = new ArchiveSchoolCommand(id);
-
-        var result = await Mediator.Send(command);
-
-        return result.Match(
-            None: Accepted,
-            Some: ErrorActionResultHandler.Handle);
-    }
-
-    [HttpPatch("[action]/{id}")]
-    [ProducesResponseType(StatusCodes.Status202Accepted)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> Unarchive(Guid id)
-    {
-        var command = new UnarchiveSchoolCommand(id);
-
-        var result = await Mediator.Send(command);
-
-        return result.Match(
-            None: Accepted,
-            Some: ErrorActionResultHandler.Handle);
-    }
-
+    [Authorize(Roles = Constants.AdminRole)]
     [HttpDelete("[action]/{id}")]
     [ProducesResponseType(StatusCodes.Status202Accepted)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]

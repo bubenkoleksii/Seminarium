@@ -1,7 +1,33 @@
+@import 'flowbite';
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 * {
   color: #2d2d2d;
+  word-wrap: break-word;
+}
+
+html, body {
+  max-width: 100%;
+}
+
+.emoji-error {
+  position: relative;
+  animation: custom-move 2.5s infinite;
+  margin: auto;
+}
+
+@keyframes custom-move {
+  33%   {top: 0;}
+  66%  {top: 20px;}
+  100%  {top: 0}
+}
+
+.custom-file-input input::file-selector-button {
+  background: rgb(59 7 100);
+}
+
+.custom-file-input input::file-selector-button:hover {
+  background: rgb(88 28 135);
 }

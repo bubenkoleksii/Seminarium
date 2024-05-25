@@ -7,6 +7,7 @@ import { useLocale } from 'next-intl';
 import { Menu, Transition } from '@headlessui/react';
 import { ChevronDownIcon } from '@heroicons/react/20/solid';
 import { languages } from './languages';
+import { classNames } from '@/shared/helpers';
 
 const LanguageDropdown: FC = () => {
   const router = useRouter();
@@ -21,7 +22,9 @@ const LanguageDropdown: FC = () => {
     const nextLocale = language.code;
 
     const newPath = pathname.replace(/^\/[a-zA-Z]+\b/, `/${nextLocale}`);
-    const queryPath = searchParams.toString() ? `?${searchParams.toString()}` : '';
+    const queryPath = searchParams.toString()
+      ? `?${searchParams.toString()}`
+      : '';
     router.push(`${newPath}${queryPath}`);
 
     setSelectedLanguage(language);
@@ -92,7 +95,3 @@ const LanguageDropdown: FC = () => {
 };
 
 export { LanguageDropdown };
-
-function classNames(...classes) {
-  return classes.filter(Boolean).join(' ');
-}

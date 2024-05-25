@@ -1,9 +1,11 @@
-﻿using SchoolService.Domain.Enums.JoiningRequest;
-
-namespace SchoolService.Domain.Entities;
+﻿namespace SchoolService.Domain.Entities;
 
 public class JoiningRequest : Entity
 {
+    public Guid? SchoolId { get; set; }
+
+    public School? School { get; set; }
+
     public ulong RegisterCode { get; set; }
 
     public required string RequesterEmail { get; set; }

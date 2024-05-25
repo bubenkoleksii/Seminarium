@@ -1,6 +1,12 @@
 {
+  "Auth": {
+    "registrationBtn": "Qayd etüv",
+    "loginBtn": "Kerçes",
+    "logoutBtn": "Çıgu"
+  },
   "JoiningRequest": {
     "title": "Təlim kursu forması",
+    "listTitle": "Запити навчальних закладів на приєднання",
     "labels": {
       "requesterEmail": "Siznin elektron poçta adresi",
       "requesterPhone": "Siznin telefon nomeri",

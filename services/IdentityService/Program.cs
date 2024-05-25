@@ -28,6 +28,11 @@ try
     builder.Services.Configure<MailOptions>(builder.Configuration.GetSection(nameof(MailOptions)));
     builder.Services.AddScoped<IMailService, MailService>();
     builder.Services.Configure<DataProtectionTokenProviderOptions>(options => options.TokenLifespan = TimeSpan.FromDays(1));
+    builder.Services.Configure<SecurityStampValidatorOptions>(options =>
+    {
+        options.ValidationInterval = TimeSpan.FromMinutes(1);
+    });
+    builder.Services.AddHttpContextAccessor();
 
     var app = builder
         .ConfigureServices()
@@ -37,6 +42,16 @@ try
     SeedData.EnsureSeedData(app, builder.Configuration);
 
     app.UseSerilogRequestLogging();
+
+    app.UseRouting();
+
+    app.UseEndpoints(endpoints =>
+    {
+        endpoints.MapControllerRoute(
+            name: "signout",
+            pattern: "Account/Signout",
+            defaults: new { controller = "Account", action = "Signout" });
+    });
 
     app.Run();
 }

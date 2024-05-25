@@ -2,6 +2,35 @@
 
 public class JoiningRequestController(IMapper mapper) : BaseController
 {
+    [Authorize(Roles = Constants.AdminRole)]
+    [HttpGet("[action]/{id}")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(JoiningRequestResponse))]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> GetOne(Guid id)
+    {
+        var query = new GetOneJoiningRequestQuery(id);
+
+        var result = await Mediator.Send(query);
+
+        return result.Match(
+            Left: modelResponse => Ok(mapper.Map<JoiningRequestResponse>(modelResponse)),
+            Right: ErrorActionResultHandler.Handle
+        );
+    }
+
+    [Authorize(Roles = Constants.AdminRole)]
+    [HttpGet("[action]/")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GetAllJoiningRequestsResponse))]
+    public async Task<IActionResult> GetAll([FromQuery] GetAllJoiningRequestsParams filterParams)
+    {
+        var query = mapper.Map<GetAllJoiningRequestsQuery>(filterParams);
+
+        var result = await Mediator.Send(query);
+
+        return Ok(mapper.Map<GetAllJoiningRequestsResponse>(result));
+    }
+
+    [AllowAnonymous]
     [HttpPost("[action]/")]
     [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(JoiningRequestResponse))]
     [ProducesResponseType(StatusCodes.Status409Conflict)]
@@ -13,6 +42,23 @@ public class JoiningRequestController(IMapper mapper) : BaseController
 
         return result.Match(
             Left: modelResponse => CreatedAtAction(nameof(Create), mapper.Map<JoiningRequestResponse>(modelResponse)),
+            Right: ErrorActionResultHandler.Handle
+        );
+    }
+
+    [Authorize(Roles = Constants.AdminRole)]
+    [HttpPatch("[action]/{id}")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(RejectJoiningRequestResponse))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> Reject(Guid id, [FromBody] RejectJoiningRequest joiningRequest)
+    {
+        var command = new RejectJoiningRequestCommand(id, joiningRequest.Message);
+
+        var result = await Mediator.Send(command);
+
+        return result.Match(
+            Left: modelResponse => Ok(mapper.Map<RejectJoiningRequestResponse>(modelResponse)),
             Right: ErrorActionResultHandler.Handle
         );
     }

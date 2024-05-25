@@ -74,6 +74,7 @@ public class Index : PageModel
     public async Task<IActionResult> OnPost()
     {
         var context = await _interaction.GetAuthorizationContextAsync(Input.ReturnUrl);
+        var clientHomeUrl = _configuration["ClientHomeUrl"]!;
 
         if (Input.Button != "login")
         {
@@ -86,7 +87,7 @@ public class Index : PageModel
                 return context.IsNativeClient() ? this.LoadingPage(Input.ReturnUrl) : Redirect(Input.ReturnUrl ?? "~/");
             }
 
-            return Redirect("~/");
+            return Redirect(clientHomeUrl);
         }
 
         if (ModelState.IsValid)
@@ -113,7 +114,7 @@ public class Index : PageModel
 
                 if (string.IsNullOrEmpty(Input.ReturnUrl))
                 {
-                    return Redirect("~/");
+                    return Redirect(clientHomeUrl);
                 }
 
                 throw new ArgumentException("invalid return URL");

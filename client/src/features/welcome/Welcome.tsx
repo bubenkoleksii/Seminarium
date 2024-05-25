@@ -3,44 +3,53 @@ import { useLocale, useTranslations } from 'next-intl';
 import Image from 'next/image';
 import Link from 'next/link';
 import { routes } from '@/shared/constants';
+import { useSession } from 'next-auth/react';
+import { redirect } from 'next/navigation';
 
 const Welcome: FC = () => {
   const activeLocale = useLocale();
+  const { status, data } = useSession();
   const t = useTranslations('Welcome');
 
+  const currentUser = data?.user;
+  if (currentUser) {
+    currentUser.role === 'admin'
+      ? redirect(`${activeLocale}/admin`)
+      : redirect(`${activeLocale}/admin`);
+  }
+
   return (
-    <section className="text-gray-700 body-font flex">
-      <div className="flex px-5 py-10 lg:flex-row flex-col gap-8 items-center justify-center">
-        <div className="lg:max-w-lg lg:w-full md:w-1/2 w-5/6">
+    <section className="body-font flex text-gray-700">
+      <div className="flex flex-col items-center justify-center gap-8 px-5 py-10 lg:flex-row">
+        <div className="w-5/6 md:w-1/2 lg:w-full lg:max-w-lg">
           <Image
             src="/welcome/banner.jpg"
             width={720}
             height={600}
-            alt={"Баннер"}
-            style={{ borderRadius: "10px" }}
+            alt={'Баннер'}
+            style={{ borderRadius: '10px' }}
           />
         </div>
 
-        <div
-          className="lg:order-first lg:flex-grow md:w-1/2 lg:pr-24 md:pr-16 flex flex-col md:items-start md:text-left mb-16 md:mb-0 items-center text-center pl-2">
-          <h1 className="title-font sm:text-4xl text-3xl mb-4 font-medium text-gray-900">
+        <div className="mb-16 flex flex-col items-center pl-2 text-center md:mb-0 md:w-1/2 md:items-start md:pr-16 md:text-left lg:order-first lg:flex-grow lg:pr-24">
+          <h1 className="title-font mb-4 text-3xl font-medium text-gray-900 sm:text-4xl">
             {t('title')}
             <br className="hidden lg:inline-block" />
           </h1>
           <p className="mb-8 leading-relaxed">{t('description')}</p>
-          <div className="flex justify-center">
-            <button
-              className="w-200 inline-flex justify-center items-center text-white bg-purple-900 border-0 py-2 px-6 focus:outline-none hover:bg-purple-700 rounded text-lg">
-              <Link href="http://localhost:5000/Account/Register">
-                {t('registrationBtn')}
-              </Link>
-            </button>
-            <button
-              className="w-200 ml-4 inline-flex justify-center items-center text-gray-700 bg-gray-200 border-0 py-2 px-6 focus:outline-none hover:bg-gray-300 rounded text-lg">
+          <div className="flex justify-center gap-4">
+            <button className="w-200 inline-flex items-center justify-center rounded border-0 bg-gray-200 px-6 py-2 text-lg text-gray-700 hover:bg-gray-300 focus:outline-none">
               <Link href={routes.getCreateJoiningRequest(activeLocale)}>
                 {t('joiningRequestBtn')}
               </Link>
             </button>
+            {status === 'unauthenticated' && (
+              <button className="w-200 inline-flex items-center justify-center rounded border-0 bg-purple-900 px-6 py-2 text-lg text-white hover:bg-purple-700 focus:outline-none">
+                <Link href="http://localhost:5000/Account/Register">
+                  {t('registrationBtn')}
+                </Link>
+              </button>
+            )}
           </div>
         </div>
       </div>

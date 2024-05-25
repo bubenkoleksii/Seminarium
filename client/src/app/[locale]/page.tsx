@@ -1,7 +1,12 @@
-import { Welcome } from '@/features/welcome';
+'use client';
 
-export default function Home() {
+import { Welcome } from '@/features/welcome';
+import { SessionProvider } from 'next-auth/react';
+
+export default function HomePage() {
   return (
-    <Welcome />
+    <SessionProvider>
+      <Welcome />
+    </SessionProvider>
   );
 }

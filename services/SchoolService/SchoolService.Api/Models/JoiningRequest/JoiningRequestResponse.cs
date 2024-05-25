@@ -3,6 +3,8 @@
 public record JoiningRequestResponse(
     Guid Id,
 
+    Guid? SchoolId,
+
     DateTime CreatedAt,
 
     DateTime? LastUpdatedAt,
