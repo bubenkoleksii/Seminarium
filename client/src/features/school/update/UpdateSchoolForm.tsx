@@ -1,6 +1,6 @@
 'use client';
 
-import { FC } from 'react';
+import { FC, useState } from 'react';
 import type { UpdateSchoolRequest } from '@/features/school/types';
 import { useLocale, useTranslations } from 'next-intl';
 import { useAuthRedirectByRole } from '@/shared/hooks';
@@ -10,11 +10,14 @@ import * as Yup from 'yup';
 import { Loader } from '@/components/loader';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import styles from '@/features/admin/components/school/create/CreateSchoolForm.module.scss';
-import { school as schoolConstants } from '@/shared/constants';
-import { update } from '@/features/school/api';
-import { getOneSchoolRoute, updateSchoolRoute } from '@/features/school/constants';
+import { mediaQueries, school as schoolConstants } from '@/shared/constants';
+import { update, updateImage } from '@/features/school/api';
+import { getOneSchoolRoute, imageRoute, updateSchoolRoute } from '@/features/school/constants';
 import { toast } from 'react-hot-toast';
 import { replaceEmptyStringsWithNull } from '@/shared/helpers';
+import { CustomImage } from '@/components/custom-image';
+import { useMediaQuery } from 'react-responsive';
+import { UploadFile } from '@/components/file-upload';
 
 type UpdateSchoolFormProps = {
   id: string;
@@ -31,6 +34,8 @@ const UpdateSchoolForm: FC<UpdateSchoolFormProps> = ({ id, school }) => {
 
   const { isUserLoading } = useAuthRedirectByRole(activeLocale, 'user');
   const isMutating = useIsMutating();
+
+  const [img, setImg] = useState<string | undefined>(school.img);
 
   const validationSchema = Yup.object().shape({
     email: Yup.string()
@@ -68,8 +73,6 @@ const UpdateSchoolForm: FC<UpdateSchoolFormProps> = ({ id, school }) => {
           400: t('labels.validation'),
         }
 
-        console.log(response.error);
-
         toast.error(errorMessages[response.error.status] || t('labels.internal'), {
           duration: 6000
         });
@@ -83,6 +86,34 @@ const UpdateSchoolForm: FC<UpdateSchoolFormProps> = ({ id, school }) => {
         });
 
         replace(`/${activeLocale}/school/${id}`);
+      }
+    }
+  });
+
+  const { mutate: imageMutate, isPending: imagePending } = useMutation({
+    mutationFn: updateImage,
+    mutationKey: [imageRoute, id],
+    onSuccess: (response) => {
+      if (response && response.error) {
+        const errorMessages = {
+          404: t('labels.updateNotFound'),
+          400: t('labels.validation'),
+        }
+
+        toast.error(errorMessages[response.error.status] || t('labels.internal'), {
+          duration: 6000
+        });
+      } else {
+        toast.success(t('labels.updateSuccess'), {
+          duration: 2000
+        });
+
+        queryClient.invalidateQueries({
+          queryKey: [getOneSchoolRoute, id],
+        });
+
+        console.log(response);
+        setImg(response.url);
       }
     }
   });
@@ -112,7 +143,19 @@ const UpdateSchoolForm: FC<UpdateSchoolFormProps> = ({ id, school }) => {
     mutate(request);
   }
 
-  if (isPending || isMutating || isUserLoading) {
+  const handleImageSubmit = (values: { files: File }) => {
+    const formData = new FormData();
+    formData.append('Image', values.files);
+
+    imageMutate({
+      id: school.id,
+      data: formData
+    });
+  };
+
+  const isPhone = useMediaQuery({ query: mediaQueries.phone });
+
+  if (isPending || imagePending || isMutating || isUserLoading) {
     return (
       <>
         <h2 className="mb-4 mt-2 text-center text-xl font-bold">
@@ -154,6 +197,21 @@ const UpdateSchoolForm: FC<UpdateSchoolFormProps> = ({ id, school }) => {
             {t('back')}
           </span>
         </h2>
+
+        <div className="flex flex-col justify-center items-center">
+          <CustomImage
+            src={img || `/school/school.jpg`}
+            alt='School image'
+            width={isPhone ? 200 : 500}
+            height={isPhone ? 150 : 300}
+          />
+
+          <UploadFile
+            isImage={true}
+            label={t('updateImage')}
+            onSubmit={handleImageSubmit}
+          />
+        </div>
 
         <Form className={styles.form}>
           <div>

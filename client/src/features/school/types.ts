@@ -38,4 +38,5 @@ export interface UpdateSchoolRequest {
   address?: string;
   areOccupied: boolean;
   siteUrl?: string;
+  img?: string;
 }

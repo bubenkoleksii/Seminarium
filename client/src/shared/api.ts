@@ -13,33 +13,33 @@ async function get(url: string) {
   return await handleResponse(response);
 }
 
-async function create(url: string, body: {}) {
+async function create(url: string, body: any, isFormData = false) {
   const requestOptions = {
     method: 'POST',
-    headers: await getHeaders(),
-    body: JSON.stringify(body),
+    headers: await getHeaders(isFormData),
+    body: isFormData ? body : JSON.stringify(body),
   };
 
   const response = await fetch(baseUrl + url, requestOptions);
   return await handleResponse(response);
 }
 
-async function update(url: string, body: {}) {
+async function update(url: string, body: any, isFormData = false) {
   const requestOptions = {
     method: 'PUT',
-    headers: await getHeaders(),
-    body: JSON.stringify(body),
+    headers: await getHeaders(isFormData),
+    body: isFormData ? body : JSON.stringify(body),
   };
 
   const response = await fetch(baseUrl + url, requestOptions);
   return await handleResponse(response);
 }
 
-async function partialUpdate(url: string, body: {}) {
+async function partialUpdate(url: string, body: any, isFormData = false) {
   const requestOptions = {
     method: 'PATCH',
-    headers: await getHeaders(),
-    body: JSON.stringify(body),
+    headers: await getHeaders(isFormData),
+    body: isFormData ? body : JSON.stringify(body),
   };
 
   const response = await fetch(baseUrl + url, requestOptions);
@@ -85,12 +85,16 @@ async function handleResponse(response: Response) {
   }
 }
 
-async function getHeaders() {
+async function getHeaders(isFormData = false) {
   const token = await getCurrentUserToken();
-  const headers: any = { 'Content-type': 'application/json' };
+  const headers: any = {};
 
   if (token) {
     headers.Authorization = 'Bearer ' + token.access_token;
+  }
+
+  if (!isFormData) {
+    headers['Content-Type'] =  'application/json';
   }
 
   return headers;

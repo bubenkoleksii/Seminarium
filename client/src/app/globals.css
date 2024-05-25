@@ -23,3 +23,11 @@ html, body {
   66%  {top: 20px;}
   100%  {top: 0}
 }
+
+.custom-file-input input::file-selector-button {
+  background: rgb(59 7 100);
+}
+
+.custom-file-input input::file-selector-button:hover {
+  background: rgb(88 28 135);
+}

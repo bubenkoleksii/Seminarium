@@ -54,7 +54,7 @@ const School: FC<SchoolProps> = ({ id }) => {
         const errorMessages = {
           404: t('labels.oneNotFound'),
         };
-        
+
         toast.error(
           errorMessages[response.error.status] || t('labels.internal')
         );
@@ -148,7 +148,8 @@ const School: FC<SchoolProps> = ({ id }) => {
       territorialCommunity: data.territorialCommunity,
       address: data.address,
       areOccupied: data.areOccupied,
-      siteUrl: data.siteUrl
+      siteUrl: data.siteUrl,
+      img: data.img,
     });
   }
 

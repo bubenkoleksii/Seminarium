@@ -4,6 +4,9 @@ export const getOneSchoolRoute =
 export const updateSchoolRoute =
   '/school/update';
 
+export const imageRoute =
+  '/school/image';
+
 export const removeSchoolRoute =
   '/school/delete';
 
