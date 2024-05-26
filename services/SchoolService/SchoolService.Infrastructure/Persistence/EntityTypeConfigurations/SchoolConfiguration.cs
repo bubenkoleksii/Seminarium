@@ -24,5 +24,9 @@ public class SchoolConfiguration : IEntityTypeConfiguration<School>
             .WithOne(joiningRequest => joiningRequest.School)
             .HasForeignKey<School>(school => school.JoiningRequestId)
             .IsRequired();
+
+        builder.HasMany(school => school.Teachers)
+            .WithOne(teacher => teacher.School)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }

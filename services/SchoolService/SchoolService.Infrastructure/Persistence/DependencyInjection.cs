@@ -10,6 +10,7 @@ public static class DependencyInjection
         {
             services.AddDbContext<QueryContext>(options =>
                 options.UseNpgsql(connectionString, o => o.MigrationsHistoryTable(BaseContext.MigrationsTableName, BaseContext.Schema)));
+
             services.AddDbContext<CommandContext>(options =>
                 options.UseNpgsql(connectionString));
         }

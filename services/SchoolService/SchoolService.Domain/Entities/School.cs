@@ -2,10 +2,6 @@
 
 public class School : Entity
 {
-    public Guid JoiningRequestId { get; set; }
-
-    public required JoiningRequest JoiningRequest { get; set; }
-
     public ulong RegisterCode { get; set; }
 
     public required string Name { get; set; }
@@ -37,4 +33,10 @@ public class School : Entity
     public string? SiteUrl { get; set; }
 
     public string? Img { get; set; }
+
+    public Guid JoiningRequestId { get; set; }
+
+    public required JoiningRequest JoiningRequest { get; set; }
+
+    public IEnumerable<SchoolProfile>? Teachers { get; set; }
 }

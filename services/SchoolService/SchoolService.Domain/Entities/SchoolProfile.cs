@@ -1,0 +1,20 @@
+﻿namespace SchoolService.Domain.Entities;
+
+public class SchoolProfile : Entity
+{
+    public Guid UserId { get; set; }
+
+    public SchoolProfileType Type { get; set; }
+
+    public string? Phone { get; set; }
+
+    public string? Img { get; set; }
+
+    public string? Details { get; set; }
+
+    public string? Data { get; set; }
+
+    public Guid? SchoolId { get; set; }
+
+    public School? School { get; set; }
+}

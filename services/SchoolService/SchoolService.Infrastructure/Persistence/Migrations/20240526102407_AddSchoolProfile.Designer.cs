@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using SchoolService.Infrastructure.Persistence;
@@ -11,9 +12,11 @@ using SchoolService.Infrastructure.Persistence;
 namespace SchoolService.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(CommandContext))]
-    partial class CommandContextModelSnapshot : ModelSnapshot
+    [Migration("20240526102407_AddSchoolProfile")]
+    partial class AddSchoolProfile
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -241,8 +244,6 @@ namespace SchoolService.Infrastructure.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("SchoolId");
-
                     b.ToTable("SchoolProfiles", "public");
                 });
 
@@ -255,22 +256,10 @@ namespace SchoolService.Infrastructure.Persistence.Migrations
                     b.Navigation("School");
                 });
 
-            modelBuilder.Entity("SchoolService.Domain.Entities.SchoolProfile", b =>
-                {
-                    b.HasOne("SchoolService.Domain.Entities.School", "School")
-                        .WithMany("Teachers")
-                        .HasForeignKey("SchoolId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.Navigation("School");
-                });
-
             modelBuilder.Entity("SchoolService.Domain.Entities.School", b =>
                 {
                     b.Navigation("JoiningRequest")
                         .IsRequired();
-
-                    b.Navigation("Teachers");
                 });
 #pragma warning restore 612, 618
         }
