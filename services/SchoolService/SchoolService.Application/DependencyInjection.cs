@@ -13,6 +13,8 @@ public static class DependencyInjection
 
         services.AddSingleton<IAesCipher, AesCipher>();
 
+        services.AddScoped<IInvitationManager, InvitationManager>();
+
         return services;
     }
 

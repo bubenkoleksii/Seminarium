@@ -1,4 +1,5 @@
-﻿using Profile = AutoMapper.Profile;
+﻿using SchoolService.Application.SchoolProfile.Commands.CreateSchoolProfile;
+using Profile = AutoMapper.Profile;
 
 namespace SchoolService.Application.Common.Mappings;
 
@@ -33,6 +34,8 @@ public class CoreMappingProfile : Profile
 
     private void ConfigureSchoolProfileMappings()
     {
+        CreateMap<CreateSchoolProfileCommand, Domain.Entities.SchoolProfile>();
+
         CreateMap<Domain.Entities.SchoolProfile, SchoolProfileModelResponse>();
     }
 }

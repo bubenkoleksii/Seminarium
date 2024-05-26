@@ -16,7 +16,7 @@ public class SchoolProfileController(IMapper mapper) : BaseController
         if (userId is null)
             return ErrorActionResultHandler.Handle(new InvalidError("user_id"));
 
-        if (userRole is null)
+        if (userRole is null or Constants.AdminRole)
             return ErrorActionResultHandler.Handle(new InvalidError("user_role"));
 
         var command = mapper.Map<CreateSchoolProfileCommand>(request);
