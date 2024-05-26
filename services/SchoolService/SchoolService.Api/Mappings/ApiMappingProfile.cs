@@ -1,4 +1,6 @@
-﻿namespace SchoolService.Api.Mappings;
+﻿using SchoolService.Application.SchoolProfile.Models;
+
+namespace SchoolService.Api.Mappings;
 
 public class ApiMappingProfile : Profile
 {
@@ -9,6 +11,8 @@ public class ApiMappingProfile : Profile
         ConfigureSchoolMapping();
 
         ConfigureJoiningRequestMapping();
+
+        ConfigureSchoolProfileMappings();
     }
 
     private void ConfigureSchoolMapping()
@@ -37,6 +41,11 @@ public class ApiMappingProfile : Profile
         CreateMap<GetAllJoiningRequestsModelResponse, GetAllJoiningRequestsResponse>();
 
         CreateMap<RejectJoiningRequestModelResponse, RejectJoiningRequestResponse>();
+    }
+
+    private void ConfigureSchoolProfileMappings()
+    {
+        CreateMap<SchoolProfileModelResponse, SchoolProfileResponse>();
     }
 
     private void ConfigureGlobalMappings()

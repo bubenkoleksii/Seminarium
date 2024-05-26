@@ -9,6 +9,7 @@ global using SchoolService.Api.Identity;
 global using SchoolService.Api.Mappings;
 global using SchoolService.Api.Models.JoiningRequest;
 global using SchoolService.Api.Models.School;
+global using SchoolService.Api.Models.SchoolProfile;
 global using SchoolService.Api.Options;
 global using SchoolService.Application;
 global using SchoolService.Application.Common.Mappings;

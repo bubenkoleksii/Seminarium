@@ -21,6 +21,7 @@ global using SchoolService.Application.School.Commands.CreateSchool;
 global using SchoolService.Application.School.Commands.UpdateSchool;
 global using SchoolService.Application.School.Common;
 global using SchoolService.Application.School.Models;
+global using SchoolService.Application.SchoolProfile.Models;
 global using SchoolService.Domain.Enums.JoiningRequest;
 global using SchoolService.Domain.Enums.School;
 global using Serilog;

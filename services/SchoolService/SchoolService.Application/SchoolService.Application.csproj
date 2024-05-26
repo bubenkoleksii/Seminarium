@@ -39,7 +39,6 @@
   <ItemGroup>
     <Folder Include="Common\Cryptography\" />
     <Folder Include="SchoolProfile\Commands\" />
-    <Folder Include="SchoolProfile\Models\" />
     <Folder Include="SchoolProfile\Queries\" />
   </ItemGroup>
 
