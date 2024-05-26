@@ -1,4 +1,6 @@
-﻿namespace SchoolService.Application;
+﻿using SchoolService.Application.Common.Cryptography.Aes;
+
+namespace SchoolService.Application;
 
 public static class DependencyInjection
 {
@@ -10,6 +12,8 @@ public static class DependencyInjection
 
         services.Configure<MailOptions>(appConfiguration.GetSection(nameof(MailOptions)));
         services.AddScoped<IMailService, MailService>();
+
+        services.AddSingleton<IAesCipher, AesCipher>();
 
         return services;
     }

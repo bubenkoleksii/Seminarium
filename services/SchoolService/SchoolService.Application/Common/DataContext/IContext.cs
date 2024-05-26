@@ -6,5 +6,7 @@ public interface IContext
 
     DbSet<Domain.Entities.JoiningRequest> JoiningRequests { get; set; }
 
+    DbSet<Domain.Entities.SchoolProfile> SchoolProfiles { get; set; }
+
     Task<int> SaveChangesAsync(CancellationToken cancellationToken);
 }

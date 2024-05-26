@@ -1,4 +1,6 @@
 ﻿global using System.Reflection;
+global using System.Security.Cryptography;
+global using System.Text;
 global using Amazon;
 global using Amazon.Extensions.NETCore.Setup;
 global using Amazon.Runtime;

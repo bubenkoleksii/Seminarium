@@ -26,6 +26,8 @@ global using SchoolService.Application.School.Commands.UpdateSchool;
 global using SchoolService.Application.School.Models;
 global using SchoolService.Application.School.Queries.GetAllSchools;
 global using SchoolService.Application.School.Queries.GetOneSchool;
+global using SchoolService.Application.SchoolProfile.Commands.CreateSchoolProfile;
+global using SchoolService.Application.SchoolProfile.Models;
 global using SchoolService.Infrastructure.Persistence;
 global using Serilog;
 global using Serilog.Events;
