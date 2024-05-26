@@ -10,11 +10,14 @@ import type { UpdateSchoolRequest } from '@/features/school/types';
 type UpdateSchoolPageProps = {
   params: {
     id: string;
-  }
-  searchParams: UpdateSchoolRequest
-}
+  };
+  searchParams: UpdateSchoolRequest;
+};
 
-const UpdateSchoolPage: FC<UpdateSchoolPageProps> = ({ params, searchParams }) => {
+const UpdateSchoolPage: FC<UpdateSchoolPageProps> = ({
+  params,
+  searchParams,
+}) => {
   const queryClient = new QueryClient();
 
   return (

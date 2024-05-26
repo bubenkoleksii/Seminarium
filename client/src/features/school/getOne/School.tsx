@@ -56,14 +56,14 @@ const School: FC<SchoolProps> = ({ id }) => {
         };
 
         toast.error(
-          errorMessages[response.error.status] || t('labels.internal')
+          errorMessages[response.error.status] || t('labels.internal'),
         );
       } else {
         toast.success(t('labels.deleteSuccess'), { duration: 2500 });
 
         replace(`/${activeLocale}/${schoolsClientPath}`);
       }
-    }
+    },
   });
 
   const [deleteOpenModal, setDeleteOpenModal] = useState(false);
@@ -76,20 +76,18 @@ const School: FC<SchoolProps> = ({ id }) => {
         <h2 className="mb-4 mt-2 text-center text-xl font-bold">
           {t('oneTitle')}
 
-          {user?.role === 'admin' &&
+          {user?.role === 'admin' && (
             <span
-              onClick={() =>
-                replace(`/${activeLocale}/${schoolsClientPath}`)
-              }
+              onClick={() => replace(`/${activeLocale}/${schoolsClientPath}`)}
               className="ml-2 cursor-pointer pt-1 text-sm text-purple-700 hover:text-red-700"
             >
-            {t('labels.toMain')}
-          </span>
-          }
+              {t('labels.toMain')}
+            </span>
+          )}
         </h2>
         <Loader />
       </>
-    )
+    );
   } else {
     window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
   }
@@ -100,16 +98,14 @@ const School: FC<SchoolProps> = ({ id }) => {
         <h2 className="mb-4 mt-2 text-center text-xl font-bold">
           {t('oneTitle')}
 
-          {user?.role === 'admin' &&
+          {user?.role === 'admin' && (
             <span
-              onClick={() =>
-                replace(`/${activeLocale}/${schoolsClientPath}`)
-              }
+              onClick={() => replace(`/${activeLocale}/${schoolsClientPath}`)}
               className="ml-2 cursor-pointer pt-1 text-sm text-purple-700 hover:text-red-700"
             >
-            {t('labels.toMain')}
-          </span>
-          }
+              {t('labels.toMain')}
+            </span>
+          )}
         </h2>
 
         <Error error={data.error} />
@@ -123,10 +119,9 @@ const School: FC<SchoolProps> = ({ id }) => {
   const handleCloseDeleteModal = (confirmed: boolean) => {
     setDeleteOpenModal(false);
 
-    if (!confirmed)
-      return;
+    if (!confirmed) return;
 
-    deleteMutate(data.id)
+    deleteMutate(data.id);
   };
 
   const occupiedColor = getColorByStatus(data.areOccupied ? 'danger' : 'ok');
@@ -151,23 +146,21 @@ const School: FC<SchoolProps> = ({ id }) => {
       siteUrl: data.siteUrl,
       img: data.img,
     });
-  }
+  };
 
   return (
-    <div className="p-3 w-[90%] mb-4">
+    <div className="mb-4 w-[90%] p-3">
       <h2 className="mb-4 mt-2 text-center text-xl font-bold">
         {t('oneTitle')}
 
-        {user?.role === 'admin' &&
+        {user?.role === 'admin' && (
           <span
-            onClick={() =>
-              replace(`/${activeLocale}/${schoolsClientPath}`)
-            }
+            onClick={() => replace(`/${activeLocale}/${schoolsClientPath}`)}
             className="ml-2 cursor-pointer pt-1 text-sm text-purple-700 hover:text-red-700"
           >
             {t('labels.toMain')}
           </span>
-        }
+        )}
       </h2>
 
       <h6 className="py-2 text-center font-bold">
@@ -177,16 +170,16 @@ const School: FC<SchoolProps> = ({ id }) => {
         <span className="text-purple-950 lg:text-2xl">{data.name}</span>
       </h6>
 
-      <div className="flex justify-center items-center">
+      <div className="flex items-center justify-center">
         <CustomImage
           src={data.img || `/school/school.jpg`}
-          alt='School image'
+          alt="School image"
           width={isPhone ? 200 : 500}
           height={isPhone ? 150 : 300}
         />
       </div>
 
-      <h6 className="pt-4 pb-2 text-center font-bold">
+      <h6 className="pb-2 pt-4 text-center font-bold">
         <p className="color-gray-500 mr-1 text-sm font-normal lg:text-lg">
           {t('labels.detailInfo')}
         </p>
@@ -297,18 +290,18 @@ const School: FC<SchoolProps> = ({ id }) => {
         </div>
       </div>
 
-      {data.lastUpdatedAt &&
+      {data.lastUpdatedAt && (
         <div className="flex text-xs lg:text-lg">
           <div className="flex w-1/2 justify-center border border-gray-200 bg-purple-100 px-4 py-2 font-semibold">
             <span className="text-center">{t('labels.updatedAt')}</span>
           </div>
           <div className="flex w-1/2 justify-center border border-gray-200 px-4 py-2 font-medium">
-          <span>
-            <DateTime date={data.lastUpdatedAt} />
-          </span>
+            <span>
+              <DateTime date={data.lastUpdatedAt} />
+            </span>
           </div>
         </div>
-      }
+      )}
 
       <div className="flex text-xs lg:text-lg">
         <div className="flex w-1/2 justify-center border border-gray-200 bg-purple-100 px-4 py-2 font-semibold">
@@ -343,15 +336,13 @@ const School: FC<SchoolProps> = ({ id }) => {
         </div>
         <div className="flex w-1/2 justify-center border border-gray-200 px-4 py-2 font-medium">
           <span>
-            {data.siteUrl
-              ? <Link
-                href={data.siteUrl}
-                className="text-blue-500 hover:text-blue-700 underline"
-              >
+            {data.siteUrl ? (
+              <span className="text-blue-500 hover:text-blue-700">
                 {data.siteUrl}
-              </Link>
-             : '-'
-            }
+              </span>
+            ) : (
+              '-'
+            )}
           </span>
         </div>
       </div>
@@ -375,17 +366,21 @@ const School: FC<SchoolProps> = ({ id }) => {
 
       {user?.role === 'admin' ? (
         <div className={`flex ${isPhone ? 'flex-col' : 'flex-row'}`}>
-          <div className={`pt-2 pr-2 pl-2 flex ${isPhone ? 'w-full order-3' : 'w-1/3'} justify-center`}>
-            <Button onClick={handleOpenDeleteModal} gradientMonochrome="failure" fullSized>
-              <span
-                className="text-white"
-              >
-                {t('labels.delete')}
-              </span>
+          <div
+            className={`flex pl-2 pr-2 pt-2 ${isPhone ? 'order-3 w-full' : 'w-1/3'} justify-center`}
+          >
+            <Button
+              onClick={handleOpenDeleteModal}
+              gradientMonochrome="failure"
+              fullSized
+            >
+              <span className="text-white">{t('labels.delete')}</span>
             </Button>
           </div>
 
-          <div className={`pt-2 pr-2 pl-2 flex ${isPhone ? 'w-full order-2' : 'w-1/3'} justify-center`}>
+          <div
+            className={`flex pl-2 pr-2 pt-2 ${isPhone ? 'order-2 w-full' : 'w-1/3'} justify-center`}
+          >
             <Button gradientMonochrome="purple" fullSized>
               <Link
                 href={`/${activeLocale}/${joiningRequestClientPath}/${data.joiningRequestId}`}
@@ -396,11 +391,10 @@ const School: FC<SchoolProps> = ({ id }) => {
             </Button>
           </div>
 
-          <div className={`pt-2 pr-2 pl-2 flex ${isPhone ? 'w-full order-1' : 'w-1/3'} justify-center`}>
-            <Button
-              gradientMonochrome="lime"
-              fullSized
-            >
+          <div
+            className={`flex pl-2 pr-2 pt-2 ${isPhone ? 'order-1 w-full' : 'w-1/3'} justify-center`}
+          >
+            <Button gradientMonochrome="lime" fullSized>
               <Link
                 href={`/${activeLocale}/${updateSchoolClientPath}/${data.id}?${buildUpdateQuery()}`}
               >
@@ -411,10 +405,7 @@ const School: FC<SchoolProps> = ({ id }) => {
         </div>
       ) : (
         <div className="flex w-full justify-center">
-          <Button
-            gradientMonochrome="lime"
-            fullSized
-          >
+          <Button gradientMonochrome="lime" fullSized>
             <Link
               href={`/${activeLocale}/${updateSchoolClientPath}/${data.id}?${buildUpdateQuery()}`}
             >

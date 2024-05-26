@@ -29,6 +29,8 @@ const AdminProfile: FC = () => {
   return (
     <div className="p-3">
       <h2 className="mb-4 text-center text-xl font-bold">{t('label')}</h2>
+
+
     </div>
   );
 };

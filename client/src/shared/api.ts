@@ -94,7 +94,7 @@ async function getHeaders(isFormData = false) {
   }
 
   if (!isFormData) {
-    headers['Content-Type'] =  'application/json';
+    headers['Content-Type'] = 'application/json';
   }
 
   return headers;

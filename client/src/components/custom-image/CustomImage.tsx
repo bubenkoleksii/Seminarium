@@ -2,15 +2,15 @@ import Image from 'next/image';
 import { useState } from 'react';
 import clsx from 'clsx';
 
-const   CustomImage = ({ src, width, height, alt = '' }) => {
+const CustomImage = ({ src, width, height, alt = '' }) => {
   const [isLoading, setIsLoading] = useState(true);
 
   return (
     <div
       className={clsx(
-        "relative overflow-hidden",
-        { "bg-gray-300 animate-pulse": isLoading },
-        "rounded-lg"
+        'relative overflow-hidden',
+        { 'animate-pulse bg-gray-300': isLoading },
+        'rounded-lg',
       )}
       style={{ width, height }}
     >
@@ -22,7 +22,7 @@ const   CustomImage = ({ src, width, height, alt = '' }) => {
         objectFit="cover"
         loading="lazy"
         onLoadingComplete={() => setIsLoading(false)}
-        className={clsx({ "opacity-0": isLoading })}
+        className={clsx({ 'opacity-0': isLoading })}
       />
     </div>
   );
