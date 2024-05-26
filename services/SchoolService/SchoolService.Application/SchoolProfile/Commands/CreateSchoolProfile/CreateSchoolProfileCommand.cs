@@ -1,5 +1,31 @@
 ﻿namespace SchoolService.Application.SchoolProfile.Commands.CreateSchoolProfile;
 
-public record CreateSchoolProfileCommand(
-    string InvitationCode
-) : IRequest<Either<SchoolProfileModelResponse, Error>>;
+public class CreateSchoolProfileCommand : IRequest<Either<SchoolProfileModelResponse, Error>>
+{
+    public Guid Id { get; set; }
+
+    public required string InvitationCode { get; set; }
+
+    public string? Phone { get; set; }
+
+    public string? Details { get; set; }
+
+    public string? TeachersExperience { get; set; }
+
+    public string? TeachersEducation { get; set; }
+
+    public string? TeachersQualification { get; set; }
+
+    public uint? TeachersLessonsPerCycle { get; set; }
+
+    public DateOnly? StudentsDateOfBirth { get; set; }
+
+    public IEnumerable<Guid>? StudentsParentIds { get; set; }
+
+    public string? StudentsAptitudes { get; set; }
+
+    public string? ParentsAddress { get; set; }
+
+    public string? ParentsRelationshipToChild { get; set; }
+
+}

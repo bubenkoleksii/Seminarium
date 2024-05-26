@@ -1,4 +1,6 @@
-﻿global using AutoMapper;
+﻿global using System.Security.Claims;
+global using System.Security.Principal;
+global using AutoMapper;
 global using CaseExtensions;
 global using MediatR;
 global using Microsoft.AspNetCore.Authentication.JwtBearer;
