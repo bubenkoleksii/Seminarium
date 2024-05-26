@@ -1,6 +1,4 @@
-﻿using SchoolService.Application.Common.Cryptography.Aes;
-
-namespace SchoolService.Application;
+﻿namespace SchoolService.Application;
 
 public static class DependencyInjection
 {

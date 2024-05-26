@@ -2,12 +2,12 @@
 
 public class SchoolProfileController(IMapper mapper) : BaseController
 {
-    [HttpPost("[action]/{invitationCode}")]
+    [HttpPost("[action]/")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SchoolProfileResponse))]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> Create(string invitationCode)
+    public async Task<IActionResult> Create([FromBody] CreateSchoolProfileRequest request)
     {
-        var command = new CreateSchoolProfileCommand(invitationCode);
+        var command = mapper.Map<CreateSchoolProfileCommand>(request);
 
         var result = await Mediator.Send(command);
 

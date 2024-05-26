@@ -15,6 +15,7 @@ global using Microsoft.Extensions.Configuration;
 global using Microsoft.Extensions.DependencyInjection;
 global using Microsoft.Extensions.Options;
 global using SchoolService.Application.Common.Behaviors;
+global using SchoolService.Application.Common.Cryptography.Aes;
 global using SchoolService.Application.Common.DataContext;
 global using SchoolService.Application.Common.Email;
 global using SchoolService.Application.JoiningRequest.Commands.CreateJoiningRequest;

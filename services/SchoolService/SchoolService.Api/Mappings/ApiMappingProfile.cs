@@ -43,6 +43,8 @@ public class ApiMappingProfile : Profile
 
     private void ConfigureSchoolProfileMappings()
     {
+        CreateMap<CreateSchoolProfileRequest, CreateSchoolProfileCommand>();
+
         CreateMap<SchoolProfileModelResponse, SchoolProfileResponse>();
     }
 
