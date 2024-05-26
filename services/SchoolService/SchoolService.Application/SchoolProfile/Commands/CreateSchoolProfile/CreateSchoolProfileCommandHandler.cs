@@ -26,12 +26,12 @@ public class CreateSchoolProfileCommandHandler : IRequestHandler<CreateSchoolPro
             return (Error)invitationData;
         }
 
-        var profile = ((InvitationSerializationData)invitationData).Type switch
+        var profile = ((Invitation)invitationData).Type switch
         {
             SchoolProfileType.SchoolAdmin =>
-                await CreateSchoolAdminProfile((InvitationSerializationData)invitationData, request),
+                await CreateSchoolAdminProfile((Invitation)invitationData, request),
             SchoolProfileType.Teacher =>
-                await CreateTeacherProfile((InvitationSerializationData)invitationData, request),
+                await CreateTeacherProfile((Invitation)invitationData, request),
             _ => new InvalidError("type")
         };
 
@@ -59,7 +59,7 @@ public class CreateSchoolProfileCommandHandler : IRequestHandler<CreateSchoolPro
     }
 
     private async Task<Either<Domain.Entities.SchoolProfile, Error>> CreateSchoolAdminProfile(
-        InvitationSerializationData invitation, CreateSchoolProfileCommand command)
+        Invitation invitation, CreateSchoolProfileCommand command)
     {
         if (DateTime.UtcNow > invitation.Expired)
             return new InvalidError("invitation");
@@ -76,7 +76,7 @@ public class CreateSchoolProfileCommandHandler : IRequestHandler<CreateSchoolPro
     }
 
     private async Task<Either<Domain.Entities.SchoolProfile, Error>> CreateTeacherProfile(
-        InvitationSerializationData invitation, CreateSchoolProfileCommand command)
+        Invitation invitation, CreateSchoolProfileCommand command)
     {
         if (DateTime.UtcNow > invitation.Expired)
             return new InvalidError("invitation");

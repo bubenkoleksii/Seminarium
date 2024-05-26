@@ -9,12 +9,12 @@ public class InvitationManager : IInvitationManager
         _aesCipher = aesCipher;
     }
 
-    public Either<InvitationSerializationData, Error> GetInvitationData(string invitationCode)
+    public Either<Models.Invitation, Error> GetInvitationData(string invitationCode)
     {
         try
         {
             var decryptedJson = _aesCipher.Decrypt(invitationCode);
-            var data = JsonConvert.DeserializeObject<InvitationSerializationData>(decryptedJson);
+            var data = JsonConvert.DeserializeObject<Models.Invitation>(decryptedJson);
 
             if (data == null)
                 return new InvalidError("invitation_code");
@@ -25,5 +25,13 @@ public class InvitationManager : IInvitationManager
         {
             return new InvalidError("invitation_code");
         }
+    }
+
+    public string GenerateInvitationCode(Models.Invitation data)
+    {
+        var serializedJson = JsonConvert.SerializeObject(data);
+
+        var encrypted = _aesCipher.Encrypt(serializedJson);
+        return encrypted;
     }
 }

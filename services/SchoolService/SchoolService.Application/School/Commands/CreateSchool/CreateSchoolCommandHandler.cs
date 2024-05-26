@@ -8,11 +8,21 @@ public class CreateSchoolCommandHandler : IRequestHandler<CreateSchoolCommand, E
 
     private readonly IMapper _mapper;
 
-    public CreateSchoolCommandHandler(ICommandContext commandContext, IMailService mailService, IMapper mapper)
+    private readonly IConfiguration _configuration;
+
+    private readonly IInvitationManager _invitationManager;
+
+    public CreateSchoolCommandHandler(ICommandContext commandContext,
+        IMailService mailService,
+        IMapper mapper,
+        IConfiguration configuration,
+        IInvitationManager invitationManager)
     {
         _commandContext = commandContext;
         _mailService = mailService;
         _mapper = mapper;
+        _configuration = configuration;
+        _invitationManager = invitationManager;
     }
 
     public async Task<Either<SchoolModelResponse, Error>> Handle(CreateSchoolCommand request, CancellationToken cancellationToken)
@@ -42,12 +52,19 @@ public class CreateSchoolCommandHandler : IRequestHandler<CreateSchoolCommand, E
             return new InvalidDatabaseOperationError("school");
         }
 
+        var invitationExpiration = _configuration.GetValue<int>("InvitationExpirationInHours:SchoolAdmin");
+        var invitation = new Invitation(entity.Id, SchoolProfileType.SchoolAdmin, DateTime.UtcNow.AddHours(invitationExpiration));
+        var invitationCode = _invitationManager.GenerateInvitationCode(invitation);
+
+        var clientUrl = _configuration["ClientUrl"]!;
+        var link = $"{clientUrl}uk/schoolProfile/create/{invitationCode}";
+
         try
         {
             await _mailService.SendAsync(
                 joiningRequest.RequesterEmail,
                 EmailTemplates.AcceptJoiningRequest.Subject,
-                EmailTemplates.AcceptJoiningRequest.GetTemplate(joiningRequest.Id, entity.Name));
+                EmailTemplates.AcceptJoiningRequest.GetTemplate(joiningRequest.Id, entity.Name, link));
         }
         catch (Exception exception)
         {

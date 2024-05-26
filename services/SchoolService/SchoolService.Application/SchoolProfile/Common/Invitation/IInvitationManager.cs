@@ -2,5 +2,7 @@
 
 public interface IInvitationManager
 {
-    Either<InvitationSerializationData, Error> GetInvitationData(string invitationCode);
+    Either<Models.Invitation, Error> GetInvitationData(string invitationCode);
+
+    string GenerateInvitationCode(Models.Invitation data);
 }
