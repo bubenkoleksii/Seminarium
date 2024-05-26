@@ -2,7 +2,7 @@
 
 public class CreateSchoolProfileCommand : IRequest<Either<SchoolProfileModelResponse, Error>>
 {
-    public Guid Id { get; set; }
+    public Guid UserId { get; set; }
 
     public required string InvitationCode { get; set; }
 

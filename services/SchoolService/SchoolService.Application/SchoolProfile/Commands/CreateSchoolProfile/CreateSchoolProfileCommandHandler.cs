@@ -68,6 +68,16 @@ public class CreateSchoolProfileCommandHandler : IRequestHandler<CreateSchoolPro
         if (school == null)
             return new InvalidError("school_id");
 
+        var existedProfile = await _commandContext.SchoolProfiles
+            .Where(p => p.SchoolId == school.Id && p.UserId == command.UserId)
+            .FirstOrDefaultAsync();
+
+        if (existedProfile != null)
+            return new AlreadyExistsError("school_profile")
+            {
+                Params = new List<string>(2) { "user_id", "school_id" }
+            };
+
         var profile = _mapper.Map<Domain.Entities.SchoolProfile>(command);
         profile.School = school;
         profile.Type = invitation.Type;
@@ -87,6 +97,16 @@ public class CreateSchoolProfileCommandHandler : IRequestHandler<CreateSchoolPro
         var school = await _commandContext.Schools.FindAsync(invitation.SourceId);
         if (school == null)
             return new InvalidError("school_id");
+
+        var existedProfile = await _commandContext.SchoolProfiles
+            .Where(p => p.SchoolId == school.Id && p.UserId == command.UserId)
+            .FirstOrDefaultAsync();
+
+        if (existedProfile != null)
+            return new AlreadyExistsError("school_profile")
+            {
+                Params = new List<string>(2) { "user_id", "school_id" }
+            };
 
         var profile = _mapper.Map<Domain.Entities.SchoolProfile>(command);
 

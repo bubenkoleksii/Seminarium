@@ -20,7 +20,7 @@ public class SchoolProfileController(IMapper mapper) : BaseController
             return ErrorActionResultHandler.Handle(new InvalidError("user_role"));
 
         var command = mapper.Map<CreateSchoolProfileCommand>(request);
-        command.Id = Guid.NewGuid();
+        command.UserId = (Guid)userId;
 
         var result = await Mediator.Send(command);
 
