@@ -69,6 +69,7 @@ public class CreateSchoolProfileCommandHandler : IRequestHandler<CreateSchoolPro
             return new InvalidError("school_id");
 
         var existedProfile = await _commandContext.SchoolProfiles
+            .AsNoTracking()
             .Where(p => p.SchoolId == school.Id && p.UserId == command.UserId)
             .FirstOrDefaultAsync();
 

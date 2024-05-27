@@ -35,7 +35,6 @@ public class CreateJoiningRequestCommandHandler : IRequestHandler<CreateJoiningR
         catch (Exception exception)
         {
             Log.Error(exception, "An error occurred while creating the joining request with values {@Request}.", request);
-
             return new InvalidDatabaseOperationError("joining request");
         }
 

@@ -8,6 +8,8 @@ public class GroupConfiguration : IEntityTypeConfiguration<Group>
 
         builder.Property(group => group.Id).ValueGeneratedOnAdd();
         builder.Property(group => group.Name).HasMaxLength(250);
+        builder.Property(group => group.Img).HasMaxLength(250);
+        builder.Property(group => group.Img).HasDefaultValue(null);
 
         builder.HasQueryFilter(group => !group.IsArchived);
 

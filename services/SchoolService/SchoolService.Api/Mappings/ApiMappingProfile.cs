@@ -1,4 +1,6 @@
-﻿namespace SchoolService.Api.Mappings;
+﻿using SchoolService.Application.Group.Models;
+
+namespace SchoolService.Api.Mappings;
 
 public class ApiMappingProfile : Profile
 {
@@ -11,6 +13,8 @@ public class ApiMappingProfile : Profile
         ConfigureJoiningRequestMapping();
 
         ConfigureSchoolProfileMappings();
+
+        ConfigureGroupMappings();
     }
 
     private void ConfigureSchoolMapping()
@@ -46,6 +50,13 @@ public class ApiMappingProfile : Profile
         CreateMap<CreateSchoolProfileRequest, CreateSchoolProfileCommand>();
 
         CreateMap<SchoolProfileModelResponse, SchoolProfileResponse>();
+    }
+
+    private void ConfigureGroupMappings()
+    {
+        CreateMap<CreateGroupRequest, CreateGroupCommand>();
+
+        CreateMap<GroupModelResponse, GroupResponse>();
     }
 
     private void ConfigureGlobalMappings()

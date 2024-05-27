@@ -1,5 +1,4 @@
-﻿using SchoolService.Application.SchoolProfile.Commands.CreateSchoolProfile;
-using Profile = AutoMapper.Profile;
+﻿using Profile = AutoMapper.Profile;
 
 namespace SchoolService.Application.Common.Mappings;
 
@@ -12,6 +11,8 @@ public class CoreMappingProfile : Profile
         ConfigureJoiningRequestMapping();
 
         ConfigureSchoolProfileMappings();
+
+        ConfigureGroupMappings();
     }
 
     private void ConfigureSchoolMapping()
@@ -37,5 +38,12 @@ public class CoreMappingProfile : Profile
         CreateMap<CreateSchoolProfileCommand, Domain.Entities.SchoolProfile>();
 
         CreateMap<Domain.Entities.SchoolProfile, SchoolProfileModelResponse>();
+    }
+
+    private void ConfigureGroupMappings()
+    {
+        CreateMap<CreateGroupCommand, Domain.Entities.Group>();
+
+        CreateMap<Domain.Entities.Group, GroupModelResponse>();
     }
 }

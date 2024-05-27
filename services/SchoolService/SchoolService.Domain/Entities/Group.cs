@@ -6,6 +6,8 @@ public class Group : Entity
 
     public byte StudyPeriodNumber { get; set; }
 
+    public string? Img { get; set; }
+
     public Guid SchoolId { get; set; }
 
     public required School School { get; set; }
@@ -14,5 +16,5 @@ public class Group : Entity
 
     public SchoolProfile? ClassTeacher { get; set; }
 
-    public ICollection<SchoolProfile>? Students { get; set; }
+    public IEnumerable<SchoolProfile>? Students { get; set; }
 }
