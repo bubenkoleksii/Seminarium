@@ -5,6 +5,8 @@ public record SchoolProfileResponse(
 
     Guid UserId,
 
+    bool IsActive,
+
     DateTime CreatedAt,
 
     DateTime? LastUpdatedAt,

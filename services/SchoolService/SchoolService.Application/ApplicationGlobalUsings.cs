@@ -11,6 +11,7 @@ global using LanguageExt;
 global using MassTransit;
 global using MediatR;
 global using Microsoft.EntityFrameworkCore;
+global using Microsoft.Extensions.Caching.Memory;
 global using Microsoft.Extensions.Configuration;
 global using Microsoft.Extensions.DependencyInjection;
 global using Microsoft.Extensions.Options;
