@@ -6,6 +6,8 @@ public class SchoolProfile : Entity
 
     public SchoolProfileType Type { get; set; }
 
+    public bool IsActive { get; set; }
+
     public string? Phone { get; set; }
 
     public string? Img { get; set; }

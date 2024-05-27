@@ -12,6 +12,7 @@ public class SchoolProfileConfiguration : IEntityTypeConfiguration<SchoolProfile
         builder.Property(profile => profile.Details).HasMaxLength(1024);
         builder.Property(profile => profile.Data).HasMaxLength(1024);
 
+        builder.Property(profile => profile.IsActive).HasDefaultValue(true);
         builder.Property(profile => profile.Phone).HasDefaultValue(null);
         builder.Property(profile => profile.Details).HasDefaultValue(null);
         builder.Property(profile => profile.Data).HasDefaultValue(null);

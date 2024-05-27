@@ -31,6 +31,7 @@ global using SchoolService.Application.School.Models;
 global using SchoolService.Application.SchoolProfile.Commands.CreateSchoolProfile;
 global using SchoolService.Application.SchoolProfile.Common.Invitation;
 global using SchoolService.Application.SchoolProfile.Models;
+global using SchoolService.Application.SchoolProfile.SchoolProfileManager;
 global using SchoolService.Domain.Enums.JoiningRequest;
 global using SchoolService.Domain.Enums.School;
 global using SchoolService.Domain.Enums.SchoolProfile;
