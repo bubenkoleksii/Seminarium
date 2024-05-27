@@ -28,7 +28,7 @@ public class SetGroupImageCommandHandler : IRequestHandler<SetGroupImageCommand,
             return (Error)deletingResult;
         }
 
-        var newFileName = $"{Guid.NewGuid()}__{request.Name}";
+        var newFileName = $"{Guid.NewGuid()}_group_{request.Name}";
         var uploadingResult = await _filesManager.UploadNewImage(request.Stream, newFileName, request.UrlExpirationInMin);
 
         if (uploadingResult.IsLeft)

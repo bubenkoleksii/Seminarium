@@ -18,7 +18,7 @@ public class SchoolController(IMapper mapper, IOptions<Shared.Contracts.Options.
         );
     }
 
-    [Authorize(Roles = "admin")]
+    [Authorize(Roles = Constants.AdminRole)]
     [HttpGet("[action]/")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GetAllSchoolsResponse))]
     public async Task<IActionResult> GetAll([FromQuery] GetAllSchoolsParams filterParams)
@@ -64,6 +64,7 @@ public class SchoolController(IMapper mapper, IOptions<Shared.Contracts.Options.
         );
     }
 
+    [Authorize]
     [HttpPatch("[action]/{id}")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(FileSuccess))]
     [ProducesResponseType(StatusCodes.Status404NotFound)]

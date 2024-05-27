@@ -27,7 +27,7 @@ public class SetSchoolProfileImageCommandHandler : IRequestHandler<SetSchoolProf
             return (Error)deletingResult;
         }
 
-        var newFileName = $"{Guid.NewGuid()}__{request.Name}";
+        var newFileName = $"{Guid.NewGuid()}_school_profile_{request.Name}";
         var uploadingResult = await _filesManager.UploadNewImage(request.Stream, newFileName, request.UrlExpirationInMin);
 
         if (uploadingResult.IsLeft)
