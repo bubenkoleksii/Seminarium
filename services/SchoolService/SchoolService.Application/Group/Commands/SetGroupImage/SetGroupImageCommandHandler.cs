@@ -4,19 +4,49 @@ public class SetGroupImageCommandHandler : IRequestHandler<SetGroupImageCommand,
 {
     private readonly ICommandContext _commandContext;
 
-    private readonly IOptions<S3Options> _s3Options;
+    private readonly IFilesManager _filesManager;
 
-    private readonly IS3Service _s3Service;
-
-    public SetGroupImageCommandHandler(ICommandContext commandContext, IOptions<S3Options> s3Options, IS3Service s3Service)
+    public SetGroupImageCommandHandler(ICommandContext commandContext, IFilesManager filesManager)
     {
         _commandContext = commandContext;
-        _s3Options = s3Options;
-        _s3Service = s3Service;
+        _filesManager = filesManager;
     }
 
-    public Task<Either<FileSuccess, Error>> Handle(SetGroupImageCommand request, CancellationToken cancellationToken)
+    public async Task<Either<FileSuccess, Error>> Handle(SetGroupImageCommand request, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        var entity = await _commandContext.Groups
+            .IgnoreQueryFilters()
+            .FirstOrDefaultAsync(g => g.Id == request.GroupId, cancellationToken: cancellationToken);
+
+        if (entity is null)
+            return new NotFoundByIdError(request.GroupId, "group");
+
+        var deletingResult = await _filesManager.DeleteImageIfExists(entity.Img);
+        if (deletingResult.IsSome)
+        {
+            Log.Error("An error occurred while deleting image for the group with values {@GroupId} {@FileName}.", entity.Id, entity.Img);
+            return (Error)deletingResult;
+        }
+
+        var newFileName = $"{Guid.NewGuid()}__{request.Name}";
+        var uploadingResult = await _filesManager.UploadNewImage(request.Stream, newFileName, request.UrlExpirationInMin);
+
+        if (uploadingResult.IsLeft)
+        {
+            entity.Img = newFileName;
+
+            try
+            {
+                await _commandContext.SaveChangesAsync(cancellationToken);
+            }
+            catch (Exception exception)
+            {
+                Log.Error(exception, "An error occurred while setting image for the group with values {@GroupId} {@FileName}.", entity.Id, request.Name);
+
+                return new InvalidDatabaseOperationError("group");
+            }
+        }
+
+        return uploadingResult;
     }
 }
