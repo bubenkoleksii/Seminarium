@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using SchoolService.Infrastructure.Persistence;
@@ -11,9 +12,11 @@ using SchoolService.Infrastructure.Persistence;
 namespace SchoolService.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(CommandContext))]
-    partial class CommandContextModelSnapshot : ModelSnapshot
+    [Migration("20240527094130_AddGroup")]
+    partial class AddGroup
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -27,9 +30,6 @@ namespace SchoolService.Infrastructure.Persistence.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid?>("ClassTeacherId")
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedAt")
@@ -56,9 +56,6 @@ namespace SchoolService.Infrastructure.Persistence.Migrations
                         .HasColumnType("smallint");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ClassTeacherId")
-                        .IsUnique();
 
                     b.HasIndex("SchoolId");
 
@@ -244,9 +241,6 @@ namespace SchoolService.Infrastructure.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<Guid?>("ClassTeacherGroupId")
-                        .HasColumnType("uuid");
-
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
@@ -298,18 +292,11 @@ namespace SchoolService.Infrastructure.Persistence.Migrations
 
             modelBuilder.Entity("SchoolService.Domain.Entities.Group", b =>
                 {
-                    b.HasOne("SchoolService.Domain.Entities.SchoolProfile", "ClassTeacher")
-                        .WithOne("ClassTeacherGroup")
-                        .HasForeignKey("SchoolService.Domain.Entities.Group", "ClassTeacherId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
                     b.HasOne("SchoolService.Domain.Entities.School", "School")
                         .WithMany("Groups")
                         .HasForeignKey("SchoolId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("ClassTeacher");
 
                     b.Navigation("School");
                 });
@@ -326,9 +313,8 @@ namespace SchoolService.Infrastructure.Persistence.Migrations
             modelBuilder.Entity("SchoolService.Domain.Entities.SchoolProfile", b =>
                 {
                     b.HasOne("SchoolService.Domain.Entities.Group", "Group")
-                        .WithMany("Students")
-                        .HasForeignKey("GroupId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .WithMany()
+                        .HasForeignKey("GroupId");
 
                     b.HasOne("SchoolService.Domain.Entities.School", "School")
                         .WithMany("Teachers")
@@ -340,11 +326,6 @@ namespace SchoolService.Infrastructure.Persistence.Migrations
                     b.Navigation("School");
                 });
 
-            modelBuilder.Entity("SchoolService.Domain.Entities.Group", b =>
-                {
-                    b.Navigation("Students");
-                });
-
             modelBuilder.Entity("SchoolService.Domain.Entities.School", b =>
                 {
                     b.Navigation("Groups");
@@ -353,11 +334,6 @@ namespace SchoolService.Infrastructure.Persistence.Migrations
                         .IsRequired();
 
                     b.Navigation("Teachers");
-                });
-
-            modelBuilder.Entity("SchoolService.Domain.Entities.SchoolProfile", b =>
-                {
-                    b.Navigation("ClassTeacherGroup");
                 });
 #pragma warning restore 612, 618
         }

@@ -17,4 +17,12 @@ public class SchoolProfile : Entity
     public Guid? SchoolId { get; set; }
 
     public School? School { get; set; }
+
+    public Guid? GroupId { get; set; }
+
+    public Group? Group { get; set; }
+
+    public Guid? ClassTeacherGroupId { get; set; }
+
+    public Group? ClassTeacherGroup { get; set; }
 }

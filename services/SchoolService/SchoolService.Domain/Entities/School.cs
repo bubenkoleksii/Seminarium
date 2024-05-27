@@ -39,4 +39,6 @@ public class School : Entity
     public required JoiningRequest JoiningRequest { get; set; }
 
     public IEnumerable<SchoolProfile>? Teachers { get; set; }
+
+    public IEnumerable<Group>? Groups { get; set; }
 }

@@ -20,13 +20,35 @@ public class SchoolConfiguration : IEntityTypeConfiguration<School>
 
         builder.HasQueryFilter(school => !school.IsArchived);
 
+        ConfigureRelationships(builder);
+    }
+
+    private static void ConfigureRelationships(EntityTypeBuilder<School> builder)
+    {
+        AddJoiningRequestForeignKey(builder);
+        AddTeachersRelationship(builder);
+        AddGroupsRelationship(builder);
+    }
+
+    private static void AddJoiningRequestForeignKey(EntityTypeBuilder<School> builder)
+    {
         builder.HasOne(school => school.JoiningRequest)
             .WithOne(joiningRequest => joiningRequest.School)
             .HasForeignKey<School>(school => school.JoiningRequestId)
             .IsRequired();
+    }
 
+    private static void AddTeachersRelationship(EntityTypeBuilder<School> builder)
+    {
         builder.HasMany(school => school.Teachers)
             .WithOne(teacher => teacher.School)
+            .OnDelete(DeleteBehavior.Cascade);
+    }
+
+    private static void AddGroupsRelationship(EntityTypeBuilder<School> builder)
+    {
+        builder.HasMany(school => school.Groups)
+            .WithOne(group => group.School)
             .OnDelete(DeleteBehavior.Cascade);
     }
 }
