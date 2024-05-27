@@ -48,16 +48,16 @@ public class CreateSchoolCommandHandler : IRequestHandler<CreateSchoolCommand, E
         catch (Exception exception)
         {
             Log.Error(exception, "An error occurred while creating the school with values {@Request}.", request);
-
             return new InvalidDatabaseOperationError("school");
         }
 
         var invitationExpiration = _configuration.GetValue<int>("InvitationExpirationInHours:SchoolAdmin");
         var invitation = new Invitation(entity.Id, SchoolProfileType.SchoolAdmin, DateTime.UtcNow.AddHours(invitationExpiration));
         var invitationCode = _invitationManager.GenerateInvitationCode(invitation);
+        var encodedInvitationCode = Uri.EscapeDataString(invitationCode);
 
         var clientUrl = _configuration["ClientUrl"]!;
-        var link = $"{clientUrl}uk/schoolProfile/create/{invitationCode}";
+        var link = $"{clientUrl}uk/school-profile/create/school_admin/{encodedInvitationCode}";
 
         try
         {
