@@ -19,6 +19,7 @@ global using SchoolService.Application.Common.Behaviors;
 global using SchoolService.Application.Common.Cryptography.Aes;
 global using SchoolService.Application.Common.DataContext;
 global using SchoolService.Application.Common.Email;
+global using SchoolService.Application.Common.Files;
 global using SchoolService.Application.Group.Commands.CreateGroup;
 global using SchoolService.Application.Group.Models;
 global using SchoolService.Application.JoiningRequest.Commands.CreateJoiningRequest;

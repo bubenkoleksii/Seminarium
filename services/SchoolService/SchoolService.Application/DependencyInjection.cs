@@ -15,6 +15,8 @@ public static class DependencyInjection
 
         services.AddScoped<IInvitationManager, InvitationManager>();
 
+        services.AddScoped<IFilesManager, FilesManager>();
+
         return services;
     }
 

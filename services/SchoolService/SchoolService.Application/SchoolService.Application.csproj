@@ -37,6 +37,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Group\Commands\DeleteGroupImage\" />
     <Folder Include="Group\Queries\" />
     <Folder Include="SchoolProfile\Queries\" />
   </ItemGroup>
