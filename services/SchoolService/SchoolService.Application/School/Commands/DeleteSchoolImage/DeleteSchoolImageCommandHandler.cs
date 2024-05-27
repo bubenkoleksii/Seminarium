@@ -3,6 +3,7 @@
 public class DeleteSchoolImageCommandHandler : IRequestHandler<DeleteSchoolImageCommand, Option<Error>>
 {
     private readonly ICommandContext _commandContext;
+
     private readonly IFilesManager _filesManager;
 
     public DeleteSchoolImageCommandHandler(ICommandContext commandContext, IFilesManager filesManager)
