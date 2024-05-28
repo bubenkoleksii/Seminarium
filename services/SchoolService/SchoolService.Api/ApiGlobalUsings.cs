@@ -26,6 +26,7 @@ global using SchoolService.Application.JoiningRequest.Commands.RejectJoiningRequ
 global using SchoolService.Application.JoiningRequest.Models;
 global using SchoolService.Application.JoiningRequest.Queries.GetAllJoiningRequests;
 global using SchoolService.Application.JoiningRequest.Queries.GetOneJoiningRequest;
+global using SchoolService.Application.School.Commands.CreateInvitation;
 global using SchoolService.Application.School.Commands.CreateSchool;
 global using SchoolService.Application.School.Commands.DeleteSchool;
 global using SchoolService.Application.School.Commands.DeleteSchoolImage;
@@ -40,7 +41,6 @@ global using SchoolService.Application.SchoolProfile.Commands.SetSchoolProfileIm
 global using SchoolService.Application.SchoolProfile.Models;
 global using SchoolService.Application.SchoolProfile.Queries.GetUserSchoolProfiles;
 global using SchoolService.Application.SchoolProfile.SchoolProfileManager;
-global using SchoolService.Domain.Enums.SchoolProfile;
 global using SchoolService.Infrastructure.Persistence;
 global using Serilog;
 global using Serilog.Events;

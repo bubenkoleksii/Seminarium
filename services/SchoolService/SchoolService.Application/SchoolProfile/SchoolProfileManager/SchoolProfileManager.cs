@@ -42,6 +42,7 @@ public class SchoolProfileManager : ISchoolProfileManager
         var profile = _mapper.Map<Domain.Entities.SchoolProfile>(command);
         profile.School = school;
         profile.Type = invitation.Type;
+        profile.IsActive = true;
 
         return profile;
     }
@@ -80,6 +81,7 @@ public class SchoolProfileManager : ISchoolProfileManager
         profile.School = school;
         profile.Type = invitation.Type;
         profile.Data = JsonConvert.SerializeObject(data);
+        profile.IsActive = true;
 
         return profile;
     }

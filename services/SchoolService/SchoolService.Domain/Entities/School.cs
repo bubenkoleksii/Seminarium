@@ -2,7 +2,7 @@
 
 public class School : Entity
 {
-    public ulong RegisterCode { get; set; }
+    public required string RegisterCode { get; set; }
 
     public required string Name { get; set; }
 
@@ -16,7 +16,7 @@ public class School : Entity
 
     public SchoolType Type { get; set; }
 
-    public ulong PostalCode { get; set; }
+    public required string PostalCode { get; set; }
 
     public SchoolOwnershipType OwnershipType { get; set; }
 

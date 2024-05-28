@@ -2,7 +2,7 @@
 
 public record UpdateSchoolRequest(Guid Id,
 
-    ulong RegisterCode,
+    string RegisterCode,
 
     string Name,
 
@@ -16,7 +16,7 @@ public record UpdateSchoolRequest(Guid Id,
 
     string Type,
 
-    ulong PostalCode,
+    string PostalCode,
 
     string OwnershipType,
 

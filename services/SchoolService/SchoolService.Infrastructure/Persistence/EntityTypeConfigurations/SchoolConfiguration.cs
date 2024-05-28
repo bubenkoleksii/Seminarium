@@ -7,6 +7,8 @@ public class SchoolConfiguration : IEntityTypeConfiguration<School>
         builder.HasKey(school => school.Id);
 
         builder.Property(school => school.Id).ValueGeneratedOnAdd();
+        builder.Property(school => school.RegisterCode).HasMaxLength(50);
+        builder.Property(school => school.PostalCode).HasMaxLength(50);
         builder.Property(school => school.Email).HasMaxLength(50);
         builder.Property(school => school.Phone).HasMaxLength(50);
         builder.Property(school => school.SiteUrl).HasMaxLength(50);

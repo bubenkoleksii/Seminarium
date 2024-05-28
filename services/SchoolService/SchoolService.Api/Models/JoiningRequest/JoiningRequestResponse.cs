@@ -9,7 +9,7 @@ public record JoiningRequestResponse(
 
     DateTime? LastUpdatedAt,
 
-    ulong RegisterCode,
+    string RegisterCode,
 
     string Name,
 
@@ -25,7 +25,7 @@ public record JoiningRequestResponse(
 
     string Type,
 
-    ulong PostalCode,
+    string PostalCode,
 
     string OwnershipType,
 

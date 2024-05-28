@@ -9,7 +9,7 @@ public record JoiningRequestModelResponse(
 
     DateTime? LastUpdatedAt,
 
-    ulong RegisterCode,
+    string RegisterCode,
 
     string Name,
 
@@ -25,7 +25,7 @@ public record JoiningRequestModelResponse(
 
     SchoolType Type,
 
-    ulong PostalCode,
+    string PostalCode,
 
     SchoolOwnershipType OwnershipType,
 

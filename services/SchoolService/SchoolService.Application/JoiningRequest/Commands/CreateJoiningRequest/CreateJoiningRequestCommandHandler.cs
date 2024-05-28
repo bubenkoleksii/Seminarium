@@ -25,7 +25,7 @@ public class CreateJoiningRequestCommandHandler : IRequestHandler<CreateJoiningR
                 cancellationToken: cancellationToken);
 
         if (existedEntity != null && existedEntity.Status != JoiningRequestStatus.Rejected)
-            return new AlreadyExistsError("joining request");
+            return new AlreadyExistsError("joining_request");
 
         await _commandContext.JoiningRequests.AddAsync(entity, cancellationToken);
         try
@@ -35,7 +35,7 @@ public class CreateJoiningRequestCommandHandler : IRequestHandler<CreateJoiningR
         catch (Exception exception)
         {
             Log.Error(exception, "An error occurred while creating the joining request with values {@Request}.", request);
-            return new InvalidDatabaseOperationError("joining request");
+            return new InvalidDatabaseOperationError("joining_request");
         }
 
         try

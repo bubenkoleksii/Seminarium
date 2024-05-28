@@ -1,6 +1,4 @@
-﻿using SchoolService.Application.School.Commands.CreateInvitation;
-
-namespace SchoolService.Api.Controllers;
+﻿namespace SchoolService.Api.Controllers;
 
 public class SchoolController(IMapper mapper, IOptions<Shared.Contracts.Options.FileOptions> fileOptions) : BaseController
 {

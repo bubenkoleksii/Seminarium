@@ -19,7 +19,7 @@ internal static class UniquenessChecker
 
         if (existedEntity.RegisterCode == entity.RegisterCode)
         {
-            error = new RegisterCodeAlreadyExists(entity.RegisterCode);
+            error = new AlreadyExistsError("register_code");
             return true;
         }
 
