@@ -4,11 +4,14 @@ public class UpdateSchoolCommandHandler : IRequestHandler<UpdateSchoolCommand, E
 {
     private readonly ICommandContext _commandContext;
 
+    private readonly ISchoolProfileManager _schoolProfileManager;
+
     private readonly IMapper _mapper;
 
-    public UpdateSchoolCommandHandler(ICommandContext commandContext, IMapper mapper)
+    public UpdateSchoolCommandHandler(ICommandContext commandContext, ISchoolProfileManager schoolProfileManager, IMapper mapper)
     {
         _commandContext = commandContext;
+        _schoolProfileManager = schoolProfileManager;
         _mapper = mapper;
     }
 

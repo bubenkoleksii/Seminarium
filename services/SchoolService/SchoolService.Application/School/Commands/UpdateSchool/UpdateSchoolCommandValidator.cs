@@ -10,6 +10,11 @@ public class UpdateSchoolCommandValidator : AbstractValidator<UpdateSchoolComman
             .NotEqual(Guid.Empty)
             .WithErrorCode(ErrorTitles.Common.Empty);
 
+        RuleFor(x => x.UserId)
+            .Null()
+            .NotEqual(Guid.Empty)
+            .WithErrorCode(ErrorTitles.Common.Empty);
+
         RuleFor(x => x.RegisterCode)
             .NotEmpty()
             .WithErrorCode(ErrorTitles.Common.Empty)

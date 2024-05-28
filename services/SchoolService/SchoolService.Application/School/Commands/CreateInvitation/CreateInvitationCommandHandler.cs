@@ -20,7 +20,9 @@ public class CreateInvitationCommandHandler : IRequestHandler<CreateInvitationCo
 
     public async Task<Either<string, Error>> Handle(CreateInvitationCommand request, CancellationToken cancellationToken)
     {
-        var validationError = await ValidateSchoolProfileAsync(request);
+        var validationError =
+            await _schoolProfileManager.ValidateSchoolProfileBySchool(request.UserId, request.SchoolId);
+
         if (validationError.IsSome)
             return (Error)validationError;
 
@@ -33,21 +35,5 @@ public class CreateInvitationCommandHandler : IRequestHandler<CreateInvitationCo
         var link = $"{clientUrl}uk/school-profile/create/school_admin/{encodedInvitationCode}";
 
         return link;
-    }
-
-    private async Task<Option<Error>> ValidateSchoolProfileAsync(CreateInvitationCommand request)
-    {
-        if (request.UserId is not null)
-        {
-            var schoolProfile = await _schoolProfileManager.GetActiveProfile((Guid)request.UserId);
-            if (schoolProfile?.SchoolId is null)
-                return new InvalidError("school_profile");
-
-            var schoolId = (Guid)schoolProfile.SchoolId;
-            if (schoolId != request.SchoolId)
-                return new InvalidError("school_id");
-        }
-
-        return Option<Error>.None;
     }
 }

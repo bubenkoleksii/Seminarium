@@ -12,5 +12,11 @@ public interface ISchoolProfileManager
 
     public Task<SchoolProfileModelResponse?> GetActiveProfile(Guid userId);
 
+    public Task<Option<Error>> ValidateSchoolProfileBySchool(Guid? userId, Guid schoolId);
+
+    public Task<Option<Error>> ValidateSchoolProfileByGroup(Guid? userId, Guid groupId);
+
+    public Task<Option<Error>> ValidateClassTeacherSchoolProfileByGroup(Guid? userId, Guid groupId);
+
     public void ClearCache(Guid userId);
 }

@@ -21,5 +21,9 @@ public record SchoolProfileModelResponse(
 
     string? Data,
 
-    Guid? SchoolId
+    Guid? SchoolId,
+
+    Guid? GroupId,
+
+    Guid? ClassTeacherGroupId
 );

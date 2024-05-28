@@ -74,13 +74,22 @@ public class SchoolController(IMapper mapper, IOptions<Shared.Contracts.Options.
     }
 
     [Authorize]
+    [ProfileIdentify([Constants.SchoolAdmin], true)]
     [HttpPut("[action]/")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SchoolResponse))]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Update([FromBody] UpdateSchoolRequest schoolRequest)
     {
+        var userId = User.Identity?.GetId();
+        var userRole = User.Identity?.GetRole();
+
+        if (userId is null || userRole is null)
+            return ErrorActionResultHandler.Handle(new InvalidError("user"));
+
+        var commandUserId = userRole == Constants.AdminRole ? null : userId;
         var command = mapper.Map<UpdateSchoolCommand>(schoolRequest);
+        command.UserId = commandUserId;
 
         var result = await Mediator.Send(command);
 

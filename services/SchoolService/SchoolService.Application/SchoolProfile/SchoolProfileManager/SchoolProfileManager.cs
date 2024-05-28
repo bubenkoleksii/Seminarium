@@ -134,6 +134,54 @@ public class SchoolProfileManager : ISchoolProfileManager
         return activeProfile;
     }
 
+    public async Task<Option<Error>> ValidateSchoolProfileBySchool(Guid? userId, Guid schoolId)
+    {
+        if (userId is null)
+            return Option<Error>.None;
+
+        var schoolProfile = await GetActiveProfile((Guid)userId);
+
+        if (schoolProfile?.SchoolId is null)
+            return new InvalidError("school_profile");
+
+        var profileSchoolId = (Guid)schoolProfile.SchoolId;
+        return profileSchoolId != schoolId
+            ? new InvalidError("school_id")
+            : Option<Error>.None;
+    }
+
+    public async Task<Option<Error>> ValidateSchoolProfileByGroup(Guid? userId, Guid groupId)
+    {
+        if (userId is null)
+            return Option<Error>.None;
+
+        var schoolProfile = await GetActiveProfile((Guid)userId);
+
+        if (schoolProfile?.GroupId is null)
+            return new InvalidError("school_profile");
+
+        var profileGroupId = (Guid)schoolProfile.GroupId;
+        return profileGroupId != groupId
+            ? new InvalidError("school_id")
+            : Option<Error>.None;
+    }
+
+    public async Task<Option<Error>> ValidateClassTeacherSchoolProfileByGroup(Guid? userId, Guid groupId)
+    {
+        if (userId is null)
+            return Option<Error>.None;
+
+        var schoolProfile = await GetActiveProfile((Guid)userId);
+
+        if (schoolProfile?.ClassTeacherGroupId is null)
+            return new InvalidError("school_profile");
+
+        var profileClassTeacherGroupId = (Guid)schoolProfile.ClassTeacherGroupId;
+        return profileClassTeacherGroupId != groupId
+            ? new InvalidError("school_id")
+            : Option<Error>.None;
+    }
+
     public void ClearCache(Guid userId)
     {
         var cacheKey = GetCacheKey(userId);
