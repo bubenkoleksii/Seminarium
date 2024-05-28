@@ -1,9 +1,27 @@
-﻿using SchoolService.Application.SchoolProfile.Commands.DeleteSchoolProfileImage;
-
-namespace SchoolService.Api.Controllers;
+﻿namespace SchoolService.Api.Controllers;
 
 public class SchoolProfileController(IMapper mapper, IOptions<Shared.Contracts.Options.FileOptions> fileOptions) : BaseController
 {
+    [Authorize]
+    [HttpGet("[action]/")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<SchoolProfileResponse>))]
+    public async Task<IActionResult> Get()
+    {
+        var userId = User.Identity?.GetId();
+        var userRole = User.Identity?.GetRole();
+
+        if (userId is null)
+            return ErrorActionResultHandler.Handle(new InvalidError("user_id"));
+
+        if (userRole is null or Constants.AdminRole)
+            return ErrorActionResultHandler.Handle(new InvalidError("user_role"));
+
+        var query = new GetUserSchoolProfilesQuery((Guid)userId);
+
+        var result = await Mediator.Send(query);
+        return Ok(mapper.Map<IEnumerable<SchoolProfileResponse>>(result));
+    }
+
     [Authorize]
     [HttpPost("[action]/")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SchoolProfileResponse))]

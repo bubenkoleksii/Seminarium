@@ -58,6 +58,9 @@ public class CreateSchoolProfileCommandHandler : IRequestHandler<CreateSchoolPro
         }
 
         var schoolProfileResponse = _mapper.Map<SchoolProfileModelResponse>((Domain.Entities.SchoolProfile)profile);
+
+        await _schoolProfileManager.CacheProfiles(request.UserId, schoolProfileResponse.UserId);
+
         return schoolProfileResponse;
     }
 }

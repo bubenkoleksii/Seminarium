@@ -17,6 +17,7 @@ public static class DependencyInjection
 
         services.AddScoped<IFilesManager, FilesManager>();
 
+        services.AddMemoryCache();
         services.AddScoped<ISchoolProfileManager, SchoolProfileManager>();
 
         return services;

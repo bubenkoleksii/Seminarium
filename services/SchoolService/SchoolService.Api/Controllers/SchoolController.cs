@@ -48,6 +48,16 @@ public class SchoolController(IMapper mapper, IOptions<Shared.Contracts.Options.
     }
 
     [Authorize]
+    [ProfileIdentify([Constants.SchoolAdmin])]
+    [HttpPost("[action]/")]
+    [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(string))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public IActionResult Invitation([FromBody] CreateInvitationRequest invitationRequest)
+    {
+        return Ok(invitationRequest.SchoolId is null ? "asds" : "22");
+    }
+
+    [Authorize]
     [HttpPut("[action]/")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SchoolResponse))]
     [ProducesResponseType(StatusCodes.Status404NotFound)]

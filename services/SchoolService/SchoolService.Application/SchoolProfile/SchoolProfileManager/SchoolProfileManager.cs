@@ -101,7 +101,9 @@ public class SchoolProfileManager : ISchoolProfileManager
         userProfiles.ForEach(profile => profile.IsActive = profile.Id == currentProfileId);
 
         var profilesToCache = _mapper.Map<IEnumerable<SchoolProfileModelResponse>>(userProfiles);
+
         _memoryCache.Set(cacheKey, profilesToCache);
+
         return true;
     }
 

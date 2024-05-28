@@ -1,6 +1,4 @@
-﻿using SchoolService.Application.Group.Models;
-
-namespace SchoolService.Api.Mappings;
+﻿namespace SchoolService.Api.Mappings;
 
 public class ApiMappingProfile : Profile
 {
