@@ -4,16 +4,28 @@ public class SetSchoolImageCommandHandler : IRequestHandler<SetSchoolImageComman
 {
     private readonly ICommandContext _commandContext;
 
+    private readonly ISchoolProfileManager _schoolProfileManager;
+
     private readonly IFilesManager _filesManager;
 
-    public SetSchoolImageCommandHandler(ICommandContext commandContext, IFilesManager filesManager)
+    public SetSchoolImageCommandHandler(
+        ICommandContext commandContext,
+        ISchoolProfileManager schoolProfileManager,
+        IFilesManager filesManager)
     {
         _commandContext = commandContext;
+        _schoolProfileManager = schoolProfileManager;
         _filesManager = filesManager;
     }
 
     public async Task<Either<FileSuccess, Error>> Handle(SetSchoolImageCommand request, CancellationToken cancellationToken)
     {
+        var validationError =
+            await _schoolProfileManager.ValidateSchoolProfileBySchool(request.UserId, request.SchoolId);
+
+        if (validationError.IsSome)
+            return (Error)validationError;
+
         var entity = await _commandContext.Schools
             .IgnoreQueryFilters()
             .FirstOrDefaultAsync(s => s.Id == request.SchoolId, cancellationToken: cancellationToken);

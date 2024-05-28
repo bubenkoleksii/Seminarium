@@ -100,12 +100,21 @@ public class SchoolController(IMapper mapper, IOptions<Shared.Contracts.Options.
     }
 
     [Authorize]
+    [ProfileIdentify([Constants.SchoolAdmin], true)]
     [HttpPatch("[action]/{id}")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(FileSuccess))]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Image(Guid id, [FromForm] IFormFile image)
     {
+        var userId = User.Identity?.GetId();
+        var userRole = User.Identity?.GetRole();
+
+        if (userId is null || userRole is null)
+            return ErrorActionResultHandler.Handle(new InvalidError("user"));
+
+        var commandUserId = userRole == Constants.AdminRole ? null : userId;
+
         var maxAllowedSizeInMb = fileOptions.Value.MaxSizeInMb;
         var urlExpirationInMin = fileOptions.Value.UrlExpirationInMin;
 
@@ -117,7 +126,14 @@ public class SchoolController(IMapper mapper, IOptions<Shared.Contracts.Options.
         }
         var stream = (Stream)mappingStreamResult;
 
-        var command = new SetSchoolImageCommand(id, image.FileName, stream, urlExpirationInMin);
+        var command = new SetSchoolImageCommand(
+            id,
+            commandUserId,
+            image.FileName,
+            stream,
+            urlExpirationInMin
+        );
+
         var result = await Mediator.Send(command);
 
         return result.Match(
@@ -127,13 +143,21 @@ public class SchoolController(IMapper mapper, IOptions<Shared.Contracts.Options.
     }
 
     [Authorize]
+    [ProfileIdentify([Constants.SchoolAdmin], true)]
     [HttpDelete("[action]/{id}")]
     [ProducesResponseType(StatusCodes.Status202Accepted)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Image(Guid id)
     {
-        var command = new DeleteSchoolImageCommand(id);
+        var userId = User.Identity?.GetId();
+        var userRole = User.Identity?.GetRole();
+
+        if (userId is null || userRole is null)
+            return ErrorActionResultHandler.Handle(new InvalidError("user"));
+
+        var commandUserId = userRole == Constants.AdminRole ? null : userId;
+        var command = new DeleteSchoolImageCommand(id, commandUserId);
 
         var result = await Mediator.Send(command);
 

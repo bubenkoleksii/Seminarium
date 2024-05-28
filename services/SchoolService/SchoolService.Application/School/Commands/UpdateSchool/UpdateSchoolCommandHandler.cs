@@ -17,6 +17,12 @@ public class UpdateSchoolCommandHandler : IRequestHandler<UpdateSchoolCommand, E
 
     public async Task<Either<SchoolModelResponse, Error>> Handle(UpdateSchoolCommand request, CancellationToken cancellationToken)
     {
+        var validationError =
+            await _schoolProfileManager.ValidateSchoolProfileBySchool(request.UserId, request.Id);
+
+        if (validationError.IsSome)
+            return (Error)validationError;
+
         var entity = await _commandContext.Schools
             .IgnoreQueryFilters()
             .FirstOrDefaultAsync(s => s.Id == request.Id, cancellationToken: cancellationToken);
