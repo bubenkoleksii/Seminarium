@@ -48,7 +48,7 @@ public class SchoolController(IMapper mapper, IOptions<Shared.Contracts.Options.
     }
 
     [Authorize]
-    [ProfileIdentify([Constants.SchoolAdmin])]
+    [ProfileIdentify([Constants.SchoolAdmin], true)]
     [HttpPost("[action]/")]
     [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(string))]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]

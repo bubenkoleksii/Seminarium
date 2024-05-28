@@ -1,6 +1,6 @@
 ﻿namespace SchoolService.Api.Identity;
 
-public class ProfileIdentifyAttribute(string[] allowedProfileTypes, bool allowedForAdmin = true) : ActionFilterAttribute
+public class ProfileIdentifyAttribute(string[] allowedProfileTypes, bool allowedForAdmin = false) : ActionFilterAttribute
 {
     private const string HeaderKeyName = "SchoolProfileId";
 
