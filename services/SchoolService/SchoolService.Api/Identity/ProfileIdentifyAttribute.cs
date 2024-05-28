@@ -108,8 +108,6 @@ public class ProfileIdentifyAttribute(string[] allowedProfileTypes, bool allowed
         };
     }
 
-    public static bool SchoolProfileTypeExists(string[] stringArray, string searchString)
-    {
-        return stringArray.Exists(s => s.Contains(searchString));
-    }
+    public static bool SchoolProfileTypeExists(string[] stringArray, string searchString) =>
+        stringArray.Exists(s => s.Contains(searchString));
 }

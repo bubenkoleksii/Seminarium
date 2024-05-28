@@ -10,5 +10,7 @@ public interface ISchoolProfileManager
 
     public Task<IEnumerable<SchoolProfileModelResponse>?> GetProfiles(Guid userId);
 
+    public Task<SchoolProfileModelResponse?> GetActiveProfile(Guid userId);
+
     public void ClearCache(Guid userId);
 }

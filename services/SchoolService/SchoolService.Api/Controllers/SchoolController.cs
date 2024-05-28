@@ -1,4 +1,6 @@
-﻿namespace SchoolService.Api.Controllers;
+﻿using SchoolService.Application.School.Commands.CreateInvitation;
+
+namespace SchoolService.Api.Controllers;
 
 public class SchoolController(IMapper mapper, IOptions<Shared.Contracts.Options.FileOptions> fileOptions) : BaseController
 {
@@ -52,9 +54,25 @@ public class SchoolController(IMapper mapper, IOptions<Shared.Contracts.Options.
     [HttpPost("[action]/")]
     [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(string))]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public IActionResult Invitation([FromBody] CreateInvitationRequest invitationRequest)
+    public async Task<IActionResult> Invitation([FromBody] CreateInvitationRequest invitationRequest)
     {
-        return Ok(invitationRequest.SchoolId is null ? "asds" : "22");
+        var userId = User.Identity?.GetId();
+        var userRole = User.Identity?.GetRole();
+
+        if (userId is null || userRole is null)
+            return ErrorActionResultHandler.Handle(new InvalidError("user"));
+
+        var queryUserId = userRole == Constants.AdminRole ? null : userId;
+        var query = new CreateInvitationCommand(
+            invitationRequest.SchoolId,
+            queryUserId
+        );
+
+        var result = await Mediator.Send(query);
+        return result.Match(
+            Left: response => CreatedAtAction(nameof(Create), response),
+            Right: ErrorActionResultHandler.Handle
+        );
     }
 
     [Authorize]

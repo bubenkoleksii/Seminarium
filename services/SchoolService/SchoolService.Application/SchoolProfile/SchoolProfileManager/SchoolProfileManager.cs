@@ -124,6 +124,14 @@ public class SchoolProfileManager : ISchoolProfileManager
         return profileResponses;
     }
 
+    public async Task<SchoolProfileModelResponse?> GetActiveProfile(Guid userId)
+    {
+        var profiles = await GetProfiles(userId);
+
+        var activeProfile = profiles?.FirstOrDefault(p => p.IsActive);
+        return activeProfile;
+    }
+
     public void ClearCache(Guid userId)
     {
         var cacheKey = GetCacheKey(userId);
