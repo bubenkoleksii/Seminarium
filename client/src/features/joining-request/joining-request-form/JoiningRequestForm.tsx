@@ -425,7 +425,7 @@ const JoiningRequestForm: FC = () => {
               type="submit"
               className={styles.button}
             >
-              {t('labels.submit')}
+              {t('labels.createSubmit')}
             </button>
           </div>
         </Form>

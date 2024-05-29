@@ -149,9 +149,6 @@ const School: FC<SchoolProps> = ({ id }) => {
     deleteMutate(data.id);
   };
 
-  const handleOpenCopyInvitationModal = () => {
-    setCopyInvitationOpenModal(true);
-  }
   const handleCloseCopyInvitationModal = () => {
     setCopyInvitationOpenModal(false);
   }
@@ -180,8 +177,6 @@ const School: FC<SchoolProps> = ({ id }) => {
     });
   };
 
-  console.log('bla', invitationCode, copyInvitationOpenModal);
-
   return (
     <div className="mb-4 w-[90%] p-3">
       <h2 className="mb-4 mt-2 text-center text-xl font-bold">
@@ -204,7 +199,7 @@ const School: FC<SchoolProps> = ({ id }) => {
         <span className="text-purple-950 lg:text-2xl">{data.name}</span>
       </h6>
 
-      <div className="flex w-[100%] justify-center mb-2">
+      <div className="flex w-[100%] justify-center mb-4">
         <Button
           onClick={() => {
             setInvitationCode(null);

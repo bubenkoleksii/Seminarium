@@ -12,7 +12,7 @@ export const useAdminStore = create<AdminStore>()(
   immer(
     devtools(
       (set) => ({
-        currentTab: CurrentTab.Profile,
+        currentTab: CurrentTab.JoiningRequest,
         setCurrentTab: (tab: CurrentTab) =>
           set((state) => {
             state.currentTab = tab;

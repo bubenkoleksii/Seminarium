@@ -35,20 +35,6 @@ const AdminSidebar: FC = () => {
       }}
       className={`flex h-screen flex-col items-center justify-start bg-gray-50`}
     >
-      <Tooltip content={t('profile')} placement="right" style="light">
-        <Link
-          href={`/${activeLocale}/${AdminClientPaths.Profile}/`}
-          className={`flex h-[50px] w-[50px] items-center justify-center 
-         ${currentTab === CurrentTab.Profile ? `bg-purple-950` : `bg-gray-50 hover:bg-gray-200`} 
-         text-gray-800 transition duration-300`}
-        >
-          <User
-            color={`${currentTab === CurrentTab.Profile ? `#f9fafb` : `#3B0764`}`}
-            size={20}
-          />
-        </Link>
-      </Tooltip>
-
       <Tooltip content={t('joiningRequest')} placement="right" style="light">
         <Link
           href={`/${activeLocale}/${AdminClientPaths.JoiningRequests}/`}
@@ -80,6 +66,20 @@ const AdminSidebar: FC = () => {
         >
           <School
             color={`${currentTab === CurrentTab.School ? `#f9fafb` : `#3B0764`}`}
+            size={20}
+          />
+        </Link>
+      </Tooltip>
+
+      <Tooltip content={t('profile')} placement="right" style="light">
+        <Link
+          href={`/${activeLocale}/${AdminClientPaths.Profile}/`}
+          className={`flex h-[50px] w-[50px] items-center justify-center 
+         ${currentTab === CurrentTab.Profile ? `bg-purple-950` : `bg-gray-50 hover:bg-gray-200`} 
+         text-gray-800 transition duration-300`}
+        >
+          <User
+            color={`${currentTab === CurrentTab.Profile ? `#f9fafb` : `#3B0764`}`}
             size={20}
           />
         </Link>
