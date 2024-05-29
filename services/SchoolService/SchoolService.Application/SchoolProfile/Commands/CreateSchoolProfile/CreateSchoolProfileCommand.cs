@@ -20,8 +20,6 @@ public class CreateSchoolProfileCommand : IRequest<Either<SchoolProfileModelResp
 
     public DateOnly? StudentsDateOfBirth { get; set; }
 
-    public IEnumerable<Guid>? StudentsParentIds { get; set; }
-
     public string? StudentsAptitudes { get; set; }
 
     public string? ParentsAddress { get; set; }

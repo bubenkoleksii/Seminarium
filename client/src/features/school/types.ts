@@ -3,14 +3,14 @@ export interface SchoolResponse {
   joiningRequestId: string;
   createdAt: string;
   lastUpdatedAt?: string;
-  registerCode: number;
+  registerCode: string;
   name: string;
   shortName?: string;
   gradingSystem: number;
   email?: string;
   phone?: string;
   type: string;
-  postalCode: number;
+  postalCode: string;
   ownershipType: string;
   studentsQuantity: number;
   region: string;
@@ -23,14 +23,14 @@ export interface SchoolResponse {
 
 export interface UpdateSchoolRequest {
   id: string;
-  registerCode: number;
+  registerCode: string;
   name: string;
   shortName?: string;
   gradingSystem: number;
   email?: string;
   phone?: string;
   type: string;
-  postalCode: number;
+  postalCode: string;
   ownershipType: string;
   studentsQuantity: number;
   region: string;

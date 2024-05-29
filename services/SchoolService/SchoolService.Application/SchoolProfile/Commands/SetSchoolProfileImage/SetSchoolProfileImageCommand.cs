@@ -3,6 +3,8 @@
 public record SetSchoolProfileImageCommand(
     Guid SchoolProfileId,
 
+    Guid UserId,
+
     string Name,
 
     Stream Stream,

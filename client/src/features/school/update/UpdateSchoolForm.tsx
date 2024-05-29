@@ -50,15 +50,13 @@ const UpdateSchoolForm: FC<UpdateSchoolFormProps> = ({ id, school }) => {
     email: Yup.string().email(v('email')).max(250, v('max')),
     phone: Yup.string().max(250, v('max')),
     site: Yup.string().max(250, v('max')),
-    registerCode: Yup.string().required(v('required')),
+    registerCode: Yup.string().required(v('required')).max(50, v('max')),
     name: Yup.string().required(v('required')).max(250, v('max')),
     shortName: Yup.string().max(250, v('max')),
     gradingSystem: Yup.number()
       .required(v('required'))
       .max(10000, v('maxNumber')),
-    postalCode: Yup.number()
-      .required(v('required'))
-      .max(999999, v('maxNumber')),
+    postalCode: Yup.string().required(v('required')).max(50, v('max')),
     studentsQuantity: Yup.number()
       .required(v('required'))
       .max(1000000, v('maxNumber')),
@@ -274,7 +272,7 @@ const UpdateSchoolForm: FC<UpdateSchoolFormProps> = ({ id, school }) => {
             </label>
             <Field
               placeholder={t('placeholders.registerCode')}
-              type="number"
+              type="text"
               id="registerCode"
               name="registerCode"
               className={styles.input}
@@ -364,7 +362,7 @@ const UpdateSchoolForm: FC<UpdateSchoolFormProps> = ({ id, school }) => {
             </label>
             <Field
               placeholder={t('placeholders.postalCode')}
-              type="number"
+              type="text"
               id="postalCode"
               name="postalCode"
               className={styles.input}

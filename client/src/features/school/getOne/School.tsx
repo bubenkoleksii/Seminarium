@@ -13,6 +13,7 @@ import {
   joiningRequestClientPath,
   schoolsClientPath,
   updateSchoolClientPath,
+  inRegisterSchoolClientPath,
 } from '../constants';
 import { SchoolResponse } from '../types';
 import { Loader } from '@/components/loader';
@@ -185,11 +186,21 @@ const School: FC<SchoolProps> = ({ id }) => {
         </p>
       </h6>
 
+      <div className="flex w-[100%] justify-center mb-2">
+        <Button gradientMonochrome="purple" size="md">
+          <span className="text-white">
+            <Link href={`/${activeLocale}/${inRegisterSchoolClientPath}/${data.registerCode}`}>
+              {t('labels.register.labelBtn')}
+            </Link>
+          </span>
+        </Button>
+      </div>
+
       <div className="flex text-xs lg:text-lg">
         <div className="flex w-1/2 justify-center border border-gray-200 bg-purple-100 px-4 py-2 font-semibold">
           <span className="text-center">{t('labels.registerCode')}</span>
         </div>
-        <div className="flex w-1/2 justify-center border border-gray-200 px-4 py-2 font-medium">
+        <div className="flex gap-2 w-1/2 justify-center items-center border border-gray-200 px-4 py-2 font-medium">
           <span>{data.registerCode}</span>
         </div>
       </div>

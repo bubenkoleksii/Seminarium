@@ -10,7 +10,7 @@ export interface SchoolResponse {
   joiningRequestId: string;
   createdAt: string;
   lastUpdatedAt?: string;
-  registerCode: number;
+  registerCode: string;
   name: string;
   shortName?: string;
   gradingSystem: number;
@@ -29,7 +29,7 @@ export interface SchoolResponse {
 }
 
 export interface CreateSchoolRequest {
-  registerCode: number;
+  registerCode: string;
   name: string;
   shortName?: string;
   gradingSystem: number;

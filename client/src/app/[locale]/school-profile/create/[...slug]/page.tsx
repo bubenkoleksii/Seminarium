@@ -7,7 +7,9 @@ type Props = {
 };
 
 const CreateProfilePage: FC<Props> = ({ params }) => {
-  const [type, invitationCode] = params.slug.map((param) => decodeURIComponent(param));
+  const [type, invitationCode] = params.slug.map((param) =>
+    decodeURIComponent(param),
+  );
 
   return (
     <div>

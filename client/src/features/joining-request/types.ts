@@ -7,7 +7,7 @@ export interface CreateJoiningRequest {
   shortName: string | null;
   gradingSystem: number;
   type: string;
-  postalCode: number;
+  postalCode: string;
   ownershipType: string;
   studentsQuantity: number;
   region: string;

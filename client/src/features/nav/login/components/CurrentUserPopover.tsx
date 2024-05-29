@@ -63,7 +63,9 @@ const CurrentUserPopover: FC<CurrentUserPopoverProps> = ({ user }) => {
           <div className="cursor-default">
             <Menu.Item>
               <div className="p-2 text-xs font-bold">
-                <p>{user.name} {user.role === 'admin' ? '(Адмін)' : ''}</p>
+                <p>
+                  {user.name} {user.role === 'admin' ? '(Адмін)' : ''}
+                </p>
               </div>
             </Menu.Item>
           </div>

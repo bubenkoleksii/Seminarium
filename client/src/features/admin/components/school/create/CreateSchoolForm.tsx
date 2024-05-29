@@ -44,7 +44,7 @@ const CreateSchoolForm: FC<CreateSchoolFormProps> = ({
     gradingSystem: Yup.number()
       .required(v('required'))
       .max(10000, v('maxNumber')),
-    postalCode: Yup.number()
+    postalCode: Yup.string()
       .required(v('required'))
       .max(999999, v('maxNumber')),
     studentsQuantity: Yup.number()
@@ -157,7 +157,7 @@ const CreateSchoolForm: FC<CreateSchoolFormProps> = ({
             </label>
             <Field
               placeholder={t('placeholders.registerCode')}
-              type="number"
+              type="text"
               id="registerCode"
               name="registerCode"
               className={styles.input}
@@ -247,7 +247,7 @@ const CreateSchoolForm: FC<CreateSchoolFormProps> = ({
             </label>
             <Field
               placeholder={t('placeholders.postalCode')}
-              type="number"
+              type="text"
               id="postalCode"
               name="postalCode"
               className={styles.input}

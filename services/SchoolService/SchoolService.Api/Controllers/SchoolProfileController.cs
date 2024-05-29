@@ -55,6 +55,15 @@ public class SchoolProfileController(IMapper mapper, IOptions<Shared.Contracts.O
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Image(Guid id, [FromForm] IFormFile image)
     {
+        var userId = User.Identity?.GetId();
+        var userRole = User.Identity?.GetRole();
+
+        if (userId is null)
+            return ErrorActionResultHandler.Handle(new InvalidError("user_id"));
+
+        if (userRole is null or Constants.AdminRole)
+            return ErrorActionResultHandler.Handle(new InvalidError("user_role"));
+
         var maxAllowedSizeInMb = fileOptions.Value.MaxSizeInMb;
         var urlExpirationInMin = fileOptions.Value.UrlExpirationInMin;
 
@@ -66,7 +75,7 @@ public class SchoolProfileController(IMapper mapper, IOptions<Shared.Contracts.O
         }
         var stream = (Stream)mappingStreamResult;
 
-        var command = new SetSchoolProfileImageCommand(id, image.FileName, stream, urlExpirationInMin);
+        var command = new SetSchoolProfileImageCommand(id, (Guid)userId, image.FileName, stream, urlExpirationInMin);
         var result = await Mediator.Send(command);
 
         return result.Match(
@@ -82,7 +91,16 @@ public class SchoolProfileController(IMapper mapper, IOptions<Shared.Contracts.O
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Image(Guid id)
     {
-        var command = new DeleteSchoolProfileImageCommand(id);
+        var userId = User.Identity?.GetId();
+        var userRole = User.Identity?.GetRole();
+
+        if (userId is null)
+            return ErrorActionResultHandler.Handle(new InvalidError("user_id"));
+
+        if (userRole is null or Constants.AdminRole)
+            return ErrorActionResultHandler.Handle(new InvalidError("user_role"));
+
+        var command = new DeleteSchoolProfileImageCommand(id, (Guid)userId);
 
         var result = await Mediator.Send(command);
 
