@@ -7,7 +7,7 @@ import {
   removeSchoolRoute,
   getOneSchoolRoute,
   updateSchoolRoute,
-  imageRoute,
+  imageRoute, createInvitationRoute,
 } from './constants';
 
 type GetOne = (id: string) => Promise<ApiResponse<SchoolResponse>>;
@@ -28,6 +28,8 @@ type Remove = (id: string) => Promise<ApiResponse<any>>;
 
 type RemoveImage = (id: string) => Promise<ApiResponse<any>>;
 
+type GenerateInvitation = (schoolId: string) => Promise<ApiResponse<string>>;
+
 export const getOne: GetOne = (id: string) =>
   api.get(`${getOneSchoolRoute}/${id}`);
 
@@ -42,3 +44,6 @@ export const remove: Remove = (id: string) =>
 
 export const removeImage: RemoveImage = (id: string) =>
   api.remove(`${imageRoute}/${id}`);
+
+export const createInvitation: GenerateInvitation = (schoolId) =>
+  api.create(`${createInvitationRoute}`, { schoolId })

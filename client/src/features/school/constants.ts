@@ -6,6 +6,8 @@ export const imageRoute = '/school/image';
 
 export const removeSchoolRoute = '/school/delete';
 
+export const createInvitationRoute = '/school/invitation';
+
 export const schoolsClientPath = 'admin/schools';
 
 export const joiningRequestClientPath = '/admin/joining_requests';

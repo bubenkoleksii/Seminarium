@@ -6,10 +6,11 @@ import { useAuthRedirectByRole } from '@/shared/hooks';
 import { useRouter } from 'next/navigation';
 import { useIsMutating, useMutation, useQuery } from '@tanstack/react-query';
 import { ApiResponse } from '@/shared/types';
-import { getOne, remove } from '../api';
+import { createInvitation, getOne, remove } from '../api';
 import {
   removeSchoolRoute,
   getOneSchoolRoute,
+  createInvitationRoute,
   joiningRequestClientPath,
   schoolsClientPath,
   updateSchoolClientPath,
@@ -25,7 +26,7 @@ import { useMediaQuery } from 'react-responsive';
 import { DateTime } from '@/components/date-time';
 import { Button } from 'flowbite-react';
 import Link from 'next/link';
-import { ProveModal } from '@/components/modal';
+import { CopyTextModal, ProveModal } from '@/components/modal';
 import { toast } from 'react-hot-toast';
 
 interface SchoolProps {
@@ -46,6 +47,25 @@ const School: FC<SchoolProps> = ({ id }) => {
     queryFn: () => getOne(id),
     enabled: !!id,
   });
+
+  const { mutate: generateInvitation } = useMutation({
+    mutationFn: createInvitation,
+    mutationKey: [generateInvitation, id],
+    onSuccess: (response) => {
+      if (response && response.error) {
+        const errorMessages = {
+          404: t('labels.oneNotFound'),
+          400: t('labels.invitationValidation'),
+        };
+
+        toast.error(
+          errorMessages[response.error.status] || t('labels.internal'),
+        );
+      } else {
+        console.log(response)
+      }
+    }
+  })
 
   const { mutate: deleteMutate } = useMutation({
     mutationFn: remove,
@@ -68,6 +88,9 @@ const School: FC<SchoolProps> = ({ id }) => {
   });
 
   const [deleteOpenModal, setDeleteOpenModal] = useState(false);
+
+  const [copyInvitationOpenModal, setCopyInvitationOpenModal] = useState(false);
+  const [invitationCode, setInvitationCode] = useState<string>(null);
 
   const isPhone = useMediaQuery({ query: mediaQueries.phone });
 
@@ -125,6 +148,14 @@ const School: FC<SchoolProps> = ({ id }) => {
     deleteMutate(data.id);
   };
 
+  const handleOpenCopyInvitationModal = () => {
+    setCopyInvitationOpenModal(true);
+  }
+  const handleCloseCopyInvitationModal = () => {
+    setCopyInvitationOpenModal(false);
+  }
+
+
   const occupiedColor = getColorByStatus(data.areOccupied ? 'danger' : 'ok');
 
   const buildUpdateQuery = () => {
@@ -170,6 +201,23 @@ const School: FC<SchoolProps> = ({ id }) => {
         </p>
         <span className="text-purple-950 lg:text-2xl">{data.name}</span>
       </h6>
+
+      <div className="flex w-[100%] justify-center mb-2">
+        <Button gradientMonochrome="success" size="lg">
+          <span className="text-white">
+            <Link href={`/${activeLocale}/${inRegisterSchoolClientPath}/${data.registerCode}`}>
+              {t('invitation.labelBtn')}
+            </Link>
+          </span>
+        </Button>
+      </div>
+
+      <CopyTextModal
+        open={copyInvitationOpenModal}
+        text={invitationCode}
+        label={t('invitation.labelModal')}
+        onClose={handleCloseCopyInvitationModal}
+      />
 
       <div className="flex items-center justify-center">
         <CustomImage
