@@ -50,7 +50,7 @@ const School: FC<SchoolProps> = ({ id }) => {
 
   const { mutate: generateInvitation } = useMutation({
     mutationFn: createInvitation,
-    mutationKey: [generateInvitation, id],
+    mutationKey: [createInvitationRoute, id],
     onSuccess: (response) => {
       if (response && response.error) {
         const errorMessages = {
@@ -62,7 +62,8 @@ const School: FC<SchoolProps> = ({ id }) => {
           errorMessages[response.error.status] || t('labels.internal'),
         );
       } else {
-        console.log(response)
+        setInvitationCode(response);
+        setCopyInvitationOpenModal(true);
       }
     }
   })
@@ -155,7 +156,6 @@ const School: FC<SchoolProps> = ({ id }) => {
     setCopyInvitationOpenModal(false);
   }
 
-
   const occupiedColor = getColorByStatus(data.areOccupied ? 'danger' : 'ok');
 
   const buildUpdateQuery = () => {
@@ -180,6 +180,8 @@ const School: FC<SchoolProps> = ({ id }) => {
     });
   };
 
+  console.log('bla', invitationCode, copyInvitationOpenModal);
+
   return (
     <div className="mb-4 w-[90%] p-3">
       <h2 className="mb-4 mt-2 text-center text-xl font-bold">
@@ -203,21 +205,28 @@ const School: FC<SchoolProps> = ({ id }) => {
       </h6>
 
       <div className="flex w-[100%] justify-center mb-2">
-        <Button gradientMonochrome="success" size="lg">
+        <Button
+          onClick={() => {
+            setInvitationCode(null);
+            generateInvitation(data.id);
+          }}
+          gradientMonochrome="success"
+          size="lg"
+        >
           <span className="text-white">
-            <Link href={`/${activeLocale}/${inRegisterSchoolClientPath}/${data.registerCode}`}>
-              {t('invitation.labelBtn')}
-            </Link>
+            {t('invitation.labelBtn')}
           </span>
         </Button>
       </div>
 
-      <CopyTextModal
-        open={copyInvitationOpenModal}
-        text={invitationCode}
-        label={t('invitation.labelModal')}
-        onClose={handleCloseCopyInvitationModal}
-      />
+      {invitationCode &&
+        <CopyTextModal
+          open={copyInvitationOpenModal}
+          text={invitationCode}
+          label={t('invitation.labelModal')}
+          onClose={handleCloseCopyInvitationModal}
+        />
+      }
 
       <div className="flex items-center justify-center">
         <CustomImage
