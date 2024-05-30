@@ -6,19 +6,15 @@ public class CreateSchoolProfileCommandHandler : IRequestHandler<CreateSchoolPro
 
     private readonly IInvitationManager _invitationManager;
 
-    private readonly IMapper _mapper;
-
     private readonly ISchoolProfileManager _schoolProfileManager;
 
     public CreateSchoolProfileCommandHandler(
         ICommandContext commandContext,
         IInvitationManager invitationManager,
-        IMapper mapper,
         ISchoolProfileManager schoolProfileManager)
     {
         _commandContext = commandContext;
         _invitationManager = invitationManager;
-        _mapper = mapper;
         _schoolProfileManager = schoolProfileManager;
     }
 
@@ -37,6 +33,9 @@ public class CreateSchoolProfileCommandHandler : IRequestHandler<CreateSchoolPro
         {
             SchoolProfileType.SchoolAdmin => await _schoolProfileManager.CreateSchoolAdminProfile(invitation, request),
             SchoolProfileType.Teacher => await _schoolProfileManager.CreateTeacherProfile(invitation, request),
+            SchoolProfileType.Student => await _schoolProfileManager.CreateStudentProfile(invitation, request),
+            SchoolProfileType.Parent => await _schoolProfileManager.CreateParentProfile(invitation, request),
+            SchoolProfileType.ClassTeacher => await _schoolProfileManager.CreateClassTeacherProfile(invitation, request),
             _ => new InvalidError("type")
         };
 
@@ -57,10 +56,10 @@ public class CreateSchoolProfileCommandHandler : IRequestHandler<CreateSchoolPro
             Log.Error(exception, "An error occurred while saving school profile with values {@Profile}.", (Domain.Entities.SchoolProfile)profile);
         }
 
-        var schoolProfileResponse = _mapper.Map<SchoolProfileModelResponse>((Domain.Entities.SchoolProfile)profile);
+        var currentProfile = await _schoolProfileManager.CacheProfiles(request.UserId, ((Domain.Entities.SchoolProfile)profile).Id);
+        if (currentProfile is null)
+            return new InvalidError("user");
 
-        await _schoolProfileManager.CacheProfiles(request.UserId, schoolProfileResponse.UserId);
-
-        return schoolProfileResponse;
+        return currentProfile;
     }
 }

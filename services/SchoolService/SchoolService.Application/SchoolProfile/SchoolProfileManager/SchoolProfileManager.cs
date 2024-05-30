@@ -10,6 +10,11 @@ public class SchoolProfileManager : ISchoolProfileManager
 
     private readonly IMapper _mapper;
 
+    private readonly MemoryCacheEntryOptions _cacheEntryOptions =
+        new MemoryCacheEntryOptions()
+            .SetSlidingExpiration(TimeSpan.FromHours(3))
+            .SetAbsoluteExpiration(TimeSpan.FromHours(16));
+
     public SchoolProfileManager(
         ICommandContext commandContext,
         IQueryContext queryContext,
@@ -49,6 +54,11 @@ public class SchoolProfileManager : ISchoolProfileManager
         profile.IsActive = true;
 
         return profile;
+    }
+
+    public Task<Either<Domain.Entities.SchoolProfile, Error>> CreateClassTeacherProfile(Invitation invitation, CreateSchoolProfileCommand command)
+    {
+        throw new NotImplementedException();
     }
 
     public async Task<Either<Domain.Entities.SchoolProfile, Error>> CreateTeacherProfile(
@@ -91,7 +101,17 @@ public class SchoolProfileManager : ISchoolProfileManager
         return profile;
     }
 
-    public async Task<bool> CacheProfiles(Guid userId, Guid currentProfileId)
+    public Task<Either<Domain.Entities.SchoolProfile, Error>> CreateStudentProfile(Invitation invitation, CreateSchoolProfileCommand command)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<Either<Domain.Entities.SchoolProfile, Error>> CreateParentProfile(Invitation invitation, CreateSchoolProfileCommand command)
+    {
+        throw new NotImplementedException();
+    }
+
+    public async Task<SchoolProfileModelResponse?> CacheProfiles(Guid userId, Guid currentProfileId)
     {
         var cacheKey = GetCacheKey(userId);
 
@@ -101,34 +121,31 @@ public class SchoolProfileManager : ISchoolProfileManager
 
         if (!userProfiles.Any())
         {
-            _memoryCache.Set<IEnumerable<SchoolProfileModelResponse>?>(cacheKey, null);
-            return false;
+            _memoryCache.Set<IEnumerable<SchoolProfileModelResponse>?>(cacheKey, null, _cacheEntryOptions);
+            return null;
         }
 
         userProfiles.ForEach(profile => profile.IsActive = profile.Id == currentProfileId);
 
-        var profilesToCache = _mapper.Map<IEnumerable<SchoolProfileModelResponse>>(userProfiles);
-
+        var profilesToCache = MapToResponses(userProfiles);
         _memoryCache.Set(cacheKey, profilesToCache);
 
-        return true;
+        return profilesToCache?.FirstOrDefault(p => p.IsActive);
     }
 
     public async Task<IEnumerable<SchoolProfileModelResponse>?> GetProfiles(Guid userId)
     {
         var cacheKey = GetCacheKey(userId);
 
-        if (_memoryCache.TryGetValue(cacheKey, out List<Domain.Entities.SchoolProfile>? cachedProfiles))
-            return cachedProfiles?.Select(_mapper.Map<SchoolProfileModelResponse>);
+        if (_memoryCache.TryGetValue(cacheKey, out List<SchoolProfileModelResponse>? cachedProfiles))
+            return cachedProfiles;
 
         var profiles = await _queryContext.SchoolProfiles
             .Where(profile => profile.UserId == userId)
             .ToListAsync();
 
-        var profileResponses = profiles.Select(_mapper.Map<SchoolProfileModelResponse>);
-
-        _memoryCache.Set(cacheKey, profiles);
-
+        var profileResponses = MapToResponses(profiles);
+        _memoryCache.Set(cacheKey, profileResponses, _cacheEntryOptions);
         return profileResponses;
     }
 
@@ -192,6 +209,59 @@ public class SchoolProfileManager : ISchoolProfileManager
     {
         var cacheKey = GetCacheKey(userId);
         _memoryCache.Remove(cacheKey);
+    }
+
+    private IReadOnlyList<SchoolProfileModelResponse>? MapToResponses(IEnumerable<Domain.Entities.SchoolProfile>? entities)
+    {
+        if (entities is null)
+            return null;
+
+        var responses = new List<SchoolProfileModelResponse>();
+
+        foreach (var entity in entities)
+        {
+            var response = _mapper.Map<SchoolProfileModelResponse>(entity);
+
+            if (string.IsNullOrWhiteSpace(entity.Data))
+            {
+                responses.Add(response);
+                continue;
+            }
+
+            switch (entity)
+            {
+                case { Type: SchoolProfileType.Parent }:
+                    {
+                        var data = JsonConvert.DeserializeObject<ParentSerializationData>(entity.Data);
+                        response.ParentAddress = data?.ParentAddress;
+                        response.ParentRelationship = data?.ParentRelationship;
+                        break;
+                    }
+                case { Type: SchoolProfileType.Teacher }:
+                    {
+                        var data = JsonConvert.DeserializeObject<TeacherSerializationData>(entity.Data);
+                        response.TeacherEducation = data?.TeachersEducation;
+                        response.TeacherQualification = data?.TeachersQualification;
+                        response.TeacherExperience = data?.TeachersExperience;
+                        response.TeacherLessonsPerCycle = data?.TeachersLessonsPerCycle;
+                        break;
+                    }
+                case { Type: SchoolProfileType.Student }:
+                    {
+                        var data = JsonConvert.DeserializeObject<StudentSerializationData>(entity.Data);
+                        response.StudentDateOfBirth = data?.StudentDateOfBirth;
+                        response.StudentAptitudes = data?.StudentAptitudes;
+                        response.StudentIsClassLeader = data?.StudentIsClassLeader;
+                        response.StudentIsIndividually = data?.StudentIsIndividually;
+                        response.StudentHealthGroup = data?.StudentHealthGroup;
+                        break;
+                    }
+            }
+
+            responses.Add(response);
+        }
+
+        return responses.Any() ? responses : null;
     }
 
     private static string GetCacheKey(Guid userId)

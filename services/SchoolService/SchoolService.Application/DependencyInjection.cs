@@ -17,7 +17,11 @@ public static class DependencyInjection
 
         services.AddScoped<IFilesManager, FilesManager>();
 
-        services.AddMemoryCache();
+        services.AddMemoryCache(options =>
+        {
+            options.SizeLimit = 1024 * 1024 * 100;
+            options.ExpirationScanFrequency = TimeSpan.FromMinutes(5);
+        });
         services.AddScoped<ISchoolProfileManager, SchoolProfileManager>();
 
         return services;
