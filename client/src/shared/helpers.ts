@@ -45,3 +45,17 @@ export function getColorByStatus(status?: Status | null) {
 
   return `text-[#2d2d2d]`;
 }
+
+export function getDefaultProfileImgByType(type?: string | null) {
+  const images = {
+    'student': '/profile/student.png',
+    'teacher': '/profile/teacher.png',
+    'school_admin': '/profile/school_admin.png',
+    'class_teacher': '/profile/class_teacher.png',
+    'parent': '/profile/parent.png'
+  }
+
+  const defaultImage = '/profile/profile.svg';
+
+  return images[type] || defaultImage;
+}

@@ -1,3 +1,5 @@
+'use client';
+
 import { FC, Fragment } from 'react';
 import { CurrentUser } from '../types';
 import { Menu, Transition } from '@headlessui/react';
@@ -6,6 +8,8 @@ import Image from 'next/image';
 import { LuLogOut } from 'react-icons/lu';
 import { signOut } from 'next-auth/react';
 import { useTranslations } from 'next-intl';
+import { getDefaultProfileImgByType } from '@/shared/helpers';
+import { useProfiles } from '@/features/user';
 
 interface CurrentUserPopoverProps {
   user: CurrentUser;
@@ -13,6 +17,10 @@ interface CurrentUserPopoverProps {
 
 const CurrentUserPopover: FC<CurrentUserPopoverProps> = ({ user }) => {
   const t = useTranslations();
+  const { profiles, activeProfile, isLoading, isError } = useProfiles();
+
+  if (isLoading || isError)
+    return null;
 
   const handleLogout = () => {
     signOut({
@@ -21,17 +29,12 @@ const CurrentUserPopover: FC<CurrentUserPopoverProps> = ({ user }) => {
     });
   };
 
-  const defaultProfileImages = {
-    admin: '/profile/admin.png',
-    student: '/profile/student.png',
-    class_teacher: '/profile/class_teacher.png',
-    school_admin: '/profile/school_admin.png',
-    teacher: '/profile/teacher.png',
-    parent: '/profile/parent.png',
-  };
+  console.log('pop', profiles, activeProfile);
 
-  const profileImage =
-    defaultProfileImages[user.role] || '/profile/profile.svg';
+  const adminProfileImage = '/profile/admin.png';
+  const profileImage = user.role === 'admin'
+    ? adminProfileImage
+    : getDefaultProfileImgByType(activeProfile?.type);
 
   return (
     <Menu as="div" className="relative inline-block cursor-pointer text-left">

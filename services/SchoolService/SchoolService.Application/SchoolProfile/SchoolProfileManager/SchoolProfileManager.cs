@@ -10,11 +10,6 @@ public class SchoolProfileManager : ISchoolProfileManager
 
     private readonly IMapper _mapper;
 
-    private readonly MemoryCacheEntryOptions _cacheEntryOptions =
-        new MemoryCacheEntryOptions()
-            .SetSlidingExpiration(TimeSpan.FromHours(3))
-            .SetAbsoluteExpiration(TimeSpan.FromHours(16));
-
     public SchoolProfileManager(
         ICommandContext commandContext,
         IQueryContext queryContext,
@@ -121,7 +116,7 @@ public class SchoolProfileManager : ISchoolProfileManager
 
         if (!userProfiles.Any())
         {
-            _memoryCache.Set<IEnumerable<SchoolProfileModelResponse>?>(cacheKey, null, _cacheEntryOptions);
+            _memoryCache.Set<IEnumerable<SchoolProfileModelResponse>?>(cacheKey, null);
             return null;
         }
 
@@ -145,7 +140,7 @@ public class SchoolProfileManager : ISchoolProfileManager
             .ToListAsync();
 
         var profileResponses = MapToResponses(profiles);
-        _memoryCache.Set(cacheKey, profileResponses, _cacheEntryOptions);
+        _memoryCache.Set(cacheKey, profileResponses);
         return profileResponses;
     }
 

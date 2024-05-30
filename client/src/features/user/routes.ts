@@ -1,3 +1,3 @@
-export const schoolProfileRoutes = {
+export const schoolProfile = {
   get: '/schoolProfile/Get'
 };

@@ -12,6 +12,6 @@ public class GetUserSchoolProfilesQueryHandler : IRequestHandler<GetUserSchoolPr
     public async Task<IEnumerable<SchoolProfileModelResponse>> Handle(GetUserSchoolProfilesQuery request, CancellationToken cancellationToken)
     {
         var profiles = await _schoolProfileManager.GetProfiles(request.UserId);
-        return profiles ?? Enumerable.Empty<SchoolProfileModelResponse>();
+        return profiles?.OrderByDescending(profile => profile.CreatedAt) ?? Enumerable.Empty<SchoolProfileModelResponse>();
     }
 }

@@ -5,15 +5,26 @@ import { useAuthRedirectByRole } from '@/shared/hooks';
 import { useLocale, useTranslations } from 'next-intl';
 import { Loader } from '@/components/loader';
 import { Button } from 'flowbite-react';
+import { useProfiles } from '@/features/user/hooks';
+import { SchoolProfiles } from '@/features/user/components/profile/SchoolProfiles';
 
 const UserProfile: FC = () => {
   const activeLocale = useLocale();
   const t = useTranslations('UserProfile');
 
   const { isUserLoading, user } = useAuthRedirectByRole(activeLocale, 'userOnly');
+  const { profiles, isLoading: profilesLoading, isError: profilesError } = useProfiles();
 
-  if (isUserLoading || !user) {
+  if (isUserLoading || !user || profilesLoading) {
     return <Loader />
+  }
+
+  if (profilesError) {
+    return (
+      <p className="text-red-600">
+        {t('profilesError')}
+      </p>
+    )
   }
 
   return (
@@ -53,7 +64,7 @@ const UserProfile: FC = () => {
       </div>
 
       <div>
-        Profile
+        <SchoolProfiles profiles={profiles} />
       </div>
     </div>
   );

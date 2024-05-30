@@ -6,7 +6,6 @@ import { immer } from 'zustand/middleware/immer';
 interface SchoolProfilesStore {
   activeProfile: SchoolProfileResponse,
   profiles: SchoolProfileResponse[],
-  setActiveProfile: (profile: SchoolProfileResponse) => void;
   setProfiles: (profile: SchoolProfileResponse[]) => void;
 }
 
@@ -14,12 +13,13 @@ export const useSchoolProfilesStore = create<SchoolProfilesStore>()(
   immer(
     devtools(
       (set) => ({
-        activeProfile: {},
+        activeProfile: null,
         profiles: [],
-        setActiveProfile: (activeProfile: SchoolProfileResponse) =>
-          set((state) => state.activeProfile = activeProfile),
         setProfiles: (profiles: SchoolProfileResponse[]) =>
-          set((state) => state.profiles = profiles)
+          set((state) => {
+            state.profiles = profiles;
+            state.activeProfile = profiles.find(profile => profile.isActive);
+          })
       }),
       { name: 'School profiles store' }
     )

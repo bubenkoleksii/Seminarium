@@ -4,3 +4,4 @@ export { CreateDefaultSchoolProfile } from './school-profile/create/CreateDefaul
 export { CreateStudentSchoolProfile } from './school-profile/create/CreateStudentSchoolProfile';
 export { CreateTeacherSchoolProfile } from './school-profile/create/CreateTeacherSchoolProfile';
 export { CreateParentSchoolProfile } from './school-profile/create/CreateParentSchoolProfile';
+export { useProfiles } from './hooks';

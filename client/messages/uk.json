@@ -281,12 +281,51 @@
     }
   },
   "SchoolProfile": {
+    "listLabel": "Список ваших шкільних профілів",
+    "notFound": "У Вас немає жодного шкільного профілю",
+    "activateBtn": "Активувати",
+    "updateBtn": "Оновити",
+    "deleteBtn": "Видалити",
+    "detailsBtn": "Детальніше",
+    "isActive": "Активний",
+    "yes": "Так",
+    "no": "Ні",
     "create": {
       "school_admin": "Створення профілю адміністратора навчального закладу",
       "student": "Створення профілю студента навчального закладу",
       "teacher": "Створення профілю викладача навчального закладу",
       "class_teacher": "Створення профілю куратора навчальної групи",
       "parent": "Створення батьківського профілю"
+    },
+    "item": {
+      "id": "Ід",
+      "phone": "Номер телефону",
+      "email": "Електронна пошта",
+      "details": "Корисні деталі про Вас",
+      "teacherExperience": "Досвід",
+      "teacherEducation": "Освіта",
+      "teacherQualification": "Кваліфікація",
+      "teacherLessonsPerCycle": "Кількість уроків на навчальний цикл",
+      "studentDateOfBirth": "Дата народження",
+      "studentAptitudes": "Здібності",
+      "studentIsClassLeader": "Староста",
+      "studentIsIndividually": "Індивідуальне навчання",
+      "studentHealthGroup": "Група здоров'я",
+      "parentAddress": "Адреса батьків",
+      "parentRelationship": "Стосунок до дитини",
+      "healthGroup": {
+        "main": "Основна",
+        "preparatory": "Підготовча",
+        "special": "Спеціальна",
+        "free": "Звільнено"
+      }
+    },
+    "type": {
+      "class_teacher": "Кураторський",
+      "student": "Студентський",
+      "school_admin": "Адміністраторський",
+      "parent": "Батьківський",
+      "teacher": "Викладацький"
     },
     "admin": {
       "school_admin": "Адміністратор платформи не може мати профіль адміністратора навчального закладу",
@@ -351,7 +390,8 @@
   },
   "UserProfile": {
     "changeAccountInfo": "Змінити інформацію про акаунт",
-    "forgotPassword": "Забули пароль"
+    "forgotPassword": "Забули пароль",
+    "profilesError": "Не вдалось отримати інформацію про активний шкільний профіль"
   },
   "Validation": {
     "required": "Це поле є обов'язковим",
