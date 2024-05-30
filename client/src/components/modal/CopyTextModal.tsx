@@ -10,7 +10,12 @@ interface CopyTextModalProps {
   onClose: () => void;
 }
 
-const CopyTextModal: FC<CopyTextModalProps> = ({ open, text, label, onClose }) => {
+const CopyTextModal: FC<CopyTextModalProps> = ({
+  open,
+  text,
+  label,
+  onClose,
+}) => {
   const t = useTranslations('Modal');
 
   const handleCopy = () => {
@@ -22,7 +27,7 @@ const CopyTextModal: FC<CopyTextModalProps> = ({ open, text, label, onClose }) =
 
   const handleCancel = () => {
     onClose();
-  }
+  };
 
   return (
     <Modal show={open} size="md" onClose={onClose} popup>
@@ -32,8 +37,8 @@ const CopyTextModal: FC<CopyTextModalProps> = ({ open, text, label, onClose }) =
             <h3 className="mb-5 text-lg font-semibold text-gray-800 dark:text-gray-400">
               {label || t('copiedText')}
             </h3>
-            <div className="mb-4 pr-3 pl-3">
-              <p className="text-blue-500 font-semibold">{text}</p>
+            <div className="mb-4 pl-3 pr-3">
+              <p className="font-semibold text-blue-500">{text}</p>
             </div>
             <div className="flex justify-center gap-4">
               <Button gradientMonochrome="failure" onClick={handleCancel}>

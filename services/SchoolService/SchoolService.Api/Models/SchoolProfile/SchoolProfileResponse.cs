@@ -5,6 +5,12 @@ public record SchoolProfileResponse(
 
     Guid UserId,
 
+    Guid? SchoolId,
+
+    Guid? GroupId,
+
+    Guid? ClassTeacherGroupId,
+
     bool IsActive,
 
     DateTime CreatedAt,
@@ -15,11 +21,31 @@ public record SchoolProfileResponse(
 
     string? Phone,
 
+    string? Email,
+
     string? Img,
 
     string? Details,
 
-    string? Data,
+    string? TeacherExperience,
 
-    Guid? SchoolId
+    string? TeacherEducation,
+
+    string? TeacherQualification,
+
+    uint? TeacherLessonsPerCycle,
+
+    DateOnly? StudentDateOfBirth,
+
+    string? StudentAptitudes,
+
+    bool? StudentIsClassLeader,
+
+    bool? StudentIsIndividually,
+
+    string? StudentHealthGroup,
+
+    string? ParentAddress,
+
+    string? ParentRelationship
 );

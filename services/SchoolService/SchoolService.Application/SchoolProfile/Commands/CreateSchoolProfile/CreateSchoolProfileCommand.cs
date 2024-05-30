@@ -8,22 +8,29 @@ public class CreateSchoolProfileCommand : IRequest<Either<SchoolProfileModelResp
 
     public string? Phone { get; set; }
 
+    public string? Email { get; set; }
+
     public string? Details { get; set; }
 
-    public string? TeachersExperience { get; set; }
+    public string? TeacherExperience { get; set; }
 
-    public string? TeachersEducation { get; set; }
+    public string? TeacherEducation { get; set; }
 
-    public string? TeachersQualification { get; set; }
+    public string? TeacherQualification { get; set; }
 
-    public uint? TeachersLessonsPerCycle { get; set; }
+    public uint? TeacherLessonsPerCycle { get; set; }
 
-    public DateOnly? StudentsDateOfBirth { get; set; }
+    public DateOnly? StudentDateOfBirth { get; set; }
 
-    public string? StudentsAptitudes { get; set; }
+    public string? StudentAptitudes { get; set; }
 
-    public string? ParentsAddress { get; set; }
+    public bool? StudentIsClassLeader { get; set; }
 
-    public string? ParentsRelationshipToChild { get; set; }
+    public bool? StudentIsIndividually { get; set; }
 
+    public string? StudentHealthGroup { get; set; }
+
+    public string? ParentAddress { get; set; }
+
+    public string? ParentRelationship { get; set; }
 }

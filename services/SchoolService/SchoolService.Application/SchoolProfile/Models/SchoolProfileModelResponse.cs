@@ -1,29 +1,30 @@
 ﻿namespace SchoolService.Application.SchoolProfile.Models;
 
-public record SchoolProfileModelResponse(
-    Guid Id,
+public class SchoolProfileModelResponse
+{
+    public Guid Id { get; set; }
 
-    Guid UserId,
+    public Guid UserId { get; set; }
 
-    bool IsActive,
+    public Guid? SchoolId { get; set; }
 
-    DateTime CreatedAt,
+    public Guid? GroupId { get; set; }
 
-    DateTime? LastUpdatedAt,
+    public Guid? ClassTeacherGroupId { get; set; }
 
-    string Type,
+    public bool IsActive { get; set; }
 
-    string? Phone,
+    public DateTime CreatedAt { get; set; }
 
-    string? Img,
+    public DateTime? LastUpdatedAt { get; set; }
 
-    string? Details,
+    public SchoolProfileType Type { get; set; }
 
-    string? Data,
+    public string? Phone { get; set; }
 
-    Guid? SchoolId,
+    public string? Email { get; set; }
 
-    Guid? GroupId,
+    public string? Img { get; set; }
 
-    Guid? ClassTeacherGroupId
-);
+    public string? Details { get; set; }
+}

@@ -6,7 +6,7 @@ import { adminQueries, CurrentTab } from '@/features/admin/constants';
 import { useLocale, useTranslations } from 'next-intl';
 import { usePathname, useRouter } from 'next/navigation';
 import { buildQueryString } from '@/shared/helpers';
-import { mediaQueries, school } from '@/shared/constants';
+import { mediaQueries, routes, school } from '@/shared/constants';
 import { useMediaQuery } from 'react-responsive';
 import { useQuery } from '@tanstack/react-query';
 import { ApiResponse } from '@/shared/types';
@@ -18,6 +18,7 @@ import { SearchInput } from '@/components/search-input';
 import { Limit, Pagination } from '@/components/pagination';
 import { Table } from 'flowbite-react';
 import { SchoolItem } from './SchoolItem';
+import Link from 'next/link';
 
 interface SchoolsProps {
   regionParameter?: string;
@@ -35,6 +36,7 @@ const Schools: FC<SchoolsProps> = ({
   pageParameter,
 }) => {
   const t = useTranslations('School');
+  const w = useTranslations('Welcome');
   const activeLocale = useLocale();
 
   const pathname = usePathname();
@@ -274,6 +276,14 @@ const Schools: FC<SchoolsProps> = ({
           </div>
         </>
       )}
+
+      <div className="flex w-[100%] justify-center mt-3">
+        <button className="w-200 inline-flex items-center justify-center rounded border-0 bg-gray-200 px-6 py-2 text-lg text-gray-700 hover:bg-gray-300 focus:outline-none">
+          <Link href={routes.getCreateJoiningRequest(activeLocale)}>
+            {w('joiningRequestBtn')}
+          </Link>
+        </button>
+      </div>
     </div>
   );
 };

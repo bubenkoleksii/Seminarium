@@ -10,7 +10,11 @@ public class SchoolProfileManager : ISchoolProfileManager
 
     private readonly IMapper _mapper;
 
-    public SchoolProfileManager(ICommandContext commandContext, IQueryContext queryContext, IMemoryCache memoryCache, IMapper mapper)
+    public SchoolProfileManager(
+        ICommandContext commandContext,
+        IQueryContext queryContext,
+        IMemoryCache memoryCache,
+        IMapper mapper)
     {
         _commandContext = commandContext;
         _queryContext = queryContext;
@@ -53,7 +57,7 @@ public class SchoolProfileManager : ISchoolProfileManager
         if (DateTime.UtcNow > invitation.Expired)
             return new InvalidError("invitation");
 
-        if (command.TeachersLessonsPerCycle is null)
+        if (command.TeacherLessonsPerCycle is null)
             return new InvalidError("lessons_per_cycle");
 
         var school = await _commandContext.Schools.FindAsync(invitation.SourceId);
@@ -72,10 +76,11 @@ public class SchoolProfileManager : ISchoolProfileManager
 
         var profile = _mapper.Map<Domain.Entities.SchoolProfile>(command);
 
-        var data = new TeacherSerializationData(command.TeachersExperience,
-            command.TeachersEducation,
-            command.TeachersQualification,
-            (uint)command.TeachersLessonsPerCycle
+        var data = new TeacherSerializationData(
+            command.TeacherExperience,
+            command.TeacherEducation,
+            command.TeacherQualification,
+            (uint)command.TeacherLessonsPerCycle
         );
 
         profile.School = school;
@@ -121,6 +126,7 @@ public class SchoolProfileManager : ISchoolProfileManager
             .ToListAsync();
 
         var profileResponses = profiles.Select(_mapper.Map<SchoolProfileModelResponse>);
+
         _memoryCache.Set(cacheKey, profiles);
 
         return profileResponses;

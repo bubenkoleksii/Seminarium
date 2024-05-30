@@ -9,6 +9,7 @@ export const useAuthRedirectByRole = (activeLocale, requiredRole = null) => {
   const { data: userData, status: userStatus } = useSession();
   const router = useRouter();
   const currentUser = userData?.user;
+  const attempts = 2;
   const [attemptCount, setAttemptCount] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -26,6 +27,8 @@ export const useAuthRedirectByRole = (activeLocale, requiredRole = null) => {
           !(currentUser?.role === 'user' || currentUser?.role === 'admin')
         ) {
           router.replace(`/${activeLocale}/access-denied/403`);
+        } else if (requiredRole === 'userOnly' && currentUser?.role !== 'user') {
+          router.replace(`/${activeLocale}/access-denied/403`);
         }
       }
       setIsLoading(false);
@@ -37,9 +40,11 @@ export const useAuthRedirectByRole = (activeLocale, requiredRole = null) => {
         requiredRole &&
         ((requiredRole === 'admin' && currentUser?.role !== 'admin') ||
           (requiredRole === 'user' &&
-            !(currentUser?.role === 'user' || currentUser?.role === 'admin'))))
+            !(currentUser?.role === 'user' || currentUser?.role === 'admin')) ||
+          (requiredRole === 'userOnly' && currentUser?.role !== 'user')
+        ))
     ) {
-      if (attemptCount < 2) {
+      if (attemptCount < attempts) {
         setTimeout(() => {
           setAttemptCount(attemptCount + 1);
         }, 1000);
@@ -64,7 +69,9 @@ export const useAuthRedirectByRole = (activeLocale, requiredRole = null) => {
       (!requiredRole ||
         (requiredRole === 'admin' && currentUser?.role === 'admin') ||
         (requiredRole === 'user' &&
-          (currentUser?.role === 'user' || currentUser?.role === 'admin')))
+          (currentUser?.role === 'user' || currentUser?.role === 'admin')) ||
+        (requiredRole === 'userOnly' && currentUser?.role === 'user')
+      )
     ) {
       setIsLoading(false);
     }

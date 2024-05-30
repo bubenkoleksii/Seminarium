@@ -9,13 +9,9 @@ type CreateParentSchoolProfileProps = {
 
 const CreateParentSchoolProfile: FC<CreateParentSchoolProfileProps> = ({
   type,
-  invitationCode
+  invitationCode,
 }) => {
-  return (
-    <div>
-
-    </div>
-  );
+  return <div></div>;
 };
 
 export { CreateParentSchoolProfile };

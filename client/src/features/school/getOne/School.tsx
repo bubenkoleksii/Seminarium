@@ -65,8 +65,8 @@ const School: FC<SchoolProps> = ({ id }) => {
         setInvitationCode(response);
         setCopyInvitationOpenModal(true);
       }
-    }
-  })
+    },
+  });
 
   const { mutate: deleteMutate } = useMutation({
     mutationFn: remove,
@@ -151,7 +151,7 @@ const School: FC<SchoolProps> = ({ id }) => {
 
   const handleCloseCopyInvitationModal = () => {
     setCopyInvitationOpenModal(false);
-  }
+  };
 
   const occupiedColor = getColorByStatus(data.areOccupied ? 'danger' : 'ok');
 
@@ -199,7 +199,7 @@ const School: FC<SchoolProps> = ({ id }) => {
         <span className="text-purple-950 lg:text-2xl">{data.name}</span>
       </h6>
 
-      <div className="flex w-[100%] justify-center mb-4">
+      <div className="mb-4 flex w-[100%] justify-center">
         <Button
           onClick={() => {
             setInvitationCode(null);
@@ -208,20 +208,18 @@ const School: FC<SchoolProps> = ({ id }) => {
           gradientMonochrome="success"
           size="lg"
         >
-          <span className="text-white">
-            {t('invitation.labelBtn')}
-          </span>
+          <span className="text-white">{t('invitation.labelBtn')}</span>
         </Button>
       </div>
 
-      {invitationCode &&
+      {invitationCode && (
         <CopyTextModal
           open={copyInvitationOpenModal}
           text={invitationCode}
           label={t('invitation.labelModal')}
           onClose={handleCloseCopyInvitationModal}
         />
-      }
+      )}
 
       <div className="flex items-center justify-center">
         <CustomImage
@@ -238,10 +236,12 @@ const School: FC<SchoolProps> = ({ id }) => {
         </p>
       </h6>
 
-      <div className="flex w-[100%] justify-center mb-2">
+      <div className="mb-2 flex w-[100%] justify-center">
         <Button gradientMonochrome="purple" size="md">
           <span className="text-white">
-            <Link href={`/${activeLocale}/${inRegisterSchoolClientPath}/${data.registerCode}`}>
+            <Link
+              href={`/${activeLocale}/${inRegisterSchoolClientPath}/${data.registerCode}`}
+            >
               {t('labels.register.labelBtn')}
             </Link>
           </span>
@@ -252,7 +252,7 @@ const School: FC<SchoolProps> = ({ id }) => {
         <div className="flex w-1/2 justify-center border border-gray-200 bg-purple-100 px-4 py-2 font-semibold">
           <span className="text-center">{t('labels.registerCode')}</span>
         </div>
-        <div className="flex gap-2 w-1/2 justify-center items-center border border-gray-200 px-4 py-2 font-medium">
+        <div className="flex w-1/2 items-center justify-center gap-2 border border-gray-200 px-4 py-2 font-medium">
           <span>{data.registerCode}</span>
         </div>
       </div>

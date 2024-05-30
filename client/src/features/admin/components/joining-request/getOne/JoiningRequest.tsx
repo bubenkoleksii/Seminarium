@@ -225,10 +225,12 @@ const JoiningRequest: FC<JoiningRequestProps> = ({ id }) => {
         </p>
       </h6>
 
-      <div className="flex w-[100%] justify-center mb-2">
+      <div className="mb-2 flex w-[100%] justify-center">
         <Button gradientMonochrome="purple" size="md">
           <span className="text-white">
-            <Link href={`/${activeLocale}/${inRegisterSchoolClientPath}/${data.registerCode}`}>
+            <Link
+              href={`/${activeLocale}/${inRegisterSchoolClientPath}/${data.registerCode}`}
+            >
               {t('labels.register.labelBtn')}
             </Link>
           </span>

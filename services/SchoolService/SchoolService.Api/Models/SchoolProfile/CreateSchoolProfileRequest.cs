@@ -5,23 +5,29 @@ public record CreateSchoolProfileRequest(
 
     string? Phone,
 
+    string? Email,
+
     string? Details,
 
-    string? TeachersExperience,
+    string? TeacherExperience,
 
-    string? TeachersEducation,
+    string? TeacherEducation,
 
-    string? TeachersQualification,
+    string? TeacherQualification,
 
-    uint? TeachersLessonsPerCycle,
+    uint? TeacherLessonsPerCycle,
 
-    DateOnly? StudentsDateOfBirth,
+    DateOnly? StudentDateOfBirth,
 
-    IEnumerable<Guid>? StudentsParentIds,
+    string? StudentAptitudes,
 
-    string? StudentsAptitudes,
+    bool? StudentIsClassLeader,
 
-    string? ParentsAddress,
+    bool? StudentIsIndividually,
 
-    string? ParentsRelationshipToChild
+    string? StudentHealthGroup,
+
+    string? ParentAddress,
+
+    string? ParentRelationship
 );

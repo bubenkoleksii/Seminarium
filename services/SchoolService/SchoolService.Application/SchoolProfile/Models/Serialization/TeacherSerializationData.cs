@@ -1,4 +1,4 @@
-﻿namespace SchoolService.Application.SchoolProfile.Models;
+﻿namespace SchoolService.Application.SchoolProfile.Models.Serialization;
 
 internal record TeacherSerializationData(
     string? TeachersExperience,

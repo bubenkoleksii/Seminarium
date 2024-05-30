@@ -22,15 +22,16 @@ const CurrentUserPopover: FC<CurrentUserPopoverProps> = ({ user }) => {
   };
 
   const defaultProfileImages = {
-    'admin': '/profile/admin.png',
-    'student': '/profile/student.png',
-    'class_teacher': '/profile/class_teacher.png',
-    'school_admin': '/profile/school_admin.png',
-    'teacher': '/profile/teacher.png',
-    'parent': '/profile/parent.png',
+    admin: '/profile/admin.png',
+    student: '/profile/student.png',
+    class_teacher: '/profile/class_teacher.png',
+    school_admin: '/profile/school_admin.png',
+    teacher: '/profile/teacher.png',
+    parent: '/profile/parent.png',
   };
 
-  const profileImage = defaultProfileImages[user.role] || '/profile/profile.svg';
+  const profileImage =
+    defaultProfileImages[user.role] || '/profile/profile.svg';
 
   return (
     <Menu as="div" className="relative inline-block cursor-pointer text-left">
@@ -70,7 +71,8 @@ const CurrentUserPopover: FC<CurrentUserPopoverProps> = ({ user }) => {
             <Menu.Item>
               <div className="p-2 text-xs font-bold">
                 <p>
-                  {user.name} {user.role === 'admin' ? `(${t('CurrentUser.admin')})` : ''}
+                  {user.name}{' '}
+                  {user.role === 'admin' ? `(${t('CurrentUser.admin')})` : ''}
                 </p>
               </div>
             </Menu.Item>

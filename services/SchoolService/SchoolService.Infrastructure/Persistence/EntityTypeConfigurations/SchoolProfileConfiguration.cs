@@ -9,6 +9,7 @@ public class SchoolProfileConfiguration : IEntityTypeConfiguration<SchoolProfile
         builder.Property(profile => profile.Id).ValueGeneratedOnAdd();
         builder.Property(profile => profile.Phone).HasMaxLength(50);
         builder.Property(profile => profile.Img).HasMaxLength(250);
+        builder.Property(profile => profile.Email).HasMaxLength(250);
         builder.Property(profile => profile.Details).HasMaxLength(1024);
         builder.Property(profile => profile.Data).HasMaxLength(1024);
 
@@ -17,6 +18,7 @@ public class SchoolProfileConfiguration : IEntityTypeConfiguration<SchoolProfile
         builder.Property(profile => profile.Details).HasDefaultValue(null);
         builder.Property(profile => profile.Data).HasDefaultValue(null);
         builder.Property(profile => profile.Img).HasDefaultValue(null);
+        builder.Property(profile => profile.Email).HasDefaultValue(null);
         builder.Property(profile => profile.SchoolId).HasDefaultValue(null);
         builder.Property(profile => profile.ClassTeacherGroupId).HasDefaultValue(null);
 

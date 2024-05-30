@@ -10,6 +10,8 @@ public class SchoolProfile : Entity
 
     public string? Phone { get; set; }
 
+    public string? Email { get; set; }
+
     public string? Img { get; set; }
 
     public string? Details { get; set; }

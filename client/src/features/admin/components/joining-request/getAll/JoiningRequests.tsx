@@ -14,10 +14,11 @@ import { useMediaQuery } from 'react-responsive';
 import { useLocale, useTranslations } from 'next-intl';
 import { Error } from '@/components/error';
 import { useAuthRedirectByRole, useSetCurrentTab } from '@/shared/hooks';
-import { mediaQueries, school } from '@/shared/constants';
+import { mediaQueries, routes, school } from '@/shared/constants';
 import { SearchInput } from '@/components/search-input';
 import { buildQueryString } from '@/shared/helpers';
 import { Limit, Pagination } from '@/components/pagination';
+import Link from 'next/link';
 
 interface JoiningRequestsProps {
   regionParameter?: string;
@@ -37,6 +38,7 @@ const JoiningRequests: FC<JoiningRequestsProps> = ({
   pageParameter,
 }) => {
   const t = useTranslations('JoiningRequest');
+  const w = useTranslations('Welcome');
   const activeLocale = useLocale();
 
   const pathname = usePathname();
@@ -329,6 +331,14 @@ const JoiningRequests: FC<JoiningRequestsProps> = ({
           </div>
         </>
       )}
+
+      <div className="flex w-[100%] justify-center mt-3">
+        <button className="w-200 inline-flex items-center justify-center rounded border-0 bg-gray-200 px-6 py-2 text-lg text-gray-700 hover:bg-gray-300 focus:outline-none">
+          <Link href={routes.getCreateJoiningRequest(activeLocale)}>
+            {w('joiningRequestBtn')}
+          </Link>
+        </button>
+      </div>
     </div>
   );
 };

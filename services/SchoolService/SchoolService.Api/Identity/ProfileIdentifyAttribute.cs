@@ -73,7 +73,8 @@ public class ProfileIdentifyAttribute(string[] allowedProfileTypes, bool allowed
             return;
         }
 
-        if (!currentProfile.IsActive || !SchoolProfileTypeExists(allowedProfileTypes, currentProfile.Type))
+        if (!currentProfile.IsActive ||
+            !SchoolProfileTypeExists(allowedProfileTypes, currentProfile.Type.ToString().ToSnakeCase()))
         {
             var problemDetail = CreateProblemDetail(
                 "Incorrect user profile.",

@@ -2,7 +2,7 @@
 
 import styles from './CreateSchoolProfile.module.scss';
 import { FC } from 'react';
-import type { CreateSchoolProfileRequest } from '.././types';
+import type { CreateSchoolProfileRequest } from '../types';
 import * as Yup from 'yup';
 import { useLocale, useTranslations } from 'next-intl';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
@@ -17,8 +17,11 @@ interface CreateDefaultSchoolProfileProps {
   invitationCode: string;
 }
 
-const CreateDefaultSchoolProfile: FC<CreateDefaultSchoolProfileProps> = ({ invitationCode, type }) => {
-  const activeLocale = useLocale()
+const CreateDefaultSchoolProfile: FC<CreateDefaultSchoolProfileProps> = ({
+  invitationCode,
+  type,
+}) => {
+  const activeLocale = useLocale();
   const v = useTranslations('Validation');
   const t = useTranslations('SchoolProfile');
 
@@ -36,13 +39,13 @@ const CreateDefaultSchoolProfile: FC<CreateDefaultSchoolProfileProps> = ({ invit
   const initialValues: CreateSchoolProfileRequest = {
     phone: '',
     email: '',
-    details: ''
-  }
+    details: '',
+  };
 
   if (isMutating || isUserLoading) {
     return (
       <>
-        <h2 className="mb-4 pt-6 text-2xl md:text text-center font-semibold text-gray-950">
+        <h2 className="md:text mb-4 pt-6 text-center text-2xl font-semibold text-gray-950">
           {title}
         </h2>
         <Loader />
@@ -50,23 +53,21 @@ const CreateDefaultSchoolProfile: FC<CreateDefaultSchoolProfileProps> = ({ invit
     );
   }
 
-  if (user && user.role == "admin") {
+  if (user && user.role == 'admin') {
     return (
       <div className="p-3">
         <h2 className="mb-4 pt-6 text-center text-2xl font-semibold text-gray-950">
           {title}
         </h2>
 
-        <p className="font-medium text-red-600">
-          {t(`admin.${type}`)}
-        </p>
+        <p className="font-medium text-red-600">{t(`admin.${type}`)}</p>
       </div>
     );
   }
 
   const handleSubmit = (values) => {
     console.log(values);
-  }
+  };
 
   return (
     <Formik
@@ -136,10 +137,7 @@ const CreateDefaultSchoolProfile: FC<CreateDefaultSchoolProfileProps> = ({ invit
             />
           </div>
           <div>
-            <button
-              type="submit"
-              className={styles.button}
-            >
+            <button type="submit" className={styles.button}>
               {t('labels.createSubmit')}
             </button>
           </div>

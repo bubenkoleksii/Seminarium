@@ -36,6 +36,7 @@
       "register": {
         "labelBtn": "В держреєстрі"
       },
+      "createSubmit": "Надіслати запит",
       "id": "Ідентифікатор",
       "createdAt": "Дата",
       "requesterEmail": "Електронна пошта",
@@ -347,6 +348,10 @@
     "maxSize": "Розмір файлу більший за допустий",
     "invalidExt": "Некоректне розширення файлу",
     "fileTitle": "Завантаження файлу"
+  },
+  "UserProfile": {
+    "changeAccountInfo": "Змінити інформацію про акаунт",
+    "forgotPassword": "Забули пароль"
   },
   "Validation": {
     "required": "Це поле є обов'язковим",

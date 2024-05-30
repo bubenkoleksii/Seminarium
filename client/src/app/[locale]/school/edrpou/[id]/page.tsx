@@ -10,7 +10,7 @@ type Props = {
   params: {
     id: string;
   };
-}
+};
 
 const InRegisterSchoolPage: FC<Props> = ({ params }) => {
   const queryClient = new QueryClient();
