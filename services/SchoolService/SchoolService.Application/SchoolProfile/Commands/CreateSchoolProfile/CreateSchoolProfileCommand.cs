@@ -28,7 +28,7 @@ public class CreateSchoolProfileCommand : IRequest<Either<SchoolProfileModelResp
 
     public bool? StudentIsIndividually { get; set; }
 
-    public string? StudentHealthGroup { get; set; }
+    public HealthGroup? StudentHealthGroup { get; set; }
 
     public string? ParentAddress { get; set; }
 

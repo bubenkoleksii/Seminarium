@@ -2,8 +2,8 @@
 
 import styles from './CreateSchoolProfile.module.scss';
 import { FC } from 'react';
-import type { CreateSchoolProfileRequest } from '../types';
 import * as Yup from 'yup';
+import type { CreateSchoolProfileRequest } from '@/features/user/types/schoolProfileTypes';
 import { useLocale, useTranslations } from 'next-intl';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { toast } from 'react-hot-toast';
@@ -37,6 +37,7 @@ const CreateDefaultSchoolProfile: FC<CreateDefaultSchoolProfileProps> = ({
   });
 
   const initialValues: CreateSchoolProfileRequest = {
+    invitationCode,
     phone: '',
     email: '',
     details: '',

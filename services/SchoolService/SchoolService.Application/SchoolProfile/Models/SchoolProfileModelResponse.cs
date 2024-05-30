@@ -44,7 +44,7 @@ public class SchoolProfileModelResponse
 
     public bool? StudentIsIndividually { get; set; }
 
-    public string? StudentHealthGroup { get; set; }
+    public HealthGroup? StudentHealthGroup { get; set; }
 
     public string? ParentAddress { get; set; }
 

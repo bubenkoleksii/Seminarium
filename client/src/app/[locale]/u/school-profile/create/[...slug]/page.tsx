@@ -6,7 +6,7 @@ import {
   CreateParentSchoolProfile,
   CreateStudentSchoolProfile,
   CreateTeacherSchoolProfile,
-} from '@/features/user/school-profile';
+} from '@/features/user';
 
 type Props = {
   params: {

@@ -9,5 +9,5 @@ public record StudentSerializationData(
 
     bool StudentIsIndividually,
 
-    string StudentHealthGroup
+    HealthGroup StudentHealthGroup
 );
