@@ -49,7 +49,7 @@ export const useProfiles = () => {
     };
 
     fetchData();
-  }, []);
+  }, [profilesStore.profiles, profilesStore.activeProfile]);
 
   const currentProfile =
     activeProfile || profiles?.find(profile => profile.isActive) || null;

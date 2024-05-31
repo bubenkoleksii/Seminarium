@@ -7,7 +7,7 @@ interface SchoolProfilesStore {
   activeProfile: SchoolProfileResponse,
   profiles: SchoolProfileResponse[],
   setProfiles: (profile: SchoolProfileResponse[]) => void;
-  clear: () => void;
+  changeActiveProfile: (id: string) => void;
 }
 
 export const useSchoolProfilesStore = create<SchoolProfilesStore>()(
@@ -21,10 +21,12 @@ export const useSchoolProfilesStore = create<SchoolProfilesStore>()(
             state.profiles = profiles;
             state.activeProfile = profiles.find(profile => profile.isActive);
           }),
-        clear: () =>
+        changeActiveProfile: (id: string) =>
           set((state) => {
-            state.profiles = [];
-            state.activeProfile = null;
+            console.log('id', id);
+
+            state.profiles = state.profiles.map((profile) => profile.isActive = profile.id === id);
+            state.activeProfile = state.profiles.find(profile => profile.isActive);
           })
       }),
       { name: 'School profiles store' }

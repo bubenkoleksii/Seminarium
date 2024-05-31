@@ -4,3 +4,10 @@ export const userQueries = {
     retry: 4,
   },
 };
+
+export const userMutations = {
+  activateProfile: 'activateProfile',
+  options: {
+    retry: 3,
+  }
+};

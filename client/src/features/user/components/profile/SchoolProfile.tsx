@@ -1,3 +1,5 @@
+"use client";
+
 import { FC } from 'react';
 import type { SchoolProfileResponse } from '@/features/user/types/schoolProfileTypes';
 import { Button } from 'flowbite-react';
@@ -5,6 +7,11 @@ import { getDefaultProfileImgByType } from '@/shared/helpers';
 import { CustomImage } from '@/components/custom-image';
 import { useTranslations } from 'next-intl';
 import { DateTime } from '@/components/date-time';
+import { activate } from '@/features/user/api/schoolProfilesApi';
+import { useMutation } from '@tanstack/react-query';
+import { userMutations } from '@/features/user/constants';
+import { useSchoolProfilesStore } from '@/features/user/store/schoolProfilesStore';
+import { toast } from 'react-hot-toast';
 
 interface SchoolProfileProps {
   profile: SchoolProfileResponse;
@@ -12,11 +19,36 @@ interface SchoolProfileProps {
 
 const SchoolProfile: FC<SchoolProfileProps> = ({ profile }) => {
   const t = useTranslations('SchoolProfile');
+  const changeActiveProfile = useSchoolProfilesStore(store => store.changeActiveProfile);
 
   const image = profile.img || getDefaultProfileImgByType(profile.type);
 
+  const { mutate: activateProfile } = useMutation({
+    mutationFn: activate,
+    mutationKey: [userMutations.activateProfile, profile.id],
+    retry: userMutations.options.retry,
+    onSuccess: (response) => {
+      if (response && response.error) {
+        const errorMessages = {
+          400: t('activateFail'),
+        };
+
+        toast.error(
+          errorMessages[response.error.status] || t('labels.internal'),
+        );
+      } else {
+        changeActiveProfile(profile.id);
+        toast.success(t('activateSuccess'), { duration: 1500 });
+      }
+    }
+  });
+
+  const handleActivate = () => {
+    activateProfile(profile.id);
+  }
+
   return (
-    <div className={`rounded-lg m-4 p-4 min-w-min max-w-xs relative shadow-xl ${profile.isActive ? 'bg-green-100' : ''}`}>
+    <div className={`rounded-lg m-4 p-4 min-w-min max-w-xs md:max-w-sm lg:max-w-md xl:max-w-lg relative shadow-xl ${profile.isActive ? 'bg-green-100' : ''}`}>
       <div className="flex justify-center">
         <CustomImage
           src={image}
@@ -48,29 +80,29 @@ const SchoolProfile: FC<SchoolProfileProps> = ({ profile }) => {
         {t(`item.email`)}: {profile.email || '-'}
       </p>
       <p className="mt-2 font-medium text-gray-600 text-xs">
-        {t(`item.email`)}: {profile.email || '-'}
-      </p>
-      <p className="mt-2 font-medium text-gray-400 text-xs">
         {t(`item.createdAt`)}: <DateTime date={profile.createdAt}/>
       </p>
+      <p className="mt-2 font-medium text-gray-400 text-xs">
+        {t(`item.id`)}: {profile.id}
+      </p>
 
-      <div className="w-[100%] mt-2 left-4 flex gap-4 justify-center">
-        <Button gradientMonochrome="failure" size="sm">
+      <div className="w-full mt-2 flex flex-wrap gap-4 justify-center md:flex-nowrap">
+        <Button gradientMonochrome="failure" size="xs">
           <span className="text-white">{t('deleteBtn')}</span>
         </Button>
 
-        <Button gradientMonochrome="success" size="sm">
+        <Button gradientMonochrome="success" size="xs">
           <span className="text-white">{t('detailsBtn')}</span>
         </Button>
 
-        <Button gradientMonochrome="lime" size="sm">
+        <Button gradientMonochrome="lime" size="xs">
           <span>{t('updateBtn')}</span>
         </Button>
       </div>
 
       {!profile.isActive &&
         <div className="absolute top-1 right-1 text-white px-1 py-1">
-          <Button gradientMonochrome="purple" size="xs">
+          <Button onClick={handleActivate} gradientMonochrome="purple" size="xs">
             <span className="text-white">{t('activateBtn')}</span>
           </Button>
         </div>

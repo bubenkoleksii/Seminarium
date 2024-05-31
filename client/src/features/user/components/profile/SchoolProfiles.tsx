@@ -13,7 +13,7 @@ const SchoolProfiles: FC<SchoolProfilesProps> = ({ profiles }) => {
   if (!profiles || profiles.length === 0) {
     return (
       <div className="relative">
-        <h2 className="text-xl text-center font-semibold mb-2 mt-2">
+        <h2 className="text-sm md:text lg:text-xl text-center font-semibold mb-2 mt-2">
           {t('listLabel')}
         </h2>
         <div className="flex flex-wrap justify-center">
@@ -27,7 +27,7 @@ const SchoolProfiles: FC<SchoolProfilesProps> = ({ profiles }) => {
 
   return (
     <div className="relative">
-      <h2 className="text-xl text-center font-bold mb-2 mt-2">
+      <h2 className="text-sm md:text lg:text-xl text-center font-bold mb-2 mt-2">
         {t('listLabel')} {profiles.length > 0 ? `(${profiles.length})` : ''}
       </h2>
       <div className="flex flex-wrap justify-center">
