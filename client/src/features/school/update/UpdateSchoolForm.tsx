@@ -27,6 +27,7 @@ import { CustomImage } from '@/components/custom-image';
 import { useMediaQuery } from 'react-responsive';
 import { UploadFile } from '@/components/file-upload';
 import { Button } from 'flowbite-react';
+import { useProfiles } from '@/features/user';
 
 type UpdateSchoolFormProps = {
   id: string;
@@ -39,9 +40,11 @@ const UpdateSchoolForm: FC<UpdateSchoolFormProps> = ({ id, school }) => {
   const activeLocale = useLocale();
   const { replace } = useRouter();
 
+  const { activeProfile, isLoading: profilesLoading } = useProfiles();
+
   const queryClient = useQueryClient();
 
-  const { isUserLoading } = useAuthRedirectByRole(activeLocale, 'user');
+  const { isUserLoading, user } = useAuthRedirectByRole(activeLocale, 'user');
   const isMutating = useIsMutating();
 
   const [img, setImg] = useState<string | undefined>(school.img);
@@ -80,6 +83,8 @@ const UpdateSchoolForm: FC<UpdateSchoolFormProps> = ({ id, school }) => {
           404: t('labels.updateNotFound'),
           409: t('labels.updateAlreadyExists'),
           400: t('labels.validation'),
+          401: t('labels.unauthorized'),
+          403: t('labels.forbidden'),
         };
 
         toast.error(
@@ -110,6 +115,8 @@ const UpdateSchoolForm: FC<UpdateSchoolFormProps> = ({ id, school }) => {
         const errorMessages = {
           404: t('labels.updateNotFound'),
           400: t('labels.validation'),
+          401: t('labels.unauthorized'),
+          403: t('labels.forbidden'),
         };
 
         toast.error(
@@ -141,6 +148,8 @@ const UpdateSchoolForm: FC<UpdateSchoolFormProps> = ({ id, school }) => {
           const errorMessages = {
             404: t('labels.updateNotFound'),
             400: t('labels.validation'),
+            401: t('labels.unauthorized'),
+            403: t('labels.forbidden'),
           };
 
           toast.error(
@@ -185,7 +194,10 @@ const UpdateSchoolForm: FC<UpdateSchoolFormProps> = ({ id, school }) => {
       siteUrl: values.siteUrl,
     };
 
-    mutate(request);
+    mutate({
+      data: request,
+      schoolProfileId: activeProfile.id,
+    });
   };
 
   const handleImageSubmit = (values: { files: File }) => {
@@ -195,6 +207,7 @@ const UpdateSchoolForm: FC<UpdateSchoolFormProps> = ({ id, school }) => {
     imageMutate({
       id: school.id,
       data: formData,
+      schoolProfileId: activeProfile.id,
     });
   };
 
@@ -205,14 +218,21 @@ const UpdateSchoolForm: FC<UpdateSchoolFormProps> = ({ id, school }) => {
     imagePending ||
     imageDeletePending ||
     isMutating ||
-    isUserLoading
+    isUserLoading ||
+    profilesLoading
   ) {
     return (
       <>
         <h2 className="mb-4 mt-2 text-center text-xl font-bold">
           {t('updateTitle')}
           <span
-            onClick={() => replace(`/${activeLocale}/school/${id}`)}
+            onClick={() => {
+              const url = user?.role === 'user'
+                ? `/${activeLocale}/u/my-school/${id}`
+                : `/${activeLocale}/school/${id}`;
+
+              replace(url);
+            }}
             className="ml-2 cursor-pointer pt-1 text-sm text-purple-700 hover:text-red-700"
           >
             {t('back')}
@@ -233,7 +253,13 @@ const UpdateSchoolForm: FC<UpdateSchoolFormProps> = ({ id, school }) => {
         <h2 className="mb-4 mt-2 text-center text-xl font-bold">
           {t('updateTitle')}
           <span
-            onClick={() => replace(`/${activeLocale}/school/${id}`)}
+            onClick={() => {
+              const url = user?.role === 'user'
+                ? `/${activeLocale}/u/my-school/${id}`
+                : `/${activeLocale}/school/${id}`;
+
+              replace(url);
+            }}
             className="ml-2 cursor-pointer pt-1 text-sm text-purple-700 hover:text-red-700"
           >
             {t('back')}
@@ -256,7 +282,10 @@ const UpdateSchoolForm: FC<UpdateSchoolFormProps> = ({ id, school }) => {
             />
 
             <Button
-              onClick={() => imageDeleteMutate(id)}
+              onClick={() => imageDeleteMutate({
+                id,
+                schoolProfileId: activeProfile.id,
+              })}
               gradientMonochrome="failure"
             >
               <span className="text-white">{t('labels.deleteImage')}</span>

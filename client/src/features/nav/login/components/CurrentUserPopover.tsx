@@ -20,9 +20,7 @@ interface CurrentUserPopoverProps {
 const CurrentUserPopover: FC<CurrentUserPopoverProps> = ({ user }) => {
   const t = useTranslations();
   const { activeProfile, isLoading, isError } = useProfiles();
-  const profiles = useSchoolProfilesStore(
-    (store) => store.profiles
-  );
+  const profiles = useSchoolProfilesStore((store) => store.profiles);
   const changeActiveProfile = useSchoolProfilesStore(
     (store) => store.changeActiveProfile,
   );
@@ -49,8 +47,7 @@ const CurrentUserPopover: FC<CurrentUserPopoverProps> = ({ user }) => {
     },
   });
 
-  if ((isLoading || isError || isMutating) && user.role === 'user')
-    return null;
+  if ((isLoading || isError || isMutating) && user.role === 'user') return null;
 
   const handleLogout = () => {
     signOut({
@@ -66,11 +63,10 @@ const CurrentUserPopover: FC<CurrentUserPopoverProps> = ({ user }) => {
       : getDefaultProfileImgByType(activeProfile?.type);
 
   const handleChangeActiveProfile = (id: string) => {
-    if (activeProfile.id === id)
-      return;
+    if (activeProfile.id === id) return;
 
     activateProfile(id);
-  }
+  };
 
   return (
     <Menu as="div" className="relative inline-block cursor-pointer text-left">
@@ -130,36 +126,42 @@ const CurrentUserPopover: FC<CurrentUserPopoverProps> = ({ user }) => {
           {profiles && profiles?.length > 0 && (
             <div className="cursor-default">
               <Menu.Item>
-                <div className="flex flex-col p-2 gap-2 text-xs">
-                  <h6 className="text-xs text-center font-bold">{t('SchoolProfile.smallListLabel')}</h6>
+                <div className="flex flex-col gap-2 p-2 text-xs">
+                  <h6 className="text-center text-xs font-bold">
+                    {t('SchoolProfile.smallListLabel')}
+                  </h6>
                   {profiles.map((profile, idx) => (
-                      <div key={idx}
-                           onClick={() => handleChangeActiveProfile(profile.id)}
-                           className={`${profile.isActive ? 'bg-green-100' : ''} p-2 flex items-center justify-between`}>
-                        <div>
-                          {profile.type &&
-                            <span className="font-bold">
-                              {truncateString(t(`SchoolProfile.type.${profile.type}`), 5)}
-                            </span>
-                          }
+                    <div
+                      key={idx}
+                      onClick={() => handleChangeActiveProfile(profile.id)}
+                      className={`${profile.isActive ? 'bg-green-100' : ''} flex cursor-pointer items-center justify-between p-2`}
+                    >
+                      <div>
+                        {profile.type && (
+                          <span className="font-bold">
+                            {truncateString(
+                              t(`SchoolProfile.type.${profile.type}`),
+                              5,
+                            )}
+                          </span>
+                        )}
 
-                          {profile.schoolName && (
-                            <span className="ml-1">
-                              ({truncateString(profile.schoolName, 5)})
-                            </span>
-                          )}
-                        </div>
-
-                        <input
-                          type="radio"
-                          className="form-radio text-green-400 h-4 w-4"
-                          checked={profile.isActive}
-                          onChange={() => handleChangeActiveProfile(profile.id)}
-                        />
-                        <hr />
+                        {profile.schoolName && (
+                          <span className="ml-1">
+                            ({truncateString(profile.schoolName, 5)})
+                          </span>
+                        )}
                       </div>
-                    )
-                  )}
+
+                      <input
+                        type="radio"
+                        className="form-radio h-4 w-4 text-green-400 cursor-pointer"
+                        checked={profile.isActive}
+                        onChange={() => handleChangeActiveProfile(profile.id)}
+                      />
+                      <hr />
+                    </div>
+                  ))}
                 </div>
               </Menu.Item>
             </div>

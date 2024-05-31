@@ -1,7 +1,7 @@
 'use client';
 
 import { FC } from 'react';
-import { useAuthRedirectByRole } from '@/shared/hooks';
+import { useAuthRedirectByRole, useSetCurrentTab } from '@/shared/hooks';
 import { useLocale, useTranslations } from 'next-intl';
 import { Loader } from '@/components/loader';
 import { Button } from 'flowbite-react';
@@ -11,11 +11,14 @@ import { useIsMutating } from '@tanstack/react-query';
 import { useSchoolProfilesStore } from '@/features/user/store/schoolProfilesStore';
 import { routes } from '@/shared/constants';
 import Link from 'next/link';
+import { CurrentTab } from '@/features/user/constants';
 
 const UserProfile: FC = () => {
   const activeLocale = useLocale();
   const t = useTranslations('UserProfile');
   const w = useTranslations('Welcome');
+
+  useSetCurrentTab(CurrentTab.Profile);
 
   const isMutating = useIsMutating();
   const { isUserLoading, user } = useAuthRedirectByRole(

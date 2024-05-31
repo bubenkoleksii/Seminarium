@@ -11,7 +11,6 @@ public class CreateInvitationCommandValidator : AbstractValidator<CreateInvitati
             .WithErrorCode(ErrorTitles.Common.Empty);
 
         RuleFor(x => x.UserId)
-            .Null()
             .NotEqual(Guid.Empty)
             .WithErrorCode(ErrorTitles.Common.Empty);
     }

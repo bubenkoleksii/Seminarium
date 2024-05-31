@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { useAdminStore } from '@/features/admin/store/adminStore';
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
+import { useUserStore } from '@/features/user/store/userStore';
 
 export const useAuthRedirectByRole = (activeLocale, requiredRole = null) => {
   const { data: userData, status: userStatus } = useSession();
@@ -87,10 +88,12 @@ export const useAuthRedirectByRole = (activeLocale, requiredRole = null) => {
 
 export const useSetCurrentTab = (currentTab) => {
   const setCurrentTab = useAdminStore((store) => store.setCurrentTab);
+  const setUserCurrentTab = useUserStore((store) => store.setCurrentTab);
 
   useEffect(() => {
     setCurrentTab(currentTab);
-  }, [setCurrentTab, currentTab]);
+    setUserCurrentTab(currentTab);
+  }, [setCurrentTab, setUserCurrentTab, currentTab]);
 };
 
 export const useScrollOffset = () => {

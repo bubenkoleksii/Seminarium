@@ -51,7 +51,12 @@ export const useProfiles = () => {
     };
 
     fetchData();
-  }, [profilesStore.profiles, profilesStore.activeProfile]);
+  }, [
+    profilesStore.profiles,
+    profilesStore.activeProfile,
+    profilesStore.setProfiles,
+    profilesStore.changeActiveProfile,
+  ]);
 
   const currentProfile =
     activeProfile || profiles?.find((profile) => profile.isActive) || null;

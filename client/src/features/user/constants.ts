@@ -1,3 +1,8 @@
+export const enum CurrentTab {
+  Profile = 'profile',
+  School = 'school',
+}
+
 export const userQueries = {
   getProfiles: 'getProfiles',
   options: {

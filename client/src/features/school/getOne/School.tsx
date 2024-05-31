@@ -2,7 +2,7 @@
 
 import { FC, useState } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
-import { useAuthRedirectByRole } from '@/shared/hooks';
+import { useAuthRedirectByRole, useSetCurrentTab } from '@/shared/hooks';
 import { useRouter } from 'next/navigation';
 import { useIsMutating, useMutation, useQuery } from '@tanstack/react-query';
 import { ApiResponse } from '@/shared/types';
@@ -28,6 +28,8 @@ import { Button } from 'flowbite-react';
 import Link from 'next/link';
 import { CopyTextModal, ProveModal } from '@/components/modal';
 import { toast } from 'react-hot-toast';
+import { useProfiles } from '@/features/user';
+import { CurrentTab } from '@/features/user/constants';
 
 interface SchoolProps {
   id: string;
@@ -35,6 +37,10 @@ interface SchoolProps {
 
 const School: FC<SchoolProps> = ({ id }) => {
   const t = useTranslations('School');
+
+  const { activeProfile, isLoading: profilesLoading } = useProfiles();
+  
+  useSetCurrentTab(CurrentTab.School);
 
   const { replace } = useRouter();
   const activeLocale = useLocale();
@@ -56,6 +62,8 @@ const School: FC<SchoolProps> = ({ id }) => {
         const errorMessages = {
           404: t('labels.oneNotFound'),
           400: t('labels.invitationValidation'),
+          401: t('labels.unauthorized'),
+          403: t('labels.forbidden'),
         };
 
         toast.error(
@@ -95,7 +103,7 @@ const School: FC<SchoolProps> = ({ id }) => {
 
   const isPhone = useMediaQuery({ query: mediaQueries.phone });
 
-  if (isLoading || isUserLoading || isMutating) {
+  if (isLoading || isUserLoading || isMutating || profilesLoading) {
     return (
       <>
         <h2 className="mb-4 mt-2 text-center text-xl font-bold">
@@ -203,7 +211,11 @@ const School: FC<SchoolProps> = ({ id }) => {
         <Button
           onClick={() => {
             setInvitationCode(null);
-            generateInvitation(data.id);
+
+            generateInvitation({
+              id: data.id,
+              schoolProfileId: activeProfile.id,
+            });
           }}
           gradientMonochrome="success"
           size="lg"
@@ -466,16 +478,17 @@ const School: FC<SchoolProps> = ({ id }) => {
             </Button>
           </div>
         </div>
-      ) : (
-        <div className="flex w-full justify-center">
-          <Button gradientMonochrome="lime" fullSized>
-            <Link
-              href={`/${activeLocale}/${updateSchoolClientPath}/${data.id}?${buildUpdateQuery()}`}
-            >
-              {t('labels.update')}
-            </Link>
-          </Button>
-        </div>
+      ) : (activeProfile && activeProfile.type === 'school_admin' && (
+          <div className="flex mt-3 w-full justify-center">
+            <Button gradientMonochrome="lime" fullSized>
+              <Link
+                href={`/${activeLocale}/${updateSchoolClientPath}/${data.id}?${buildUpdateQuery()}`}
+              >
+                {t('labels.update')}
+              </Link>
+            </Button>
+          </div>
+        )
       )}
     </div>
   );

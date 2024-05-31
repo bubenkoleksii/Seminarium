@@ -17,8 +17,8 @@ import { useScrollOffset } from '@/shared/hooks';
 import { useNavStore } from '@/features/nav';
 
 const AdminSidebar: FC = () => {
-  const t = useTranslations('AdminContentTabs');
   const activeLocale = useLocale();
+  const t = useTranslations('AdminContentTabs');
 
   const currentTab = useAdminStore((state) => state.currentTab);
   const sidebarOpen = useNavStore((store) => store.sidebarOpen);
@@ -87,7 +87,7 @@ const AdminSidebar: FC = () => {
 
       <Tooltip content={t('home')} placement="right" style="light">
         <Link
-          href={`/${activeLocale}/`}
+          href={`/${activeLocale}/admin/joining_requests`}
           className={`mt-[50px] flex h-[50px] w-[50px] items-center justify-center bg-gray-50 text-gray-800 
           transition duration-300 hover:bg-gray-200`}
         >

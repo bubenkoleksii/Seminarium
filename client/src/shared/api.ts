@@ -13,10 +13,15 @@ async function get(url: string) {
   return await handleResponse(response);
 }
 
-async function create(url: string, body: any, isFormData = false) {
+async function create(
+  url: string,
+  body: any,
+  isFormData = false,
+  schoolProfileId = null,
+) {
   const requestOptions = {
     method: 'POST',
-    headers: await getHeaders(isFormData),
+    headers: await getHeaders(isFormData, schoolProfileId),
     body: isFormData ? body : JSON.stringify(body),
   };
 
@@ -24,10 +29,15 @@ async function create(url: string, body: any, isFormData = false) {
   return await handleResponse(response);
 }
 
-async function update(url: string, body: any, isFormData = false) {
+async function update(
+  url: string,
+  body: any,
+  isFormData = false,
+  schoolProfileId = null,
+) {
   const requestOptions = {
     method: 'PUT',
-    headers: await getHeaders(isFormData),
+    headers: await getHeaders(isFormData, schoolProfileId),
     body: isFormData ? body : JSON.stringify(body),
   };
 
@@ -35,10 +45,15 @@ async function update(url: string, body: any, isFormData = false) {
   return await handleResponse(response);
 }
 
-async function partialUpdate(url: string, body: any, isFormData = false) {
+async function partialUpdate(
+  url: string,
+  body: any,
+  isFormData = false,
+  schoolProfileId = null,
+) {
   const requestOptions = {
     method: 'PATCH',
-    headers: await getHeaders(isFormData),
+    headers: await getHeaders(isFormData, schoolProfileId),
     body: isFormData ? body : JSON.stringify(body),
   };
 
@@ -46,10 +61,10 @@ async function partialUpdate(url: string, body: any, isFormData = false) {
   return await handleResponse(response);
 }
 
-async function remove(url: string) {
+async function remove(url: string, schoolProfileId = null) {
   const requestOptions = {
     method: 'DELETE',
-    headers: await getHeaders(),
+    headers: await getHeaders(false, schoolProfileId),
   };
 
   const response = await fetch(baseUrl + url, requestOptions);
@@ -85,7 +100,7 @@ async function handleResponse(response: Response) {
   }
 }
 
-async function getHeaders(isFormData = false) {
+async function getHeaders(isFormData = false, schoolProfileId = null) {
   const token = await getCurrentUserToken();
   const headers: any = {};
 
@@ -95,6 +110,10 @@ async function getHeaders(isFormData = false) {
 
   if (!isFormData) {
     headers['Content-Type'] = 'application/json';
+  }
+
+  if (schoolProfileId) {
+    headers['SchoolProfileId'] = schoolProfileId;
   }
 
   return headers;
