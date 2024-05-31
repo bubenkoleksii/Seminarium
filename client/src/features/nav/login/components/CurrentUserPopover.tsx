@@ -8,8 +8,10 @@ import Image from 'next/image';
 import { LuLogOut } from 'react-icons/lu';
 import { signOut } from 'next-auth/react';
 import { useTranslations } from 'next-intl';
-import { getDefaultProfileImgByType } from '@/shared/helpers';
-import { useProfiles } from '@/features/user';
+import { getDefaultProfileImgByType, truncateString } from '@/shared/helpers';
+import { useProfiles, activate, useSchoolProfilesStore } from '@/features/user';
+import { useIsMutating, useMutation } from '@tanstack/react-query';
+import { toast } from 'react-hot-toast';
 
 interface CurrentUserPopoverProps {
   user: CurrentUser;
@@ -17,9 +19,37 @@ interface CurrentUserPopoverProps {
 
 const CurrentUserPopover: FC<CurrentUserPopoverProps> = ({ user }) => {
   const t = useTranslations();
-  const { profiles, activeProfile, isLoading, isError } = useProfiles();
+  const { activeProfile, isLoading, isError } = useProfiles();
+  const profiles = useSchoolProfilesStore(
+    (store) => store.profiles
+  );
+  const changeActiveProfile = useSchoolProfilesStore(
+    (store) => store.changeActiveProfile,
+  );
 
-  if ((isLoading || isError) && user.role === 'user')
+  const isMutating = useIsMutating();
+
+  const { mutate: activateProfile } = useMutation({
+    mutationFn: activate,
+    mutationKey: ['activateProfile'],
+    retry: 3,
+    onSuccess: (response) => {
+      if (response && response.error) {
+        const errorMessages = {
+          400: t('SchoolProfile.activateFail'),
+        };
+
+        toast.error(
+          errorMessages[response.error.status] || t('labels.internal'),
+        );
+      } else {
+        changeActiveProfile(response.id);
+        toast.success(t('SchoolProfile.activateSuccess'), { duration: 1500 });
+      }
+    },
+  });
+
+  if ((isLoading || isError || isMutating) && user.role === 'user')
     return null;
 
   const handleLogout = () => {
@@ -30,9 +60,17 @@ const CurrentUserPopover: FC<CurrentUserPopoverProps> = ({ user }) => {
   };
 
   const adminProfileImage = '/profile/admin.png';
-  const profileImage = user.role === 'admin'
-    ? adminProfileImage
-    : getDefaultProfileImgByType(activeProfile?.type);
+  const profileImage =
+    user.role === 'admin'
+      ? adminProfileImage
+      : getDefaultProfileImgByType(activeProfile?.type);
+
+  const handleChangeActiveProfile = (id: string) => {
+    if (activeProfile.id === id)
+      return;
+
+    activateProfile(id);
+  }
 
   return (
     <Menu as="div" className="relative inline-block cursor-pointer text-left">
@@ -84,6 +122,44 @@ const CurrentUserPopover: FC<CurrentUserPopoverProps> = ({ user }) => {
               <Menu.Item>
                 <div className="flex p-2 text-xs">
                   <p>{user.email}</p>
+                </div>
+              </Menu.Item>
+            </div>
+          )}
+
+          {profiles && profiles?.length > 0 && (
+            <div className="cursor-default">
+              <Menu.Item>
+                <div className="flex flex-col p-2 gap-2 text-xs">
+                  <h6 className="text-xs text-center font-bold">{t('SchoolProfile.smallListLabel')}</h6>
+                  {profiles.map((profile, idx) => (
+                      <div key={idx}
+                           onClick={() => handleChangeActiveProfile(profile.id)}
+                           className={`${profile.isActive ? 'bg-green-100' : ''} p-2 flex items-center justify-between`}>
+                        <div>
+                          {profile.type &&
+                            <span className="font-bold">
+                              {truncateString(t(`SchoolProfile.type.${profile.type}`), 5)}
+                            </span>
+                          }
+
+                          {profile.schoolName && (
+                            <span className="ml-1">
+                              ({truncateString(profile.schoolName, 5)})
+                            </span>
+                          )}
+                        </div>
+
+                        <input
+                          type="radio"
+                          className="form-radio text-green-400 h-4 w-4"
+                          checked={profile.isActive}
+                          onChange={() => handleChangeActiveProfile(profile.id)}
+                        />
+                        <hr />
+                      </div>
+                    )
+                  )}
                 </div>
               </Menu.Item>
             </div>

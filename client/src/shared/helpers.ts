@@ -48,14 +48,21 @@ export function getColorByStatus(status?: Status | null) {
 
 export function getDefaultProfileImgByType(type?: string | null) {
   const images = {
-    'student': '/profile/student.png',
-    'teacher': '/profile/teacher.png',
-    'school_admin': '/profile/school_admin.png',
-    'class_teacher': '/profile/class_teacher.png',
-    'parent': '/profile/parent.png'
-  }
+    student: '/profile/student.png',
+    teacher: '/profile/teacher.png',
+    school_admin: '/profile/school_admin.png',
+    class_teacher: '/profile/class_teacher.png',
+    parent: '/profile/parent.png',
+  };
 
   const defaultImage = '/profile/profile.svg';
 
   return images[type] || defaultImage;
+}
+
+export function truncateString(str, num) {
+  if (str.length <= num) {
+    return str;
+  }
+  return str.slice(0, num) + '.';
 }

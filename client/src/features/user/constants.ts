@@ -9,5 +9,5 @@ export const userMutations = {
   activateProfile: 'activateProfile',
   options: {
     retry: 3,
-  }
+  },
 };

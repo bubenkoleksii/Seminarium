@@ -18,30 +18,29 @@ const UserProfile: FC = () => {
   const w = useTranslations('Welcome');
 
   const isMutating = useIsMutating();
-  const { isUserLoading, user } = useAuthRedirectByRole(activeLocale, 'userOnly');
+  const { isUserLoading, user } = useAuthRedirectByRole(
+    activeLocale,
+    'userOnly',
+  );
   const { isLoading: profilesLoading, isError: profilesError } = useProfiles();
-  const profiles = useSchoolProfilesStore(store => store.profiles);
+  const profiles = useSchoolProfilesStore((store) => store.profiles);
 
   if (isUserLoading || !user || profilesLoading || isMutating) {
-    return <Loader />
+    return <Loader />;
   }
 
   if (profilesError) {
-    return (
-      <p className="text-red-600">
-        {t('profilesError')}
-      </p>
-    )
+    return <p className="text-red-600">{t('profilesError')}</p>;
   }
 
   return (
     <div className="flex flex-col items-center gap-4">
       <div className="mt-2">
-        <h2 className="text-center text-sm md:text-md sm:text-sm lg:text-xl font-semibold">
+        <h2 className="md:text-md text-center text-sm font-semibold sm:text-sm lg:text-xl">
           {user.name}
         </h2>
 
-        <p className="mt-3 text-sm md:text-md sm:text-sm lg:text text-center font-medium">
+        <p className="md:text-md lg:text mt-3 text-center text-sm font-medium sm:text-sm">
           {user.email}
         </p>
 
@@ -70,7 +69,7 @@ const UserProfile: FC = () => {
         </div>
 
         <div className="mt-3 flex justify-center">
-          <button className="w-[250px] inline-flex items-center justify-center rounded border-0 bg-gray-200 px-6 py-2 text-lg text-gray-700 hover:bg-gray-300 focus:outline-none">
+          <button className="inline-flex w-[250px] items-center justify-center rounded border-0 bg-gray-200 px-6 py-2 text-lg text-gray-700 hover:bg-gray-300 focus:outline-none">
             <Link href={routes.getCreateJoiningRequest(activeLocale)}>
               {w('joiningRequestBtn')}
             </Link>

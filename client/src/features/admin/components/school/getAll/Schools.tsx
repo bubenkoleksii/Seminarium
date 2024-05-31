@@ -277,7 +277,7 @@ const Schools: FC<SchoolsProps> = ({
         </>
       )}
 
-      <div className="flex w-[100%] justify-center mt-3">
+      <div className="mt-3 flex w-[100%] justify-center">
         <button className="w-200 inline-flex items-center justify-center rounded border-0 bg-gray-200 px-6 py-2 text-lg text-gray-700 hover:bg-gray-300 focus:outline-none">
           <Link href={routes.getCreateJoiningRequest(activeLocale)}>
             {w('joiningRequestBtn')}

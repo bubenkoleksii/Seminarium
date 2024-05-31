@@ -11,8 +11,10 @@ export const useProfiles = () => {
 
   const [isLoading, setIsLoading] = useState(true);
 
-  const [profiles, setProfiles] = useState<ApiResponse<SchoolProfileResponse[]>>(null);
-  const [activeProfile, setActiveProfile] = useState<SchoolProfileResponse>(null);
+  const [profiles, setProfiles] =
+    useState<ApiResponse<SchoolProfileResponse[]>>(null);
+  const [activeProfile, setActiveProfile] =
+    useState<SchoolProfileResponse>(null);
   const [isError, setIsError] = useState(false);
 
   useEffect(() => {
@@ -52,7 +54,7 @@ export const useProfiles = () => {
   }, [profilesStore.profiles, profilesStore.activeProfile]);
 
   const currentProfile =
-    activeProfile || profiles?.find(profile => profile.isActive) || null;
+    activeProfile || profiles?.find((profile) => profile.isActive) || null;
 
   return {
     isLoading,

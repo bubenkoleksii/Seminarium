@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import { FC } from 'react';
 import type { SchoolProfileResponse } from '@/features/user/types/schoolProfileTypes';
@@ -19,7 +19,9 @@ interface SchoolProfileProps {
 
 const SchoolProfile: FC<SchoolProfileProps> = ({ profile }) => {
   const t = useTranslations('SchoolProfile');
-  const changeActiveProfile = useSchoolProfilesStore(store => store.changeActiveProfile);
+  const changeActiveProfile = useSchoolProfilesStore(
+    (store) => store.changeActiveProfile,
+  );
 
   const image = profile.img || getDefaultProfileImgByType(profile.type);
 
@@ -40,53 +42,52 @@ const SchoolProfile: FC<SchoolProfileProps> = ({ profile }) => {
         changeActiveProfile(profile.id);
         toast.success(t('activateSuccess'), { duration: 1500 });
       }
-    }
+    },
   });
 
   const handleActivate = () => {
     activateProfile(profile.id);
-  }
+  };
 
   return (
-    <div className={`rounded-lg m-4 p-4 min-w-min max-w-xs md:max-w-sm lg:max-w-md xl:max-w-lg relative shadow-xl ${profile.isActive ? 'bg-green-100' : ''}`}>
+    <div
+      className={`relative m-4 min-w-min max-w-xs rounded-lg p-4 shadow-xl md:max-w-sm lg:max-w-md xl:max-w-lg ${profile.isActive ? 'bg-green-100' : ''}`}
+    >
       <div className="flex justify-center">
-        <CustomImage
-          src={image}
-          width={50}
-          height={50}
-          alt={profile.type}
-        />
+        <CustomImage src={image} width={50} height={50} alt={profile.type} />
       </div>
 
-      <h2 className="text-xl font-semibold text-center">
+      <h2 className="text-center text-xl font-semibold">
         {t(`type.${profile.type}`)}
       </h2>
 
-      <p className="mt-2 font-medium text-gray-600 text-xs">
+      <p className="mt-2 text-xs font-medium text-gray-600">
         {t(`isActive`)}:
-        {profile.isActive
-          ? <span className="ml-1 text-green-600">{t('yes')}</span>
-          : <span className="ml-1 text-red-600">{t('no')}</span>}
+        {profile.isActive ? (
+          <span className="ml-1 text-green-600">{t('yes')}</span>
+        ) : (
+          <span className="ml-1 text-red-600">{t('no')}</span>
+        )}
       </p>
-      {profile.schoolName &&
-        <p className="mt-2 font-medium text-gray-600 text-xs">
+      {profile.schoolName && (
+        <p className="mt-2 text-xs font-medium text-gray-600">
           {t(`item.school`)}: {profile.schoolName}
         </p>
-      }
-      <p className="mt-2 font-medium text-gray-600 text-xs">
+      )}
+      <p className="mt-2 text-xs font-medium text-gray-600">
         {t(`item.phone`)}: {profile.phone || '-'}
       </p>
-      <p className="mt-2 font-medium text-gray-600 text-xs">
+      <p className="mt-2 text-xs font-medium text-gray-600">
         {t(`item.email`)}: {profile.email || '-'}
       </p>
-      <p className="mt-2 font-medium text-gray-600 text-xs">
-        {t(`item.createdAt`)}: <DateTime date={profile.createdAt}/>
+      <p className="mt-2 text-xs font-medium text-gray-600">
+        {t(`item.createdAt`)}: <DateTime date={profile.createdAt} />
       </p>
-      <p className="mt-2 font-medium text-gray-400 text-xs">
+      <p className="mt-2 text-xs font-medium text-gray-400">
         {t(`item.id`)}: {profile.id}
       </p>
 
-      <div className="w-full mt-2 flex flex-wrap gap-4 justify-center md:flex-nowrap">
+      <div className="mt-2 flex w-full flex-wrap justify-center gap-4 md:flex-nowrap">
         <Button gradientMonochrome="failure" size="xs">
           <span className="text-white">{t('deleteBtn')}</span>
         </Button>
@@ -100,13 +101,17 @@ const SchoolProfile: FC<SchoolProfileProps> = ({ profile }) => {
         </Button>
       </div>
 
-      {!profile.isActive &&
-        <div className="absolute top-1 right-1 text-white px-1 py-1">
-          <Button onClick={handleActivate} gradientMonochrome="purple" size="xs">
+      {!profile.isActive && (
+        <div className="absolute right-1 top-1 px-1 py-1 text-white">
+          <Button
+            onClick={handleActivate}
+            gradientMonochrome="purple"
+            size="xs"
+          >
             <span className="text-white">{t('activateBtn')}</span>
           </Button>
         </div>
-      }
+      )}
     </div>
   );
 };

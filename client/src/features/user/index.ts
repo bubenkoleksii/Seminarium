@@ -5,3 +5,5 @@ export { CreateStudentSchoolProfile } from './school-profile/create/CreateStuden
 export { CreateTeacherSchoolProfile } from './school-profile/create/CreateTeacherSchoolProfile';
 export { CreateParentSchoolProfile } from './school-profile/create/CreateParentSchoolProfile';
 export { useProfiles } from './hooks';
+export { activate } from './api/schoolProfilesApi';
+export { useSchoolProfilesStore } from './store/schoolProfilesStore';

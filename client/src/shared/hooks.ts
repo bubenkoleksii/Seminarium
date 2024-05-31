@@ -27,7 +27,10 @@ export const useAuthRedirectByRole = (activeLocale, requiredRole = null) => {
           !(currentUser?.role === 'user' || currentUser?.role === 'admin')
         ) {
           router.replace(`/${activeLocale}/access-denied/403`);
-        } else if (requiredRole === 'userOnly' && currentUser?.role !== 'user') {
+        } else if (
+          requiredRole === 'userOnly' &&
+          currentUser?.role !== 'user'
+        ) {
           router.replace(`/${activeLocale}/access-denied/403`);
         }
       }
@@ -41,8 +44,7 @@ export const useAuthRedirectByRole = (activeLocale, requiredRole = null) => {
         ((requiredRole === 'admin' && currentUser?.role !== 'admin') ||
           (requiredRole === 'user' &&
             !(currentUser?.role === 'user' || currentUser?.role === 'admin')) ||
-          (requiredRole === 'userOnly' && currentUser?.role !== 'user')
-        ))
+          (requiredRole === 'userOnly' && currentUser?.role !== 'user')))
     ) {
       if (attemptCount < attempts) {
         setTimeout(() => {
@@ -70,8 +72,7 @@ export const useAuthRedirectByRole = (activeLocale, requiredRole = null) => {
         (requiredRole === 'admin' && currentUser?.role === 'admin') ||
         (requiredRole === 'user' &&
           (currentUser?.role === 'user' || currentUser?.role === 'admin')) ||
-        (requiredRole === 'userOnly' && currentUser?.role === 'user')
-      )
+        (requiredRole === 'userOnly' && currentUser?.role === 'user'))
     ) {
       setIsLoading(false);
     }
