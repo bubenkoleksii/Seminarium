@@ -4,6 +4,7 @@ import { Button } from 'flowbite-react';
 import { getDefaultProfileImgByType } from '@/shared/helpers';
 import { CustomImage } from '@/components/custom-image';
 import { useTranslations } from 'next-intl';
+import { DateTime } from '@/components/date-time';
 
 interface SchoolProfileProps {
   profile: SchoolProfileResponse;
@@ -35,14 +36,22 @@ const SchoolProfile: FC<SchoolProfileProps> = ({ profile }) => {
           ? <span className="ml-1 text-green-600">{t('yes')}</span>
           : <span className="ml-1 text-red-600">{t('no')}</span>}
       </p>
+      {profile.schoolName &&
+        <p className="mt-2 font-medium text-gray-600 text-xs">
+          {t(`item.school`)}: {profile.schoolName}
+        </p>
+      }
       <p className="mt-2 font-medium text-gray-600 text-xs">
         {t(`item.phone`)}: {profile.phone || '-'}
       </p>
       <p className="mt-2 font-medium text-gray-600 text-xs">
         {t(`item.email`)}: {profile.email || '-'}
       </p>
+      <p className="mt-2 font-medium text-gray-600 text-xs">
+        {t(`item.email`)}: {profile.email || '-'}
+      </p>
       <p className="mt-2 font-medium text-gray-400 text-xs">
-        {t(`item.id`)}: {profile.id}
+        {t(`item.createdAt`)}: <DateTime date={profile.createdAt}/>
       </p>
 
       <div className="w-[100%] mt-2 left-4 flex gap-4 justify-center">

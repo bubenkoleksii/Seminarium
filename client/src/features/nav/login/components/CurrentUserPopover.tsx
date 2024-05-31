@@ -19,7 +19,7 @@ const CurrentUserPopover: FC<CurrentUserPopoverProps> = ({ user }) => {
   const t = useTranslations();
   const { profiles, activeProfile, isLoading, isError } = useProfiles();
 
-  if (isLoading || isError)
+  if ((isLoading || isError) && user.role === 'user')
     return null;
 
   const handleLogout = () => {
@@ -28,8 +28,6 @@ const CurrentUserPopover: FC<CurrentUserPopoverProps> = ({ user }) => {
       redirect: true,
     });
   };
-
-  console.log('pop', profiles, activeProfile);
 
   const adminProfileImage = '/profile/admin.png';
   const profileImage = user.role === 'admin'

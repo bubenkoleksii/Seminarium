@@ -7,6 +7,8 @@ public record SchoolProfileResponse(
 
     Guid? SchoolId,
 
+    string? SchoolName,
+
     Guid? GroupId,
 
     Guid? ClassTeacherGroupId,

@@ -1,8 +1,10 @@
-﻿namespace SchoolService.Api.Controllers;
+﻿using SchoolService.Application.SchoolProfile.Commands.ActivateSchoolProfile;
+
+namespace SchoolService.Api.Controllers;
 
 public class SchoolProfileController(IMapper mapper, IOptions<Shared.Contracts.Options.FileOptions> fileOptions) : BaseController
 {
-    [Authorize]
+    [Authorize(Roles = Constants.UserRole)]
     [HttpGet("[action]/")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<SchoolProfileResponse>))]
     public async Task<IActionResult> Get()
@@ -13,7 +15,7 @@ public class SchoolProfileController(IMapper mapper, IOptions<Shared.Contracts.O
         if (userId is null)
             return ErrorActionResultHandler.Handle(new InvalidError("user_id"));
 
-        if (userRole is null or Constants.AdminRole)
+        if (userRole is null)
             return ErrorActionResultHandler.Handle(new InvalidError("user_role"));
 
         var query = new GetUserSchoolProfilesQuery((Guid)userId);
@@ -22,7 +24,7 @@ public class SchoolProfileController(IMapper mapper, IOptions<Shared.Contracts.O
         return Ok(mapper.Map<IEnumerable<SchoolProfileResponse>>(result));
     }
 
-    [Authorize]
+    [Authorize(Roles = Constants.UserRole)]
     [HttpPost("[action]/")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SchoolProfileResponse))]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -34,7 +36,7 @@ public class SchoolProfileController(IMapper mapper, IOptions<Shared.Contracts.O
         if (userId is null)
             return ErrorActionResultHandler.Handle(new InvalidError("user_id"));
 
-        if (userRole is null or Constants.AdminRole)
+        if (userRole is null)
             return ErrorActionResultHandler.Handle(new InvalidError("user_role"));
 
         var command = mapper.Map<CreateSchoolProfileCommand>(request);
@@ -48,7 +50,31 @@ public class SchoolProfileController(IMapper mapper, IOptions<Shared.Contracts.O
         );
     }
 
-    [Authorize]
+    [Authorize(Roles = Constants.UserRole)]
+    [HttpPatch("[action]/{id}")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SchoolProfileResponse))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> Activate(Guid id)
+    {
+        var userId = User.Identity?.GetId();
+        var userRole = User.Identity?.GetRole();
+
+        if (userId is null)
+            return ErrorActionResultHandler.Handle(new InvalidError("user_id"));
+
+        if (userRole is null)
+            return ErrorActionResultHandler.Handle(new InvalidError("user_role"));
+
+        var command = new ActivateSchoolProfileCommand(id, (Guid)userId);
+
+        var result = await Mediator.Send(command);
+        return result.Match(
+            Left: modelResponse => Ok(mapper.Map<SchoolProfileResponse>(modelResponse)),
+            Right: ErrorActionResultHandler.Handle
+        );
+    }
+
+    [Authorize(Roles = Constants.UserRole)]
     [HttpPatch("[action]/{id}")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(FileSuccess))]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -61,7 +87,7 @@ public class SchoolProfileController(IMapper mapper, IOptions<Shared.Contracts.O
         if (userId is null)
             return ErrorActionResultHandler.Handle(new InvalidError("user_id"));
 
-        if (userRole is null or Constants.AdminRole)
+        if (userRole is null)
             return ErrorActionResultHandler.Handle(new InvalidError("user_role"));
 
         var maxAllowedSizeInMb = fileOptions.Value.MaxSizeInMb;
@@ -84,7 +110,7 @@ public class SchoolProfileController(IMapper mapper, IOptions<Shared.Contracts.O
         );
     }
 
-    [Authorize]
+    [Authorize(Roles = Constants.UserRole)]
     [HttpDelete("[action]/{id}")]
     [ProducesResponseType(StatusCodes.Status202Accepted)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -97,7 +123,7 @@ public class SchoolProfileController(IMapper mapper, IOptions<Shared.Contracts.O
         if (userId is null)
             return ErrorActionResultHandler.Handle(new InvalidError("user_id"));
 
-        if (userRole is null or Constants.AdminRole)
+        if (userRole is null)
             return ErrorActionResultHandler.Handle(new InvalidError("user_role"));
 
         var command = new DeleteSchoolProfileImageCommand(id, (Guid)userId);

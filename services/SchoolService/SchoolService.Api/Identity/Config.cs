@@ -18,6 +18,8 @@ public static class Constants
 {
     public const string AdminRole = "admin";
 
+    public const string UserRole = "user";
+
     public const string SchoolAdmin = "school_admin";
 
     public const string Teacher = "teacher";

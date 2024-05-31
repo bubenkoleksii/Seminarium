@@ -19,7 +19,7 @@ export const useProfiles = () => {
     const fetchData = async () => {
       setIsLoading(true);
       setIsError(false);
-      
+
       if (profilesStore.profiles.length > 0 && profilesStore.activeProfile) {
         setProfiles(profilesStore.profiles);
         setActiveProfile(profilesStore.activeProfile);

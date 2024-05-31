@@ -120,9 +120,9 @@ public class SchoolProfileManager : ISchoolProfileManager
             return null;
         }
 
-        userProfiles.ForEach(profile => profile.IsActive = profile.Id == currentProfileId);
+        ActivateProfile(userProfiles, currentProfileId);
 
-        var profilesToCache = MapToResponses(userProfiles);
+        var profilesToCache = await MapToResponses(userProfiles);
         _memoryCache.Set(cacheKey, profilesToCache);
 
         return profilesToCache?.FirstOrDefault(p => p.IsActive);
@@ -130,6 +130,8 @@ public class SchoolProfileManager : ISchoolProfileManager
 
     public async Task<IEnumerable<SchoolProfileModelResponse>?> GetProfiles(Guid userId)
     {
+        ClearCache(userId);
+
         var cacheKey = GetCacheKey(userId);
 
         if (_memoryCache.TryGetValue(cacheKey, out List<SchoolProfileModelResponse>? cachedProfiles))
@@ -139,7 +141,7 @@ public class SchoolProfileManager : ISchoolProfileManager
             .Where(profile => profile.UserId == userId)
             .ToListAsync();
 
-        var profileResponses = MapToResponses(profiles);
+        var profileResponses = await MapToResponses(profiles);
         _memoryCache.Set(cacheKey, profileResponses);
         return profileResponses;
     }
@@ -206,7 +208,10 @@ public class SchoolProfileManager : ISchoolProfileManager
         _memoryCache.Remove(cacheKey);
     }
 
-    private IReadOnlyList<SchoolProfileModelResponse>? MapToResponses(IEnumerable<Domain.Entities.SchoolProfile>? entities)
+    private void ActivateProfile(List<Domain.Entities.SchoolProfile> profiles, Guid currentProfileId)
+        => profiles.ForEach(profile => profile.IsActive = profile.Id == currentProfileId);
+
+    private async Task<IReadOnlyList<SchoolProfileModelResponse>?> MapToResponses(IEnumerable<Domain.Entities.SchoolProfile>? entities)
     {
         if (entities is null)
             return null;
@@ -216,6 +221,16 @@ public class SchoolProfileManager : ISchoolProfileManager
         foreach (var entity in entities)
         {
             var response = _mapper.Map<SchoolProfileModelResponse>(entity);
+
+            switch (entity)
+            {
+                case { Type: SchoolProfileType.SchoolAdmin }:
+                    {
+                        var school = await _queryContext.Schools.FindAsync(entity.SchoolId);
+                        response.SchoolName = school?.Name;
+                        break;
+                    }
+            }
 
             if (string.IsNullOrWhiteSpace(entity.Data))
             {

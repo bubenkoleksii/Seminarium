@@ -43,7 +43,7 @@ const AdminProfile: FC = () => {
             {user?.email ? user.email : '-'}
           </div>
         </div>
-        <div className="pl-6">
+        <div className="pl-6 mb-4">
           <Button
             onClick={() =>
               (window.location.href = `${process.env.NEXT_PUBLIC_AUTH}/Account/ChangeData`)

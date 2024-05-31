@@ -2,6 +2,7 @@ export type SchoolProfileResponse = {
   id: string;
   userId: string;
   schoolId?: string;
+  schoolName?: string;
   groupId?: string;
   classTeacherGroupId?: string;
   isActive: boolean;

@@ -8,6 +8,8 @@ public class SchoolProfileModelResponse
 
     public Guid? SchoolId { get; set; }
 
+    public string? SchoolName { get; set; }
+
     public Guid? GroupId { get; set; }
 
     public Guid? ClassTeacherGroupId { get; set; }

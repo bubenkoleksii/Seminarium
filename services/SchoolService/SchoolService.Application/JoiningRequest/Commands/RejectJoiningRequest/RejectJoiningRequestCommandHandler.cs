@@ -40,7 +40,7 @@ public class RejectJoiningRequestCommandHandler : IRequestHandler<RejectJoiningR
         {
             Log.Error(exception, "An error occurred while setting status to rejected of the joining request with values {@Request}.", request);
 
-            return new InvalidDatabaseOperationError("joining request");
+            return new InvalidDatabaseOperationError("joining_request");
         }
 
         try
