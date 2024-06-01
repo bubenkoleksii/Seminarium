@@ -3,6 +3,8 @@
 public record GroupResponse(
     Guid Id,
 
+    Guid SchoolId,
+
     DateTime CreatedAt,
 
     DateTime? LastUpdatedAt,

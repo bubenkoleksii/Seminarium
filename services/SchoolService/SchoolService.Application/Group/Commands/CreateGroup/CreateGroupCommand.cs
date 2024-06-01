@@ -6,5 +6,5 @@ public class CreateGroupCommand : IRequest<Either<GroupModelResponse, Error>>
 
     public byte StudyPeriodNumber { get; set; }
 
-    public Guid SchoolId { get; set; }
+    public Guid UserId { get; set; }
 }

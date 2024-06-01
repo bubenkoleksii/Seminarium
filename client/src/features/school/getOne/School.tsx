@@ -1,6 +1,6 @@
 'use client';
 
-import { FC, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
 import { useAuthRedirectByRole, useSetCurrentTab } from '@/shared/hooks';
 import { useRouter } from 'next/navigation';
@@ -47,6 +47,15 @@ const School: FC<SchoolProps> = ({ id }) => {
   const isMutating = useIsMutating();
 
   const { isUserLoading, user } = useAuthRedirectByRole(activeLocale, 'user');
+
+  useEffect(() => {
+    if (!activeProfile || !activeProfile.schoolId)
+      return;
+
+    const url = `/${activeLocale}/u/my-school/${activeProfile.schoolId}`;
+    replace(url);
+  }, [activeProfile]);
+
 
   const { data, isLoading } = useQuery<ApiResponse<SchoolResponse>>({
     queryKey: [getOneSchoolRoute, id],
@@ -187,7 +196,7 @@ const School: FC<SchoolProps> = ({ id }) => {
 
   return (
     <div className="mb-4 w-[90%] p-3">
-      <h2 className="mb-4 mt-2 text-center text-xl font-bold">
+      <h2 className="mb-2 mt-2 text-center text-xl font-bold">
         {t('oneTitle')}
 
         {user?.role === 'admin' && (
@@ -200,7 +209,7 @@ const School: FC<SchoolProps> = ({ id }) => {
         )}
       </h2>
 
-      <h6 className="py-2 text-center font-bold">
+      <h6 className="py-2 mb-4 text-center font-bold">
         <p className="color-gray-500 mr-1 text-sm font-normal lg:text-lg">
           {t('labels.name')}
         </p>

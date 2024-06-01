@@ -132,7 +132,7 @@ const CreateDefaultSchoolProfile: FC<CreateDefaultSchoolProfileProps> = ({
               className={styles.input}
             />
             <ErrorMessage
-              name="email"
+              name="details"
               component="div"
               className={styles.error}
             />

@@ -2,15 +2,45 @@
 
 public class GroupController(IMapper mapper, IOptions<Shared.Contracts.Options.FileOptions> fileOptions) : BaseController
 {
-    [Authorize]
+    [Authorize(Roles = Constants.UserRole)]
+    [HttpGet("[action]/")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GetAllGroupsResponse))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> GetAll([FromQuery] GetAllGroupsParams filterParams)
+    {
+        var userId = User.Identity?.GetId();
+        var userRole = User.Identity?.GetRole();
+
+        if (userId is null || userRole is null)
+            return ErrorActionResultHandler.Handle(new InvalidError("user"));
+
+        var query = mapper.Map<GetAllGroupsQuery>(filterParams);
+        query.UserId = (Guid)userId;
+
+        var result = await Mediator.Send(query);
+
+        return result.Match(
+            Left: modelResponse => Ok(mapper.Map<GetAllGroupsResponse>(modelResponse)),
+            Right: ErrorActionResultHandler.Handle
+        );
+    }
+
+    [Authorize(Roles = Constants.UserRole)]
+    [ProfileIdentify([Constants.SchoolAdmin], true)]
     [HttpPost("[action]/")]
     [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(GroupResponse))]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status409Conflict)]
     public async Task<IActionResult> Create([FromBody] CreateGroupRequest groupRequest)
     {
+        var userId = User.Identity?.GetId();
+        var userRole = User.Identity?.GetRole();
+
+        if (userId is null || userRole is null)
+            return ErrorActionResultHandler.Handle(new InvalidError("user"));
+
         var command = mapper.Map<CreateGroupCommand>(groupRequest);
-        command.SchoolId = Guid.Parse("87ed8d9e-5684-4224-8747-c5332cff14d7");
+        command.UserId = (Guid)userId;
 
         var result = await Mediator.Send(command);
 

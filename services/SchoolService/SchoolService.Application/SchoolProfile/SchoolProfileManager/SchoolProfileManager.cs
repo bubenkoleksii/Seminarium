@@ -208,7 +208,7 @@ public class SchoolProfileManager : ISchoolProfileManager
         _memoryCache.Remove(cacheKey);
     }
 
-    private void ActivateProfile(List<Domain.Entities.SchoolProfile> profiles, Guid currentProfileId)
+    private static void ActivateProfile(List<Domain.Entities.SchoolProfile> profiles, Guid currentProfileId)
         => profiles.ForEach(profile => profile.IsActive = profile.Id == currentProfileId);
 
     private async Task<IReadOnlyList<SchoolProfileModelResponse>?> MapToResponses(IEnumerable<Domain.Entities.SchoolProfile>? entities)

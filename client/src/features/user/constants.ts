@@ -1,10 +1,11 @@
 export const enum CurrentTab {
   Profile = 'profile',
   School = 'school',
+  Group = 'group',
 }
 
 export const userQueries = {
-  getProfiles: 'getProfiles',
+  getGroups: 'getAllGroups',
   options: {
     retry: 4,
   },
@@ -12,6 +13,7 @@ export const userQueries = {
 
 export const userMutations = {
   activateProfile: 'activateProfile',
+  createGroup: 'createGroup',
   options: {
     retry: 3,
   },

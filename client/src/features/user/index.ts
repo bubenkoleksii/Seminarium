@@ -7,3 +7,5 @@ export { CreateParentSchoolProfile } from './school-profile/create/CreateParentS
 export { useProfiles } from './hooks';
 export { activate } from './api/schoolProfilesApi';
 export { useSchoolProfilesStore } from './store/schoolProfilesStore';
+export { Groups } from './components/group/getAll/Groups';
+export { CreateGroupForm } from './components/group/create/CreateGroupForm';

@@ -17,8 +17,9 @@ const errorComponents = {
 };
 
 const errorComponentsByMessage = {
-  Unauthorized: <Unauthorized />,
-  Forbidden: <Forbidden />,
+  'Unauthorized': <Unauthorized />,
+  'Forbidden': <Forbidden />,
+  'Not Found': <NotFound />,
 };
 
 const Error: FC<ErrorProps> = ({ error }) => {

@@ -102,7 +102,11 @@ const UpdateSchoolForm: FC<UpdateSchoolFormProps> = ({ id, school }) => {
           queryKey: [getOneSchoolRoute, id],
         });
 
-        replace(`/${activeLocale}/school/${id}`);
+        const url = user?.role === 'user'
+          ? `/${activeLocale}/u/my-school/${id}`
+          : `/${activeLocale}/school/${id}`;
+
+        replace(url);
       }
     },
   });
