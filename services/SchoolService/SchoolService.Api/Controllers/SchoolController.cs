@@ -75,6 +75,32 @@ public class SchoolController(IMapper mapper, IOptions<Shared.Contracts.Options.
 
     [Authorize]
     [ProfileIdentify([Constants.SchoolAdmin], true)]
+    [HttpPost("[action]/")]
+    [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(string))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> TeacherInvitation([FromBody] CreateInvitationRequest invitationRequest)
+    {
+        var userId = User.Identity?.GetId();
+        var userRole = User.Identity?.GetRole();
+
+        if (userId is null || userRole is null)
+            return ErrorActionResultHandler.Handle(new InvalidError("user"));
+
+        var queryUserId = userRole == Constants.AdminRole ? null : userId;
+        var query = new CreateTeacherInvitationCommand(
+            invitationRequest.SchoolId,
+            queryUserId
+        );
+
+        var result = await Mediator.Send(query);
+        return result.Match(
+            Left: response => CreatedAtAction(nameof(Create), response),
+            Right: ErrorActionResultHandler.Handle
+        );
+    }
+
+    [Authorize]
+    [ProfileIdentify([Constants.SchoolAdmin], true)]
     [HttpPut("[action]/")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SchoolResponse))]
     [ProducesResponseType(StatusCodes.Status404NotFound)]

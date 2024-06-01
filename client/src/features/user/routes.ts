@@ -10,4 +10,4 @@ export const group = {
 
 export const groupClientPaths = {
   create: '/u/groups/create',
-}
+};

@@ -27,15 +27,17 @@ public class GetAllGroupsQueryHandler : IRequestHandler<GetAllGroupsQuery, Eithe
         if (school == null)
             return new InvalidError("school_id");
 
-        var dbQuery = _queryContext.Groups.AsQueryable();
+        var dbQuery = _queryContext.Groups
+            .Where(g => g.SchoolId == school.Id)
+            .AsQueryable();
 
         if (!string.IsNullOrEmpty(request.Name))
-            dbQuery = dbQuery.Where(r => r.Name.ToLower().Contains(request.Name.ToLower()));
+            dbQuery = dbQuery.Where(g => g.Name.ToLower().Contains(request.Name.ToLower()));
 
         if (request.StudyPeriodNumber.HasValue)
-            dbQuery = dbQuery.Where(r => r.StudyPeriodNumber == request.StudyPeriodNumber);
+            dbQuery = dbQuery.Where(g => g.StudyPeriodNumber == request.StudyPeriodNumber);
 
-        dbQuery = dbQuery.OrderBy(r => r.StudyPeriodNumber);
+        dbQuery = dbQuery.OrderBy(g => g.StudyPeriodNumber);
 
         var take = request.Take ?? DefaultTake;
         var entities = await dbQuery

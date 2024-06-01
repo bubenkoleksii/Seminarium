@@ -8,6 +8,8 @@ export const removeSchoolRoute = '/school/delete';
 
 export const createInvitationRoute = '/school/invitation';
 
+export const createTeacherInvitationRoute = '/school/teacherInvitation';
+
 export const schoolsClientPath = 'admin/schools';
 
 export const joiningRequestClientPath = '/admin/joining_requests';

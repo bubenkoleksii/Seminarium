@@ -31,6 +31,12 @@ const CreateGroupForm: FC = () => {
     retry: userMutations.options.retry,
     onSuccess: (response) => {
       if (response && response.error) {
+        if (response.error.detail.includes('school_profile')) {
+          toast.error(t('labels.invalid_school_profile'));
+
+          return;
+        }
+
         const errorMessages = {
           409: t('labels.alreadyExists'),
           400: t('labels.invitationValidation'),
@@ -42,12 +48,17 @@ const CreateGroupForm: FC = () => {
           errorMessages[response.error.status] || t('labels.internal'),
         );
       } else {
-        toast.success(t('labels.createSuccess'), { duration: 2500 });
+        toast.success(
+          t('labels.createSuccess', {
+            name: response.name,
+          }),
+          { duration: 2500 },
+        );
 
         const url = `/${activeLocale}/u/groups/?studyPeriodNumber=${response.studyPeriodNumber}`;
         replace(url);
       }
-    }
+    },
   });
 
   const validationSchema = Yup.object().shape({
@@ -65,9 +76,9 @@ const CreateGroupForm: FC = () => {
   const handleSubmit = (values) => {
     mutate({
       data: values,
-      schoolProfileId: activeProfile.id,
+      schoolProfileId: activeProfile?.id,
     });
-  }
+  };
 
   if (profilesLoading || isMutating || isUserLoading) {
     return (
@@ -78,7 +89,7 @@ const CreateGroupForm: FC = () => {
 
         <Loader />
       </>
-    )
+    );
   }
 
   return (
@@ -88,13 +99,13 @@ const CreateGroupForm: FC = () => {
       onSubmit={handleSubmit}
     >
       <div className={styles.container}>
-        <h2 className="p-3 text-center text-lg md:text lg:text-xl font-semibold text-gray-950">
+        <h2 className="md:text p-3 text-center text-lg font-semibold text-gray-950 lg:text-xl">
           {t('create.title')}
         </h2>
 
-        <div className="flex flex-col justify-center items-center gap-2 mb-5">
+        <div className="mb-5 flex flex-col items-center justify-center gap-2">
           <div>
-            <p className="text-center font-semibold text-lg text-purple-950" >
+            <p className="text-center text-lg font-semibold text-purple-950">
               {activeProfile.schoolName}
             </p>
           </div>
@@ -106,7 +117,7 @@ const CreateGroupForm: FC = () => {
 
                 replace(url);
               }}
-              className="cursor-pointer font-semibold text-sm text-purple-700 hover:text-red-700"
+              className="cursor-pointer text-sm font-semibold text-purple-700 hover:text-red-700"
             >
               {t('labels.toList')}
             </span>

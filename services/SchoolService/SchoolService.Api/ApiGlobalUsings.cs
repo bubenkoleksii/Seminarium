@@ -17,7 +17,9 @@ global using SchoolService.Api.Models.SchoolProfile;
 global using SchoolService.Api.Options;
 global using SchoolService.Application;
 global using SchoolService.Application.Common.Mappings;
+global using SchoolService.Application.Group.Commands.CreateClassTeacherInvitation;
 global using SchoolService.Application.Group.Commands.CreateGroup;
+global using SchoolService.Application.Group.Commands.CreateStudentInvitation;
 global using SchoolService.Application.Group.Commands.DeleteGroupImage;
 global using SchoolService.Application.Group.Commands.SetGroupImage;
 global using SchoolService.Application.Group.Models;
@@ -29,6 +31,7 @@ global using SchoolService.Application.JoiningRequest.Queries.GetAllJoiningReque
 global using SchoolService.Application.JoiningRequest.Queries.GetOneJoiningRequest;
 global using SchoolService.Application.School.Commands.CreateInvitation;
 global using SchoolService.Application.School.Commands.CreateSchool;
+global using SchoolService.Application.School.Commands.CreateTeacherInvitation;
 global using SchoolService.Application.School.Commands.DeleteSchool;
 global using SchoolService.Application.School.Commands.DeleteSchoolImage;
 global using SchoolService.Application.School.Commands.SetSchoolImage;

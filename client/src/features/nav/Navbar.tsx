@@ -23,8 +23,7 @@ const Navbar: FC = () => {
 
   const { activeProfile, isLoading: profilesLoading } = useProfiles();
 
-  if (profilesLoading)
-    return null;
+  if (profilesLoading) return null;
 
   const showSidebar = () => {
     const pathsWithSidebar = ['admin', 'u'];

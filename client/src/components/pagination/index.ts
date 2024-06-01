@@ -1,2 +1,2 @@
-export { Pagination } from './pagination';
-export { Limit } from './limit';
+export { Pagination } from './Pagination';
+export { Limit } from './Limit';

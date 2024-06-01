@@ -166,7 +166,7 @@ public class SchoolProfileManager : ISchoolProfileManager
 
         var profileSchoolId = (Guid)schoolProfile.SchoolId;
         return profileSchoolId != schoolId
-            ? new InvalidError("school_id")
+            ? new InvalidError("school")
             : Option<Error>.None;
     }
 
@@ -182,7 +182,7 @@ public class SchoolProfileManager : ISchoolProfileManager
 
         var profileGroupId = (Guid)schoolProfile.GroupId;
         return profileGroupId != groupId
-            ? new InvalidError("school_id")
+            ? new InvalidError("group")
             : Option<Error>.None;
     }
 

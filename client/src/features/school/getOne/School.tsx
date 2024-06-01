@@ -6,11 +6,17 @@ import { useAuthRedirectByRole, useSetCurrentTab } from '@/shared/hooks';
 import { useRouter } from 'next/navigation';
 import { useIsMutating, useMutation, useQuery } from '@tanstack/react-query';
 import { ApiResponse } from '@/shared/types';
-import { createInvitation, getOne, remove } from '../api';
+import {
+  createInvitation,
+  createTeacherInvitation,
+  getOne,
+  remove
+} from '../api';
 import {
   removeSchoolRoute,
   getOneSchoolRoute,
   createInvitationRoute,
+  createTeacherInvitationRoute,
   joiningRequestClientPath,
   schoolsClientPath,
   updateSchoolClientPath,
@@ -39,7 +45,7 @@ const School: FC<SchoolProps> = ({ id }) => {
   const t = useTranslations('School');
 
   const { activeProfile, isLoading: profilesLoading } = useProfiles();
-  
+
   useSetCurrentTab(CurrentTab.School);
 
   const { replace } = useRouter();
@@ -49,13 +55,11 @@ const School: FC<SchoolProps> = ({ id }) => {
   const { isUserLoading, user } = useAuthRedirectByRole(activeLocale, 'user');
 
   useEffect(() => {
-    if (!activeProfile || !activeProfile.schoolId)
-      return;
+    if (!activeProfile || !activeProfile.schoolId) return;
 
     const url = `/${activeLocale}/u/my-school/${activeProfile.schoolId}`;
     replace(url);
-  }, [activeProfile]);
-
+  }, [activeProfile, activeLocale, replace]);
 
   const { data, isLoading } = useQuery<ApiResponse<SchoolResponse>>({
     queryKey: [getOneSchoolRoute, id],
@@ -68,6 +72,15 @@ const School: FC<SchoolProps> = ({ id }) => {
     mutationKey: [createInvitationRoute, id],
     onSuccess: (response) => {
       if (response && response.error) {
+        if (
+          response.error.detail.includes('school_profile') ||
+          response.error.detail.includes('school_id')
+        ) {
+          toast.error(t('labels.invalid_school_profile'));
+
+          return;
+        }
+
         const errorMessages = {
           404: t('labels.oneNotFound'),
           400: t('labels.invitationValidation'),
@@ -79,8 +92,39 @@ const School: FC<SchoolProps> = ({ id }) => {
           errorMessages[response.error.status] || t('labels.internal'),
         );
       } else {
-        setInvitationCode(response);
+        setInvitationCode(response.replace(`/uk/`, `/${activeLocale}/`));
         setCopyInvitationOpenModal(true);
+      }
+    },
+  });
+
+  const { mutate: generateTeacherInvitation } = useMutation({
+    mutationFn: createTeacherInvitation,
+    mutationKey: [createTeacherInvitationRoute, id],
+    onSuccess: (response) => {
+      if (response && response.error) {
+        if (
+          response.error.detail.includes('school_profile') ||
+          response.error.detail.includes('school_id')
+        ) {
+          toast.error(t('labels.invalid_school_profile'));
+
+          return;
+        }
+
+        const errorMessages = {
+          404: t('labels.oneNotFound'),
+          400: t('labels.invitationValidation'),
+          401: t('labels.unauthorized'),
+          403: t('labels.forbidden'),
+        };
+
+        toast.error(
+          errorMessages[response.error.status] || t('labels.internal'),
+        );
+      } else {
+        setTeacherInvitationCode(response.replace(`/uk/`, `/${activeLocale}/`));
+        setCopyTeacherInvitationOpenModal(true);
       }
     },
   });
@@ -90,6 +134,15 @@ const School: FC<SchoolProps> = ({ id }) => {
     mutationKey: [removeSchoolRoute, id],
     onSuccess: (response) => {
       if (response && response.error) {
+        if (
+          response.error.detail.includes('school_profile') ||
+          response.error.detail.includes('school_id')
+        ) {
+          toast.error(t('labels.invalid_school_profile'));
+
+          return;
+        }
+
         const errorMessages = {
           404: t('labels.oneNotFound'),
         };
@@ -109,6 +162,9 @@ const School: FC<SchoolProps> = ({ id }) => {
 
   const [copyInvitationOpenModal, setCopyInvitationOpenModal] = useState(false);
   const [invitationCode, setInvitationCode] = useState<string>(null);
+
+  const [copyTeacherInvitationOpenModal, setCopyTeacherInvitationOpenModal] = useState(false);
+  const [teacherInvitationCode, setTeacherInvitationCode] = useState<string>(null);
 
   const isPhone = useMediaQuery({ query: mediaQueries.phone });
 
@@ -169,6 +225,9 @@ const School: FC<SchoolProps> = ({ id }) => {
   const handleCloseCopyInvitationModal = () => {
     setCopyInvitationOpenModal(false);
   };
+  const handleCloseCopyTeacherInvitationModal = () => {
+    setCopyTeacherInvitationOpenModal(false);
+  }
 
   const occupiedColor = getColorByStatus(data.areOccupied ? 'danger' : 'ok');
 
@@ -209,7 +268,7 @@ const School: FC<SchoolProps> = ({ id }) => {
         )}
       </h2>
 
-      <h6 className="py-2 mb-4 text-center font-bold">
+      <h6 className="mb-4 py-2 text-center font-bold">
         <p className="color-gray-500 mr-1 text-sm font-normal lg:text-lg">
           {t('labels.name')}
         </p>
@@ -217,20 +276,50 @@ const School: FC<SchoolProps> = ({ id }) => {
       </h6>
 
       <div className="mb-4 flex w-[100%] justify-center">
-        <Button
-          onClick={() => {
-            setInvitationCode(null);
+        <div className="w-[350px]">
+          <Button
+            onClick={() => {
+              setTeacherInvitationCode(null);
 
-            generateInvitation({
-              id: data.id,
-              schoolProfileId: activeProfile.id,
-            });
-          }}
-          gradientMonochrome="success"
-          size="lg"
-        >
-          <span className="text-white">{t('invitation.labelBtn')}</span>
-        </Button>
+              generateTeacherInvitation({
+                id: data.id,
+                schoolProfileId: activeProfile?.id,
+              });
+            }}
+            gradientDuoTone="pinkToOrange"
+            size="md"
+          >
+            <span className="text-white">{t('invitation.labelTeacherModal')}</span>
+          </Button>
+        </div>
+      </div>
+
+      {teacherInvitationCode && (
+        <CopyTextModal
+          open={copyTeacherInvitationOpenModal}
+          label={t('invitation.labelTeacherModal')}
+          text={teacherInvitationCode}
+          onClose={handleCloseCopyTeacherInvitationModal}
+        />
+      )}
+
+      <div className="mb-4 flex w-[100%] justify-center">
+        <div className="w-[350px]">
+          <Button
+            onClick={() => {
+              setInvitationCode(null);
+
+              generateInvitation({
+                id: data.id,
+                schoolProfileId: activeProfile?.id,
+              });
+            }}
+            gradientMonochrome="success"
+            size="md"
+          >
+            <span className="text-white">{t('invitation.labelBtn')}</span>
+          </Button>
+        </div>
       </div>
 
       {invitationCode && (
@@ -487,8 +576,10 @@ const School: FC<SchoolProps> = ({ id }) => {
             </Button>
           </div>
         </div>
-      ) : (activeProfile && activeProfile.type === 'school_admin' && (
-          <div className="flex mt-3 w-full justify-center">
+      ) : (
+        activeProfile &&
+        activeProfile.type === 'school_admin' && (
+          <div className="mt-3 flex w-full justify-center">
             <Button gradientMonochrome="lime" fullSized>
               <Link
                 href={`/${activeLocale}/${updateSchoolClientPath}/${data.id}?${buildUpdateQuery()}`}

@@ -79,6 +79,15 @@ const UpdateSchoolForm: FC<UpdateSchoolFormProps> = ({ id, school }) => {
     mutationKey: [updateSchoolRoute],
     onSuccess: (response) => {
       if (response && response.error) {
+        if (
+          response.error.detail.includes('school_profile') ||
+          response.error.detail.includes('school_id')
+        ) {
+          toast.error(t('labels.invalid_school_profile'));
+
+          return;
+        }
+
         const errorMessages = {
           404: t('labels.updateNotFound'),
           409: t('labels.updateAlreadyExists'),
@@ -102,9 +111,10 @@ const UpdateSchoolForm: FC<UpdateSchoolFormProps> = ({ id, school }) => {
           queryKey: [getOneSchoolRoute, id],
         });
 
-        const url = user?.role === 'user'
-          ? `/${activeLocale}/u/my-school/${id}`
-          : `/${activeLocale}/school/${id}`;
+        const url =
+          user?.role === 'user'
+            ? `/${activeLocale}/u/my-school/${id}`
+            : `/${activeLocale}/school/${id}`;
 
         replace(url);
       }
@@ -116,6 +126,15 @@ const UpdateSchoolForm: FC<UpdateSchoolFormProps> = ({ id, school }) => {
     mutationKey: [imageRoute + 'update', id],
     onSuccess: (response) => {
       if (response && response.error) {
+        if (
+          response.error.detail.includes('school_profile') ||
+          response.error.detail.includes('school_id')
+        ) {
+          toast.error(t('labels.invalid_school_profile'));
+
+          return;
+        }
+
         const errorMessages = {
           404: t('labels.updateNotFound'),
           400: t('labels.validation'),
@@ -149,6 +168,15 @@ const UpdateSchoolForm: FC<UpdateSchoolFormProps> = ({ id, school }) => {
       mutationKey: [imageRoute + 'delete', id],
       onSuccess: (response) => {
         if (response && response.error) {
+          if (
+            response.error.detail.includes('school_profile') ||
+            response.error.detail.includes('school_id')
+          ) {
+            toast.error(t('labels.invalid_school_profile'));
+
+            return;
+          }
+
           const errorMessages = {
             404: t('labels.updateNotFound'),
             400: t('labels.validation'),
@@ -200,7 +228,7 @@ const UpdateSchoolForm: FC<UpdateSchoolFormProps> = ({ id, school }) => {
 
     mutate({
       data: request,
-      schoolProfileId: activeProfile.id,
+      schoolProfileId: activeProfile?.id,
     });
   };
 
@@ -211,7 +239,7 @@ const UpdateSchoolForm: FC<UpdateSchoolFormProps> = ({ id, school }) => {
     imageMutate({
       id: school.id,
       data: formData,
-      schoolProfileId: activeProfile.id,
+      schoolProfileId: activeProfile?.id,
     });
   };
 
@@ -231,9 +259,10 @@ const UpdateSchoolForm: FC<UpdateSchoolFormProps> = ({ id, school }) => {
           {t('updateTitle')}
           <span
             onClick={() => {
-              const url = user?.role === 'user'
-                ? `/${activeLocale}/u/my-school/${id}`
-                : `/${activeLocale}/school/${id}`;
+              const url =
+                user?.role === 'user'
+                  ? `/${activeLocale}/u/my-school/${id}`
+                  : `/${activeLocale}/school/${id}`;
 
               replace(url);
             }}
@@ -258,9 +287,10 @@ const UpdateSchoolForm: FC<UpdateSchoolFormProps> = ({ id, school }) => {
           {t('updateTitle')}
           <span
             onClick={() => {
-              const url = user?.role === 'user'
-                ? `/${activeLocale}/u/my-school/${id}`
-                : `/${activeLocale}/school/${id}`;
+              const url =
+                user?.role === 'user'
+                  ? `/${activeLocale}/u/my-school/${id}`
+                  : `/${activeLocale}/school/${id}`;
 
               replace(url);
             }}
@@ -286,10 +316,12 @@ const UpdateSchoolForm: FC<UpdateSchoolFormProps> = ({ id, school }) => {
             />
 
             <Button
-              onClick={() => imageDeleteMutate({
-                id,
-                schoolProfileId: activeProfile.id,
-              })}
+              onClick={() =>
+                imageDeleteMutate({
+                  id,
+                  schoolProfileId: activeProfile?.id,
+                })
+              }
               gradientMonochrome="failure"
             >
               <span className="text-white">{t('labels.deleteImage')}</span>

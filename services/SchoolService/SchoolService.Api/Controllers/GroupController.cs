@@ -50,7 +50,58 @@ public class GroupController(IMapper mapper, IOptions<Shared.Contracts.Options.F
         );
     }
 
-    [Authorize]
+    [Authorize(Roles = Constants.UserRole)]
+    [ProfileIdentify([Constants.SchoolAdmin, Constants.ClassTeacher], true)]
+    [HttpPost("[action]/")]
+    [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(string))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> StudentInvitation([FromBody] CreateGroupInvitationRequest invitationRequest)
+    {
+        var userId = User.Identity?.GetId();
+        var userRole = User.Identity?.GetRole();
+
+        if (userId is null || userRole is null)
+            return ErrorActionResultHandler.Handle(new InvalidError("user"));
+
+        var query = new CreateStudentInvitationCommand(
+            GroupId: invitationRequest.GroupId,
+            UserId: (Guid)userId
+        );
+
+        var result = await Mediator.Send(query);
+        return result.Match(
+            Left: response => CreatedAtAction(nameof(Create), response),
+            Right: ErrorActionResultHandler.Handle
+        );
+    }
+
+    [Authorize(Roles = Constants.UserRole)]
+    [ProfileIdentify([Constants.SchoolAdmin], true)]
+
+    [HttpPost("[action]/")]
+    [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(string))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> ClassTeacherInvitation([FromBody] CreateGroupInvitationRequest invitationRequest)
+    {
+        var userId = User.Identity?.GetId();
+        var userRole = User.Identity?.GetRole();
+
+        if (userId is null || userRole is null)
+            return ErrorActionResultHandler.Handle(new InvalidError("user"));
+
+        var query = new CreateClassTeacherInvitationCommand(
+            GroupId: invitationRequest.GroupId,
+            UserId: (Guid)userId
+        );
+
+        var result = await Mediator.Send(query);
+        return result.Match(
+            Left: response => CreatedAtAction(nameof(Create), response),
+            Right: ErrorActionResultHandler.Handle
+        );
+    }
+
+    [Authorize(Roles = Constants.UserRole)]
     [HttpPatch("[action]/{id}")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(FileSuccess))]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -77,7 +128,7 @@ public class GroupController(IMapper mapper, IOptions<Shared.Contracts.Options.F
         );
     }
 
-    [Authorize]
+    [Authorize(Roles = Constants.UserRole)]
     [HttpDelete("[action]/{id}")]
     [ProducesResponseType(StatusCodes.Status202Accepted)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]

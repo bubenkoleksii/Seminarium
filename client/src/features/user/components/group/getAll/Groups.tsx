@@ -16,6 +16,8 @@ import { mediaQueries } from '@/shared/constants';
 import { useMediaQuery } from 'react-responsive';
 import { Button } from 'flowbite-react';
 import { groupClientPaths } from '@/features/user/routes';
+import { GroupsItem } from './GroupsItem';
+import { useProfiles } from '@/features/user';
 
 interface GroupsProps {
   studyPeriodNumber?: number | null;
@@ -28,7 +30,7 @@ const Groups: FC<GroupsProps> = ({
   studyPeriodNumber,
   searchParameter,
   limitParameter,
-  pageParameter
+  pageParameter,
 }) => {
   const activeLocale = useLocale();
   const t = useTranslations('Group');
@@ -37,13 +39,16 @@ const Groups: FC<GroupsProps> = ({
   const { replace } = useRouter();
 
   const { isUserLoading } = useAuthRedirectByRole(activeLocale, 'userOnly');
+  const { activeProfile, isLoading: profilesLoading } = useProfiles();
 
   const [search, setSearch] = useState<string>(searchParameter || '');
   const handleSearch = (value: string) => {
     setSearch(value);
   };
 
-  const [studyPeriod, setStudyPeriod] = useState<number | null>(studyPeriodNumber || null);
+  const [studyPeriod, setStudyPeriod] = useState<number | null>(
+    studyPeriodNumber || null,
+  );
   const handleFilterByStudyPeriod = (value: string) => {
     const numberValue = value ? parseInt(value, 10) : null;
     if (numberValue > 100) setStudyPeriod(100);
@@ -52,7 +57,7 @@ const Groups: FC<GroupsProps> = ({
   };
   const handleFilterByStudyPeriodClear = () => {
     setStudyPeriod(null);
-  }
+  };
 
   const defaultPage = 1;
   const [page, setPage] = useState<number>(pageParameter || defaultPage);
@@ -60,7 +65,7 @@ const Groups: FC<GroupsProps> = ({
     setPage(value);
   };
 
-  const limitOptions = [4, 8, 12];
+  const limitOptions = [10, 20, 30];
   const [limit, setLimit] = useState<number>(limitParameter || limitOptions[0]);
   const handleLimit = (value: number) => {
     setLimit(value);
@@ -75,28 +80,33 @@ const Groups: FC<GroupsProps> = ({
       name: searchParameter,
       studyPeriodNumber: studyPeriodNumber,
       take: limitParameter,
-      skip
+      skip,
     });
 
   useSetCurrentTab(CurrentTab.Group);
 
-  const { data, isLoading } = useQuery({
-    queryFn: () => getAll({
-      query: buildQuery()
-    }),
+  const { data, isLoading, refetch } = useQuery({
+    queryFn: () =>
+      getAll({
+        query: buildQuery(),
+      }),
     queryKey: [
       userQueries.getGroups,
       searchParameter,
       studyPeriodNumber,
       limitParameter,
-      pageParameter
+      pageParameter,
     ],
-    retry: userQueries.options.retry
+    retry: userQueries.options.retry,
   });
 
   const isDesktopOrLaptop = useMediaQuery({
     query: mediaQueries.desktopOrLaptop,
   });
+
+  useEffect(() => {
+    refetch();
+  }, [activeProfile, refetch]);
 
   useEffect(() => {
     const params = new URLSearchParams();
@@ -110,7 +120,7 @@ const Groups: FC<GroupsProps> = ({
     replace(`${pathname}?${params.toString()}`);
   }, [search, studyPeriod, replace, pathname, limit, page]);
 
-  if (isLoading || isUserLoading) {
+  if (isLoading || isUserLoading || profilesLoading) {
     return (
       <>
         <h2 className="mb-4 text-center text-xl font-bold">{t('listTitle')}</h2>
@@ -134,22 +144,29 @@ const Groups: FC<GroupsProps> = ({
 
   return (
     <div className="p-3">
-      <h2 className="mb-2 text-center text-xl font-bold">{t('listTitle')}</h2>
+      <h2 className="mb-2 text-center text-xl font-bold">
+        {t('listTitle')} {data?.total ? `(${data.total})` : ''}
+      </h2>
 
-      <div className="flex justify-center items-center gap-2 mb-4">
+      <div className="mb-4 flex items-center justify-center gap-2">
         <div>
-          <p className="text-center mb-4 font-semibold text-lg text-purple-950" >{data.schoolName}</p>
+          <p className="mb-4 text-center text-lg font-semibold text-purple-950">
+            {data.schoolName}
+          </p>
         </div>
 
         <div className="pb-3">
-          <Button gradientMonochrome="success" size="md" onClick={
-            () => replace(`/${activeLocale}${groupClientPaths.create}`)
-          }>
+          <Button
+            gradientMonochrome="success"
+            size="md"
+            onClick={() =>
+              replace(`/${activeLocale}${groupClientPaths.create}`)
+            }
+          >
             <span className="text-white">{t('labels.createBtn')}</span>
           </Button>
         </div>
       </div>
-
 
       <SearchInput
         maxLength={200}
@@ -181,8 +198,7 @@ const Groups: FC<GroupsProps> = ({
             placeholder="8"
             value={studyPeriod !== null ? studyPeriod : ''}
             onChange={(e) => handleFilterByStudyPeriod(e.target.value)}
-          >
-          </input>
+          ></input>
         </div>
 
         <div className="w-md relative">
@@ -212,8 +228,12 @@ const Groups: FC<GroupsProps> = ({
           </div>
         </>
       ) : (
-        <div>
-          asasa
+        <div className="relative">
+          <div className="flex flex-wrap justify-center">
+            {data.entries.map((group, idx) => (
+              <GroupsItem key={idx} group={group} activeProfile={activeProfile} />
+            ))}
+          </div>
         </div>
       )}
     </div>

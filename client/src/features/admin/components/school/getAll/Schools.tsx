@@ -151,7 +151,9 @@ const Schools: FC<SchoolsProps> = ({
 
   return (
     <div className="p-3">
-      <h2 className="mb-4 text-center text-xl font-bold">{t('listTitle')}</h2>
+      <h2 className="mb-4 text-center text-xl font-bold">
+        {t('listTitle')} {data?.total ? `(${data.total})` : ''}
+      </h2>
 
       <SearchInput
         maxLength={200}

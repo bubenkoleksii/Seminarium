@@ -42,7 +42,7 @@ const CurrentUserPopover: FC<CurrentUserPopoverProps> = ({ user }) => {
         );
       } else {
         changeActiveProfile(response.id);
-        toast.success(t('SchoolProfile.activateSuccess'), { duration: 1500 });
+        toast.success(t('SchoolProfile.activateSuccess'), { duration: 3500 });
       }
     },
   });
@@ -155,7 +155,7 @@ const CurrentUserPopover: FC<CurrentUserPopoverProps> = ({ user }) => {
 
                       <input
                         type="radio"
-                        className="form-radio h-4 w-4 text-green-400 cursor-pointer"
+                        className="form-radio h-4 w-4 cursor-pointer text-green-400"
                         checked={profile.isActive}
                         onChange={() => handleChangeActiveProfile(profile.id)}
                       />

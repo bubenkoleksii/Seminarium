@@ -14,7 +14,11 @@ const GroupsPage: FC<Props> = ({ searchParams }) => {
   return (
     <div className="p-3">
       <Groups
-        studyPeriodNumber={searchParams.studyPeriodNumber ? Number(searchParams.studyPeriodNumber) : null}
+        studyPeriodNumber={
+          searchParams.studyPeriodNumber
+            ? Number(searchParams.studyPeriodNumber)
+            : null
+        }
         searchParameter={searchParams.name}
         limitParameter={searchParams.take ? Number(searchParams.take) : null}
         pageParameter={searchParams.page ? Number(searchParams.page) : null}
