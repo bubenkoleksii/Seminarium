@@ -51,6 +51,4 @@ public class SchoolProfileModelResponse
     public HealthGroup? StudentHealthGroup { get; set; }
 
     public string? ParentAddress { get; set; }
-
-    public string? ParentRelationship { get; set; }
 }

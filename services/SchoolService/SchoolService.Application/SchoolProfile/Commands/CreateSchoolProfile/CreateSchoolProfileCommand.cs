@@ -33,6 +33,4 @@ public class CreateSchoolProfileCommand : IRequest<Either<SchoolProfileModelResp
     public HealthGroup? StudentHealthGroup { get; set; }
 
     public string? ParentAddress { get; set; }
-
-    public string? ParentRelationship { get; set; }
 }

@@ -46,7 +46,7 @@ public class CreateSchoolProfileCommandHandler : IRequestHandler<CreateSchoolPro
             SchoolProfileType.SchoolAdmin => await _schoolProfileManager.CreateSchoolAdminProfile(invitation, request),
             SchoolProfileType.Teacher => await _schoolProfileManager.CreateTeacherProfile(invitation, request),
             SchoolProfileType.Student => await _schoolProfileManager.CreateStudentProfile(invitation, request),
-            SchoolProfileType.Parent => await _schoolProfileManager.CreateParentProfile(invitation, request),
+            SchoolProfileType.Parent => await _schoolProfileManager.CreateParentProfileOrAddChild(invitation, request),
             SchoolProfileType.ClassTeacher => await _schoolProfileManager.CreateClassTeacherProfile(invitation, request),
             _ => new InvalidError("type")
         };

@@ -56,9 +56,14 @@ public class SchoolProfileManager : ISchoolProfileManager
         if (DateTime.UtcNow > invitation.Expired)
             return new InvalidError("invitation");
 
-        var group = await _queryContext.Groups.FindAsync(invitation.SourceId);
+        var group = await _queryContext.Groups
+            .Include(g => g.ClassTeacher)
+            .FirstOrDefaultAsync(g => g.Id == invitation.SourceId);
         if (group == null)
             return new InvalidError("group_id");
+
+        if (group.ClassTeacher is not null)
+            return new AlreadyExistsError("class_teacher");
 
         var existedProfile = await _commandContext.SchoolProfiles
             .Where(p => p.GroupId == group.Id && p.UserId == command.UserId)
@@ -154,9 +159,47 @@ public class SchoolProfileManager : ISchoolProfileManager
         return profile;
     }
 
-    public Task<Either<Domain.Entities.SchoolProfile, Error>> CreateParentProfile(Invitation invitation, CreateSchoolProfileCommand command)
+    public async Task<Either<Domain.Entities.SchoolProfile, Error>> CreateParentProfileOrAddChild
+        (Invitation invitation, CreateSchoolProfileCommand command)
     {
-        throw new NotImplementedException();
+        if (DateTime.UtcNow > invitation.Expired)
+            return new InvalidError("invitation");
+
+        var child = await _queryContext.SchoolProfiles.FindAsync(invitation.SourceId);
+        if (child is null)
+            return new InvalidError("child_id");
+
+        var existedParent = await _queryContext.SchoolProfiles
+            .Include(p => p.Children)
+            .FirstOrDefaultAsync(p => p.Id == command.UserId);
+
+        if (existedParent is { Children: { } } && existedParent.Children.Contains(child))
+            return new AlreadyExistsError("child")
+            {
+                Params = new List<string>(2) { "child_id" }
+            };
+
+
+        if (existedParent == null)
+        {
+            var serializationData = JsonConvert.SerializeObject(
+                new ParentSerializationData(command.ParentAddress)
+            );
+
+            var profile = _mapper.Map<Domain.Entities.SchoolProfile>(command);
+            profile.Children = new List<Domain.Entities.SchoolProfile>(1) { child };
+            profile.Type = invitation.Type;
+            profile.IsActive = true;
+            profile.Data = serializationData;
+
+            return profile;
+        }
+
+        existedParent.Children ??= new List<Domain.Entities.SchoolProfile>();
+        existedParent.Children.Add(child);
+        existedParent.IsActive = true;
+
+        return existedParent;
     }
 
     public async Task<SchoolProfileModelResponse?> CacheProfiles(Guid userId, Guid currentProfileId)
@@ -297,7 +340,6 @@ public class SchoolProfileManager : ISchoolProfileManager
                     {
                         var data = JsonConvert.DeserializeObject<ParentSerializationData>(entity.Data);
                         response.ParentAddress = data?.ParentAddress;
-                        response.ParentRelationship = data?.ParentRelationship;
                         break;
                     }
                 case { Type: SchoolProfileType.Teacher }:

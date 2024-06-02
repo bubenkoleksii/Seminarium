@@ -29,7 +29,5 @@ public record CreateSchoolProfileRequest(
 
     string? StudentHealthGroup,
 
-    string? ParentAddress,
-
-    string? ParentRelationship
+    string? ParentAddress
 );
