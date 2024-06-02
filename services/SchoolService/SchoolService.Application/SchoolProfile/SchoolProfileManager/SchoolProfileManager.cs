@@ -118,9 +118,40 @@ public class SchoolProfileManager : ISchoolProfileManager
         return profile;
     }
 
-    public Task<Either<Domain.Entities.SchoolProfile, Error>> CreateStudentProfile(Invitation invitation, CreateSchoolProfileCommand command)
+    public async Task<Either<Domain.Entities.SchoolProfile, Error>> CreateStudentProfile(Invitation invitation, CreateSchoolProfileCommand command)
     {
-        throw new NotImplementedException();
+        if (DateTime.UtcNow > invitation.Expired)
+            return new InvalidError("invitation");
+
+        if (command.StudentIsIndividually is null)
+            return new InvalidError("is_individually");
+
+        if (command.StudentIsClassLeader is null)
+            return new InvalidError("is_class_leader");
+
+        if (command.StudentHealthGroup is null)
+            return new InvalidError("health_group");
+
+        var group = await _queryContext.Groups.FindAsync(invitation.SourceId);
+        if (group == null)
+            return new InvalidError("group_id");
+
+        var existedProfile = await _commandContext.SchoolProfiles
+            .Where(p => p.GroupId == group.Id && p.UserId == command.UserId)
+            .FirstOrDefaultAsync();
+
+        if (existedProfile != null)
+            return new AlreadyExistsError("school_profile")
+            {
+                Params = new List<string>(2) { "user_id", "group_id" }
+            };
+
+        var profile = _mapper.Map<Domain.Entities.SchoolProfile>(command);
+        profile.GroupId = group.Id;
+        profile.Type = invitation.Type;
+        profile.IsActive = true;
+
+        return profile;
     }
 
     public Task<Either<Domain.Entities.SchoolProfile, Error>> CreateParentProfile(Invitation invitation, CreateSchoolProfileCommand command)

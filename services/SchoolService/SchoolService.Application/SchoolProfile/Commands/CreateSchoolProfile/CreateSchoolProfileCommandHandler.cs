@@ -8,14 +8,18 @@ public class CreateSchoolProfileCommandHandler : IRequestHandler<CreateSchoolPro
 
     private readonly ISchoolProfileManager _schoolProfileManager;
 
+    private readonly IConfiguration _configuration;
+
     public CreateSchoolProfileCommandHandler(
         ICommandContext commandContext,
         IInvitationManager invitationManager,
-        ISchoolProfileManager schoolProfileManager)
+        ISchoolProfileManager schoolProfileManager,
+        IConfiguration configuration)
     {
         _commandContext = commandContext;
         _invitationManager = invitationManager;
         _schoolProfileManager = schoolProfileManager;
+        _configuration = configuration;
     }
 
     public async Task<Either<SchoolProfileModelResponse, Error>> Handle(CreateSchoolProfileCommand request, CancellationToken cancellationToken)
@@ -28,6 +32,14 @@ public class CreateSchoolProfileCommandHandler : IRequestHandler<CreateSchoolPro
         }
 
         var invitation = (Invitation)invitationData;
+
+        var existedProfiles = await _commandContext.SchoolProfiles
+            .Where(p => p.UserId == request.UserId)
+            .ToListAsync(cancellationToken: cancellationToken);
+
+        var profilesMaxCount = _configuration.GetValue<int>("MaxProfilesCount");
+        if (existedProfiles.Count >= profilesMaxCount)
+            return new InvalidError("max_profiles_count");
 
         var profile = invitation.Type switch
         {
@@ -44,10 +56,6 @@ public class CreateSchoolProfileCommandHandler : IRequestHandler<CreateSchoolPro
             Log.Error("An error occurred while building school profile with values {@Request}.", request);
             return (Error)profile;
         }
-
-        var existedProfiles = await _commandContext.SchoolProfiles
-            .Where(p => p.UserId == request.UserId)
-            .ToListAsync(cancellationToken: cancellationToken);
 
         existedProfiles.ForEach(p => p.IsActive = false);
 

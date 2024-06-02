@@ -6,6 +6,8 @@ public class SchoolProfileResponse
 
     public Guid UserId { get; set; }
 
+    public required string Name { get; set; }
+
     public Guid? SchoolId { get; set; }
 
     public string? SchoolName { get; set; }

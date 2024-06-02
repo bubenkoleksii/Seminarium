@@ -3,6 +3,8 @@
 public record CreateSchoolProfileRequest(
     string InvitationCode,
 
+    string Name,
+
     string? Phone,
 
     string? Email,

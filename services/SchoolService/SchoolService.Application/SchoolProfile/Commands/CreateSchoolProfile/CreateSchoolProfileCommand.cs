@@ -4,6 +4,8 @@ public class CreateSchoolProfileCommand : IRequest<Either<SchoolProfileModelResp
 {
     public required Guid UserId { get; set; }
 
+    public required string Name { get; set; }
+
     public required string InvitationCode { get; set; }
 
     public string? Phone { get; set; }
