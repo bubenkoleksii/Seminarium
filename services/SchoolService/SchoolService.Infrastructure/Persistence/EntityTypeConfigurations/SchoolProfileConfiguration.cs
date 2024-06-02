@@ -2,6 +2,8 @@
 
 public class SchoolProfileConfiguration : IEntityTypeConfiguration<SchoolProfile>
 {
+    private const string ParentChildTableName = "ParentChild";
+
     public void Configure(EntityTypeBuilder<SchoolProfile> builder)
     {
         builder.HasKey(profile => profile.Id);
@@ -32,6 +34,7 @@ public class SchoolProfileConfiguration : IEntityTypeConfiguration<SchoolProfile
     {
         AddSchoolRelationship(builder);
         AddGroupRelationships(builder);
+        AddParentChildrenRelationships(builder);
     }
 
     private static void AddSchoolRelationship(EntityTypeBuilder<SchoolProfile> builder)
@@ -55,5 +58,24 @@ public class SchoolProfileConfiguration : IEntityTypeConfiguration<SchoolProfile
             .HasForeignKey<SchoolProfile>(profile => profile.ClassTeacherGroupId)
             .IsRequired(required: false)
             .OnDelete(DeleteBehavior.Cascade);
+    }
+
+    private static void AddParentChildrenRelationships(EntityTypeBuilder<SchoolProfile> builder)
+    {
+        builder.HasMany(p => p.Parents)
+            .WithMany(c => c.Children)
+            .UsingEntity<Dictionary<string, object>>(
+                ParentChildTableName,
+                j => j
+                    .HasOne<SchoolProfile>()
+                    .WithMany()
+                    .HasForeignKey("ParentId")
+                    .OnDelete(DeleteBehavior.SetNull),
+                j => j
+                    .HasOne<SchoolProfile>()
+                    .WithMany()
+                    .HasForeignKey("ChildId")
+                    .OnDelete(DeleteBehavior.SetNull)
+            );
     }
 }

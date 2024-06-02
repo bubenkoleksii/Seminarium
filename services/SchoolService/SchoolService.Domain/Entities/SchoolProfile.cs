@@ -31,4 +31,10 @@ public class SchoolProfile : Entity
     public Guid? ClassTeacherGroupId { get; set; }
 
     public Group? ClassTeacherGroup { get; set; }
+
+    public Guid? ParentId { get; set; }
+
+    public IEnumerable<SchoolProfile>? Parents { get; set; }
+
+    public IEnumerable<SchoolProfile>? Children { get; set; }
 }

@@ -2,18 +2,21 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using SchoolService.Infrastructure.Persistence;
 
 #nullable disable
 
-namespace SchoolService.Infrastructure.Persistence.Migrations
+namespace SchoolService.Infrastructure.Persistence.Migrationsons
 {
     [DbContext(typeof(CommandContext))]
-    partial class CommandContextModelSnapshot : ModelSnapshot
+    [Migration("20240602192031_AddParentChildTable")]
+    partial class AddParentChildTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -345,13 +348,13 @@ namespace SchoolService.Infrastructure.Persistence.Migrations
                     b.HasOne("SchoolService.Domain.Entities.SchoolProfile", null)
                         .WithMany()
                         .HasForeignKey("ChildId")
-                        .OnDelete(DeleteBehavior.SetNull)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("SchoolService.Domain.Entities.SchoolProfile", null)
                         .WithMany()
                         .HasForeignKey("ParentId")
-                        .OnDelete(DeleteBehavior.SetNull)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
