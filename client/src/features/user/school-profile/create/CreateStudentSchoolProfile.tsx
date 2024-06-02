@@ -11,7 +11,7 @@ const CreateStudentSchoolProfile: FC<CreateStudentSchoolProfileProps> = ({
   type,
   invitationCode,
 }) => {
-  return <div></div>;
+  return <div>s</div>;
 };
 
 export { CreateStudentSchoolProfile };

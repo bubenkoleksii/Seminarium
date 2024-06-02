@@ -42,7 +42,7 @@ public class CreateClassTeacherInvitationCommandHandler : IRequestHandler<Create
         var encodedInvitationCode = Uri.EscapeDataString(invitationCode);
 
         var clientUrl = _configuration["ClientUrl"]!;
-        var link = $"{clientUrl}uk/school-profile/create/class_teacher/{encodedInvitationCode}";
+        var link = $"{clientUrl}uk/u/school-profile/create/class_teacher/{encodedInvitationCode}";
 
         return link;
     }

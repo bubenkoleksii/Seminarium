@@ -45,6 +45,13 @@ public class CreateSchoolProfileCommandHandler : IRequestHandler<CreateSchoolPro
             return (Error)profile;
         }
 
+        var existedProfiles = await _commandContext.SchoolProfiles
+            .Where(p => p.UserId == request.UserId)
+            .ToListAsync(cancellationToken: cancellationToken);
+
+        existedProfiles.ForEach(p => p.IsActive = false);
+
+        _commandContext.SchoolProfiles.UpdateRange(existedProfiles);
         await _commandContext.SchoolProfiles.AddAsync((Domain.Entities.SchoolProfile)profile, cancellationToken);
 
         try

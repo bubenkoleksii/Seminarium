@@ -1,6 +1,4 @@
-﻿using SchoolService.Application.Group.Queries.GetAllGroups;
-
-namespace SchoolService.Api.Mappings;
+﻿namespace SchoolService.Api.Mappings;
 
 public class ApiMappingProfile : Profile
 {
@@ -61,6 +59,8 @@ public class ApiMappingProfile : Profile
         CreateMap<GetAllGroupsParams, GetAllGroupsQuery>();
 
         CreateMap<GetAllGroupsModelResponse, GetAllGroupsResponse>();
+
+        CreateMap<OneGroupModelResponse, OneGroupResponse>();
     }
 
     private void ConfigureGlobalMappings()

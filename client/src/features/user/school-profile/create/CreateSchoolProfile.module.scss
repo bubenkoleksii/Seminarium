@@ -1,8 +1,8 @@
 .container {
-  @apply w-3/4 pt-6 pb-8 flex flex-col items-center;
+  @apply w-[100%] pt-6 pb-8 flex flex-col justify-center items-center;
 
   .form {
-    @apply w-[100%] md:w-2/3 space-y-6;
+    @apply w-3/4 lg:w-1/2 space-y-6;
 
     .input {
       @apply focus:outline-none cursor-pointer mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md shadow-sm;

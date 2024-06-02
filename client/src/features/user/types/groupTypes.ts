@@ -1,3 +1,5 @@
+import type { SchoolProfileResponse } from '@/features/user/types/schoolProfileTypes';
+
 export interface PagesGroupsResponse {
   entries: GroupResponse[];
   schoolName: string;
@@ -14,6 +16,13 @@ export interface GroupResponse {
   name: string;
   studyPeriodNumber: number;
   img?: string;
+}
+
+export interface OneGroupResponse extends GroupResponse {
+  schoolName: string;
+  classTeacherId?: string;
+  classTeacher?: SchoolProfileResponse;
+  students?: SchoolProfileResponse[];
 }
 
 export interface CreateGroupRequest {

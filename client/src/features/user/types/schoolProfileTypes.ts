@@ -1,6 +1,7 @@
 export type SchoolProfileResponse = {
   id: string;
   userId: string;
+  name: string;
   schoolId?: string;
   schoolName?: string;
   groupId?: string;

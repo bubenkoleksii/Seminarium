@@ -45,5 +45,7 @@ public class CoreMappingProfile : Profile
         CreateMap<CreateGroupCommand, Domain.Entities.Group>();
 
         CreateMap<Domain.Entities.Group, GroupModelResponse>();
+
+        CreateMap<Domain.Entities.Group, OneGroupModelResponse>();
     }
 }

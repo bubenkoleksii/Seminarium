@@ -10,7 +10,12 @@ import { toast } from 'react-hot-toast';
 import { phoneRegExp } from '@/shared/regexp';
 import { useAuthRedirectByRole } from '@/shared/hooks';
 import { Loader } from '@/components/loader';
-import { useIsMutating } from '@tanstack/react-query';
+import { useIsMutating, useMutation } from '@tanstack/react-query';
+import { create } from '@/features/user/api/schoolProfilesApi';
+import { userMutations } from '@/features/user/constants';
+import { useRouter } from 'next/navigation';
+import { replaceEmptyStringsWithNull } from '@/shared/helpers';
+import { useSchoolProfilesStore } from '@/features/user';
 
 interface CreateDefaultSchoolProfileProps {
   type: string;
@@ -22,13 +27,38 @@ const CreateDefaultSchoolProfile: FC<CreateDefaultSchoolProfileProps> = ({
   type,
 }) => {
   const activeLocale = useLocale();
+  const { replace } = useRouter();
   const v = useTranslations('Validation');
   const t = useTranslations('SchoolProfile');
+  const clearSchoolProfiles = useSchoolProfilesStore(store => store.clear);
 
   const title = t(`create.${type}`);
 
   const isMutating = useIsMutating();
   const { isUserLoading, user } = useAuthRedirectByRole(activeLocale);
+
+  const { mutate } = useMutation({
+    mutationFn: create,
+    mutationKey: [userMutations.createSchoolProfile],
+    retry: userMutations.options.retry,
+    onSuccess: (response) => {
+      if (response && response.error) {
+        const errorMessages = {
+          400: t('badRequest'),
+          409: t('alreadyExists'),
+        };
+
+        toast.error(
+          errorMessages[response.error.status] || t('labels.internal'),
+        );
+      } else {
+        clearSchoolProfiles();
+
+        toast.success(t('createSuccess', { name: typeName }), { duration: 1500 });
+        replace(`/${activeLocale}/u`);
+      }
+    }
+  });
 
   const validationSchema = Yup.object().shape({
     phone: Yup.string().max(50, v('max')).matches(phoneRegExp, v('phone')),
@@ -67,7 +97,16 @@ const CreateDefaultSchoolProfile: FC<CreateDefaultSchoolProfileProps> = ({
   }
 
   const handleSubmit = (values) => {
-    console.log(values);
+    replaceEmptyStringsWithNull(values);
+
+    const request: CreateSchoolProfileRequest = {
+      invitationCode: invitationCode,
+      phone: values.phone,
+      email: values.email,
+      details: values.details
+    };
+
+    mutate(request);
   };
 
   return (

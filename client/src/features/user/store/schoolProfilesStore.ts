@@ -7,6 +7,7 @@ interface SchoolProfilesStore {
   activeProfile: SchoolProfileResponse;
   profiles: SchoolProfileResponse[];
   setProfiles: (profile: SchoolProfileResponse[]) => void;
+  clear: () => void;
   changeActiveProfile: (id: string) => void;
 }
 
@@ -30,6 +31,11 @@ export const useSchoolProfilesStore = create<SchoolProfilesStore>()(
               (profile) => profile.isActive,
             );
           }),
+        clear: () =>
+          set((state) => {
+            state.profiles = [];
+            state.activeProfile = null;
+          })
       }),
       { name: 'School profiles store' },
     ),

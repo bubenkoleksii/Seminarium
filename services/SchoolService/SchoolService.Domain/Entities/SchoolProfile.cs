@@ -4,6 +4,8 @@ public class SchoolProfile : Entity
 {
     public Guid UserId { get; set; }
 
+    public required string Name { get; set; }
+
     public SchoolProfileType Type { get; set; }
 
     public bool IsActive { get; set; }

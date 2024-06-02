@@ -20,19 +20,19 @@ const CreateProfilePage: FC<Props> = ({ params }) => {
   );
 
   const createForms = {
-    school_admin: (
+    'school_admin': (
       <CreateDefaultSchoolProfile type={type} invitationCode={invitationCode} />
     ),
-    class_teacher: (
+    'class_teacher': (
       <CreateDefaultSchoolProfile type={type} invitationCode={invitationCode} />
     ),
-    student: (
+    'student': (
       <CreateStudentSchoolProfile type={type} invitationCode={invitationCode} />
     ),
-    parent: (
+    'parent': (
       <CreateParentSchoolProfile type={type} invitationCode={invitationCode} />
     ),
-    teacher: (
+    'teacher': (
       <CreateTeacherSchoolProfile type={type} invitationCode={invitationCode} />
     ),
   };

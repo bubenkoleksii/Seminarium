@@ -24,6 +24,7 @@ global using SchoolService.Application.Group.Commands.DeleteGroupImage;
 global using SchoolService.Application.Group.Commands.SetGroupImage;
 global using SchoolService.Application.Group.Models;
 global using SchoolService.Application.Group.Queries.GetAllGroups;
+global using SchoolService.Application.Group.Queries.GetOneGroup;
 global using SchoolService.Application.JoiningRequest.Commands.CreateJoiningRequest;
 global using SchoolService.Application.JoiningRequest.Commands.RejectJoiningRequest;
 global using SchoolService.Application.JoiningRequest.Models;

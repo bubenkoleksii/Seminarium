@@ -1,53 +1,54 @@
 ﻿namespace SchoolService.Api.Models.SchoolProfile;
 
-public record SchoolProfileResponse(
-    Guid Id,
+public class SchoolProfileResponse
+{
+    public Guid Id { get; set; }
 
-    Guid UserId,
+    public Guid UserId { get; set; }
 
-    Guid? SchoolId,
+    public Guid? SchoolId { get; set; }
 
-    string? SchoolName,
+    public string? SchoolName { get; set; }
 
-    Guid? GroupId,
+    public Guid? GroupId { get; set; }
 
-    Guid? ClassTeacherGroupId,
+    public Guid? ClassTeacherGroupId { get; set; }
 
-    bool IsActive,
+    public bool IsActive { get; set; }
 
-    DateTime CreatedAt,
+    public DateTime CreatedAt { get; set; }
 
-    DateTime? LastUpdatedAt,
+    public DateTime? LastUpdatedAt { get; set; }
 
-    string Type,
+    public required string Type { get; set; }
 
-    string? Phone,
+    public string? Phone { get; set; }
 
-    string? Email,
+    public string? Email { get; set; }
 
-    string? Img,
+    public string? Img { get; set; }
 
-    string? Details,
+    public string? Details { get; set; }
 
-    string? TeacherExperience,
+    public string? TeacherExperience { get; set; }
 
-    string? TeacherEducation,
+    public string? TeacherEducation { get; set; }
 
-    string? TeacherQualification,
+    public string? TeacherQualification { get; set; }
 
-    uint? TeacherLessonsPerCycle,
+    public uint? TeacherLessonsPerCycle { get; set; }
 
-    DateOnly? StudentDateOfBirth,
+    public DateOnly? StudentDateOfBirth { get; set; }
 
-    string? StudentAptitudes,
+    public string? StudentAptitudes { get; set; }
 
-    bool? StudentIsClassLeader,
+    public bool? StudentIsClassLeader { get; set; }
 
-    bool? StudentIsIndividually,
+    public bool? StudentIsIndividually { get; set; }
 
-    string? StudentHealthGroup,
+    public string? StudentHealthGroup { get; set; }
 
-    string? ParentAddress,
+    public string? ParentAddress { get; set; }
 
-    string? ParentRelationship
-);
+    public string? ParentRelationship { get; set; }
+}
