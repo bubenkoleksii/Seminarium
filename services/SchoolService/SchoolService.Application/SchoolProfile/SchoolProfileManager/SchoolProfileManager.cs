@@ -151,10 +151,21 @@ public class SchoolProfileManager : ISchoolProfileManager
                 Params = new List<string>(2) { "user_id", "group_id" }
             };
 
+        var data = new StudentSerializationData(
+            command.StudentDateOfBirth,
+            command.StudentAptitudes,
+            (bool)command.StudentIsClassLeader,
+            (bool)command.StudentIsIndividually,
+            (HealthGroup)command.StudentHealthGroup
+        );
+
+        var serializationData = JsonConvert.SerializeObject(data);
+
         var profile = _mapper.Map<Domain.Entities.SchoolProfile>(command);
         profile.GroupId = group.Id;
         profile.Type = invitation.Type;
         profile.IsActive = true;
+        profile.Data = serializationData;
 
         return profile;
     }
@@ -255,6 +266,11 @@ public class SchoolProfileManager : ISchoolProfileManager
             return cachedProfiles;
 
         var profiles = await _queryContext.SchoolProfiles
+            .Include(profile => profile.School)
+            .Include(profile => profile.Group)
+            .Include(profile => profile.ClassTeacherGroup)
+            .Include(profile => profile.Children)
+            .Include(profile => profile.Parents)
             .Where(profile => profile.UserId == userId)
             .ToListAsync();
 
@@ -341,10 +357,18 @@ public class SchoolProfileManager : ISchoolProfileManager
 
             switch (entity)
             {
-                case { Type: SchoolProfileType.SchoolAdmin }:
+                case { Type: SchoolProfileType.SchoolAdmin or SchoolProfileType.Teacher }:
                     {
                         var school = await _queryContext.Schools.FindAsync(entity.SchoolId);
                         response.SchoolName = school?.Name;
+                        break;
+                    }
+                case { Type: SchoolProfileType.Student or SchoolProfileType.ClassTeacher }:
+                    {
+                        var group = await _queryContext.Groups
+                            .Include(group => group.School)
+                            .FirstOrDefaultAsync(g => g.Id == entity.GroupId);
+                        response.SchoolName = group?.School.Name;
                         break;
                     }
             }

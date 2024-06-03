@@ -1,11 +1,13 @@
-﻿namespace SchoolService.Application.SchoolProfile.Commands.CreateSchoolProfile;
+﻿namespace SchoolService.Application.SchoolProfile.Commands.UpdateSchoolProfile;
 
-public class CreateSchoolProfileCommandValidator : AbstractValidator<CreateSchoolProfileCommand>
+public class UpdateSchoolProfileCommandValidator : AbstractValidator<UpdateSchoolProfileCommand>
 {
-    public CreateSchoolProfileCommandValidator()
+    public UpdateSchoolProfileCommandValidator()
     {
-        RuleFor(x => x.InvitationCode)
-            .NotEmpty()
+        RuleFor(x => x.Id)
+            .NotNull()
+            .WithErrorCode(ErrorTitles.Common.Null)
+            .NotEqual(Guid.Empty)
             .WithErrorCode(ErrorTitles.Common.Empty);
 
         RuleFor(x => x.UserId)

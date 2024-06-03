@@ -10,11 +10,17 @@ public class SchoolProfileModelResponse
 
     public Guid? SchoolId { get; set; }
 
+    public SchoolModelResponse? School { get; set; }
+
     public string? SchoolName { get; set; }
 
     public Guid? GroupId { get; set; }
 
+    public GroupModelResponse? Group { get; set; }
+
     public Guid? ClassTeacherGroupId { get; set; }
+
+    public GroupModelResponse? ClassTeacherGroup { get; set; }
 
     public bool IsActive { get; set; }
 
@@ -51,4 +57,8 @@ public class SchoolProfileModelResponse
     public HealthGroup? StudentHealthGroup { get; set; }
 
     public string? ParentAddress { get; set; }
+
+    public IEnumerable<SchoolProfileModelResponse>? Parents { get; set; }
+
+    public IEnumerable<SchoolProfileModelResponse>? Children { get; set; }
 }
