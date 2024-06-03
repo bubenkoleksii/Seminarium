@@ -16,6 +16,7 @@ import { userMutations } from '@/features/user/constants';
 import { useRouter } from 'next/navigation';
 import { replaceEmptyStringsWithNull } from '@/shared/helpers';
 import { useSchoolProfilesStore } from '@/features/user';
+import { useSession } from 'next-auth/react';
 
 interface CreateDefaultSchoolProfileProps {
   type: string;
@@ -28,6 +29,7 @@ const CreateDefaultSchoolProfile: FC<CreateDefaultSchoolProfileProps> = ({
 }) => {
   const activeLocale = useLocale();
   const { replace } = useRouter();
+  const { data: userData, status: userStatus } = useSession();
   const v = useTranslations('Validation');
   const t = useTranslations('SchoolProfile');
   const clearSchoolProfiles = useSchoolProfilesStore(store => store.clear);
@@ -54,26 +56,20 @@ const CreateDefaultSchoolProfile: FC<CreateDefaultSchoolProfileProps> = ({
       } else {
         clearSchoolProfiles();
 
-        toast.success(t('createSuccess', { name: typeName }), { duration: 1500 });
+        toast.success(t('createSuccess'), { duration: 1500 });
         replace(`/${activeLocale}/u`);
       }
     }
   });
 
   const validationSchema = Yup.object().shape({
+    name: Yup.string().required(v('required')).max(250, v('max')),
     phone: Yup.string().max(50, v('max')).matches(phoneRegExp, v('phone')),
     email: Yup.string().email(v('email')).max(250, v('max')),
     details: Yup.string().max(1024, v('max')),
   });
 
-  const initialValues: CreateSchoolProfileRequest = {
-    invitationCode,
-    phone: '',
-    email: '',
-    details: '',
-  };
-
-  if (isMutating || isUserLoading) {
+  if (isMutating || isUserLoading || userStatus === 'loading') {
     return (
       <>
         <h2 className="md:text mb-4 pt-6 text-center text-2xl font-semibold text-gray-950">
@@ -96,11 +92,20 @@ const CreateDefaultSchoolProfile: FC<CreateDefaultSchoolProfileProps> = ({
     );
   }
 
+  const initialValues: CreateSchoolProfileRequest = {
+    invitationCode,
+    name: userData?.user.name,
+    phone: '',
+    email: '',
+    details: '',
+  };
+
   const handleSubmit = (values) => {
     replaceEmptyStringsWithNull(values);
 
     const request: CreateSchoolProfileRequest = {
       invitationCode: invitationCode,
+      name: values.name,
       phone: values.phone,
       email: values.email,
       details: values.details
@@ -121,11 +126,27 @@ const CreateDefaultSchoolProfile: FC<CreateDefaultSchoolProfileProps> = ({
         </h2>
         <Form className={styles.form}>
           <div>
+            <label htmlFor="name" className={styles.label}>
+              <span>{t('labels.name')}</span>
+            </label>
+            <Field
+              type="text"
+              id="name"
+              name="name"
+              autoComplete="name"
+              className={styles.input}
+            />
+            <ErrorMessage
+              name="name"
+              component="div"
+              className={styles.error}
+            />
+          </div>
+          <div>
             <label htmlFor="phone" className={styles.label}>
               <span>{t('labels.phone')}</span>
             </label>
             <Field
-              placeholder={t('placeholders.phone')}
               type="text"
               id="phone"
               name="phone"
@@ -143,7 +164,6 @@ const CreateDefaultSchoolProfile: FC<CreateDefaultSchoolProfileProps> = ({
               <span>{t('labels.email')}</span>
             </label>
             <Field
-              placeholder={t('placeholders.email')}
               type="email"
               id="email"
               name="email"

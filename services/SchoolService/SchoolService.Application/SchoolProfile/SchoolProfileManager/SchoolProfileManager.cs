@@ -1,4 +1,6 @@
-﻿namespace SchoolService.Application.SchoolProfile.SchoolProfileManager;
+﻿using Exception = System.Exception;
+
+namespace SchoolService.Application.SchoolProfile.SchoolProfileManager;
 
 public class SchoolProfileManager : ISchoolProfileManager
 {
@@ -269,10 +271,36 @@ public class SchoolProfileManager : ISchoolProfileManager
             .Include(profile => profile.School)
             .Include(profile => profile.Group)
             .Include(profile => profile.ClassTeacherGroup)
-            .Include(profile => profile.Children)
-            .Include(profile => profile.Parents)
             .Where(profile => profile.UserId == userId)
             .ToListAsync();
+
+        foreach (var profile in profiles.Where(p => p.Type is SchoolProfileType.Parent or SchoolProfileType.Student))
+        {
+            if (profile.Type == SchoolProfileType.Student)
+            {
+                var parents = await _queryContext.SchoolProfiles
+                    .Include(p => p.Children)
+                    .Where(p => p.Type == SchoolProfileType.Parent)
+                    .ToListAsync(CancellationToken.None);
+
+                profile.Parents = parents
+                    .Where(p => p.Children != null &&
+                                p.Children.Any(child => child.Id == profile.Id))
+                    .ToList();
+            }
+            else
+            {
+                var children = await _queryContext.SchoolProfiles
+                    .Include(p => p.Parents)
+                    .Where(p => p.Type == SchoolProfileType.Student)
+                    .ToListAsync(CancellationToken.None);
+
+                profile.Children = children
+                    .Where(p => p.Parents != null &&
+                                p.Parents.Any(parent => parent.Id == profile.Id))
+                    .ToList();
+            }
+        }
 
         var profileResponses = await MapToResponses(profiles);
         _memoryCache.Set(cacheKey, profileResponses);
@@ -363,11 +391,19 @@ public class SchoolProfileManager : ISchoolProfileManager
                         response.SchoolName = school?.Name;
                         break;
                     }
-                case { Type: SchoolProfileType.Student or SchoolProfileType.ClassTeacher }:
+                case { Type: SchoolProfileType.Student }:
                     {
                         var group = await _queryContext.Groups
                             .Include(group => group.School)
                             .FirstOrDefaultAsync(g => g.Id == entity.GroupId);
+                        response.SchoolName = group?.School.Name;
+                        break;
+                    }
+                case { Type: SchoolProfileType.ClassTeacher }:
+                    {
+                        var group = await _queryContext.Groups
+                            .Include(group => group.School)
+                            .FirstOrDefaultAsync(g => g.Id == entity.ClassTeacherGroupId);
                         response.SchoolName = group?.School.Name;
                         break;
                     }

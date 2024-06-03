@@ -43,6 +43,7 @@ global using SchoolService.Application.School.Queries.GetOneSchool;
 global using SchoolService.Application.SchoolProfile.Commands.ActivateSchoolProfile;
 global using SchoolService.Application.SchoolProfile.Commands.CreateParentInvitation;
 global using SchoolService.Application.SchoolProfile.Commands.CreateSchoolProfile;
+global using SchoolService.Application.SchoolProfile.Commands.DeleteSchoolProfile;
 global using SchoolService.Application.SchoolProfile.Commands.DeleteSchoolProfileImage;
 global using SchoolService.Application.SchoolProfile.Commands.SetSchoolProfileImage;
 global using SchoolService.Application.SchoolProfile.Models;

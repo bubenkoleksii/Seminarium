@@ -22,7 +22,18 @@ const ClassTeacherInfo: FC<ClassTeacherInfoProps> = ({ classTeacher }) => {
                      shadow-xl w-[300px] md:max-w-lg lg:max-w-lg xl:max-w-xl"
     >
       <div className="flex justify-center mt-3">
-        <CustomImage src={image} width={120} height={100} alt={''} />
+        <CustomImage src={image} width={50} height={50} alt={classTeacher.name} />
+
+        <h2 className="text-center text-xl font-semibold">
+          {t(`item.phone`)}: {classTeacher.name}
+        </h2>
+
+        <p className="mt-2 text-xs font-medium text-gray-600">
+          {t(`item.phone`)}: {classTeacher.phone || '-'}
+        </p>
+        <p className="mt-2 text-xs font-medium text-gray-600">
+          {t(`item.email`)}: {classTeacher.email || '-'}
+        </p>
       </div>
 
     </div>

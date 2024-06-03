@@ -20,6 +20,7 @@ import { CopyTextModal } from '@/components/modal';
 import { Button } from 'flowbite-react';
 import { useProfiles } from '@/features/user';
 import Link from 'next/link';
+import ClassTeacherInfo from '@/features/user/components/group/getOne/ClassTeacherInfo';
 
 interface GroupProps {
   id: string;
@@ -156,6 +157,8 @@ const Group: FC<GroupProps> = ({ id }) => {
     )
   }
 
+  console.log('data', data);
+
   const canModify = (activeProfile?.type === 'school_admin' &&
     activeProfile?.schoolId === data.schoolId) ||
     (activeProfile?.type === 'class_teacher' &&
@@ -225,7 +228,7 @@ const Group: FC<GroupProps> = ({ id }) => {
         <div className="lg:w-1/4 mt-4 lg:mt-0 flex flex-col justify-start">
           {data.classTeacher
             ? <>
-
+              <ClassTeacherInfo classTeacher={data.classTeacher} />
             </>
             :
             <>

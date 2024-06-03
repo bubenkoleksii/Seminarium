@@ -47,6 +47,9 @@ public class ApiMappingProfile : Profile
     {
         CreateMap<CreateSchoolProfileRequest, CreateSchoolProfileCommand>();
 
+        CreateMap<UpdateSchoolProfileRequest, UpdateSchoolCommand>()
+            .ForMember(command => command.Email, act => act.MapFrom(req => req.Email == null ? null : req.Email.ToLower()));
+
         CreateMap<SchoolProfileModelResponse, SchoolProfileResponse>();
     }
 

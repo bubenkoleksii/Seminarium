@@ -37,6 +37,8 @@ public class CoreMappingProfile : Profile
     {
         CreateMap<CreateSchoolProfileCommand, Domain.Entities.SchoolProfile>();
 
+        CreateMap<UpdateSchoolProfileCommand, Domain.Entities.SchoolProfile>();
+
         CreateMap<Domain.Entities.SchoolProfile, SchoolProfileModelResponse>();
     }
 

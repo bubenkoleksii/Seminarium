@@ -4,8 +4,8 @@ import { devtools } from 'zustand/middleware';
 import { immer } from 'zustand/middleware/immer';
 
 interface SchoolProfilesStore {
-  activeProfile: SchoolProfileResponse;
-  profiles: SchoolProfileResponse[];
+  activeProfile: SchoolProfileResponse | null;
+  profiles: SchoolProfileResponse[] | null;
   setProfiles: (profile: SchoolProfileResponse[]) => void;
   clear: () => void;
   changeActiveProfile: (id: string) => void;
@@ -16,7 +16,7 @@ export const useSchoolProfilesStore = create<SchoolProfilesStore>()(
     devtools(
       (set) => ({
         activeProfile: null,
-        profiles: [],
+        profiles: null,
         setProfiles: (profiles: SchoolProfileResponse[]) =>
           set((state) => {
             state.profiles = profiles;
@@ -24,16 +24,21 @@ export const useSchoolProfilesStore = create<SchoolProfilesStore>()(
           }),
         changeActiveProfile: (id: string) =>
           set((state) => {
-            state.profiles = state.profiles.map(
-              (profile) => (profile.isActive = profile.id === id),
-            );
-            state.activeProfile = state.profiles.find(
-              (profile) => profile.isActive,
-            );
+            const updatedProfiles = state.profiles.map((profile) => {
+              return {
+                ...profile,
+                isActive: profile.id === id,
+              };
+            });
+
+            return {
+              profiles: updatedProfiles,
+              activeProfile: updatedProfiles.find((profile) => profile.isActive),
+            };
           }),
         clear: () =>
           set((state) => {
-            state.profiles = [];
+            state.profiles = null;
             state.activeProfile = null;
           })
       }),

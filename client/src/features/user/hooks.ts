@@ -22,7 +22,7 @@ export const useProfiles = () => {
       setIsLoading(true);
       setIsError(false);
 
-      if (profilesStore.profiles.length > 0 && profilesStore.activeProfile) {
+      if (profilesStore.profiles) {
         setProfiles(profilesStore.profiles);
         setActiveProfile(profilesStore.activeProfile);
 

@@ -57,6 +57,10 @@ const SchoolProfile: FC<SchoolProfileProps> = ({ profile }) => {
         <CustomImage src={image} width={50} height={50} alt={profile.type} />
       </div>
 
+      <p className="mt-1 text-lg text-center font-bold">
+        {profile.name}
+      </p>
+
       <h2 className="text-center text-xl font-semibold">
         {t(`type.${profile.type}`)}
       </h2>

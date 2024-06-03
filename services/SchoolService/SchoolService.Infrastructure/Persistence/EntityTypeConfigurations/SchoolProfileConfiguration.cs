@@ -2,8 +2,6 @@
 
 public class SchoolProfileConfiguration : IEntityTypeConfiguration<SchoolProfile>
 {
-    private const string ParentChildTableName = "ParentChild";
-
     public void Configure(EntityTypeBuilder<SchoolProfile> builder)
     {
         builder.HasKey(profile => profile.Id);
@@ -62,28 +60,26 @@ public class SchoolProfileConfiguration : IEntityTypeConfiguration<SchoolProfile
 
     private static void AddParentChildrenRelationships(EntityTypeBuilder<SchoolProfile> builder)
     {
-        const string ParentKeyName = "ParentId";
-        const string ChildKeyName = "ChildId";
-
         builder.HasMany(p => p.Parents)
             .WithMany(c => c.Children)
-            .UsingEntity<Dictionary<string, object>>(
-                ParentChildTableName,
-                joinEntity => joinEntity
-                    .HasOne<SchoolProfile>()
+            .UsingEntity<ParentChild>(
+                j => j
+                    .HasOne(pc => pc.Parent)
                     .WithMany()
-                    .HasForeignKey(ParentKeyName)
+                    .HasForeignKey(pc => pc.ParentId)
                     .OnDelete(DeleteBehavior.SetNull),
-                joinEntity => joinEntity
-                    .HasOne<SchoolProfile>()
+                j => j
+                    .HasOne(pc => pc.Child)
                     .WithMany()
-                    .HasForeignKey(ChildKeyName)
+                    .HasForeignKey(pc => pc.ChildId)
                     .OnDelete(DeleteBehavior.SetNull),
-                joinEntity =>
+                j =>
                 {
-                    joinEntity.Property<Guid?>(ParentKeyName).IsRequired(false);
-                    joinEntity.Property<Guid?>(ChildKeyName).IsRequired(false);
-                    joinEntity.HasNoKey();
+                    j.ToTable(nameof(ParentChild));
+                    j.HasKey(x => x.Id);
+                    j.Property(x => x.Id).ValueGeneratedOnAdd();
+                    j.Property(x => x.ParentId).IsRequired(false);
+                    j.Property(x => x.ChildId).IsRequired(false);
                 }
             );
 

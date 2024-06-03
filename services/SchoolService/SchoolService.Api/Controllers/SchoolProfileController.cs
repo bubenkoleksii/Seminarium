@@ -1,6 +1,4 @@
-﻿using SchoolService.Application.SchoolProfile.Commands.DeleteSchoolProfile;
-
-namespace SchoolService.Api.Controllers;
+﻿namespace SchoolService.Api.Controllers;
 
 public class SchoolProfileController(IMapper mapper, IOptions<Shared.Contracts.Options.FileOptions> fileOptions) : BaseController
 {
@@ -40,6 +38,30 @@ public class SchoolProfileController(IMapper mapper, IOptions<Shared.Contracts.O
             return ErrorActionResultHandler.Handle(new InvalidError("user_role"));
 
         var command = mapper.Map<CreateSchoolProfileCommand>(request);
+        command.UserId = (Guid)userId;
+
+        var result = await Mediator.Send(command);
+
+        return result.Match(
+            Left: modelResponse => CreatedAtAction(nameof(Create), mapper.Map<SchoolProfileResponse>(modelResponse)),
+            Right: ErrorActionResultHandler.Handle
+        );
+    }
+
+    [Authorize(Roles = Constants.UserRole)]
+    [HttpPut("[action]/")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SchoolResponse))]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> Update([FromBody] UpdateSchoolProfileRequest schoolProfileRequest)
+    {
+        var userId = User.Identity?.GetId();
+        var userRole = User.Identity?.GetRole();
+
+        if (userId is null || userRole is null)
+            return ErrorActionResultHandler.Handle(new InvalidError("user"));
+
+        var command = mapper.Map<UpdateSchoolCommand>(schoolProfileRequest);
         command.UserId = (Guid)userId;
 
         var result = await Mediator.Send(command);

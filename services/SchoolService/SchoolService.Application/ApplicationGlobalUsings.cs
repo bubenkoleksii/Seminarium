@@ -30,6 +30,7 @@ global using SchoolService.Application.School.Commands.UpdateSchool;
 global using SchoolService.Application.School.Common;
 global using SchoolService.Application.School.Models;
 global using SchoolService.Application.SchoolProfile.Commands.CreateSchoolProfile;
+global using SchoolService.Application.SchoolProfile.Commands.UpdateSchoolProfile;
 global using SchoolService.Application.SchoolProfile.Common.Invitation;
 global using SchoolService.Application.SchoolProfile.Models;
 global using SchoolService.Application.SchoolProfile.Models.Serialization;
