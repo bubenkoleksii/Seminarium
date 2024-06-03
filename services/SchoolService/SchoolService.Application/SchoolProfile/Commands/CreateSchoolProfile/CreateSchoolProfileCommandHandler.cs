@@ -41,12 +41,44 @@ public class CreateSchoolProfileCommandHandler : IRequestHandler<CreateSchoolPro
         if (existedProfiles.Count >= profilesMaxCount)
             return new InvalidError("max_profiles_count");
 
+        if (invitation.Type == SchoolProfileType.Parent)
+        {
+            var (parentProfile, isNew) = await _schoolProfileManager.CreateParentProfileOrAddChild(invitation, request);
+
+            if (parentProfile.IsRight)
+            {
+                Log.Error("An error occurred while building school profile with values {@Request}.", request);
+                return (Error)parentProfile;
+            }
+
+            if (isNew)
+                existedProfiles.ForEach(p => p.IsActive = false);
+            else
+                existedProfiles.ForEach(p => p.IsActive = p.Id != ((Domain.Entities.SchoolProfile)parentProfile).Id);
+
+            _commandContext.SchoolProfiles.UpdateRange(existedProfiles);
+
+            try
+            {
+                await _commandContext.SaveChangesAsync(cancellationToken);
+            }
+            catch (Exception exception)
+            {
+                Log.Error(exception, "An error occurred while saving school parent profile with values {@Profile}.", (Domain.Entities.SchoolProfile)parentProfile);
+            }
+
+            var currentParentProfile = await _schoolProfileManager.CacheProfiles(request.UserId, ((Domain.Entities.SchoolProfile)parentProfile).Id);
+            if (currentParentProfile is null)
+                return new InvalidError("user");
+
+            return currentParentProfile;
+        }
+
         var profile = invitation.Type switch
         {
             SchoolProfileType.SchoolAdmin => await _schoolProfileManager.CreateSchoolAdminProfile(invitation, request),
             SchoolProfileType.Teacher => await _schoolProfileManager.CreateTeacherProfile(invitation, request),
             SchoolProfileType.Student => await _schoolProfileManager.CreateStudentProfile(invitation, request),
-            SchoolProfileType.Parent => await _schoolProfileManager.CreateParentProfileOrAddChild(invitation, request),
             SchoolProfileType.ClassTeacher => await _schoolProfileManager.CreateClassTeacherProfile(invitation, request),
             _ => new InvalidError("type")
         };
@@ -60,10 +92,10 @@ public class CreateSchoolProfileCommandHandler : IRequestHandler<CreateSchoolPro
         existedProfiles.ForEach(p => p.IsActive = false);
 
         _commandContext.SchoolProfiles.UpdateRange(existedProfiles);
-        await _commandContext.SchoolProfiles.AddAsync((Domain.Entities.SchoolProfile)profile, cancellationToken);
 
         try
         {
+            await _commandContext.SchoolProfiles.AddAsync((Domain.Entities.SchoolProfile)profile, cancellationToken);
             await _commandContext.SaveChangesAsync(cancellationToken);
         }
         catch (Exception exception)

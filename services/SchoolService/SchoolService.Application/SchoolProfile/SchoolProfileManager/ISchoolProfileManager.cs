@@ -10,7 +10,7 @@ public interface ISchoolProfileManager
 
     public Task<Either<Domain.Entities.SchoolProfile, Error>> CreateStudentProfile(Invitation invitation, CreateSchoolProfileCommand command);
 
-    public Task<Either<Domain.Entities.SchoolProfile, Error>> CreateParentProfileOrAddChild(Invitation invitation, CreateSchoolProfileCommand command);
+    public Task<(Either<Domain.Entities.SchoolProfile, Error> Result, bool IsNew)> CreateParentProfileOrAddChild(Invitation invitation, CreateSchoolProfileCommand command);
 
     public Task<SchoolProfileModelResponse?> CacheProfiles(Guid userId, Guid currentProfileId);
 

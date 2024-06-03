@@ -159,26 +159,26 @@ public class SchoolProfileManager : ISchoolProfileManager
         return profile;
     }
 
-    public async Task<Either<Domain.Entities.SchoolProfile, Error>> CreateParentProfileOrAddChild
+    public async Task<(Either<Domain.Entities.SchoolProfile, Error> Result, bool IsNew)> CreateParentProfileOrAddChild
         (Invitation invitation, CreateSchoolProfileCommand command)
     {
         if (DateTime.UtcNow > invitation.Expired)
-            return new InvalidError("invitation");
+            return (new InvalidError("invitation"), false);
 
-        var child = await _queryContext.SchoolProfiles.FindAsync(invitation.SourceId);
+        var child = await _commandContext.SchoolProfiles.FindAsync(invitation.SourceId);
         if (child is null)
-            return new InvalidError("child_id");
+            return (new InvalidError("child_id"), false);
+        child.Parents ??= new List<Domain.Entities.SchoolProfile>();
 
         var existedParent = await _queryContext.SchoolProfiles
             .Include(p => p.Children)
             .FirstOrDefaultAsync(p => p.Id == command.UserId);
 
         if (existedParent is { Children: { } } && existedParent.Children.Contains(child))
-            return new AlreadyExistsError("child")
+            return (new AlreadyExistsError("child")
             {
                 Params = new List<string>(2) { "child_id" }
-            };
-
+            }, false);
 
         if (existedParent == null)
         {
@@ -187,19 +187,41 @@ public class SchoolProfileManager : ISchoolProfileManager
             );
 
             var profile = _mapper.Map<Domain.Entities.SchoolProfile>(command);
-            profile.Children = new List<Domain.Entities.SchoolProfile>(1) { child };
+
             profile.Type = invitation.Type;
             profile.IsActive = true;
             profile.Data = serializationData;
 
-            return profile;
+            await _commandContext.SchoolProfiles.AddAsync(profile);
+            await _commandContext.SaveChangesAsync(CancellationToken.None);
+
+            profile.Children ??= new List<Domain.Entities.SchoolProfile>();
+            profile.Children.Add(child);
+            child.Parents.Add(profile);
+
+            try
+            {
+                await _commandContext.SaveChangesAsync(CancellationToken.None);
+            }
+            catch (Exception exception)
+            {
+                Log.Error(exception, "An error occurred while saving school parent profile with values {@Profile}.", profile);
+            }
+
+
+            return (profile, true);
         }
 
         existedParent.Children ??= new List<Domain.Entities.SchoolProfile>();
+
         existedParent.Children.Add(child);
+        child.Parents.Add(existedParent);
+
         existedParent.IsActive = true;
 
-        return existedParent;
+        await _commandContext.SaveChangesAsync(CancellationToken.None);
+
+        return (existedParent, false);
     }
 
     public async Task<SchoolProfileModelResponse?> CacheProfiles(Guid userId, Guid currentProfileId)

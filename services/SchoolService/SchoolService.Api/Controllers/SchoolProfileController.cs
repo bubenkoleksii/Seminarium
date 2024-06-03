@@ -1,6 +1,4 @@
-﻿using SchoolService.Application.SchoolProfile.Commands.ActivateSchoolProfile;
-
-namespace SchoolService.Api.Controllers;
+﻿namespace SchoolService.Api.Controllers;
 
 public class SchoolProfileController(IMapper mapper, IOptions<Shared.Contracts.Options.FileOptions> fileOptions) : BaseController
 {
@@ -51,8 +49,33 @@ public class SchoolProfileController(IMapper mapper, IOptions<Shared.Contracts.O
     }
 
     [Authorize(Roles = Constants.UserRole)]
+    [HttpPost("[action]/")]
+    [ProfileIdentify([Constants.SchoolAdmin, Constants.ClassTeacher, Constants.Student], true)]
+    [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(string))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> ParentInvitation([FromBody] CreateParentInvitationRequest request)
+    {
+        var userId = User.Identity?.GetId();
+        var userRole = User.Identity?.GetRole();
+
+        if (userId is null)
+            return ErrorActionResultHandler.Handle(new InvalidError("user_id"));
+
+        if (userRole is null)
+            return ErrorActionResultHandler.Handle(new InvalidError("user_role"));
+
+        var query = new CreateParentInvitationCommand(request.ChildId, (Guid)userId);
+
+        var result = await Mediator.Send(query);
+        return result.Match(
+            Left: response => CreatedAtAction(nameof(Create), response),
+            Right: ErrorActionResultHandler.Handle
+        );
+    }
+
+    [Authorize(Roles = Constants.UserRole)]
     [HttpPatch("[action]/{id}")]
-    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SchoolProfileResponse))]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(string))]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Activate(Guid id)
     {
