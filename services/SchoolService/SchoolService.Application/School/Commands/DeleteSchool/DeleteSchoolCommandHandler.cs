@@ -38,7 +38,7 @@ public class DeleteSchoolCommandHandler : IRequestHandler<DeleteSchoolCommand, O
         }
         catch (Exception exception)
         {
-            Log.Error(exception, "An error occurred while archiving the school with ID {@SchoolId}.", request.Id);
+            Log.Error(exception, "An error occurred while deleting the school with ID {@SchoolId}.", request.Id);
 
             return new InvalidDatabaseOperationError("school");
         }

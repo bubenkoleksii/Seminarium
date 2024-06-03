@@ -62,20 +62,30 @@ public class SchoolProfileConfiguration : IEntityTypeConfiguration<SchoolProfile
 
     private static void AddParentChildrenRelationships(EntityTypeBuilder<SchoolProfile> builder)
     {
+        const string ParentKeyName = "ParentId";
+        const string ChildKeyName = "ChildId";
+
         builder.HasMany(p => p.Parents)
             .WithMany(c => c.Children)
             .UsingEntity<Dictionary<string, object>>(
                 ParentChildTableName,
-                j => j
+                joinEntity => joinEntity
                     .HasOne<SchoolProfile>()
                     .WithMany()
-                    .HasForeignKey("ParentId")
+                    .HasForeignKey(ParentKeyName)
                     .OnDelete(DeleteBehavior.SetNull),
-                j => j
+                joinEntity => joinEntity
                     .HasOne<SchoolProfile>()
                     .WithMany()
-                    .HasForeignKey("ChildId")
-                    .OnDelete(DeleteBehavior.SetNull)
+                    .HasForeignKey(ChildKeyName)
+                    .OnDelete(DeleteBehavior.SetNull),
+                joinEntity =>
+                {
+                    joinEntity.Property<Guid?>(ParentKeyName).IsRequired(false);
+                    joinEntity.Property<Guid?>(ChildKeyName).IsRequired(false);
+                    joinEntity.HasNoKey();
+                }
             );
+
     }
 }

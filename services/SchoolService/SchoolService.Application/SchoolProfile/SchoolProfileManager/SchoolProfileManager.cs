@@ -226,6 +226,7 @@ public class SchoolProfileManager : ISchoolProfileManager
 
     public async Task<SchoolProfileModelResponse?> CacheProfiles(Guid userId, Guid currentProfileId)
     {
+        ClearCache(userId);
         var cacheKey = GetCacheKey(userId);
 
         var userProfiles = await _commandContext.SchoolProfiles
@@ -248,8 +249,6 @@ public class SchoolProfileManager : ISchoolProfileManager
 
     public async Task<IEnumerable<SchoolProfileModelResponse>?> GetProfiles(Guid userId)
     {
-        ClearCache(userId);
-
         var cacheKey = GetCacheKey(userId);
 
         if (_memoryCache.TryGetValue(cacheKey, out List<SchoolProfileModelResponse>? cachedProfiles))

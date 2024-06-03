@@ -1,4 +1,6 @@
-﻿namespace SchoolService.Api.Controllers;
+﻿using SchoolService.Application.SchoolProfile.Commands.DeleteSchoolProfile;
+
+namespace SchoolService.Api.Controllers;
 
 public class SchoolProfileController(IMapper mapper, IOptions<Shared.Contracts.Options.FileOptions> fileOptions) : BaseController
 {
@@ -150,6 +152,31 @@ public class SchoolProfileController(IMapper mapper, IOptions<Shared.Contracts.O
             return ErrorActionResultHandler.Handle(new InvalidError("user_role"));
 
         var command = new DeleteSchoolProfileImageCommand(id, (Guid)userId);
+
+        var result = await Mediator.Send(command);
+
+        return result.Match(
+            None: Accepted,
+            Some: ErrorActionResultHandler.Handle);
+    }
+
+    [Authorize(Roles = Constants.UserRole)]
+    [HttpDelete("[action]/{id}")]
+    [ProducesResponseType(StatusCodes.Status202Accepted)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> Delete(Guid id)
+    {
+        var userId = User.Identity?.GetId();
+        var userRole = User.Identity?.GetRole();
+
+        if (userId is null)
+            return ErrorActionResultHandler.Handle(new InvalidError("user_id"));
+
+        if (userRole is null)
+            return ErrorActionResultHandler.Handle(new InvalidError("user_role"));
+
+        var command = new DeleteSchoolProfileCommand(id, (Guid)userId);
 
         var result = await Mediator.Send(command);
 
