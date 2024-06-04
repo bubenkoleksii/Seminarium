@@ -21,7 +21,7 @@ public class DeleteGroupImageCommandHandler : IRequestHandler<DeleteGroupImageCo
         if (entity is null)
             return new NotFoundByIdError(request.GroupId, "group");
 
-        var deletingResult = await _filesManager.DeleteImageIfExists(entity.Img);
+        var deletingResult = await _filesManager.DeleteFileIfExists(entity.Img);
         if (deletingResult.IsSome)
         {
             Log.Error("An error occurred while deleting image for the group with values {@GroupId} {@FileName}.", entity.Id, entity.Img);

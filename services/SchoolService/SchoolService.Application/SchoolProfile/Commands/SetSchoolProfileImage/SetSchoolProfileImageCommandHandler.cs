@@ -20,7 +20,7 @@ public class SetSchoolProfileImageCommandHandler : IRequestHandler<SetSchoolProf
         if (entity is null)
             return new NotFoundByIdError(request.SchoolProfileId, "school_profile");
 
-        var deletingResult = await _filesManager.DeleteImageIfExists(entity.Img);
+        var deletingResult = await _filesManager.DeleteFileIfExists(entity.Img);
         if (deletingResult.IsSome)
         {
             Log.Error("An error occurred while deleting the profile image for the school with values {@SchoolProfileId} {@FileName}.", entity.Id, entity.Img);
@@ -28,7 +28,7 @@ public class SetSchoolProfileImageCommandHandler : IRequestHandler<SetSchoolProf
         }
 
         var newFileName = $"{Guid.NewGuid()}_school_profile_{request.Name}";
-        var uploadingResult = await _filesManager.UploadNewImage(request.Stream, newFileName, request.UrlExpirationInMin);
+        var uploadingResult = await _filesManager.UploadFile(request.Stream, newFileName, request.UrlExpirationInMin);
 
         if (uploadingResult.IsLeft)
         {

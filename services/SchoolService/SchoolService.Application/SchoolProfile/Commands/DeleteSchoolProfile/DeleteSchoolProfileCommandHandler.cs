@@ -61,7 +61,7 @@ public class DeleteSchoolProfileCommandHandler : IRequestHandler<DeleteSchoolPro
             return new InvalidDatabaseOperationError("school_profile");
         }
 
-        await _filesManager.DeleteImageIfExists(entity.Img);
+        await _filesManager.DeleteFileIfExists(entity.Img);
 
         if (profiles.Count > 2 && entity.IsActive)
         {

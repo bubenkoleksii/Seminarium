@@ -33,7 +33,7 @@ public class DeleteSchoolImageCommandHandler : IRequestHandler<DeleteSchoolImage
         if (entity is null)
             return new NotFoundByIdError(request.SchoolId, "school");
 
-        var deletingResult = await _filesManager.DeleteImageIfExists(entity.Img);
+        var deletingResult = await _filesManager.DeleteFileIfExists(entity.Img);
         if (deletingResult.IsSome)
         {
             Log.Error("An error occurred while deleting image for the school with values {@SchoolId} {@FileName}.", entity.Id, entity.Img);

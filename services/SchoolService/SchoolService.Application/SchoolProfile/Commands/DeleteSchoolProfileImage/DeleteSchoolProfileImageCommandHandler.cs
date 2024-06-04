@@ -21,7 +21,7 @@ public class DeleteSchoolProfileImageCommandHandler : IRequestHandler<DeleteScho
         if (entity is null)
             return new NotFoundByIdError(request.SchoolProfileId, "school_profile");
 
-        var deletingResult = await _filesManager.DeleteImageIfExists(entity.Img);
+        var deletingResult = await _filesManager.DeleteFileIfExists(entity.Img);
         if (deletingResult.IsSome)
         {
             Log.Error("An error occurred while deleting the profile image for the school profile with values {@SchoolProfileId} {@FileName}.", entity.Id, entity.Img);

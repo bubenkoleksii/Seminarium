@@ -60,13 +60,13 @@ public class SchoolController(IMapper mapper, IOptions<Shared.Contracts.Options.
         if (userId is null || userRole is null)
             return ErrorActionResultHandler.Handle(new InvalidError("user"));
 
-        var queryUserId = userRole == Constants.AdminRole ? null : userId;
-        var query = new CreateInvitationCommand(
+        var commandUserId = userRole == Constants.AdminRole ? null : userId;
+        var command = new CreateInvitationCommand(
             invitationRequest.SchoolId,
-            queryUserId
+            commandUserId
         );
 
-        var result = await Mediator.Send(query);
+        var result = await Mediator.Send(command);
         return result.Match(
             Left: response => CreatedAtAction(nameof(Create), response),
             Right: ErrorActionResultHandler.Handle

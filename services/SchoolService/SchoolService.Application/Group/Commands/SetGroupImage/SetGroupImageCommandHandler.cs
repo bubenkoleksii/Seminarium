@@ -21,7 +21,7 @@ public class SetGroupImageCommandHandler : IRequestHandler<SetGroupImageCommand,
         if (entity is null)
             return new NotFoundByIdError(request.GroupId, "group");
 
-        var deletingResult = await _filesManager.DeleteImageIfExists(entity.Img);
+        var deletingResult = await _filesManager.DeleteFileIfExists(entity.Img);
         if (deletingResult.IsSome)
         {
             Log.Error("An error occurred while deleting image for the group with values {@GroupId} {@FileName}.", entity.Id, entity.Img);
@@ -29,7 +29,7 @@ public class SetGroupImageCommandHandler : IRequestHandler<SetGroupImageCommand,
         }
 
         var newFileName = $"{Guid.NewGuid()}_group_{request.Name}";
-        var uploadingResult = await _filesManager.UploadNewImage(request.Stream, newFileName, request.UrlExpirationInMin);
+        var uploadingResult = await _filesManager.UploadFile(request.Stream, newFileName, request.UrlExpirationInMin);
 
         if (uploadingResult.IsLeft)
         {

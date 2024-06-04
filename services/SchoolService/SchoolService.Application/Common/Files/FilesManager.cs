@@ -12,7 +12,7 @@ public class FilesManager : IFilesManager
         _s3Options = s3Options.Value;
     }
 
-    public async Task<Either<FileSuccess, Error>> UploadNewImage(Stream stream, string fileName, int? urlExpirationInMin)
+    public async Task<Either<FileSuccess, Error>> UploadFile(Stream stream, string fileName, int? urlExpirationInMin)
     {
         var newFileRequest = urlExpirationInMin != null
             ? new SaveFileRequest(stream, fileName, _s3Options.Bucket, urlExpirationInMin.Value)
@@ -21,7 +21,7 @@ public class FilesManager : IFilesManager
         return await _s3Service.UploadOne(newFileRequest);
     }
 
-    public async Task<Option<Error>> DeleteImageIfExists(string? name)
+    public async Task<Option<Error>> DeleteFileIfExists(string? name)
     {
         if (name == null)
             return Option<Error>.None;
@@ -33,5 +33,16 @@ public class FilesManager : IFilesManager
             return (Error)deletingResult;
 
         return Option<Error>.None;
+    }
+
+    public Either<FileSuccess, Error> GetFile(string name)
+    {
+        var request = new GetFileRequest(name, _s3Options.Bucket);
+        var result = _s3Service.GetOne(request);
+
+        if (result.IsLeft)
+            return (FileSuccess)result;
+
+        return (Error)result;
     }
 }

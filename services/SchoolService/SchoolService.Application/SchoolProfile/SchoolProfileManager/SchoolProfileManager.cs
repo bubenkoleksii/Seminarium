@@ -12,16 +12,20 @@ public class SchoolProfileManager : ISchoolProfileManager
 
     private readonly IMapper _mapper;
 
+    private readonly IFilesManager _filesManager;
+
     public SchoolProfileManager(
         ICommandContext commandContext,
         IQueryContext queryContext,
         IMemoryCache memoryCache,
-        IMapper mapper)
+        IMapper mapper,
+        IFilesManager filesManager)
     {
         _commandContext = commandContext;
         _queryContext = queryContext;
         _memoryCache = memoryCache;
         _mapper = mapper;
+        _filesManager = filesManager;
     }
 
     public async Task<Either<Domain.Entities.SchoolProfile, Error>> CreateSchoolAdminProfile(
@@ -268,37 +272,60 @@ public class SchoolProfileManager : ISchoolProfileManager
             return cachedProfiles;
 
         var profiles = await _queryContext.SchoolProfiles
-            .Include(profile => profile.School)
-            .Include(profile => profile.Group)
-            .Include(profile => profile.ClassTeacherGroup)
             .Where(profile => profile.UserId == userId)
             .ToListAsync();
 
-        foreach (var profile in profiles.Where(p => p.Type is SchoolProfileType.Parent or SchoolProfileType.Student))
+        foreach (var profile in profiles)
         {
-            if (profile.Type == SchoolProfileType.Student)
+            switch (profile.Type)
             {
-                var parents = await _queryContext.SchoolProfiles
-                    .Include(p => p.Children)
-                    .Where(p => p.Type == SchoolProfileType.Parent)
-                    .ToListAsync(CancellationToken.None);
+                case SchoolProfileType.SchoolAdmin or SchoolProfileType.Teacher:
+                    {
+                        var school = await _queryContext.Schools.FindAsync(profile.SchoolId);
+                        profile.School = school;
+                        break;
+                    }
+                case SchoolProfileType.ClassTeacher:
+                    {
+                        var group = await _queryContext.Groups
+                            .Include(g => g.School)
+                            .FirstOrDefaultAsync(g => g.Id == profile.ClassTeacherGroupId);
+                        profile.Group = group;
+                        profile.School = group?.School;
+                        break;
+                    }
+                case SchoolProfileType.Student:
+                    {
+                        var group = await _queryContext.Groups
+                            .Include(g => g.School)
+                            .FirstOrDefaultAsync(g => g.Id == profile.GroupId);
+                        profile.Group = group;
+                        profile.School = group?.School;
 
-                profile.Parents = parents
-                    .Where(p => p.Children != null &&
-                                p.Children.Any(child => child.Id == profile.Id))
-                    .ToList();
-            }
-            else
-            {
-                var children = await _queryContext.SchoolProfiles
-                    .Include(p => p.Parents)
-                    .Where(p => p.Type == SchoolProfileType.Student)
-                    .ToListAsync(CancellationToken.None);
+                        var parents = await _queryContext.SchoolProfiles
+                            .Include(p => p.Children)
+                            .Where(p => p.Type == SchoolProfileType.Parent)
+                            .ToListAsync(CancellationToken.None);
 
-                profile.Children = children
-                    .Where(p => p.Parents != null &&
-                                p.Parents.Any(parent => parent.Id == profile.Id))
-                    .ToList();
+                        profile.Parents = parents
+                            .Where(p => p.Children != null &&
+                                        p.Children.Any(child => child.Id == profile.Id))
+                            .ToList();
+                        break;
+                    }
+                case SchoolProfileType.Parent:
+                    {
+                        var children = await _queryContext.SchoolProfiles
+                            .Include(p => p.Parents)
+                            .Where(p => p.Type == SchoolProfileType.Student)
+                            .ToListAsync(CancellationToken.None);
+
+                        profile.Children = children
+                            .Where(p => p.Parents != null &&
+                                        p.Parents.Any(parent => parent.Id == profile.Id))
+                            .ToList();
+                        break;
+                    }
             }
         }
 
@@ -382,6 +409,12 @@ public class SchoolProfileManager : ISchoolProfileManager
         foreach (var entity in entities)
         {
             var response = _mapper.Map<SchoolProfileModelResponse>(entity);
+
+            if (entity.Img is not null)
+            {
+                var image = _filesManager.GetFile(entity.Img);
+                response.Img = image.IsRight ? null : ((FileSuccess)image).Url;
+            }
 
             switch (entity)
             {

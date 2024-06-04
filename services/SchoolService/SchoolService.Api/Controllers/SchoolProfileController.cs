@@ -2,6 +2,32 @@
 
 public class SchoolProfileController(IMapper mapper, IOptions<Shared.Contracts.Options.FileOptions> fileOptions) : BaseController
 {
+    [Authorize]
+    [HttpGet("[action]/{id}")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<SchoolProfileResponse>))]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> GetOne(Guid id)
+    {
+        var userId = User.Identity?.GetId();
+        var userRole = User.Identity?.GetRole();
+
+        if (userId is null || userRole is null)
+            return ErrorActionResultHandler.Handle(new InvalidError("user"));
+
+        var queryUserId = userRole == Constants.AdminRole ? null : userId;
+        var query = new GetOneSchoolProfileQuery(
+            id,
+            queryUserId
+        );
+
+        var result = await Mediator.Send(query);
+
+        return result.Match(
+            Left: modelResponse => Ok(mapper.Map<SchoolProfileResponse>(modelResponse)),
+            Right: ErrorActionResultHandler.Handle
+        );
+    }
+
     [Authorize(Roles = Constants.UserRole)]
     [HttpGet("[action]/")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<SchoolProfileResponse>))]

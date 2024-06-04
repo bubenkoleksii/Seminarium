@@ -28,7 +28,7 @@ public class DeleteSchoolCommandHandler : IRequestHandler<DeleteSchoolCommand, O
         if (entity.JoiningRequest is not null)
             entity.JoiningRequest.School = null;
 
-        await _filesManager.DeleteImageIfExists(entity.Img);
+        await _filesManager.DeleteFileIfExists(entity.Img);
 
         _commandContext.Schools.Remove(entity);
 
