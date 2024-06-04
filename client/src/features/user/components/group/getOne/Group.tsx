@@ -21,6 +21,8 @@ import { Button } from 'flowbite-react';
 import { useProfiles } from '@/features/user';
 import Link from 'next/link';
 import ClassTeacherInfo from '@/features/user/components/group/getOne/ClassTeacherInfo';
+import { GroupStudents } from '@/features/user/components/group/getOne/GroupStudents';
+import { group } from '@/features/user/routes';
 
 interface GroupProps {
   id: string;
@@ -157,8 +159,6 @@ const Group: FC<GroupProps> = ({ id }) => {
     )
   }
 
-  console.log('data', data);
-
   const canModify = (activeProfile?.type === 'school_admin' &&
     activeProfile?.schoolId === data.schoolId) ||
     (activeProfile?.type === 'class_teacher' &&
@@ -194,27 +194,6 @@ const Group: FC<GroupProps> = ({ id }) => {
         />
       )}
 
-      <div className="mb-4 mt-2 flex w-[100%] justify-center">
-        <div className="w-[350px] flex justify-center">
-          <Button
-            onClick={() => {
-              setInvitationStudentCode(null);
-
-              generateStudentInvitation({
-                id: data.id,
-                schoolProfileId: activeProfile?.id,
-              });
-            }}
-            gradientMonochrome="pink"
-            size="md"
-          >
-            <span className="text-white">
-              {t('studentInvitationBtn')}
-            </span>
-          </Button>
-        </div>
-      </div>
-
       <div className="mt-4 mb-4 flex flex-col lg:flex-row items-center justify-center">
         <div className="lg:w-1/2 flex justify-center">
           <CustomImage
@@ -226,6 +205,10 @@ const Group: FC<GroupProps> = ({ id }) => {
         </div>
 
         <div className="lg:w-1/4 mt-4 lg:mt-0 flex flex-col justify-start">
+          <p className="color-gray-500 mr-1 text-sm text-center font-semibold lg:text-lg">
+            {t('classTeacher')}
+          </p>
+
           {data.classTeacher
             ? <>
               <ClassTeacherInfo classTeacher={data.classTeacher} />
@@ -236,26 +219,28 @@ const Group: FC<GroupProps> = ({ id }) => {
                 {t('labels.noClassTeacher')}
               </p>
 
-              <div className="mb-4 flex w-[100%] justify-center items-center">
-                <div className="w-[350px] mt-2 flex justify-center">
-                  <Button
-                    onClick={() => {
-                      setInvitationClassTeacherCode(null);
+              {canModify &&
+                <div className="mb-4 flex w-[100%] justify-center items-center">
+                  <div className="w-[350px] mt-2 flex justify-center">
+                    <Button
+                      onClick={() => {
+                        setInvitationClassTeacherCode(null);
 
-                      generateClassTeacherInvitation({
-                        id: data.id,
-                        schoolProfileId: activeProfile?.id,
-                      });
-                    }}
-                    gradientMonochrome="teal"
-                    size="md"
-                  >
+                        generateClassTeacherInvitation({
+                          id: data.id,
+                          schoolProfileId: activeProfile?.id,
+                        });
+                      }}
+                      gradientMonochrome="teal"
+                      size="md"
+                    >
                     <span className="text-white">
                       {t('classTeacherInvitationBtn')}
                     </span>
-                  </Button>
+                    </Button>
+                  </div>
                 </div>
-              </div>
+              }
 
               {invitationClassTeacherCode && (
                 <CopyTextModal
@@ -270,9 +255,34 @@ const Group: FC<GroupProps> = ({ id }) => {
         </div>
       </div>
 
-      <div className="w-[100%] mt-2 flex justify-center flex-col lg:flex-row">
+      <div className="w-[100%] mt-4 flex justify-center flex-col lg:flex-row">
         <GroupInfo group={data} />
       </div>
+
+      {canModify &&
+        <div className="mb-4 mt-2 pt-3 flex w-[100%] justify-center">
+          <div className="w-[350px] flex justify-center">
+            <Button
+              onClick={() => {
+                setInvitationStudentCode(null);
+
+                generateStudentInvitation({
+                  id: data.id,
+                  schoolProfileId: activeProfile?.id,
+                });
+              }}
+              gradientMonochrome="pink"
+              size="md"
+            >
+              <span className="text-white">
+                {t('studentInvitationBtn')}
+              </span>
+            </Button>
+          </div>
+        </div>
+      }
+
+      <GroupStudents students={data.students} />
 
       {canModify &&
         <div className={`mt-3 flex ${isPhone ? 'flex-col' : 'flex-row justify-center'}`}>

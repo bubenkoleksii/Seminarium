@@ -422,6 +422,7 @@ public class SchoolProfileManager : ISchoolProfileManager
                     {
                         var school = await _queryContext.Schools.FindAsync(entity.SchoolId);
                         response.SchoolName = school?.Name;
+                        response.SchoolId = school?.Id;
                         break;
                     }
                 case { Type: SchoolProfileType.Student }:
@@ -430,6 +431,7 @@ public class SchoolProfileManager : ISchoolProfileManager
                             .Include(group => group.School)
                             .FirstOrDefaultAsync(g => g.Id == entity.GroupId);
                         response.SchoolName = group?.School.Name;
+                        response.SchoolId = group?.School.Id;
                         break;
                     }
                 case { Type: SchoolProfileType.ClassTeacher }:
@@ -438,6 +440,7 @@ public class SchoolProfileManager : ISchoolProfileManager
                             .Include(group => group.School)
                             .FirstOrDefaultAsync(g => g.Id == entity.ClassTeacherGroupId);
                         response.SchoolName = group?.School.Name;
+                        response.SchoolId = group?.School.Id;
                         break;
                     }
             }

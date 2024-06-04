@@ -5,6 +5,10 @@ import { useNavStore } from '@/features/nav';
 import { useScrollOffset } from '@/shared/hooks';
 import { useProfiles } from '@/features/user';
 import { SchoolAdminContentTabs } from '@/features/user/components/sidebar/SchoolAdminContentTabs';
+import { StudentContentTabs } from '@/features/user/components/sidebar/StudentContentTabs';
+import { ParentContentTabs } from '@/features/user/components/sidebar/ParentContentTabs';
+import { ClassTeacherContentTabs } from '@/features/user/components/sidebar/ClassTeacherContentTabs';
+import { TeacherContentTabs } from '@/features/user/components/sidebar/TeacherContentTabs';
 
 const UserSidebar: FC = () => {
   const { activeProfile, isLoading: profilesLoading } = useProfiles();
@@ -14,6 +18,10 @@ const UserSidebar: FC = () => {
 
   const userContentTabs = {
     school_admin: <SchoolAdminContentTabs activeProfile={activeProfile} />,
+    student: <StudentContentTabs activeProfile={activeProfile} />,
+    teacher: <TeacherContentTabs activeProfile={activeProfile} />,
+    parent: <ParentContentTabs activeProfile={activeProfile} />,
+    class_teacher: <ClassTeacherContentTabs activeProfile={activeProfile} />
   };
   const contentTabs = userContentTabs[activeProfile?.type] || null;
 

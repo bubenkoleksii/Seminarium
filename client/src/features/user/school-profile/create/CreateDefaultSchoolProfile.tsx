@@ -45,6 +45,15 @@ const CreateDefaultSchoolProfile: FC<CreateDefaultSchoolProfileProps> = ({
     retry: userMutations.options.retry,
     onSuccess: (response) => {
       if (response && response.error) {
+        if (response.error.detail.includes('max_profiles_count')) {
+          toast.error(
+            t('max_profiles_count')
+          );
+
+          replace(`/${activeLocale}/u`);
+          return;
+        }
+
         const errorMessages = {
           400: t('badRequest'),
           409: t('alreadyExists'),
@@ -57,8 +66,9 @@ const CreateDefaultSchoolProfile: FC<CreateDefaultSchoolProfileProps> = ({
         clearSchoolProfiles();
 
         toast.success(t('createSuccess'), { duration: 1500 });
-        replace(`/${activeLocale}/u`);
       }
+
+      replace(`/${activeLocale}/u`);
     }
   });
 

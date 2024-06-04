@@ -44,6 +44,7 @@ public class GetOneSchoolProfileQueryHandler : IRequestHandler<GetOneSchoolProfi
                     var school = await _queryContext.Schools.FindAsync(entity.SchoolId);
 
                     schoolProfileResponse.SchoolName = school?.Name;
+                    schoolProfileResponse.SchoolId = school?.Id;
                     schoolProfileResponse.School = _mapper.Map<SchoolModelResponse>(school);
                     break;
                 }
@@ -54,6 +55,7 @@ public class GetOneSchoolProfileQueryHandler : IRequestHandler<GetOneSchoolProfi
                         .FirstOrDefaultAsync(g => g.Id == entity.GroupId, cancellationToken);
 
                     schoolProfileResponse.SchoolName = group?.School.Name;
+                    schoolProfileResponse.SchoolId = group?.School.Id;
                     schoolProfileResponse.School = _mapper.Map<SchoolModelResponse>(group?.School);
                     schoolProfileResponse.Group = _mapper.Map<GroupModelResponse>(group);
 
@@ -93,6 +95,7 @@ public class GetOneSchoolProfileQueryHandler : IRequestHandler<GetOneSchoolProfi
                         .FirstOrDefaultAsync(g => g.Id == entity.ClassTeacherGroupId, cancellationToken);
 
                     schoolProfileResponse.SchoolName = group?.School.Name;
+                    schoolProfileResponse.SchoolId = group?.School.Id;
                     schoolProfileResponse.School = _mapper.Map<SchoolModelResponse>(group?.School);
                     schoolProfileResponse.Group = _mapper.Map<GroupModelResponse>(group);
                     break;

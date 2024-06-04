@@ -275,61 +275,65 @@ const School: FC<SchoolProps> = ({ id }) => {
         <span className="text-purple-950 lg:text-2xl">{data.name}</span>
       </h6>
 
-      <div className="mb-4 flex w-[100%] justify-center">
-        <div className="w-[350px]">
-          <Button
-            onClick={() => {
-              setTeacherInvitationCode(null);
+      {activeProfile.type === 'school_admin' &&
+        <>
+          <div className="mb-4 flex w-[100%] justify-center">
+            <div className="w-[350px]">
+              <Button
+                onClick={() => {
+                  setTeacherInvitationCode(null);
 
-              generateTeacherInvitation({
-                id: data.id,
-                schoolProfileId: activeProfile?.id,
-              });
-            }}
-            gradientDuoTone="pinkToOrange"
-            size="md"
-          >
-            <span className="text-white">{t('invitation.labelTeacherModal')}</span>
-          </Button>
-        </div>
-      </div>
+                  generateTeacherInvitation({
+                    id: data.id,
+                    schoolProfileId: activeProfile?.id,
+                  });
+                }}
+                gradientDuoTone="pinkToOrange"
+                size="md"
+              >
+                <span className="text-white">{t('invitation.labelTeacherModal')}</span>
+              </Button>
+            </div>
+          </div>
+          
+          {teacherInvitationCode && (
+            <CopyTextModal
+              open={copyTeacherInvitationOpenModal}
+              label={t('invitation.labelTeacherModal')}
+              text={teacherInvitationCode}
+              onClose={handleCloseCopyTeacherInvitationModal}
+            />
+          )}
 
-      {teacherInvitationCode && (
-        <CopyTextModal
-          open={copyTeacherInvitationOpenModal}
-          label={t('invitation.labelTeacherModal')}
-          text={teacherInvitationCode}
-          onClose={handleCloseCopyTeacherInvitationModal}
-        />
-      )}
+          <div className="mb-4 flex w-[100%] justify-center">
+            <div className="w-[350px]">
+              <Button
+                onClick={() => {
+                  setInvitationCode(null);
 
-      <div className="mb-4 flex w-[100%] justify-center">
-        <div className="w-[350px]">
-          <Button
-            onClick={() => {
-              setInvitationCode(null);
+                  generateInvitation({
+                    id: data.id,
+                    schoolProfileId: activeProfile?.id,
+                  });
+                }}
+                gradientMonochrome="success"
+                size="md"
+              >
+                <span className="text-white">{t('invitation.labelBtn')}</span>
+              </Button>
+            </div>
+          </div>
 
-              generateInvitation({
-                id: data.id,
-                schoolProfileId: activeProfile?.id,
-              });
-            }}
-            gradientMonochrome="success"
-            size="md"
-          >
-            <span className="text-white">{t('invitation.labelBtn')}</span>
-          </Button>
-        </div>
-      </div>
-
-      {invitationCode && (
-        <CopyTextModal
-          open={copyInvitationOpenModal}
-          text={invitationCode}
-          label={t('invitation.labelModal')}
-          onClose={handleCloseCopyInvitationModal}
-        />
-      )}
+          {invitationCode && (
+            <CopyTextModal
+              open={copyInvitationOpenModal}
+              text={invitationCode}
+              label={t('invitation.labelModal')}
+              onClose={handleCloseCopyInvitationModal}
+            />
+          )}
+        </>
+      }
 
       <div className="flex items-center justify-center">
         <CustomImage

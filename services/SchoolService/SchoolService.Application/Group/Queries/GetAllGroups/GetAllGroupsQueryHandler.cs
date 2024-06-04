@@ -20,7 +20,8 @@ public class GetAllGroupsQueryHandler : IRequestHandler<GetAllGroupsQuery, Eithe
     public async Task<Either<GetAllGroupsModelResponse, Error>> Handle(GetAllGroupsQuery request, CancellationToken cancellationToken)
     {
         var profile = await _schoolProfileManager.GetActiveProfile(request.UserId);
-        if (profile is null || profile.Type is not SchoolProfileType.SchoolAdmin or SchoolProfileType.Teacher)
+        if (profile is null || profile.Type != SchoolProfileType.SchoolAdmin && profile.Type != SchoolProfileType.Teacher &&
+            profile.Type != SchoolProfileType.ClassTeacher)
             return new InvalidError("school_profile");
 
         var school = await _queryContext.Schools.FindAsync(profile.SchoolId);

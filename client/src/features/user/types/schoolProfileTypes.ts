@@ -27,7 +27,7 @@ export type SchoolProfileResponse = {
   studentAptitudes?: string;
   studentIsClassLeader?: boolean;
   studentIsIndividually?: boolean;
-  studentHealthGroup?: string;
+  studentHealthGroup?: 'main' | 'special' | 'free' | 'preparatory';
   parentAddress?: string;
   children?: SchoolProfileResponse[],
   parents?: SchoolProfileResponse[],
