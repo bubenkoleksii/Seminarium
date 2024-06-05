@@ -18,22 +18,25 @@ const GroupsItem: FC<GroupsItemProps> = ({ group }) => {
 
   return (
     <div
-      className="relative m-4 min-w-min max-w-md rounded-lg p-4
-                     shadow-xl w-[300px] md:max-w-lg lg:max-w-lg xl:max-w-xl"
+      className="relative m-4 w-[300px] min-w-min max-w-md rounded-lg
+                     p-4 shadow-xl md:max-w-lg lg:max-w-lg xl:max-w-xl"
     >
-      <div className="flex justify-center mt-3">
+      <div className="mt-3 flex justify-center">
         <CustomImage src={image} width={120} height={100} alt={group.name} />
       </div>
 
       <h2 className="text-center text-xl font-semibold">{group.name}</h2>
 
-      <p className="mt-2 text-sm text-center font-medium text-gray-600">
+      <p className="mt-2 text-center text-sm font-medium text-gray-600">
         {t(`labels.studyPeriodNumberShort`)}: {group.studyPeriodNumber}
       </p>
 
       <div className="mt-2 flex w-full flex-wrap justify-center gap-4 md:flex-nowrap">
-        <Button onClick={() => replace(`/${activeLocale}/u/groups/${group.id}`)}
-          gradientMonochrome="success" size="md">
+        <Button
+          onClick={() => replace(`/${activeLocale}/u/groups/${group.id}`)}
+          gradientMonochrome="success"
+          size="md"
+        >
           <span className="text-white">{t('detailsBtn')}</span>
         </Button>
       </div>

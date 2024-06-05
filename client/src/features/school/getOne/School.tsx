@@ -10,7 +10,7 @@ import {
   createInvitation,
   createTeacherInvitation,
   getOne,
-  remove
+  remove,
 } from '../api';
 import {
   removeSchoolRoute,
@@ -163,8 +163,10 @@ const School: FC<SchoolProps> = ({ id }) => {
   const [copyInvitationOpenModal, setCopyInvitationOpenModal] = useState(false);
   const [invitationCode, setInvitationCode] = useState<string>(null);
 
-  const [copyTeacherInvitationOpenModal, setCopyTeacherInvitationOpenModal] = useState(false);
-  const [teacherInvitationCode, setTeacherInvitationCode] = useState<string>(null);
+  const [copyTeacherInvitationOpenModal, setCopyTeacherInvitationOpenModal] =
+    useState(false);
+  const [teacherInvitationCode, setTeacherInvitationCode] =
+    useState<string>(null);
 
   const isPhone = useMediaQuery({ query: mediaQueries.phone });
 
@@ -227,7 +229,7 @@ const School: FC<SchoolProps> = ({ id }) => {
   };
   const handleCloseCopyTeacherInvitationModal = () => {
     setCopyTeacherInvitationOpenModal(false);
-  }
+  };
 
   const occupiedColor = getColorByStatus(data.areOccupied ? 'danger' : 'ok');
 
@@ -275,7 +277,7 @@ const School: FC<SchoolProps> = ({ id }) => {
         <span className="text-purple-950 lg:text-2xl">{data.name}</span>
       </h6>
 
-      {activeProfile.type === 'school_admin' &&
+      {activeProfile.type === 'school_admin' && (
         <>
           <div className="mb-4 flex w-[100%] justify-center">
             <div className="w-[350px]">
@@ -291,11 +293,13 @@ const School: FC<SchoolProps> = ({ id }) => {
                 gradientDuoTone="pinkToOrange"
                 size="md"
               >
-                <span className="text-white">{t('invitation.labelTeacherModal')}</span>
+                <span className="text-white">
+                  {t('invitation.labelTeacherModal')}
+                </span>
               </Button>
             </div>
           </div>
-          
+
           {teacherInvitationCode && (
             <CopyTextModal
               open={copyTeacherInvitationOpenModal}
@@ -333,7 +337,7 @@ const School: FC<SchoolProps> = ({ id }) => {
             />
           )}
         </>
-      }
+      )}
 
       <div className="flex items-center justify-center">
         <CustomImage

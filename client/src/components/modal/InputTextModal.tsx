@@ -16,13 +16,15 @@ const InputTextModal: FC<InputTextModalProps> = ({
   text,
   required = false,
   isTextarea = false,
-  onClose
+  onClose,
 }) => {
   const t = useTranslations('Modal');
   const [inputValue, setInputValue] = useState('');
   const [hasError, setHasError] = useState(false);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
     setInputValue(e.target.value);
     if (required && !e.target.value) {
       setHasError(true);
@@ -73,11 +75,9 @@ const InputTextModal: FC<InputTextModalProps> = ({
               )}
             </Label>
             {hasError && (
-              <p className="text-sm text-red-600">
-                {t('required')}
-              </p>
+              <p className="text-sm text-red-600">{t('required')}</p>
             )}
-            <div className="flex justify-center gap-4 mt-4">
+            <div className="mt-4 flex justify-center gap-4">
               <Button gradientMonochrome="failure" onClick={handleCancel}>
                 <span className="text-white">{t('disprove')}</span>
               </Button>

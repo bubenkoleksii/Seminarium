@@ -5,6 +5,7 @@ export const enum CurrentTab {
 }
 
 export const userQueries = {
+  getSchoolProfile: 'getSchoolProfile',
   getGroups: 'getAllGroups',
   getOneGroup: 'getOneGroup',
   options: {
@@ -15,10 +16,19 @@ export const userQueries = {
 export const userMutations = {
   activateProfile: 'activateProfile',
   createGroup: 'createGroup',
+  deleteProfile: 'deleteProfile',
   createClassTeacherInvitation: 'createClassTeacherInvitation',
+  createParentInvitation: 'createParentInvitation',
   createStudentInvitation: 'createStudentInvitation',
   createSchoolProfile: 'createSchoolProfile',
   options: {
     retry: 3,
   },
+};
+
+export const studentHealthGroups = {
+  free: 'free',
+  preparatory: 'preparatory',
+  special: 'special',
+  main: 'main',
 };

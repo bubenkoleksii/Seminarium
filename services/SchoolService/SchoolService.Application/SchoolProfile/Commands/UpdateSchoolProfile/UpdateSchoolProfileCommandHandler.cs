@@ -45,6 +45,7 @@ public class UpdateSchoolProfileCommandHandler : IRequestHandler<UpdateSchoolPro
                     return new InvalidError("lessons_per_cycle");
 
                 var teacherData = new TeacherSerializationData(
+                    request.TeacherSubjects,
                     request.TeacherExperience,
                     request.TeacherEducation,
                     request.TeacherQualification,

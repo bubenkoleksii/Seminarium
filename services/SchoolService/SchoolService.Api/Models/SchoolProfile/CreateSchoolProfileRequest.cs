@@ -11,6 +11,8 @@ public record CreateSchoolProfileRequest(
 
     string? Details,
 
+    string? TeacherSubjects,
+
     string? TeacherExperience,
 
     string? TeacherEducation,

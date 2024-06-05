@@ -10,7 +10,7 @@ import { SchoolProfileResponse } from '@/features/user/types/schoolProfileTypes'
 
 type ParentContentTabsProps = {
   activeProfile: SchoolProfileResponse;
-}
+};
 
 const ParentContentTabs: FC<ParentContentTabsProps> = ({ activeProfile }) => {
   const activeLocale = useLocale();
@@ -19,11 +19,7 @@ const ParentContentTabs: FC<ParentContentTabsProps> = ({ activeProfile }) => {
   const currentTab = useUserStore((state) => state.currentTab);
   const setSidebarOpen = useNavStore((store) => store.setSidebarOpen);
 
-  return (
-    <div>
-      qwerty
-    </div>
-  );
+  return <div>qwerty</div>;
 };
 
 export { ParentContentTabs };

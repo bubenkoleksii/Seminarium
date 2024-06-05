@@ -1,5 +1,6 @@
 export { UserProfile } from './components/UserProfile';
 export { UserSidebar } from './components/UserSidebar';
+export { SchoolProfileDetails } from './school-profile/getOne/SchoolProfileDetails';
 export { CreateDefaultSchoolProfile } from './school-profile/create/CreateDefaultSchoolProfile';
 export { CreateStudentSchoolProfile } from './school-profile/create/CreateStudentSchoolProfile';
 export { CreateTeacherSchoolProfile } from './school-profile/create/CreateTeacherSchoolProfile';

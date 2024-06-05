@@ -231,7 +231,11 @@ const Groups: FC<GroupsProps> = ({
         <div className="relative">
           <div className="flex flex-wrap justify-center">
             {data.entries.map((group, idx) => (
-              <GroupsItem key={idx} group={group} activeProfile={activeProfile} />
+              <GroupsItem
+                key={idx}
+                group={group}
+                activeProfile={activeProfile}
+              />
             ))}
           </div>
         </div>

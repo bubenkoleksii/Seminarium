@@ -5,13 +5,14 @@ import type { SchoolProfileResponse } from '@/features/user/types/schoolProfileT
 import { Button } from 'flowbite-react';
 import { getDefaultProfileImgByType } from '@/shared/helpers';
 import { CustomImage } from '@/components/custom-image';
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import { DateTime } from '@/components/date-time';
 import { activate } from '@/features/user/api/schoolProfilesApi';
 import { useMutation } from '@tanstack/react-query';
 import { userMutations } from '@/features/user/constants';
 import { useSchoolProfilesStore } from '@/features/user/store/schoolProfilesStore';
 import { toast } from 'react-hot-toast';
+import { useRouter } from 'next/navigation';
 
 interface SchoolProfileProps {
   profile: SchoolProfileResponse;
@@ -22,6 +23,9 @@ const SchoolProfile: FC<SchoolProfileProps> = ({ profile }) => {
   const changeActiveProfile = useSchoolProfilesStore(
     (store) => store.changeActiveProfile,
   );
+
+  const activeLocale = useLocale();
+  const { replace } = useRouter();
 
   const image = profile.img || getDefaultProfileImgByType(profile.type);
 
@@ -57,9 +61,7 @@ const SchoolProfile: FC<SchoolProfileProps> = ({ profile }) => {
         <CustomImage src={image} width={50} height={50} alt={profile.type} />
       </div>
 
-      <p className="mt-1 text-lg text-center font-bold">
-        {profile.name}
-      </p>
+      <p className="mt-1 text-center text-lg font-bold">{profile.name}</p>
 
       <h2 className="text-center text-xl font-semibold">
         {t(`type.${profile.type}`)}
@@ -92,16 +94,17 @@ const SchoolProfile: FC<SchoolProfileProps> = ({ profile }) => {
       </p>
 
       <div className="mt-2 flex w-full flex-wrap justify-center gap-4 md:flex-nowrap">
-        <Button gradientMonochrome="failure" size="xs">
-          <span className="text-white">{t('deleteBtn')}</span>
-        </Button>
-
-        <Button gradientMonochrome="success" size="xs">
-          <span className="text-white">{t('detailsBtn')}</span>
+        <Button onClick={() => replace(`/${activeLocale}/u/school-profile/${profile.id}`)}
+          gradientMonochrome="success" size="xs">
+          <span className="text-white">
+            {t('detailsBtn')}
+          </span>
         </Button>
 
         <Button gradientMonochrome="lime" size="xs">
-          <span>{t('updateBtn')}</span>
+          <span>
+            {t('updateBtn')}
+          </span>
         </Button>
       </div>
 

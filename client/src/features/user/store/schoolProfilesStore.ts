@@ -33,14 +33,16 @@ export const useSchoolProfilesStore = create<SchoolProfilesStore>()(
 
             return {
               profiles: updatedProfiles,
-              activeProfile: updatedProfiles.find((profile) => profile.isActive),
+              activeProfile: updatedProfiles.find(
+                (profile) => profile.isActive,
+              ),
             };
           }),
         clear: () =>
           set((state) => {
             state.profiles = null;
             state.activeProfile = null;
-          })
+          }),
       }),
       { name: 'School profiles store' },
     ),

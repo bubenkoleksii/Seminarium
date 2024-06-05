@@ -10,7 +10,7 @@ import { User, School, Home, ChevronsLeft, Users } from 'lucide-react';
 
 type TeacherContentTabsProps = {
   activeProfile: SchoolProfileResponse;
-}
+};
 
 const TeacherContentTabs: FC<TeacherContentTabsProps> = ({ activeProfile }) => {
   const activeLocale = useLocale();
@@ -44,6 +44,20 @@ const TeacherContentTabs: FC<TeacherContentTabsProps> = ({ activeProfile }) => {
         >
           <School
             color={`${currentTab === CurrentTab.School ? `#f9fafb` : `#3B0764`}`}
+            size={20}
+          />
+        </Link>
+      </Tooltip>
+
+      <Tooltip content={t('groups')} placement="right" style="light">
+        <Link
+          href={`/${activeLocale}/u/groups`}
+          className={`flex h-[50px] w-[50px] items-center justify-center 
+         ${currentTab === CurrentTab.Group ? `bg-purple-950` : `bg-gray-50 hover:bg-gray-200`} 
+         text-gray-800 transition duration-300`}
+        >
+          <Users
+            color={`${currentTab === CurrentTab.Group ? `#f9fafb` : `#3B0764`}`}
             size={20}
           />
         </Link>

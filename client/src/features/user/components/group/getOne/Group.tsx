@@ -7,8 +7,16 @@ import { useAuthRedirectByRole, useSetCurrentTab } from '@/shared/hooks';
 import { useRouter } from 'next/navigation';
 import { ApiResponse } from '@/shared/types';
 import { OneGroupResponse } from '@/features/user/types/groupTypes';
-import { CurrentTab, userMutations, userQueries } from '@/features/user/constants';
-import { createClassTeacherInvitation, createStudentInvitation, getOne } from '../../../api/groupsApi';
+import {
+  CurrentTab,
+  userMutations,
+  userQueries,
+} from '@/features/user/constants';
+import {
+  createClassTeacherInvitation,
+  createStudentInvitation,
+  getOne,
+} from '../../../api/groupsApi';
 import { Loader } from '@/components/loader';
 import { Error } from '@/components/error';
 import { GroupInfo } from '@/features/user/components/group/getOne/GroupInfo';
@@ -72,10 +80,12 @@ const Group: FC<GroupProps> = ({ id }) => {
           errorMessages[response.error.status] || t('labels.internal'),
         );
       } else {
-        setInvitationClassTeacherCode(response.replace(`/uk/`, `/${activeLocale}/`));
+        setInvitationClassTeacherCode(
+          response.replace(`/uk/`, `/${activeLocale}/`),
+        );
         setCopyClassTeacherInvitationOpenModal(true);
       }
-    }
+    },
   });
 
   const { mutate: generateStudentInvitation } = useMutation({
@@ -106,16 +116,22 @@ const Group: FC<GroupProps> = ({ id }) => {
         setInvitationStudentCode(response.replace(`/uk/`, `/${activeLocale}/`));
         setCopyStudentInvitationOpenModal(true);
       }
-    }
+    },
   });
 
   useSetCurrentTab(CurrentTab.Group);
 
-  const [copyClassTeacherInvitationOpenModal, setCopyClassTeacherInvitationOpenModal] = useState(false);
-  const [invitationClassTeacherCode, setInvitationClassTeacherCode] = useState<string>(null);
+  const [
+    copyClassTeacherInvitationOpenModal,
+    setCopyClassTeacherInvitationOpenModal,
+  ] = useState(false);
+  const [invitationClassTeacherCode, setInvitationClassTeacherCode] =
+    useState<string>(null);
 
-  const [copyStudentInvitationOpenModal, setCopyStudentInvitationOpenModal] = useState(false);
-  const [invitationStudentCode, setInvitationStudentCode] = useState<string>(null);
+  const [copyStudentInvitationOpenModal, setCopyStudentInvitationOpenModal] =
+    useState(false);
+  const [invitationStudentCode, setInvitationStudentCode] =
+    useState<string>(null);
 
   if (isLoading || isMutating || isUserLoading || profilesLoading) {
     return (
@@ -123,18 +139,16 @@ const Group: FC<GroupProps> = ({ id }) => {
         <h2 className="mb-4 text-center text-xl font-bold">
           {t('oneTitle')}
           <span
-            onClick={() =>
-              replace(`/${activeLocale}/u/groups`)
-            }
+            onClick={() => replace(`/${activeLocale}/u/groups`)}
             className="ml-2 cursor-pointer pt-1 text-sm text-purple-700 hover:text-red-700"
           >
-          {t('toMain')}
-        </span>
+            {t('toMain')}
+          </span>
         </h2>
 
         <Loader />
       </>
-    )
+    );
   } else {
     window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
   }
@@ -145,22 +159,21 @@ const Group: FC<GroupProps> = ({ id }) => {
         <h2 className="mb-4 text-center text-xl font-bold">
           {t('oneTitle')}
           <span
-            onClick={() =>
-              replace(`/${activeLocale}/u/groups`)
-            }
+            onClick={() => replace(`/${activeLocale}/u/groups`)}
             className="ml-2 cursor-pointer pt-1 text-sm text-purple-700 hover:text-red-700"
           >
-          {t('toMain')}
-        </span>
+            {t('toMain')}
+          </span>
         </h2>
 
         <Error error={data.error} />
       </>
-    )
+    );
   }
 
-  const canModify = (activeProfile?.type === 'school_admin' &&
-    activeProfile?.schoolId === data.schoolId) ||
+  const canModify =
+    (activeProfile?.type === 'school_admin' &&
+      activeProfile?.schoolId === data.schoolId) ||
     (activeProfile?.type === 'class_teacher' &&
       activeProfile?.groupId === data.id);
 
@@ -169,9 +182,7 @@ const Group: FC<GroupProps> = ({ id }) => {
       <h2 className="mb-4 text-center text-xl font-bold">
         {t('oneTitle')}
         <span
-          onClick={() =>
-          replace(`/${activeLocale}/u/groups`)
-        }
+          onClick={() => replace(`/${activeLocale}/u/groups`)}
           className="ml-2 cursor-pointer pt-1 text-sm text-purple-700 hover:text-red-700"
         >
           {t('toMain')}
@@ -194,8 +205,8 @@ const Group: FC<GroupProps> = ({ id }) => {
         />
       )}
 
-      <div className="mt-4 mb-4 flex flex-col lg:flex-row items-center justify-center">
-        <div className="lg:w-1/2 flex justify-center">
+      <div className="mb-4 mt-4 flex flex-col items-center justify-center lg:flex-row">
+        <div className="flex justify-center lg:w-1/2">
           <CustomImage
             src={data.img || `/group/group.png`}
             alt="Group image"
@@ -204,24 +215,24 @@ const Group: FC<GroupProps> = ({ id }) => {
           />
         </div>
 
-        <div className="lg:w-1/4 mt-4 lg:mt-0 flex flex-col justify-start">
-          <p className="color-gray-500 mr-1 text-sm text-center font-semibold lg:text-lg">
+        <div className="mt-4 flex flex-col justify-start lg:mt-0 lg:w-1/4">
+          <p className="color-gray-500 mr-1 text-center text-sm font-semibold lg:text-lg">
             {t('classTeacher')}
           </p>
 
-          {data.classTeacher
-            ? <>
+          {data.classTeacher ? (
+            <>
               <ClassTeacherInfo classTeacher={data.classTeacher} />
             </>
-            :
+          ) : (
             <>
-              <p className="text-red-900 text-center text-md">
+              <p className="text-md text-center text-red-900">
                 {t('labels.noClassTeacher')}
               </p>
 
-              {canModify &&
-                <div className="mb-4 flex w-[100%] justify-center items-center">
-                  <div className="w-[350px] mt-2 flex justify-center">
+              {canModify && (
+                <div className="mb-4 flex w-[100%] items-center justify-center">
+                  <div className="mt-2 flex w-[350px] justify-center">
                     <Button
                       onClick={() => {
                         setInvitationClassTeacherCode(null);
@@ -234,13 +245,13 @@ const Group: FC<GroupProps> = ({ id }) => {
                       gradientMonochrome="teal"
                       size="md"
                     >
-                    <span className="text-white">
-                      {t('classTeacherInvitationBtn')}
-                    </span>
+                      <span className="text-white">
+                        {t('classTeacherInvitationBtn')}
+                      </span>
                     </Button>
                   </div>
                 </div>
-              }
+              )}
 
               {invitationClassTeacherCode && (
                 <CopyTextModal
@@ -251,17 +262,17 @@ const Group: FC<GroupProps> = ({ id }) => {
                 />
               )}
             </>
-          }
+          )}
         </div>
       </div>
 
-      <div className="w-[100%] mt-4 flex justify-center flex-col lg:flex-row">
+      <div className="mt-4 flex w-[100%] flex-col justify-center lg:flex-row">
         <GroupInfo group={data} />
       </div>
 
-      {canModify &&
-        <div className="mb-4 mt-2 pt-3 flex w-[100%] justify-center">
-          <div className="w-[350px] flex justify-center">
+      {canModify && (
+        <div className="mb-4 mt-2 flex w-[100%] justify-center pt-3">
+          <div className="flex w-[350px] justify-center">
             <Button
               onClick={() => {
                 setInvitationStudentCode(null);
@@ -274,26 +285,23 @@ const Group: FC<GroupProps> = ({ id }) => {
               gradientMonochrome="pink"
               size="md"
             >
-              <span className="text-white">
-                {t('studentInvitationBtn')}
-              </span>
+              <span className="text-white">{t('studentInvitationBtn')}</span>
             </Button>
           </div>
         </div>
-      }
+      )}
 
       <GroupStudents students={data.students} />
 
-      {canModify &&
-        <div className={`mt-3 flex ${isPhone ? 'flex-col' : 'flex-row justify-center'}`}>
+      {canModify && (
+        <div
+          className={`mt-3 flex ${isPhone ? 'flex-col' : 'flex-row justify-center'}`}
+        >
           <div
             className={`flex pl-2 pr-2 pt-2 ${isPhone ? 'order-2 w-full' : 'w-1/3'} justify-center`}
           >
             <Button gradientMonochrome="failure" fullSized>
-              <Link
-                href={`/`}
-                className="text-white"
-              >
+              <Link href={`/`} className="text-white">
                 {t('deleteBtn')}
               </Link>
             </Button>
@@ -303,15 +311,11 @@ const Group: FC<GroupProps> = ({ id }) => {
             className={`flex pl-2 pr-2 pt-2 ${isPhone ? 'order-1 w-full' : 'w-1/3'} justify-center`}
           >
             <Button gradientMonochrome="lime" fullSized>
-              <Link
-                href={`/`}
-              >
-                {t('updateBtn')}
-              </Link>
+              <Link href={`/`}>{t('updateBtn')}</Link>
             </Button>
           </div>
         </div>
-      }
+      )}
     </div>
   );
 };

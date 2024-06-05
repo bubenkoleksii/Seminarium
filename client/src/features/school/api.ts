@@ -8,7 +8,8 @@ import {
   getOneSchoolRoute,
   updateSchoolRoute,
   imageRoute,
-  createInvitationRoute, createTeacherInvitationRoute,
+  createInvitationRoute,
+  createTeacherInvitationRoute,
 } from './constants';
 
 type GetOne = (id: string) => Promise<ApiResponse<SchoolResponse>>;
@@ -72,10 +73,13 @@ export const createInvitation: GenerateInvitation = ({ id, schoolProfileId }) =>
     schoolProfileId,
   );
 
-export const createTeacherInvitation: GenerateInvitation = ({ id, schoolProfileId }) =>
+export const createTeacherInvitation: GenerateInvitation = ({
+  id,
+  schoolProfileId,
+}) =>
   api.create(
     `${createTeacherInvitationRoute}`,
     { schoolId: id },
     false,
-    schoolProfileId
+    schoolProfileId,
   );

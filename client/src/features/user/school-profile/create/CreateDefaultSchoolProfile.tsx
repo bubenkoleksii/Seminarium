@@ -32,7 +32,7 @@ const CreateDefaultSchoolProfile: FC<CreateDefaultSchoolProfileProps> = ({
   const { data: userData, status: userStatus } = useSession();
   const v = useTranslations('Validation');
   const t = useTranslations('SchoolProfile');
-  const clearSchoolProfiles = useSchoolProfilesStore(store => store.clear);
+  const clearSchoolProfiles = useSchoolProfilesStore((store) => store.clear);
 
   const title = t(`create.${type}`);
 
@@ -46,9 +46,7 @@ const CreateDefaultSchoolProfile: FC<CreateDefaultSchoolProfileProps> = ({
     onSuccess: (response) => {
       if (response && response.error) {
         if (response.error.detail.includes('max_profiles_count')) {
-          toast.error(
-            t('max_profiles_count')
-          );
+          toast.error(t('max_profiles_count'));
 
           replace(`/${activeLocale}/u`);
           return;
@@ -69,7 +67,7 @@ const CreateDefaultSchoolProfile: FC<CreateDefaultSchoolProfileProps> = ({
       }
 
       replace(`/${activeLocale}/u`);
-    }
+    },
   });
 
   const validationSchema = Yup.object().shape({
@@ -77,6 +75,7 @@ const CreateDefaultSchoolProfile: FC<CreateDefaultSchoolProfileProps> = ({
     phone: Yup.string().max(50, v('max')).matches(phoneRegExp, v('phone')),
     email: Yup.string().email(v('email')).max(250, v('max')),
     details: Yup.string().max(1024, v('max')),
+    parentAddress: Yup.string().max(250, v('max')),
   });
 
   if (isMutating || isUserLoading || userStatus === 'loading') {
@@ -118,7 +117,7 @@ const CreateDefaultSchoolProfile: FC<CreateDefaultSchoolProfileProps> = ({
       name: values.name,
       phone: values.phone,
       email: values.email,
-      details: values.details
+      details: values.details,
     };
 
     mutate(request);

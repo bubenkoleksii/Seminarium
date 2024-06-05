@@ -6,8 +6,8 @@ import { getDefaultProfileImgByType } from '@/shared/helpers';
 import { CustomImage } from '@/components/custom-image';
 
 type ClassTeacherInfoProps = {
-  classTeacher: SchoolProfileResponse
-}
+  classTeacher: SchoolProfileResponse;
+};
 
 const ClassTeacherInfo: FC<ClassTeacherInfoProps> = ({ classTeacher }) => {
   const t = useTranslations('SchoolProfile');
@@ -18,11 +18,16 @@ const ClassTeacherInfo: FC<ClassTeacherInfoProps> = ({ classTeacher }) => {
 
   return (
     <div
-      className="relative m-4 min-w-min max-w-md rounded-lg p-4
-                     shadow-xl w-[300px] md:max-w-lg lg:max-w-lg xl:max-w-xl"
+      className="relative m-4 w-[300px] min-w-min max-w-md rounded-lg
+                     p-4 shadow-xl md:max-w-lg lg:max-w-lg xl:max-w-xl"
     >
-      <div className="flex justify-center mt-3">
-        <CustomImage src={image} width={50} height={50} alt={classTeacher.name} />
+      <div className="mt-3 flex justify-center">
+        <CustomImage
+          src={image}
+          width={50}
+          height={50}
+          alt={classTeacher.name}
+        />
 
         <h2 className="text-center text-xl font-semibold">
           {t(`item.phone`)}: {classTeacher.name}
@@ -35,7 +40,6 @@ const ClassTeacherInfo: FC<ClassTeacherInfoProps> = ({ classTeacher }) => {
           {t(`item.email`)}: {classTeacher.email || '-'}
         </p>
       </div>
-
     </div>
   );
 };

@@ -72,7 +72,8 @@ public class SchoolProfileManager : ISchoolProfileManager
             return new AlreadyExistsError("class_teacher");
 
         var existedProfile = await _commandContext.SchoolProfiles
-            .Where(p => p.GroupId == group.Id && p.UserId == command.UserId)
+            .Where(p => p.GroupId == group.Id && p.UserId == command.UserId &&
+                        p.Type == SchoolProfileType.SchoolAdmin)
             .FirstOrDefaultAsync();
 
         if (existedProfile != null)
@@ -115,6 +116,7 @@ public class SchoolProfileManager : ISchoolProfileManager
         var profile = _mapper.Map<Domain.Entities.SchoolProfile>(command);
 
         var data = new TeacherSerializationData(
+            command.TeacherSubjects,
             command.TeacherExperience,
             command.TeacherEducation,
             command.TeacherQualification,
@@ -148,7 +150,8 @@ public class SchoolProfileManager : ISchoolProfileManager
             return new InvalidError("group_id");
 
         var existedProfile = await _commandContext.SchoolProfiles
-            .Where(p => p.GroupId == group.Id && p.UserId == command.UserId)
+            .Where(p => p.GroupId == group.Id && p.UserId == command.UserId &&
+                        p.Type == SchoolProfileType.Student)
             .FirstOrDefaultAsync();
 
         if (existedProfile != null)
@@ -462,6 +465,7 @@ public class SchoolProfileManager : ISchoolProfileManager
                 case { Type: SchoolProfileType.Teacher }:
                     {
                         var data = JsonConvert.DeserializeObject<TeacherSerializationData>(entity.Data);
+                        response.TeacherSubjects = data?.TeachersSubjects;
                         response.TeacherEducation = data?.TeachersEducation;
                         response.TeacherQualification = data?.TeachersQualification;
                         response.TeacherExperience = data?.TeachersExperience;

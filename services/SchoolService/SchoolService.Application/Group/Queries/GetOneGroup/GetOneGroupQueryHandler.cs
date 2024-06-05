@@ -51,9 +51,8 @@ public class GetOneGroupQueryHandler : IRequestHandler<GetOneGroupQuery, Either<
                 }
         }
 
-        group.Students = group.Students
-            .OrderByDescending(s => s.StudentIsClassLeader)
-            .ThenBy(s => s.Name)
+        group.Students = group.Students?
+            .OrderBy(s => s.Name)
             .ToList();
 
         var groupResponse = _mapper.Map<OneGroupModelResponse>(group);

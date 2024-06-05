@@ -28,19 +28,23 @@ export function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
 }
 
-type Status = 'approved' | 'ok' | 'rejected' | 'danger' |
-  'created' | 'main' | 'special' | 'free' | 'preparatory';
+type Status =
+  | 'approved'
+  | 'ok'
+  | 'rejected'
+  | 'danger'
+  | 'created'
+  | 'main'
+  | 'special'
+  | 'free'
+  | 'preparatory';
 
 export function getColorByStatus(status?: Status | null | string) {
-  if (status === 'approved' ||
-    status === 'ok' ||
-    status === 'main') {
+  if (status === 'approved' || status === 'ok' || status === 'main') {
     return `text-[#1A9B06FF]`;
   }
 
-  if (status === 'rejected' ||
-    status === 'danger' ||
-    status === 'free') {
+  if (status === 'rejected' || status === 'danger' || status === 'free') {
     return `text-[#C00210F2]`;
   }
 

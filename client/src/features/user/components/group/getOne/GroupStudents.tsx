@@ -7,7 +7,7 @@ import { GroupStudent } from '@/features/user/components/group/getOne/GroupStude
 
 type GroupStudentsProps = {
   students: SchoolProfileResponse[];
-}
+};
 
 const GroupStudents: FC<GroupStudentsProps> = ({ students }) => {
   const g = useTranslations('Group');
@@ -22,7 +22,7 @@ const GroupStudents: FC<GroupStudentsProps> = ({ students }) => {
           <p>{g('studentsNotFound')}</p>
         </div>
       </div>
-    )
+    );
   }
 
   return (
@@ -32,9 +32,9 @@ const GroupStudents: FC<GroupStudentsProps> = ({ students }) => {
       </h2>
 
       <div className="flex flex-wrap justify-center">
-        {students.map((student, idx) =>
+        {students.map((student, idx) => (
           <GroupStudent key={idx} student={student} />
-        )}
+        ))}
       </div>
     </div>
   );

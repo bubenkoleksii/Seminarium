@@ -63,7 +63,7 @@ public class DeleteSchoolProfileCommandHandler : IRequestHandler<DeleteSchoolPro
 
         await _filesManager.DeleteFileIfExists(entity.Img);
 
-        if (profiles.Count > 2 && entity.IsActive)
+        if (profiles.Count > 1 && entity.IsActive)
         {
             var newActiveProfile = profiles
                 .Where(p => p.Id != request.Id)

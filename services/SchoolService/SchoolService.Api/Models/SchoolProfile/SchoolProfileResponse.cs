@@ -38,6 +38,8 @@ public class SchoolProfileResponse
 
     public string? Details { get; set; }
 
+    public string? TeacherSubjects { get; set; }
+
     public string? TeacherExperience { get; set; }
 
     public string? TeacherEducation { get; set; }

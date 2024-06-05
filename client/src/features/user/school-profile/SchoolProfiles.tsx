@@ -1,7 +1,7 @@
 import { FC, useState } from 'react';
 import type { SchoolProfileResponse } from '@/features/user/types/schoolProfileTypes';
-import { SchoolProfile } from '@/features/user/components/profile/SchoolProfile';
-import { useLocale, useTranslations } from 'next-intl';
+import { SchoolProfile } from '@/features/user/school-profile/SchoolProfile';
+import { useTranslations } from 'next-intl';
 import { InputTextModal } from '@/components/modal/InputTextModal';
 import { Button } from 'flowbite-react';
 import { useRouter } from 'next/navigation';
@@ -18,7 +18,7 @@ const SchoolProfiles: FC<SchoolProfilesProps> = ({ profiles }) => {
   const [invitationCodeModalOpen, setInvitationCodeModalOpen] = useState(false);
   const handleInvitationCodeModalOpen = () => {
     setInvitationCodeModalOpen(true);
-  }
+  };
   const handleInvitationCodeModalClose = (confirmed: boolean, text: string) => {
     setInvitationCodeModalOpen(false);
 
@@ -33,7 +33,7 @@ const SchoolProfiles: FC<SchoolProfilesProps> = ({ profiles }) => {
     } else {
       replace(text);
     }
-  }
+  };
 
   if (!profiles || profiles.length === 0) {
     return (

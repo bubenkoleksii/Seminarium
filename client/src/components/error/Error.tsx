@@ -18,16 +18,18 @@ const errorComponents = {
 };
 
 const errorComponentsByMessage = {
-  'Unauthorized': <Unauthorized />,
-  'Forbidden': <Forbidden />,
+  Unauthorized: <Unauthorized />,
+  Forbidden: <Forbidden />,
   'Not Found': <NotFound />,
 };
 
 const Error: FC<ErrorProps> = ({ error }) => {
   const t = useTranslations('Error');
 
-  if (error?.detail?.includes('school_profile') ||
-    error?.detail?.includes('school_id')) {
+  if (
+    error?.detail?.includes('school_profile') ||
+    error?.detail?.includes('school_id')
+  ) {
     return <Forbidden message={t('invalid_school_profile')} />;
   }
 

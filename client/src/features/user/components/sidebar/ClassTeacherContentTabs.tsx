@@ -10,9 +10,11 @@ import { SchoolProfileResponse } from '@/features/user/types/schoolProfileTypes'
 
 type ClassTeacherContentTabsProps = {
   activeProfile: SchoolProfileResponse;
-}
+};
 
-const ClassTeacherContentTabs: FC<ClassTeacherContentTabsProps> = ({ activeProfile }) => {
+const ClassTeacherContentTabs: FC<ClassTeacherContentTabsProps> = ({
+  activeProfile,
+}) => {
   const activeLocale = useLocale();
   const t = useTranslations('UserContentTabs');
 
@@ -51,7 +53,7 @@ const ClassTeacherContentTabs: FC<ClassTeacherContentTabsProps> = ({ activeProfi
 
       <Tooltip content={t('group')} placement="right" style="light">
         <Link
-          href={`/${activeLocale}/u/groups/${activeProfile.groupId || activeProfile.group?.id}`}
+          href={`/${activeLocale}/u/groups/${activeProfile.classTeacherGroupId || activeProfile.classTeacherGroup?.id}`}
           className={`flex h-[50px] w-[50px] items-center justify-center 
          ${currentTab === CurrentTab.Group ? `bg-purple-950` : `bg-gray-50 hover:bg-gray-200`} 
          text-gray-800 transition duration-300`}

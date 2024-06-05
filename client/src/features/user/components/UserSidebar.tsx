@@ -21,7 +21,7 @@ const UserSidebar: FC = () => {
     student: <StudentContentTabs activeProfile={activeProfile} />,
     teacher: <TeacherContentTabs activeProfile={activeProfile} />,
     parent: <ParentContentTabs activeProfile={activeProfile} />,
-    class_teacher: <ClassTeacherContentTabs activeProfile={activeProfile} />
+    class_teacher: <ClassTeacherContentTabs activeProfile={activeProfile} />,
   };
   const contentTabs = userContentTabs[activeProfile?.type] || null;
 

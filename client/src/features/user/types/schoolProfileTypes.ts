@@ -11,6 +11,7 @@ export type SchoolProfileResponse = {
   groupId?: string;
   group?: GroupResponse;
   classTeacherGroupId?: string;
+  classTeacherGroup?: GroupResponse;
   isActive: boolean;
   createdAt: string;
   lastUpdatedAt?: string;
@@ -19,6 +20,7 @@ export type SchoolProfileResponse = {
   email?: string;
   img?: string;
   details?: string;
+  teacherSubjects?: string;
   teacherExperience?: string;
   teacherEducation?: string;
   teacherQualification?: string;
@@ -29,8 +31,8 @@ export type SchoolProfileResponse = {
   studentIsIndividually?: boolean;
   studentHealthGroup?: 'main' | 'special' | 'free' | 'preparatory';
   parentAddress?: string;
-  children?: SchoolProfileResponse[],
-  parents?: SchoolProfileResponse[],
+  children?: SchoolProfileResponse[];
+  parents?: SchoolProfileResponse[];
 };
 
 export type CreateSchoolProfileRequest = {
@@ -39,6 +41,7 @@ export type CreateSchoolProfileRequest = {
   phone?: string;
   email?: string;
   details?: string;
+  teacherSubjects?: string;
   teacherExperience?: string;
   teacherEducation?: string;
   teacherQualification?: string;
@@ -49,7 +52,6 @@ export type CreateSchoolProfileRequest = {
   studentIsIndividually?: boolean;
   studentHealthGroup?: string;
   parentAddress?: string;
-  parentRelationship?: string;
 };
 
 export type UpdateSchoolProfileRequest = {
@@ -58,6 +60,7 @@ export type UpdateSchoolProfileRequest = {
   phone?: string;
   email?: string;
   details?: string;
+  teacherSubjects?: string;
   teacherExperience?: string;
   teacherEducation?: string;
   teacherQualification?: string;

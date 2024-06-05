@@ -57,7 +57,7 @@ export const useProfiles = () => {
     profilesStore.setProfiles,
     profilesStore.changeActiveProfile,
     profilesStore,
-    activeProfile
+    activeProfile,
   ]);
 
   const currentProfile =

@@ -106,11 +106,12 @@ public class GetOneSchoolProfileQueryHandler : IRequestHandler<GetOneSchoolProfi
         {
             var profile = await _schoolProfileManager.GetActiveProfile(request.UserId.Value);
 
+            var isNotSameUser = profile?.UserId != schoolProfileResponse.UserId;
             var isNotSameSchool = schoolProfileResponse.School?.Id != profile?.School?.Id;
             var isNotParentAndChild = !(schoolProfileResponse.Children?.Any(c => c.Id == entity.Id) ?? false)
                                       && (!schoolProfileResponse.Parents?.Any(pa => pa.Id == entity.Id) ?? false);
 
-            if (profile is null || (isNotSameSchool && isNotParentAndChild))
+            if (profile is null || (isNotSameUser && isNotSameSchool && isNotParentAndChild))
                 return new InvalidError("school_profile");
         }
 
@@ -127,6 +128,7 @@ public class GetOneSchoolProfileQueryHandler : IRequestHandler<GetOneSchoolProfi
                 case { Type: SchoolProfileType.Teacher }:
                     {
                         var data = JsonConvert.DeserializeObject<TeacherSerializationData>(entity.Data);
+                        schoolProfileResponse.TeacherSubjects = data?.TeachersSubjects;
                         schoolProfileResponse.TeacherEducation = data?.TeachersEducation;
                         schoolProfileResponse.TeacherQualification = data?.TeachersQualification;
                         schoolProfileResponse.TeacherExperience = data?.TeachersExperience;

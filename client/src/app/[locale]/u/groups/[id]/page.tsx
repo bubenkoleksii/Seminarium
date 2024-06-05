@@ -4,8 +4,8 @@ import { Group } from '@/features/user';
 type GroupPageProps = {
   params: {
     id: string;
-  }
-}
+  };
+};
 
 const GroupPage: FC<GroupPageProps> = ({ params }) => {
   return (

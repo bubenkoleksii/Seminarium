@@ -6,7 +6,7 @@ import { useLocale, useTranslations } from 'next-intl';
 import { Loader } from '@/components/loader';
 import { Button } from 'flowbite-react';
 import { useProfiles } from '@/features/user/hooks';
-import { SchoolProfiles } from '@/features/user/components/profile/SchoolProfiles';
+import { SchoolProfiles } from '@/features/user/school-profile/SchoolProfiles';
 import { useIsMutating } from '@tanstack/react-query';
 import { useSchoolProfilesStore } from '@/features/user/store/schoolProfilesStore';
 import { routes } from '@/shared/constants';
