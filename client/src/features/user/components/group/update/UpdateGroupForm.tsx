@@ -1,7 +1,7 @@
 'use client';
 
 import styles from './UpdateGroupForm.module.scss';
-import { FC } from 'react';
+import { FC, useState } from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import type { UpdateGroupRequest } from '@/features/user/types/groupTypes';
@@ -10,29 +10,44 @@ import { useAuthRedirectByRole } from '@/shared/hooks';
 import { useProfiles } from '@/features/user';
 import { useRouter } from 'next/navigation';
 import { userMutations, userQueries } from '@/features/user/constants';
-import { useMutation, useQueryClient, useIsMutating } from '@tanstack/react-query';
-import { update } from '@/features/user/api/groupsApi';
+import {
+  useMutation,
+  useQueryClient,
+  useIsMutating,
+} from '@tanstack/react-query';
+import {
+  update,
+  updateImage,
+  removeImage,
+} from '@/features/user/api/groupsApi';
 import { toast } from 'react-hot-toast';
 import { Loader } from '@/components/loader';
 import { replaceEmptyStringsWithNull } from '@/shared/helpers';
+import { CustomImage } from '@/components/custom-image';
+import { UploadFile } from '@/components/file-upload';
+import { mediaQueries } from '@/shared/constants';
+import { useMediaQuery } from 'react-responsive';
+import { Button } from 'flowbite-react';
 
 type UpdateGroupFormProps = {
   id: string;
   group: UpdateGroupRequest;
-}
+};
 
-const UpdateGroupForm: FC<UpdateGroupFormProps> = ({
-  id,
-  group
-}) => {
+const UpdateGroupForm: FC<UpdateGroupFormProps> = ({ id, group }) => {
   const activeLocale = useLocale();
   const { replace } = useRouter();
   const v = useTranslations('Validation');
   const t = useTranslations('Group');
 
   const isMutating = useIsMutating();
-  const { isUserLoading, user } = useAuthRedirectByRole(activeLocale, 'userOnly');
+  const { isUserLoading, user } = useAuthRedirectByRole(
+    activeLocale,
+    'userOnly',
+  );
   const queryClient = useQueryClient();
+
+  const isPhone = useMediaQuery({ query: mediaQueries.phone });
 
   const { activeProfile, isLoading: profilesLoading } = useProfiles();
 
@@ -58,12 +73,9 @@ const UpdateGroupForm: FC<UpdateGroupFormProps> = ({
           403: v('forbidden'),
         };
 
-        toast.error(
-          errorMessages[response.error.status] || v('internal'),
-          {
-            duration: 6000,
-          },
-        );
+        toast.error(errorMessages[response.error.status] || v('internal'), {
+          duration: 6000,
+        });
       } else {
         toast.success(t('updateSuccess'), {
           duration: 2000,
@@ -71,12 +83,90 @@ const UpdateGroupForm: FC<UpdateGroupFormProps> = ({
 
         queryClient.invalidateQueries({
           queryKey: [userQueries.getOneGroup, id],
-      });
+        });
 
         const url = `/${activeLocale}/u/groups/${id}`;
         replace(url);
       }
-    }
+    },
+  });
+
+  const [img, setImg] = useState<string | null>(group.img);
+
+  const { mutate: imageMutate } = useMutation({
+    mutationFn: updateImage,
+    mutationKey: [userMutations.updateGroupImage, id],
+    onSuccess: (response) => {
+      if (response && response.error) {
+        if (
+          response.error.detail.includes('school_profile') ||
+          response.error.detail.includes('school_id')
+        ) {
+          toast.error(t('labels.invalid_school_profile'));
+
+          return;
+        }
+
+        const errorMessages = {
+          404: t('labels.updateNotFound'),
+          400: v('validation'),
+          401: v('unauthorized'),
+          403: v('forbidden'),
+        };
+
+        toast.error(errorMessages[response.error.status] || v('internal'), {
+          duration: 6000,
+        });
+      } else {
+        toast.success(t('updateImageSuccess'), {
+          duration: 2000,
+        });
+
+        queryClient.invalidateQueries({
+          queryKey: [userQueries.getOneGroup, id],
+        });
+
+        setImg(response.url);
+      }
+    },
+  });
+
+  const { mutate: imageDeleteMutate } = useMutation({
+    mutationFn: removeImage,
+    mutationKey: [userMutations.deleteGroupImage, id],
+    onSuccess: (response) => {
+      if (response && response.error) {
+        if (
+          response.error.detail.includes('school_profile') ||
+          response.error.detail.includes('school_id')
+        ) {
+          toast.error(t('labels.invalid_school_profile'));
+
+          return;
+        }
+
+        const errorMessages = {
+          404: t('labels.updateNotFound'),
+          400: v('validation'),
+          401: v('unauthorized'),
+          403: v('forbidden'),
+        };
+
+        toast.error(errorMessages[response.error.status] || v('internal'), {
+          duration: 6000,
+        });
+      } else {
+        toast.success(t('deleteImageSuccess'), {
+          duration: 2000,
+        });
+
+        queryClient.invalidateQueries({
+          queryKey: [userQueries.getOneGroup, id],
+        });
+
+        setImg('');
+      }
+    },
   });
 
   if (isMutating || isUserLoading || profilesLoading) {
@@ -97,7 +187,9 @@ const UpdateGroupForm: FC<UpdateGroupFormProps> = ({
           {t('update.title')}
         </h2>
 
-        <p className="font-medium text-red-600">{t(`admin.${activeProfile?.type}`)}</p>
+        <p className="font-medium text-red-600">
+          {t(`admin.${activeProfile?.type}`)}
+        </p>
       </div>
     );
   }
@@ -115,14 +207,25 @@ const UpdateGroupForm: FC<UpdateGroupFormProps> = ({
     const request: UpdateGroupRequest = {
       id: id,
       name: values.name,
-      studyPeriodNumber: values.studyPeriodNumber
-    }
+      studyPeriodNumber: values.studyPeriodNumber,
+    };
 
     updateMutate({
       data: request,
       schoolProfileId: activeProfile?.id,
     });
-  }
+  };
+
+  const handleImageSubmit = (values: { files: File }) => {
+    const formData = new FormData();
+    formData.append('Image', values.files);
+
+    imageMutate({
+      id: id,
+      data: formData,
+      schoolProfileId: activeProfile?.id,
+    });
+  };
 
   return (
     <Formik
@@ -148,6 +251,34 @@ const UpdateGroupForm: FC<UpdateGroupFormProps> = ({
               {t('labels.backTo')}
             </span>
           </div>
+        </div>
+
+        <CustomImage
+          src={img || `/group/group.png`}
+          alt="Group image"
+          width={isPhone ? 150 : 300}
+          height={isPhone ? 100 : 200}
+        />
+
+        <div className="mt-2 flex flex-col items-center justify-center">
+          <UploadFile
+            isImage={true}
+            label={t('updateImage')}
+            onSubmit={handleImageSubmit}
+          />
+
+          <Button
+            className="mb-4"
+            onClick={() =>
+              imageDeleteMutate({
+                id,
+                schoolProfileId: activeProfile?.id,
+              })
+            }
+            gradientMonochrome="failure"
+          >
+            <span className="text-white">{t('deleteImageBtn')}</span>
+          </Button>
         </div>
 
         <Form className={styles.form}>
@@ -190,10 +321,7 @@ const UpdateGroupForm: FC<UpdateGroupFormProps> = ({
           </div>
 
           <div>
-            <button
-              type="submit"
-              className={styles.button}
-            >
+            <button type="submit" className={styles.button}>
               {t('updateBtn')}
             </button>
           </div>

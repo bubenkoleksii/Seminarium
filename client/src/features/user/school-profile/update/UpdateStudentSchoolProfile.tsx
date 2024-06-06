@@ -10,11 +10,26 @@ import { toast } from 'react-hot-toast';
 import { phoneRegExp } from '@/shared/regexp';
 import { useAuthRedirectByRole } from '@/shared/hooks';
 import { Loader } from '@/components/loader';
-import { useIsMutating, useMutation, useQueryClient } from '@tanstack/react-query';
-import { update, updateImage, removeImage } from '@/features/user/api/schoolProfilesApi';
-import { studentHealthGroups, userMutations, userQueries } from '@/features/user/constants';
+import {
+  useIsMutating,
+  useMutation,
+  useQueryClient,
+} from '@tanstack/react-query';
+import {
+  update,
+  updateImage,
+  removeImage,
+} from '@/features/user/api/schoolProfilesApi';
+import {
+  studentHealthGroups,
+  userMutations,
+  userQueries,
+} from '@/features/user/constants';
 import { useRouter } from 'next/navigation';
-import { getDefaultProfileImgByType, replaceEmptyStringsWithNull } from '@/shared/helpers';
+import {
+  getDefaultProfileImgByType,
+  replaceEmptyStringsWithNull,
+} from '@/shared/helpers';
 import { useProfiles, useSchoolProfilesStore } from '@/features/user';
 import { mediaQueries } from '@/shared/constants';
 import { useMediaQuery } from 'react-responsive';
@@ -25,11 +40,11 @@ import { Button } from 'flowbite-react';
 type UpdateStudentSchoolProfileProps = {
   id: string;
   schoolProfile: UpdateSchoolProfileRequest;
-}
+};
 
 const UpdateStudentSchoolProfile: FC<UpdateStudentSchoolProfileProps> = ({
   id,
-  schoolProfile
+  schoolProfile,
 }) => {
   const activeLocale = useLocale();
   const { replace } = useRouter();
@@ -44,13 +59,18 @@ const UpdateStudentSchoolProfile: FC<UpdateStudentSchoolProfileProps> = ({
   const queryClient = useQueryClient();
 
   const isMutating = useIsMutating();
-  const { isUserLoading, user } = useAuthRedirectByRole(activeLocale, 'userOnly');
+  const { isUserLoading, user } = useAuthRedirectByRole(
+    activeLocale,
+    'userOnly',
+  );
 
   const isPhone = useMediaQuery({ query: mediaQueries.phone });
 
-  schoolProfile.studentIsIndividually = schoolProfile.studentIsIndividually === 'true' ||
+  schoolProfile.studentIsIndividually =
+    schoolProfile.studentIsIndividually === 'true' ||
     schoolProfile.studentIsIndividually === true;
-  schoolProfile.studentIsClassLeader = schoolProfile.studentIsClassLeader === 'true' ||
+  schoolProfile.studentIsClassLeader =
+    schoolProfile.studentIsClassLeader === 'true' ||
     schoolProfile.studentIsClassLeader === true;
 
   const [img, setImg] = useState<string | undefined>(schoolProfile.img);
@@ -77,12 +97,9 @@ const UpdateStudentSchoolProfile: FC<UpdateStudentSchoolProfileProps> = ({
           403: v('forbidden'),
         };
 
-        toast.error(
-          errorMessages[response.error.status] || v('internal'),
-          {
-            duration: 6000,
-          },
-        );
+        toast.error(errorMessages[response.error.status] || v('internal'), {
+          duration: 6000,
+        });
       } else {
         clearSchoolProfiles();
 
@@ -97,7 +114,7 @@ const UpdateStudentSchoolProfile: FC<UpdateStudentSchoolProfileProps> = ({
         const url = `/${activeLocale}/u/school-profile/${id}`;
         replace(url);
       }
-    }
+    },
   });
 
   const { mutate: imageMutate } = useMutation({
@@ -121,12 +138,9 @@ const UpdateStudentSchoolProfile: FC<UpdateStudentSchoolProfileProps> = ({
           403: v('forbidden'),
         };
 
-        toast.error(
-          errorMessages[response.error.status] || v('internal'),
-          {
-            duration: 6000,
-          },
-        );
+        toast.error(errorMessages[response.error.status] || v('internal'), {
+          duration: 6000,
+        });
       } else {
         toast.success(t('updateImageSuccess'), {
           duration: 2000,
@@ -142,48 +156,44 @@ const UpdateStudentSchoolProfile: FC<UpdateStudentSchoolProfileProps> = ({
     },
   });
 
-  const { mutate: imageDeleteMutate } =
-    useMutation({
-      mutationFn: removeImage,
-      mutationKey: [userMutations.deleteSchoolProfileImage, id],
-      onSuccess: (response) => {
-        if (response && response.error) {
-          if (
-            response.error.detail.includes('school_profile') ||
-            response.error.detail.includes('school_id')
-          ) {
-            toast.error(t('labels.invalid_school_profile'));
+  const { mutate: imageDeleteMutate } = useMutation({
+    mutationFn: removeImage,
+    mutationKey: [userMutations.deleteSchoolProfileImage, id],
+    onSuccess: (response) => {
+      if (response && response.error) {
+        if (
+          response.error.detail.includes('school_profile') ||
+          response.error.detail.includes('school_id')
+        ) {
+          toast.error(t('labels.invalid_school_profile'));
 
-            return;
-          }
-
-          const errorMessages = {
-            404: t('labels.updateNotFound'),
-            400: v('labels.validation'),
-            401: v('labels.unauthorized'),
-            403: v('labels.forbidden'),
-          };
-
-          toast.error(
-            errorMessages[response.error.status] || v('labels'),
-            {
-              duration: 6000,
-            },
-          );
-        } else {
-          toast.success(t('deleteImageSuccess'), {
-            duration: 2000,
-          });
-
-          queryClient.invalidateQueries({
-            queryKey: [userQueries.getSchoolProfile, id],
-          });
-
-          changeImg(id, '');
-          setImg('');
+          return;
         }
-      },
-    });
+
+        const errorMessages = {
+          404: t('labels.updateNotFound'),
+          400: v('labels.validation'),
+          401: v('labels.unauthorized'),
+          403: v('labels.forbidden'),
+        };
+
+        toast.error(errorMessages[response.error.status] || v('labels'), {
+          duration: 6000,
+        });
+      } else {
+        toast.success(t('deleteImageSuccess'), {
+          duration: 2000,
+        });
+
+        queryClient.invalidateQueries({
+          queryKey: [userQueries.getSchoolProfile, id],
+        });
+
+        changeImg(id, '');
+        setImg('');
+      }
+    },
+  });
 
   const validationSchema = Yup.object().shape({
     name: Yup.string().required(v('required')).max(250, v('max')),
@@ -197,7 +207,6 @@ const UpdateStudentSchoolProfile: FC<UpdateStudentSchoolProfileProps> = ({
       .required(v('required'))
       .max(1024, v('max')),
   });
-
 
   if (isMutating || isUserLoading || profilesLoading) {
     return (
@@ -217,7 +226,9 @@ const UpdateStudentSchoolProfile: FC<UpdateStudentSchoolProfileProps> = ({
           {title}
         </h2>
 
-        <p className="font-medium text-red-600">{t(`admin.${schoolProfile.type}`)}</p>
+        <p className="font-medium text-red-600">
+          {t(`admin.${schoolProfile.type}`)}
+        </p>
       </div>
     );
   }
@@ -236,13 +247,13 @@ const UpdateStudentSchoolProfile: FC<UpdateStudentSchoolProfileProps> = ({
       studentIsClassLeader: values.studentIsClassLeader,
       studentIsIndividually: values.studentIsIndividually,
       studentHealthGroup: values.studentHealthGroup,
-    }
+    };
 
     updateMutate({
       data: request,
       schoolProfileId: activeProfile?.id,
     });
-  }
+  };
 
   const handleImageSubmit = (values: { files: File }) => {
     const formData = new FormData();

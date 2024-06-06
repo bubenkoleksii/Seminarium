@@ -15,7 +15,8 @@ import {
 import {
   createClassTeacherInvitation,
   createStudentInvitation,
-  getOne, remove,
+  getOne,
+  remove,
 } from '../../../api/groupsApi';
 import { Loader } from '@/components/loader';
 import { Error } from '@/components/error';
@@ -50,7 +51,6 @@ const Group: FC<GroupProps> = ({ id }) => {
   const isPhone = useMediaQuery({ query: mediaQueries.phone });
 
   const [deleteOpenModal, setDeleteOpenModal] = useState(false);
-
 
   const { data, isLoading } = useQuery<ApiResponse<OneGroupResponse>>({
     queryKey: [userQueries.getOneGroup, id],
@@ -126,34 +126,32 @@ const Group: FC<GroupProps> = ({ id }) => {
   const { mutate: deleteGroup } = useMutation({
     mutationFn: remove,
     mutationKey: [userMutations.deleteGroup, id],
-  onSuccess: (response) => {
-    if (response && response.error) {
-      if (
-        response.error.detail.includes('school_profile') ||
-        response.error.detail.includes('school_id')
-      ) {
-        toast.error(v('invalid_school_profile'));
+    onSuccess: (response) => {
+      if (response && response.error) {
+        if (
+          response.error.detail.includes('school_profile') ||
+          response.error.detail.includes('school_id')
+        ) {
+          toast.error(v('invalid_school_profile'));
 
-        return;
+          return;
+        }
+
+        const errorMessages = {
+          404: t('labels.oneNotFound'),
+          400: v('invitationValidation'),
+          401: v('unauthorized'),
+          403: v('forbidden'),
+        };
+
+        toast.error(errorMessages[response.error.status] || v('internal'));
+      } else {
+        toast.success(t('labels.deleteSuccess'), { duration: 2500 });
+
+        replace(`/${activeLocale}/u/groups`);
       }
-
-      const errorMessages = {
-        404: t('labels.oneNotFound'),
-        400: v('invitationValidation'),
-        401: v('unauthorized'),
-        403: v('forbidden'),
-      };
-
-      toast.error(
-        errorMessages[response.error.status] || v('internal'),
-      );
-    } else {
-      toast.success(t('labels.deleteSuccess'), { duration: 2500 });
-
-      replace(`/${activeLocale}/uk/u`);
-    }
-  },
-});
+    },
+  });
 
   useSetCurrentTab(CurrentTab.Group);
 
@@ -212,8 +210,9 @@ const Group: FC<GroupProps> = ({ id }) => {
       id: data.id,
       name: data.name,
       studyPeriodNumber: data.studyPeriodNumber,
+      img: data.img,
     });
-  }
+  };
 
   const canModify =
     (activeProfile?.type === 'school_admin' &&
@@ -231,7 +230,7 @@ const Group: FC<GroupProps> = ({ id }) => {
 
     deleteGroup({
       id: data.id,
-      schoolProfileId: activeProfile?.id
+      schoolProfileId: activeProfile?.id,
     });
   };
 
@@ -364,10 +363,12 @@ const Group: FC<GroupProps> = ({ id }) => {
               onClose={handleCloseDeleteModal}
             />
 
-            <Button onClick={handleOpenDeleteModal} gradientMonochrome="failure" fullSized>
-              <span className="text-white">
-                {t('deleteBtn')}
-              </span>
+            <Button
+              onClick={handleOpenDeleteModal}
+              gradientMonochrome="failure"
+              fullSized
+            >
+              <span className="text-white">{t('deleteBtn')}</span>
             </Button>
           </div>
 
@@ -375,7 +376,9 @@ const Group: FC<GroupProps> = ({ id }) => {
             className={`flex pl-2 pr-2 pt-2 ${isPhone ? 'order-1 w-full' : 'w-1/3'} justify-center`}
           >
             <Button gradientMonochrome="lime" fullSized>
-              <Link href={`/${activeLocale}/u/groups/update/${id}?${buildUpdateQuery()}`}>
+              <Link
+                href={`/${activeLocale}/u/groups/update/${id}?${buildUpdateQuery()}`}
+              >
                 {t('updateBtn')}
               </Link>
             </Button>

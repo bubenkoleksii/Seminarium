@@ -8,7 +8,11 @@ import { useProfiles, useSchoolProfilesStore } from '@/features/user';
 import { mediaQueries } from '@/shared/constants';
 import { useMediaQuery } from 'react-responsive';
 import { useIsMutating, useQuery } from '@tanstack/react-query';
-import { createParentInvitation, getOne, remove } from '@/features/user/api/schoolProfilesApi';
+import {
+  createParentInvitation,
+  getOne,
+  remove,
+} from '@/features/user/api/schoolProfilesApi';
 import { userMutations, userQueries } from '@/features/user/constants';
 import { Loader } from '@/components/loader';
 import { Error } from '@/components/error';
@@ -25,7 +29,7 @@ import Link from 'next/link';
 
 type SchoolProfileDetailsProps = {
   id: string;
-}
+};
 
 const SchoolProfileDetails: FC<SchoolProfileDetailsProps> = ({ id }) => {
   const t = useTranslations('SchoolProfile');
@@ -39,10 +43,8 @@ const SchoolProfileDetails: FC<SchoolProfileDetailsProps> = ({ id }) => {
   const { activeProfile, profiles, isLoading: profilesLoading } = useProfiles();
   const isPhone = useMediaQuery({ query: mediaQueries.phone });
 
-  const [
-    copyParentInvitationOpenModal,
-    setCopyParentInvitationOpenModal,
-  ] = useState(false);
+  const [copyParentInvitationOpenModal, setCopyParentInvitationOpenModal] =
+    useState(false);
   const [invitationParentCode, setInvitationParentCode] =
     useState<string>(null);
 
@@ -53,7 +55,7 @@ const SchoolProfileDetails: FC<SchoolProfileDetailsProps> = ({ id }) => {
     queryFn: () => getOne(id),
     enabled: !!id,
     retry: userQueries.options.retry,
-  })
+  });
 
   const { mutate: deleteProfile } = useMutation({
     mutationFn: remove,
@@ -81,7 +83,7 @@ const SchoolProfileDetails: FC<SchoolProfileDetailsProps> = ({ id }) => {
 
         toast.success(t('labels.deleteSuccess'), { duration: 2500 });
 
-        replace(`/${activeLocale}/uk/u`);
+        replace(`/${activeLocale}/u`);
       }
     },
   });
@@ -111,9 +113,7 @@ const SchoolProfileDetails: FC<SchoolProfileDetailsProps> = ({ id }) => {
           errorMessages[response.error.status] || t('labels.internal'),
         );
       } else {
-        setInvitationParentCode(
-          response.replace(`/uk/`, `/${activeLocale}/`),
-        );
+        setInvitationParentCode(response.replace(`/uk/`, `/${activeLocale}/`));
         setCopyParentInvitationOpenModal(true);
       }
     },
@@ -122,9 +122,7 @@ const SchoolProfileDetails: FC<SchoolProfileDetailsProps> = ({ id }) => {
   if (isLoading || isMutating || isUserLoading || profilesLoading) {
     return (
       <>
-        <h2 className="mb-4 text-center text-xl font-bold">
-          {t('oneTitle')}
-        </h2>
+        <h2 className="mb-4 text-center text-xl font-bold">{t('oneTitle')}</h2>
 
         <Loader />
       </>
@@ -136,9 +134,7 @@ const SchoolProfileDetails: FC<SchoolProfileDetailsProps> = ({ id }) => {
   if (data && data.error) {
     return (
       <>
-        <h2 className="mb-4 text-center text-xl font-bold">
-          {t('oneTitle')}
-        </h2>
+        <h2 className="mb-4 text-center text-xl font-bold">{t('oneTitle')}</h2>
 
         <Error error={data.error} />
       </>
@@ -164,7 +160,7 @@ const SchoolProfileDetails: FC<SchoolProfileDetailsProps> = ({ id }) => {
       studentIsIndividually: data.studentIsIndividually?.toString(),
       studentHealthGroup: data.studentHealthGroup,
       parentAddress: data.parentAddress,
-      img: data.img
+      img: data.img,
     });
   };
 
@@ -179,22 +175,25 @@ const SchoolProfileDetails: FC<SchoolProfileDetailsProps> = ({ id }) => {
     deleteProfile(data.id);
   };
 
-  const canUpdate = profiles && profiles.some(profile => profile.id === id);
-  const canDelete = !(!activeProfile ||
-    activeProfile?.type !== 'school_admin' ||
-    activeProfile?.type !== 'class_teacher' ||
-    (activeProfile?.type === 'school_admin' && data.schoolId !== activeProfile?.schoolId) ||
-    (activeProfile?.type === 'class_teacher' && data.groupId !== activeProfile?.groupId)) ||
+  const canUpdate = profiles && profiles.some((profile) => profile.id === id);
+  const canDelete =
+    !(
+      !activeProfile ||
+      activeProfile?.type !== 'school_admin' ||
+      activeProfile?.type !== 'class_teacher' ||
+      (activeProfile?.type === 'school_admin' &&
+        data.schoolId !== activeProfile?.schoolId) ||
+      (activeProfile?.type === 'class_teacher' &&
+        data.groupId !== activeProfile?.groupId)
+    ) || canUpdate;
+  const canGenerateParentCode =
+    activeProfile?.type === 'school_admin' ||
+    activeProfile?.type === 'class_teacher' ||
     canUpdate;
-  const canGenerateParentCode = activeProfile?.type === 'school_admin'
-    || activeProfile?.type === 'class_teacher'
-    || canUpdate;
 
   return (
     <div className="mb-2 p-3">
-      <h2 className="mb-4 text-center text-xl font-bold">
-        {t('oneTitle')}
-      </h2>
+      <h2 className="mb-4 text-center text-xl font-bold">{t('oneTitle')}</h2>
 
       <h6 className="text-center font-bold">
         <p className="color-gray-500 mr-1 text-sm font-normal lg:text-lg">
@@ -203,7 +202,7 @@ const SchoolProfileDetails: FC<SchoolProfileDetailsProps> = ({ id }) => {
         <span className="text-purple-950 lg:text-2xl">{data.name}</span>
       </h6>
 
-      <div className="flex items-center justify-center w-[100%]">
+      <div className="flex w-[100%] items-center justify-center">
         <CustomImage
           src={data.img || getDefaultProfileImgByType(data.type)}
           alt={data.name}
@@ -212,7 +211,7 @@ const SchoolProfileDetails: FC<SchoolProfileDetailsProps> = ({ id }) => {
         />
       </div>
 
-      {data.type === 'student' && canGenerateParentCode &&
+      {data.type === 'student' && canGenerateParentCode && (
         <>
           <div className="mb-4 mt-4 flex w-[100%] justify-center">
             <div className="w-[350px]">
@@ -228,29 +227,27 @@ const SchoolProfileDetails: FC<SchoolProfileDetailsProps> = ({ id }) => {
                 gradientDuoTone="pinkToOrange"
                 size="md"
               >
-                <span className="text-white">
-                  {t('parentModalBtn')}
-                </span>
+                <span className="text-white">{t('parentModalBtn')}</span>
               </Button>
             </div>
           </div>
 
-          {invitationParentCode &&
+          {invitationParentCode && (
             <CopyTextModal
               open={copyParentInvitationOpenModal}
               label={t('labelParentModal')}
               text={invitationParentCode}
               onClose={() => setCopyParentInvitationOpenModal(false)}
             />
-          }
+          )}
         </>
-      }
+      )}
       <div className="mt-4 flex w-[100%] flex-col justify-center lg:flex-row">
         <SchoolProfileDetailsInfo profile={data} />
       </div>
 
-      <div className="flex justify-center mt-3 gap-4">
-        {canDelete &&
+      <div className="mt-3 flex justify-center gap-4">
+        {canDelete && (
           <>
             <ProveModal
               open={deleteOpenModal}
@@ -258,27 +255,25 @@ const SchoolProfileDetails: FC<SchoolProfileDetailsProps> = ({ id }) => {
               onClose={handleCloseDeleteModal}
             />
 
-            <Button onClick={handleOpenDeleteModal}
-                    size="md" gradientMonochrome="failure"
+            <Button
+              onClick={handleOpenDeleteModal}
+              size="md"
+              gradientMonochrome="failure"
             >
-              <span className="text-white">
-                {t('deleteBtn')}
-              </span>
+              <span className="text-white">{t('deleteBtn')}</span>
             </Button>
           </>
-        }
+        )}
 
-        {canUpdate &&
-          <Button
-            size="md" gradientMonochrome="lime"
-          >
+        {canUpdate && (
+          <Button size="md" gradientMonochrome="lime">
             <Link
               href={`/${activeLocale}/u/school-profile/update/${id}?${buildUpdateQuery()}`}
             >
               {t('updateBtn')}
             </Link>
           </Button>
-        }
+        )}
       </div>
     </div>
   );

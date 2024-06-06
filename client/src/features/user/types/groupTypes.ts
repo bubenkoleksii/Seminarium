@@ -34,4 +34,5 @@ export interface UpdateGroupRequest {
   id: string;
   name: string;
   studyPeriodNumber: number;
+  img?: string | null;
 }

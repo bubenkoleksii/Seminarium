@@ -129,8 +129,8 @@ const CreateStudentSchoolProfile: FC<CreateStudentSchoolProfileProps> = ({
       details: values.details,
       studentDateOfBirth: values.studentDateOfBirth,
       studentAptitudes: values.studentAptitudes,
-      studentIsClassLeader: values.studentIsClassLeader == 'true',
-      studentIsIndividually: values.studentIsIndividually == 'true',
+      studentIsClassLeader: values.studentIsClassLeader,
+      studentIsIndividually: values.studentIsIndividually,
       studentHealthGroup: values.studentHealthGroup,
     };
 

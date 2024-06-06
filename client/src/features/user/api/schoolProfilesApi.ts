@@ -3,7 +3,8 @@
 import type { ApiResponse } from '@/shared/types';
 import type {
   CreateSchoolProfileRequest,
-  SchoolProfileResponse, UpdateSchoolProfileRequest,
+  SchoolProfileResponse,
+  UpdateSchoolProfileRequest,
 } from '@/features/user/types/schoolProfileTypes';
 import { api } from '@/shared/api';
 import { schoolProfile } from '@/features/user/routes';
@@ -30,7 +31,7 @@ type Remove = (id: string) => Promise<ApiResponse<any>>;
 
 type Update = ({
   data,
-  schoolProfileId
+  schoolProfileId,
 }: {
   data: UpdateSchoolProfileRequest;
   schoolProfileId: string;
@@ -39,7 +40,7 @@ type Update = ({
 type UpdateImage = ({
   id,
   data,
-  schoolProfileId
+  schoolProfileId,
 }: {
   id: string;
   data: FormData;
@@ -48,7 +49,7 @@ type UpdateImage = ({
 
 type RemoveImage = ({
   id,
-  schoolProfileId
+  schoolProfileId,
 }: {
   id: string;
   schoolProfileId?: string;

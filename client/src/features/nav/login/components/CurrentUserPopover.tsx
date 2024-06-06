@@ -58,12 +58,10 @@ const CurrentUserPopover: FC<CurrentUserPopoverProps> = ({ user }) => {
   };
 
   const adminProfileImage = '/profile/admin.png';
-  const userProfileImage = activeProfile?.img ||
-    getDefaultProfileImgByType(activeProfile?.type);
+  const userProfileImage =
+    activeProfile?.img || getDefaultProfileImgByType(activeProfile?.type);
   const profileImage =
-    user.role === 'admin'
-      ? adminProfileImage
-      : userProfileImage;
+    user.role === 'admin' ? adminProfileImage : userProfileImage;
 
   const handleChangeActiveProfile = (id: string) => {
     if (activeProfile?.id === id) return;

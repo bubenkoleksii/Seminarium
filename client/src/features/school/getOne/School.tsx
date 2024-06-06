@@ -277,7 +277,8 @@ const School: FC<SchoolProps> = ({ id }) => {
         <span className="text-purple-950 lg:text-2xl">{data.name}</span>
       </h6>
 
-      {(user?.role === 'admin' || (activeProfile && activeProfile?.type === 'school_admin')) && (
+      {(user?.role === 'admin' ||
+        (activeProfile && activeProfile?.type === 'school_admin')) && (
         <>
           <div className="mb-4 flex w-[100%] justify-center">
             <div className="w-[350px]">

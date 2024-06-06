@@ -10,11 +10,22 @@ import { toast } from 'react-hot-toast';
 import { phoneRegExp } from '@/shared/regexp';
 import { useAuthRedirectByRole } from '@/shared/hooks';
 import { Loader } from '@/components/loader';
-import { useIsMutating, useMutation, useQueryClient } from '@tanstack/react-query';
-import { update, updateImage, removeImage } from '@/features/user/api/schoolProfilesApi';
+import {
+  useIsMutating,
+  useMutation,
+  useQueryClient,
+} from '@tanstack/react-query';
+import {
+  update,
+  updateImage,
+  removeImage,
+} from '@/features/user/api/schoolProfilesApi';
 import { userMutations, userQueries } from '@/features/user/constants';
 import { useRouter } from 'next/navigation';
-import { getDefaultProfileImgByType, replaceEmptyStringsWithNull } from '@/shared/helpers';
+import {
+  getDefaultProfileImgByType,
+  replaceEmptyStringsWithNull,
+} from '@/shared/helpers';
 import { useProfiles, useSchoolProfilesStore } from '@/features/user';
 import { mediaQueries } from '@/shared/constants';
 import { useMediaQuery } from 'react-responsive';
@@ -25,11 +36,11 @@ import { Button } from 'flowbite-react';
 type UpdateTeacherSchoolProfileProps = {
   id: string;
   schoolProfile: UpdateSchoolProfileRequest;
-}
+};
 
 const UpdateTeacherSchoolProfile: FC<UpdateTeacherSchoolProfileProps> = ({
   id,
-  schoolProfile
+  schoolProfile,
 }) => {
   const activeLocale = useLocale();
   const { replace } = useRouter();
@@ -44,7 +55,10 @@ const UpdateTeacherSchoolProfile: FC<UpdateTeacherSchoolProfileProps> = ({
   const queryClient = useQueryClient();
 
   const isMutating = useIsMutating();
-  const { isUserLoading, user } = useAuthRedirectByRole(activeLocale, 'userOnly');
+  const { isUserLoading, user } = useAuthRedirectByRole(
+    activeLocale,
+    'userOnly',
+  );
 
   const isPhone = useMediaQuery({ query: mediaQueries.phone });
 
@@ -92,7 +106,7 @@ const UpdateTeacherSchoolProfile: FC<UpdateTeacherSchoolProfileProps> = ({
         const url = `/${activeLocale}/u/school-profile/${id}`;
         replace(url);
       }
-    }
+    },
   });
 
   const { mutate: imageMutate } = useMutation({
@@ -116,12 +130,9 @@ const UpdateTeacherSchoolProfile: FC<UpdateTeacherSchoolProfileProps> = ({
           403: v('forbidden'),
         };
 
-        toast.error(
-          errorMessages[response.error.status] || v('internal'),
-          {
-            duration: 6000,
-          },
-        );
+        toast.error(errorMessages[response.error.status] || v('internal'), {
+          duration: 6000,
+        });
       } else {
         toast.success(t('updateImageSuccess'), {
           duration: 2000,
@@ -137,48 +148,44 @@ const UpdateTeacherSchoolProfile: FC<UpdateTeacherSchoolProfileProps> = ({
     },
   });
 
-  const { mutate: imageDeleteMutate } =
-    useMutation({
-      mutationFn: removeImage,
-      mutationKey: [userMutations.deleteSchoolProfileImage, id],
-      onSuccess: (response) => {
-        if (response && response.error) {
-          if (
-            response.error.detail.includes('school_profile') ||
-            response.error.detail.includes('school_id')
-          ) {
-            toast.error(t('labels.invalid_school_profile'));
+  const { mutate: imageDeleteMutate } = useMutation({
+    mutationFn: removeImage,
+    mutationKey: [userMutations.deleteSchoolProfileImage, id],
+    onSuccess: (response) => {
+      if (response && response.error) {
+        if (
+          response.error.detail.includes('school_profile') ||
+          response.error.detail.includes('school_id')
+        ) {
+          toast.error(t('labels.invalid_school_profile'));
 
-            return;
-          }
-
-          const errorMessages = {
-            404: t('labels.updateNotFound'),
-            400: v('validation'),
-            401: v('unauthorized'),
-            403: v('forbidden'),
-          };
-
-          toast.error(
-            errorMessages[response.error.status] || v('internal'),
-            {
-              duration: 6000,
-            },
-          );
-        } else {
-          toast.success(t('deleteImageSuccess'), {
-            duration: 2000,
-          });
-
-          queryClient.invalidateQueries({
-            queryKey: [userQueries.getSchoolProfile, id],
-          });
-
-          changeImg(id, '');
-          setImg('');
+          return;
         }
-      },
-    });
+
+        const errorMessages = {
+          404: t('labels.updateNotFound'),
+          400: v('validation'),
+          401: v('unauthorized'),
+          403: v('forbidden'),
+        };
+
+        toast.error(errorMessages[response.error.status] || v('internal'), {
+          duration: 6000,
+        });
+      } else {
+        toast.success(t('deleteImageSuccess'), {
+          duration: 2000,
+        });
+
+        queryClient.invalidateQueries({
+          queryKey: [userQueries.getSchoolProfile, id],
+        });
+
+        changeImg(id, '');
+        setImg('');
+      }
+    },
+  });
 
   const handleImageSubmit = (values: { files: File }) => {
     const formData = new FormData();
@@ -205,7 +212,6 @@ const UpdateTeacherSchoolProfile: FC<UpdateTeacherSchoolProfileProps> = ({
       .max(1000, v('max')),
   });
 
-
   if (isMutating || isUserLoading || profilesLoading) {
     return (
       <>
@@ -224,7 +230,9 @@ const UpdateTeacherSchoolProfile: FC<UpdateTeacherSchoolProfileProps> = ({
           {title}
         </h2>
 
-        <p className="font-medium text-red-600">{t(`admin.${schoolProfile.type}`)}</p>
+        <p className="font-medium text-red-600">
+          {t(`admin.${schoolProfile.type}`)}
+        </p>
       </div>
     );
   }
@@ -243,13 +251,13 @@ const UpdateTeacherSchoolProfile: FC<UpdateTeacherSchoolProfileProps> = ({
       teacherEducation: values.teacherEducation,
       teacherQualification: values.teacherQualification,
       teacherLessonsPerCycle: values.teacherLessonsPerCycle,
-    }
+    };
 
     updateMutate({
       data: request,
       schoolProfileId: activeProfile?.id,
     });
-  }
+  };
 
   return (
     <Formik

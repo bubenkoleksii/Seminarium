@@ -7,11 +7,11 @@ type UpdateGroupPageProps = {
     id: string;
   };
   searchParams: UpdateGroupRequest;
-}
+};
 
 const UpdateGroupPage: FC<UpdateGroupPageProps> = ({
   params,
-  searchParams
+  searchParams,
 }) => {
   return (
     <div className="p-3">

@@ -5,7 +5,8 @@ import type {
   CreateGroupRequest,
   GroupResponse,
   OneGroupResponse,
-  PagesGroupsResponse, UpdateGroupRequest,
+  PagesGroupsResponse,
+  UpdateGroupRequest,
 } from '@/features/user/types/groupTypes';
 import { api } from '@/shared/api';
 import { group } from '@/features/user/routes';
@@ -45,7 +46,7 @@ type Update = ({
 type UpdateImage = ({
   id,
   data,
-  schoolProfileId
+  schoolProfileId,
 }: {
   id: string;
   data: FormData;
@@ -54,7 +55,7 @@ type UpdateImage = ({
 
 type RemoveImage = ({
   id,
-  schoolProfileId
+  schoolProfileId,
 }: {
   id: string;
   schoolProfileId?: string;
@@ -62,7 +63,7 @@ type RemoveImage = ({
 
 type Remove = ({
   id,
-  schoolProfileId
+  schoolProfileId,
 }: {
   id: string;
   schoolProfileId: string;
@@ -98,19 +99,14 @@ export const createStudentInvitation: GenerateInvitation = ({
     schoolProfileId,
   );
 
-export const update: Update = ({
-  data,
-  schoolProfileId,
-}) =>
-  api.update(
-    group.update,
-    data,
-    false,
-    schoolProfileId
-  );
+export const updateImage: UpdateImage = ({ id, data, schoolProfileId }) =>
+  api.partialUpdate(group.image(id), data, true, schoolProfileId);
 
-export const remove: Remove = ({
-  id,
-  schoolProfileId
-}) =>
+export const removeImage: RemoveImage = ({ id, schoolProfileId }) =>
+  api.remove(group.image(id), schoolProfileId);
+
+export const update: Update = ({ data, schoolProfileId }) =>
+  api.update(group.update, data, false, schoolProfileId);
+
+export const remove: Remove = ({ id, schoolProfileId }) =>
   api.remove(group.remove(id), schoolProfileId);

@@ -14,6 +14,7 @@ export const group = {
   getOne: '/group/getOne',
   create: '/group/create',
   update: '/group/update',
+  image: (id: string) => `/group/Image/${id}`,
   remove: (id: string) => `/group/Delete/${id}`,
   createClassTeacherInvitation: '/group/classTeacherInvitation',
   createStudentInvitation: '/group/studentInvitation',

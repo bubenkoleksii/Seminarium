@@ -230,7 +230,6 @@ public class SchoolProfileManager : ISchoolProfileManager
                 Log.Error(exception, "An error occurred while saving school parent profile with values {@Profile}.", profile);
             }
 
-
             return (profile, true);
         }
 

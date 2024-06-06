@@ -11,12 +11,12 @@ type UpdateSchoolProfileProps = {
   params: {
     id: string;
   };
-  searchParams: UpdateSchoolProfileRequest
-}
+  searchParams: UpdateSchoolProfileRequest;
+};
 
 const UpdateSchoolProfile: FC<UpdateSchoolProfileProps> = ({
   params,
-  searchParams
+  searchParams,
 }) => {
   const type = searchParams.type;
 

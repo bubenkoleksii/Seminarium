@@ -22,7 +22,7 @@ const GroupStudent: FC<GroupStudentProps> = ({ student }) => {
   const image = student.img || getDefaultProfileImgByType('student');
   const amI = student.id == activeProfile?.id;
 
-  const healthGroupColor = getColorByStatus('free');
+  const healthGroupColor = getColorByStatus(student.studentHealthGroup);
 
   return (
     <div
@@ -67,8 +67,13 @@ const GroupStudent: FC<GroupStudentProps> = ({ student }) => {
       </p>
 
       <div className="mt-2 flex w-full flex-wrap justify-center gap-4 md:flex-nowrap">
-        <Button onClick={() => replace(`/${activeLocale}/u/school-profile/${student.id}`)}
-          gradientMonochrome="success" size="xs">
+        <Button
+          onClick={() =>
+            replace(`/${activeLocale}/u/school-profile/${student.id}`)
+          }
+          gradientMonochrome="success"
+          size="xs"
+        >
           <span className="text-white">{t('detailsBtn')}</span>
         </Button>
       </div>

@@ -94,11 +94,14 @@ const SchoolProfile: FC<SchoolProfileProps> = ({ profile }) => {
       </p>
 
       <div className="mt-2 flex w-full flex-wrap justify-center gap-4 md:flex-nowrap">
-        <Button onClick={() => replace(`/${activeLocale}/u/school-profile/${profile.id}`)}
-          gradientMonochrome="success" size="xs">
-          <span className="text-white">
-            {t('detailsBtn')}
-          </span>
+        <Button
+          onClick={() =>
+            replace(`/${activeLocale}/u/school-profile/${profile.id}`)
+          }
+          gradientMonochrome="success"
+          size="xs"
+        >
+          <span className="text-white">{t('detailsBtn')}</span>
         </Button>
       </div>
 
