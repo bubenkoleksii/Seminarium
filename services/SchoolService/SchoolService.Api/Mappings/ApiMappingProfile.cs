@@ -47,7 +47,7 @@ public class ApiMappingProfile : Profile
     {
         CreateMap<CreateSchoolProfileRequest, CreateSchoolProfileCommand>();
 
-        CreateMap<UpdateSchoolProfileRequest, UpdateSchoolCommand>()
+        CreateMap<UpdateSchoolProfileRequest, UpdateSchoolProfileCommand>()
             .ForMember(command => command.Email, act => act.MapFrom(req => req.Email == null ? null : req.Email.ToLower()));
 
         CreateMap<SchoolProfileModelResponse, SchoolProfileResponse>();
@@ -56,6 +56,8 @@ public class ApiMappingProfile : Profile
     private void ConfigureGroupMappings()
     {
         CreateMap<CreateGroupRequest, CreateGroupCommand>();
+
+        CreateMap<UpdateGroupRequest, UpdateGroupCommand>();
 
         CreateMap<GroupModelResponse, GroupResponse>();
 

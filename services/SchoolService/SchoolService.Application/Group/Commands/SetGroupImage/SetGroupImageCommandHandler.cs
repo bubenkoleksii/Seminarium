@@ -6,10 +6,13 @@ public class SetGroupImageCommandHandler : IRequestHandler<SetGroupImageCommand,
 
     private readonly IFilesManager _filesManager;
 
-    public SetGroupImageCommandHandler(ICommandContext commandContext, IFilesManager filesManager)
+    private readonly ISchoolProfileManager _schoolProfileManager;
+
+    public SetGroupImageCommandHandler(ICommandContext commandContext, IFilesManager filesManager, ISchoolProfileManager schoolProfileManager)
     {
         _commandContext = commandContext;
         _filesManager = filesManager;
+        _schoolProfileManager = schoolProfileManager;
     }
 
     public async Task<Either<FileSuccess, Error>> Handle(SetGroupImageCommand request, CancellationToken cancellationToken)
@@ -20,6 +23,14 @@ public class SetGroupImageCommandHandler : IRequestHandler<SetGroupImageCommand,
 
         if (entity is null)
             return new NotFoundByIdError(request.GroupId, "group");
+
+        var profile = await _schoolProfileManager.GetActiveProfile(request.UserId);
+
+        var canModify = (profile?.Type == SchoolProfileType.SchoolAdmin && entity.SchoolId == profile.SchoolId) ||
+                        (profile?.Type == SchoolProfileType.ClassTeacher && entity.ClassTeacherId == profile.Id);
+
+        if (profile is null || !canModify)
+            return new InvalidError("school_profile");
 
         var deletingResult = await _filesManager.DeleteFileIfExists(entity.Img);
         if (deletingResult.IsSome)

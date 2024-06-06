@@ -9,6 +9,7 @@ interface SchoolProfilesStore {
   setProfiles: (profile: SchoolProfileResponse[]) => void;
   clear: () => void;
   changeActiveProfile: (id: string) => void;
+  changeImg: (id: string, newImg: string) => void;
 }
 
 export const useSchoolProfilesStore = create<SchoolProfilesStore>()(
@@ -21,6 +22,25 @@ export const useSchoolProfilesStore = create<SchoolProfilesStore>()(
           set((state) => {
             state.profiles = profiles;
             state.activeProfile = profiles.find((profile) => profile.isActive);
+          }),
+        changeImg: (id: string, newImg: string) =>
+          set((state) => {
+            const updatedProfiles = state.profiles.map((profile) => {
+              if (profile.id === id) {
+                return {
+                  ...profile,
+                  img: newImg,
+                };
+              }
+              return profile;
+            });
+
+            return {
+              profiles: updatedProfiles,
+              activeProfile: updatedProfiles.find(
+                (profile) => profile.isActive,
+              ),
+            };
           }),
         changeActiveProfile: (id: string) =>
           set((state) => {

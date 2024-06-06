@@ -222,7 +222,7 @@ const UpdateSchoolForm: FC<UpdateSchoolFormProps> = ({ id, school }) => {
       region: values.region,
       territorialCommunity: values.territorialCommunity,
       address: values.address,
-      areOccupied: values.areOccupied === `true`,
+      areOccupied: values.areOccupied == `true`,
       siteUrl: values.siteUrl,
     };
 

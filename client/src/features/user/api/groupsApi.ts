@@ -5,7 +5,7 @@ import type {
   CreateGroupRequest,
   GroupResponse,
   OneGroupResponse,
-  PagesGroupsResponse,
+  PagesGroupsResponse, UpdateGroupRequest,
 } from '@/features/user/types/groupTypes';
 import { api } from '@/shared/api';
 import { group } from '@/features/user/routes';
@@ -33,6 +33,40 @@ type GenerateInvitation = ({
   id: string;
   schoolProfileId?: string;
 }) => Promise<ApiResponse<string>>;
+
+type Update = ({
+  data,
+  schoolProfileId,
+}: {
+  data: UpdateGroupRequest;
+  schoolProfileId: string;
+}) => Promise<ApiResponse<GroupResponse>>;
+
+type UpdateImage = ({
+  id,
+  data,
+  schoolProfileId
+}: {
+  id: string;
+  data: FormData;
+  schoolProfileId?: string;
+}) => Promise<ApiResponse<any>>;
+
+type RemoveImage = ({
+  id,
+  schoolProfileId
+}: {
+  id: string;
+  schoolProfileId?: string;
+}) => Promise<ApiResponse<any>>;
+
+type Remove = ({
+  id,
+  schoolProfileId
+}: {
+  id: string;
+  schoolProfileId: string;
+}) => Promise<ApiResponse<any>>;
 
 export const getAll: GetAll = ({ query }) =>
   api.get(`${group.getAll}/?${query}`);
@@ -63,3 +97,20 @@ export const createStudentInvitation: GenerateInvitation = ({
     false,
     schoolProfileId,
   );
+
+export const update: Update = ({
+  data,
+  schoolProfileId,
+}) =>
+  api.update(
+    group.update,
+    data,
+    false,
+    schoolProfileId
+  );
+
+export const remove: Remove = ({
+  id,
+  schoolProfileId
+}) =>
+  api.remove(group.remove(id), schoolProfileId);

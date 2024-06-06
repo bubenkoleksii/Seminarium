@@ -20,8 +20,10 @@ global using SchoolService.Application.Common.Mappings;
 global using SchoolService.Application.Group.Commands.CreateClassTeacherInvitation;
 global using SchoolService.Application.Group.Commands.CreateGroup;
 global using SchoolService.Application.Group.Commands.CreateStudentInvitation;
+global using SchoolService.Application.Group.Commands.DeleteGroup;
 global using SchoolService.Application.Group.Commands.DeleteGroupImage;
 global using SchoolService.Application.Group.Commands.SetGroupImage;
+global using SchoolService.Application.Group.Commands.UpdateGroup;
 global using SchoolService.Application.Group.Models;
 global using SchoolService.Application.Group.Queries.GetAllGroups;
 global using SchoolService.Application.Group.Queries.GetOneGroup;
@@ -46,6 +48,7 @@ global using SchoolService.Application.SchoolProfile.Commands.CreateSchoolProfil
 global using SchoolService.Application.SchoolProfile.Commands.DeleteSchoolProfile;
 global using SchoolService.Application.SchoolProfile.Commands.DeleteSchoolProfileImage;
 global using SchoolService.Application.SchoolProfile.Commands.SetSchoolProfileImage;
+global using SchoolService.Application.SchoolProfile.Commands.UpdateSchoolProfile;
 global using SchoolService.Application.SchoolProfile.Models;
 global using SchoolService.Application.SchoolProfile.Queries.GetOneSchoolProfile;
 global using SchoolService.Application.SchoolProfile.Queries.GetUserSchoolProfiles;

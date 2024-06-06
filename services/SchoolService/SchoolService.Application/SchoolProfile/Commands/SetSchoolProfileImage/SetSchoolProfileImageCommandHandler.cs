@@ -3,12 +3,16 @@
 public class SetSchoolProfileImageCommandHandler : IRequestHandler<SetSchoolProfileImageCommand, Either<FileSuccess, Error>>
 {
     private readonly ICommandContext _commandContext;
+
     private readonly IFilesManager _filesManager;
 
-    public SetSchoolProfileImageCommandHandler(ICommandContext commandContext, IFilesManager filesManager)
+    private readonly ISchoolProfileManager _schoolProfileManager;
+
+    public SetSchoolProfileImageCommandHandler(ICommandContext commandContext, IFilesManager filesManager, ISchoolProfileManager schoolProfileManager)
     {
         _commandContext = commandContext;
         _filesManager = filesManager;
+        _schoolProfileManager = schoolProfileManager;
     }
 
     public async Task<Either<FileSuccess, Error>> Handle(SetSchoolProfileImageCommand request, CancellationToken cancellationToken)
@@ -17,7 +21,7 @@ public class SetSchoolProfileImageCommandHandler : IRequestHandler<SetSchoolProf
             .IgnoreQueryFilters()
             .FirstOrDefaultAsync(s => s.Id == request.SchoolProfileId, cancellationToken: cancellationToken);
 
-        if (entity is null)
+        if (entity is null || entity.UserId != request.UserId)
             return new NotFoundByIdError(request.SchoolProfileId, "school_profile");
 
         var deletingResult = await _filesManager.DeleteFileIfExists(entity.Img);
@@ -45,6 +49,8 @@ public class SetSchoolProfileImageCommandHandler : IRequestHandler<SetSchoolProf
                 return new InvalidDatabaseOperationError("school_profile");
             }
         }
+
+        _schoolProfileManager.ClearCache(request.UserId);
 
         return uploadingResult;
     }

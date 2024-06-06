@@ -44,8 +44,8 @@ const GroupStudent: FC<GroupStudentProps> = ({ student }) => {
       <p className="mt-2 text-sm font-semibold text-gray-600">
         {t(`item.studentHealthGroup`)}:
         {student.studentHealthGroup ? (
-          <span className={healthGroupColor}>
-            {t(`item.${student.studentHealthGroup}`)}
+          <span className={`${healthGroupColor} ml-2`}>
+            {t(`item.healthGroup.${student.studentHealthGroup}`)}
           </span>
         ) : (
           ' -'

@@ -1,17 +1,18 @@
 ﻿namespace SchoolService.Application.Group.Models;
 
-public record GroupModelResponse(
-    Guid Id,
+public class GroupModelResponse
+{
+    public Guid Id { get; init; }
 
-    Guid SchoolId,
+    public Guid SchoolId { get; init; }
 
-    DateTime CreatedAt,
+    public DateTime CreatedAt { get; init; }
 
-    DateTime? LastUpdatedAt,
+    public DateTime? LastUpdatedAt { get; init; }
 
-    string Name,
+    public required string Name { get; init; }
 
-    byte StudyPeriodNumber,
+    public byte StudyPeriodNumber { get; init; }
 
-    string? Img
-);
+    public string? Img { get; set; }
+}

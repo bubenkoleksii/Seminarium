@@ -55,9 +55,9 @@ const School: FC<SchoolProps> = ({ id }) => {
   const { isUserLoading, user } = useAuthRedirectByRole(activeLocale, 'user');
 
   useEffect(() => {
-    if (!activeProfile || !activeProfile.schoolId) return;
+    if (!activeProfile || !activeProfile?.schoolId) return;
 
-    const url = `/${activeLocale}/u/my-school/${activeProfile.schoolId}`;
+    const url = `/${activeLocale}/u/my-school/${activeProfile?.schoolId}`;
     replace(url);
   }, [activeProfile, activeLocale, replace]);
 
@@ -277,7 +277,7 @@ const School: FC<SchoolProps> = ({ id }) => {
         <span className="text-purple-950 lg:text-2xl">{data.name}</span>
       </h6>
 
-      {activeProfile.type === 'school_admin' && (
+      {(user?.role === 'admin' || (activeProfile && activeProfile?.type === 'school_admin')) && (
         <>
           <div className="mb-4 flex w-[100%] justify-center">
             <div className="w-[350px]">
@@ -586,7 +586,7 @@ const School: FC<SchoolProps> = ({ id }) => {
         </div>
       ) : (
         activeProfile &&
-        activeProfile.type === 'school_admin' && (
+        activeProfile?.type === 'school_admin' && (
           <div className="mt-3 flex w-full justify-center">
             <Button gradientMonochrome="lime" fullSized>
               <Link

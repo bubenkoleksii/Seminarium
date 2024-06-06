@@ -29,3 +29,9 @@ export interface CreateGroupRequest {
   name: string;
   studyPeriodNumber: number;
 }
+
+export interface UpdateGroupRequest {
+  id: string;
+  name: string;
+  studyPeriodNumber: number;
+}

@@ -15,7 +15,7 @@ import {
 import {
   createClassTeacherInvitation,
   createStudentInvitation,
-  getOne,
+  getOne, remove,
 } from '../../../api/groupsApi';
 import { Loader } from '@/components/loader';
 import { Error } from '@/components/error';
@@ -24,13 +24,13 @@ import { CustomImage } from '@/components/custom-image';
 import { mediaQueries } from '@/shared/constants';
 import { useMediaQuery } from 'react-responsive';
 import { toast } from 'react-hot-toast';
-import { CopyTextModal } from '@/components/modal';
+import { CopyTextModal, ProveModal } from '@/components/modal';
 import { Button } from 'flowbite-react';
 import { useProfiles } from '@/features/user';
 import Link from 'next/link';
 import ClassTeacherInfo from '@/features/user/components/group/getOne/ClassTeacherInfo';
 import { GroupStudents } from '@/features/user/components/group/getOne/GroupStudents';
-import { group } from '@/features/user/routes';
+import { buildQueryString } from '@/shared/helpers';
 
 interface GroupProps {
   id: string;
@@ -38,6 +38,7 @@ interface GroupProps {
 
 const Group: FC<GroupProps> = ({ id }) => {
   const t = useTranslations('Group');
+  const v = useTranslations('Validation');
 
   const isMutating = useIsMutating();
 
@@ -47,6 +48,9 @@ const Group: FC<GroupProps> = ({ id }) => {
   const { isUserLoading } = useAuthRedirectByRole(activeLocale, 'userOnly');
   const { activeProfile, isLoading: profilesLoading } = useProfiles();
   const isPhone = useMediaQuery({ query: mediaQueries.phone });
+
+  const [deleteOpenModal, setDeleteOpenModal] = useState(false);
+
 
   const { data, isLoading } = useQuery<ApiResponse<OneGroupResponse>>({
     queryKey: [userQueries.getOneGroup, id],
@@ -64,16 +68,16 @@ const Group: FC<GroupProps> = ({ id }) => {
           response.error.detail.includes('school_profile') ||
           response.error.detail.includes('school_id')
         ) {
-          toast.error(t('labels.invalid_school_profile'));
+          toast.error(v('invalid_school_profile'));
 
           return;
         }
 
         const errorMessages = {
           404: t('labels.oneNotFound'),
-          400: t('labels.invitationValidation'),
-          401: t('labels.unauthorized'),
-          403: t('labels.forbidden'),
+          400: v('invitationValidation'),
+          401: v('unauthorized'),
+          403: v('forbidden'),
         };
 
         toast.error(
@@ -118,6 +122,38 @@ const Group: FC<GroupProps> = ({ id }) => {
       }
     },
   });
+
+  const { mutate: deleteGroup } = useMutation({
+    mutationFn: remove,
+    mutationKey: [userMutations.deleteGroup, id],
+  onSuccess: (response) => {
+    if (response && response.error) {
+      if (
+        response.error.detail.includes('school_profile') ||
+        response.error.detail.includes('school_id')
+      ) {
+        toast.error(v('invalid_school_profile'));
+
+        return;
+      }
+
+      const errorMessages = {
+        404: t('labels.oneNotFound'),
+        400: v('invitationValidation'),
+        401: v('unauthorized'),
+        403: v('forbidden'),
+      };
+
+      toast.error(
+        errorMessages[response.error.status] || v('internal'),
+      );
+    } else {
+      toast.success(t('labels.deleteSuccess'), { duration: 2500 });
+
+      replace(`/${activeLocale}/uk/u`);
+    }
+  },
+});
 
   useSetCurrentTab(CurrentTab.Group);
 
@@ -171,11 +207,33 @@ const Group: FC<GroupProps> = ({ id }) => {
     );
   }
 
+  const buildUpdateQuery = () => {
+    return buildQueryString({
+      id: data.id,
+      name: data.name,
+      studyPeriodNumber: data.studyPeriodNumber,
+    });
+  }
+
   const canModify =
     (activeProfile?.type === 'school_admin' &&
       activeProfile?.schoolId === data.schoolId) ||
     (activeProfile?.type === 'class_teacher' &&
       activeProfile?.groupId === data.id);
+
+  const handleOpenDeleteModal = () => {
+    setDeleteOpenModal(true);
+  };
+  const handleCloseDeleteModal = (confirmed: boolean) => {
+    setDeleteOpenModal(false);
+
+    if (!confirmed) return;
+
+    deleteGroup({
+      id: data.id,
+      schoolProfileId: activeProfile?.id
+    });
+  };
 
   return (
     <div className="mb-2 p-3">
@@ -300,10 +358,16 @@ const Group: FC<GroupProps> = ({ id }) => {
           <div
             className={`flex pl-2 pr-2 pt-2 ${isPhone ? 'order-2 w-full' : 'w-1/3'} justify-center`}
           >
-            <Button gradientMonochrome="failure" fullSized>
-              <Link href={`/`} className="text-white">
+            <ProveModal
+              open={deleteOpenModal}
+              text={t('deleteMsg')}
+              onClose={handleCloseDeleteModal}
+            />
+
+            <Button onClick={handleOpenDeleteModal} gradientMonochrome="failure" fullSized>
+              <span className="text-white">
                 {t('deleteBtn')}
-              </Link>
+              </span>
             </Button>
           </div>
 
@@ -311,7 +375,9 @@ const Group: FC<GroupProps> = ({ id }) => {
             className={`flex pl-2 pr-2 pt-2 ${isPhone ? 'order-1 w-full' : 'w-1/3'} justify-center`}
           >
             <Button gradientMonochrome="lime" fullSized>
-              <Link href={`/`}>{t('updateBtn')}</Link>
+              <Link href={`/${activeLocale}/u/groups/update/${id}?${buildUpdateQuery()}`}>
+                {t('updateBtn')}
+              </Link>
             </Button>
           </div>
         </div>

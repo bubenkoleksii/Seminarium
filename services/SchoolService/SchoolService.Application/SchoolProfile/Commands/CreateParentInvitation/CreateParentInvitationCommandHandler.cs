@@ -59,7 +59,7 @@ public class CreateParentInvitationCommandHandler : IRequestHandler<CreateParent
         var encodedInvitationCode = Uri.EscapeDataString(invitationCode);
 
         var clientUrl = _configuration["ClientUrl"]!;
-        var link = $"{clientUrl}uk/u/parent/create/parent/{encodedInvitationCode}";
+        var link = $"{clientUrl}uk/u/school-profile/create/parent/{encodedInvitationCode}";
 
         return link;
     }

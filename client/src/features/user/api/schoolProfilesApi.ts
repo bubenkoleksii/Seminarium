@@ -3,7 +3,7 @@
 import type { ApiResponse } from '@/shared/types';
 import type {
   CreateSchoolProfileRequest,
-  SchoolProfileResponse,
+  SchoolProfileResponse, UpdateSchoolProfileRequest,
 } from '@/features/user/types/schoolProfileTypes';
 import { api } from '@/shared/api';
 import { schoolProfile } from '@/features/user/routes';
@@ -28,6 +28,32 @@ type GenerateInvitation = ({
 
 type Remove = (id: string) => Promise<ApiResponse<any>>;
 
+type Update = ({
+  data,
+  schoolProfileId
+}: {
+  data: UpdateSchoolProfileRequest;
+  schoolProfileId: string;
+}) => Promise<ApiResponse<SchoolProfileResponse>>;
+
+type UpdateImage = ({
+  id,
+  data,
+  schoolProfileId
+}: {
+  id: string;
+  data: FormData;
+  schoolProfileId?: string;
+}) => Promise<ApiResponse<any>>;
+
+type RemoveImage = ({
+  id,
+  schoolProfileId
+}: {
+  id: string;
+  schoolProfileId?: string;
+}) => Promise<ApiResponse<any>>;
+
 export const get: Get = () => api.get(schoolProfile.get);
 
 export const getOne: GetOne = (id) => api.get(schoolProfile.getOne(id));
@@ -51,3 +77,12 @@ export const create: Create = (data: CreateSchoolProfileRequest) =>
 
 export const remove: Remove = (id: string) =>
   api.remove(schoolProfile.remove(id));
+
+export const update: Update = ({ data, schoolProfileId }) =>
+  api.update(schoolProfile.update, data, false, schoolProfileId);
+
+export const updateImage: UpdateImage = ({ id, data, schoolProfileId }) =>
+  api.partialUpdate(schoolProfile.image(id), data, true, schoolProfileId);
+
+export const removeImage: RemoveImage = ({ id, schoolProfileId }) =>
+  api.remove(schoolProfile.image(id), schoolProfileId);

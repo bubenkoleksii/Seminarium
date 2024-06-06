@@ -40,7 +40,8 @@ public class SchoolProfileManager : ISchoolProfileManager
 
         var existedProfile = await _commandContext.SchoolProfiles
             .AsNoTracking()
-            .Where(p => p.SchoolId == school.Id && p.UserId == command.UserId)
+            .Where(p => p.SchoolId == school.Id && p.UserId == command.UserId &&
+                p.Type == SchoolProfileType.SchoolAdmin)
             .FirstOrDefaultAsync();
 
         if (existedProfile != null)
@@ -73,7 +74,7 @@ public class SchoolProfileManager : ISchoolProfileManager
 
         var existedProfile = await _commandContext.SchoolProfiles
             .Where(p => p.GroupId == group.Id && p.UserId == command.UserId &&
-                        p.Type == SchoolProfileType.SchoolAdmin)
+                        p.Type == SchoolProfileType.ClassTeacher)
             .FirstOrDefaultAsync();
 
         if (existedProfile != null)
@@ -104,7 +105,8 @@ public class SchoolProfileManager : ISchoolProfileManager
             return new InvalidError("school_id");
 
         var existedProfile = await _commandContext.SchoolProfiles
-            .Where(p => p.SchoolId == school.Id && p.UserId == command.UserId)
+            .Where(p => p.SchoolId == school.Id && p.UserId == command.UserId &&
+                p.Type == SchoolProfileType.Teacher)
             .FirstOrDefaultAsync();
 
         if (existedProfile != null)
@@ -310,10 +312,14 @@ public class SchoolProfileManager : ISchoolProfileManager
                             .Where(p => p.Type == SchoolProfileType.Parent)
                             .ToListAsync(CancellationToken.None);
 
-                        profile.Parents = parents
+                        var filteredParents = parents
                             .Where(p => p.Children != null &&
                                         p.Children.Any(child => child.Id == profile.Id))
                             .ToList();
+
+                        filteredParents.ForEach(pa => pa.Children = null);
+
+                        profile.Parents = filteredParents;
                         break;
                     }
                 case SchoolProfileType.Parent:
@@ -323,10 +329,13 @@ public class SchoolProfileManager : ISchoolProfileManager
                             .Where(p => p.Type == SchoolProfileType.Student)
                             .ToListAsync(CancellationToken.None);
 
-                        profile.Children = children
+                        var filteredChildren = children
                             .Where(p => p.Parents != null &&
                                         p.Parents.Any(parent => parent.Id == profile.Id))
                             .ToList();
+
+                        filteredChildren.ForEach(c => c.Parents = null);
+                        profile.Children = filteredChildren;
                         break;
                     }
             }

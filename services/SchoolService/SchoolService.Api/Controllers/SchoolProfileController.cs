@@ -87,7 +87,7 @@ public class SchoolProfileController(IMapper mapper, IOptions<Shared.Contracts.O
         if (userId is null || userRole is null)
             return ErrorActionResultHandler.Handle(new InvalidError("user"));
 
-        var command = mapper.Map<UpdateSchoolCommand>(schoolProfileRequest);
+        var command = mapper.Map<UpdateSchoolProfileCommand>(schoolProfileRequest);
         command.UserId = (Guid)userId;
 
         var result = await Mediator.Send(command);

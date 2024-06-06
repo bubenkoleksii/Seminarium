@@ -8,11 +8,18 @@ public class GetOneGroupQueryHandler : IRequestHandler<GetOneGroupQuery, Either<
 
     private readonly IMapper _mapper;
 
-    public GetOneGroupQueryHandler(ISchoolProfileManager schoolProfileManager, IQueryContext queryContext, IMapper mapper)
+    private readonly IFilesManager _filesManager;
+
+    public GetOneGroupQueryHandler(
+        ISchoolProfileManager schoolProfileManager,
+        IQueryContext queryContext,
+        IMapper mapper,
+        IFilesManager filesManager)
     {
         _schoolProfileManager = schoolProfileManager;
         _queryContext = queryContext;
         _mapper = mapper;
+        _filesManager = filesManager;
     }
 
     public async Task<Either<OneGroupModelResponse, Error>> Handle(GetOneGroupQuery request, CancellationToken cancellationToken)
@@ -57,6 +64,34 @@ public class GetOneGroupQueryHandler : IRequestHandler<GetOneGroupQuery, Either<
 
         var groupResponse = _mapper.Map<OneGroupModelResponse>(group);
         groupResponse.SchoolName = group.School.Name;
+
+        var students = group.Students?.Select(student =>
+        {
+            var studentResponse = _mapper.Map<SchoolProfileModelResponse>(student);
+            if (student.Img is not null)
+            {
+                var image = _filesManager.GetFile(student.Img);
+                studentResponse.Img = image.IsRight ? null : ((FileSuccess)image).Url;
+            }
+
+            if (student.Data == null) return studentResponse;
+
+            var data = JsonConvert.DeserializeObject<StudentSerializationData>(student.Data);
+            studentResponse.StudentDateOfBirth = data?.StudentDateOfBirth;
+            studentResponse.StudentAptitudes = data?.StudentAptitudes;
+            studentResponse.StudentIsClassLeader = data?.StudentIsClassLeader;
+            studentResponse.StudentIsIndividually = data?.StudentIsIndividually;
+            studentResponse.StudentHealthGroup = data?.StudentHealthGroup;
+
+            return studentResponse;
+        });
+        groupResponse.Students = students;
+
+        if (group.Img is not null)
+        {
+            var image = _filesManager.GetFile(group.Img);
+            groupResponse.Img = image.IsRight ? null : ((FileSuccess)image).Url;
+        }
 
         return groupResponse;
     }

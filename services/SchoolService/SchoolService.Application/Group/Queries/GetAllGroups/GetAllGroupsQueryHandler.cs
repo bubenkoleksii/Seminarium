@@ -10,11 +10,18 @@ public class GetAllGroupsQueryHandler : IRequestHandler<GetAllGroupsQuery, Eithe
 
     private readonly IMapper _mapper;
 
-    public GetAllGroupsQueryHandler(ISchoolProfileManager schoolProfileManager, IQueryContext queryContext, IMapper mapper)
+    private readonly IFilesManager _filesManager;
+
+    public GetAllGroupsQueryHandler(
+        ISchoolProfileManager schoolProfileManager,
+        IQueryContext queryContext,
+        IMapper mapper,
+        IFilesManager filesManager)
     {
         _schoolProfileManager = schoolProfileManager;
         _queryContext = queryContext;
         _mapper = mapper;
+        _filesManager = filesManager;
     }
 
     public async Task<Either<GetAllGroupsModelResponse, Error>> Handle(GetAllGroupsQuery request, CancellationToken cancellationToken)
@@ -46,7 +53,18 @@ public class GetAllGroupsQueryHandler : IRequestHandler<GetAllGroupsQuery, Eithe
             .Take((int)take)
             .ToListAsync(cancellationToken: cancellationToken);
 
-        var groupsResponse = _mapper.Map<IEnumerable<GroupModelResponse>>(entities);
+        var groupsResponse = _mapper.Map<ICollection<GroupModelResponse>>(entities)
+            .Select(item =>
+            {
+                if (item.Img is not null)
+                {
+                    var image = _filesManager.GetFile(item.Img);
+                    item.Img = image.IsRight ? null : ((FileSuccess)image).Url;
+                }
+
+                return item;
+            })
+            .ToList();
 
         var response = new GetAllGroupsModelResponse(
             Entries: groupsResponse,

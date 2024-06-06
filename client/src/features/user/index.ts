@@ -5,9 +5,14 @@ export { CreateDefaultSchoolProfile } from './school-profile/create/CreateDefaul
 export { CreateStudentSchoolProfile } from './school-profile/create/CreateStudentSchoolProfile';
 export { CreateTeacherSchoolProfile } from './school-profile/create/CreateTeacherSchoolProfile';
 export { CreateParentSchoolProfile } from './school-profile/create/CreateParentSchoolProfile';
+export { UpdateDefaultSchoolProfile } from './school-profile/update/UpdateDefaultSchoolProfile';
+export { UpdateStudentSchoolProfile } from './school-profile/update/UpdateStudentSchoolProfile';
+export { UpdateTeacherSchoolProfile } from './school-profile/update/UpdateTeacherSchoolProfile';
+export { UpdateParentSchoolProfile } from './school-profile/update/UpdateParentSchoolProfile';
 export { useProfiles } from './hooks';
 export { activate } from './api/schoolProfilesApi';
 export { useSchoolProfilesStore } from './store/schoolProfilesStore';
 export { Groups } from './components/group/getAll/Groups';
 export { Group } from './components/group/getOne/Group';
 export { CreateGroupForm } from './components/group/create/CreateGroupForm';
+export { UpdateGroupForm } from './components/group/update/UpdateGroupForm';

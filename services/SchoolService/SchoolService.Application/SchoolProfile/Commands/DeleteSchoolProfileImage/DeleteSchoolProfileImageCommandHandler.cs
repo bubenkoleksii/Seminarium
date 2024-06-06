@@ -6,10 +6,16 @@ public class DeleteSchoolProfileImageCommandHandler : IRequestHandler<DeleteScho
 
     private readonly IFilesManager _filesManager;
 
-    public DeleteSchoolProfileImageCommandHandler(ICommandContext commandContext, IFilesManager filesManager)
+    private readonly ISchoolProfileManager _schoolProfileManager;
+
+    public DeleteSchoolProfileImageCommandHandler(
+        ICommandContext commandContext,
+        IFilesManager filesManager,
+        ISchoolProfileManager schoolProfileManager)
     {
         _commandContext = commandContext;
         _filesManager = filesManager;
+        _schoolProfileManager = schoolProfileManager;
     }
 
     public async Task<Option<Error>> Handle(DeleteSchoolProfileImageCommand request, CancellationToken cancellationToken)
@@ -18,7 +24,7 @@ public class DeleteSchoolProfileImageCommandHandler : IRequestHandler<DeleteScho
             .IgnoreQueryFilters()
             .FirstOrDefaultAsync(s => s.Id == request.SchoolProfileId, cancellationToken: cancellationToken);
 
-        if (entity is null)
+        if (entity is null || entity.UserId != request.UserId)
             return new NotFoundByIdError(request.SchoolProfileId, "school_profile");
 
         var deletingResult = await _filesManager.DeleteFileIfExists(entity.Img);
@@ -40,6 +46,8 @@ public class DeleteSchoolProfileImageCommandHandler : IRequestHandler<DeleteScho
 
             return new InvalidDatabaseOperationError("school_profile");
         }
+
+        _schoolProfileManager.ClearCache(request.UserId);
 
         return Option<Error>.None;
     }

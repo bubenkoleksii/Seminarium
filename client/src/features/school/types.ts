@@ -36,7 +36,7 @@ export interface UpdateSchoolRequest {
   region: string;
   territorialCommunity?: string;
   address?: string;
-  areOccupied: boolean;
+  areOccupied: boolean | string;
   siteUrl?: string;
   img?: string;
 }

@@ -16,11 +16,18 @@ export const userQueries = {
 export const userMutations = {
   activateProfile: 'activateProfile',
   createGroup: 'createGroup',
+  updateGroup: 'updateGroup',
+  deleteGroup: 'deleteGroup',
+  updateGroupImage: 'updateGroupImage',
+  deleteGroupImage: 'deleteGroupImage',
   deleteProfile: 'deleteProfile',
+  updateSchoolProfileImage: 'updateSchoolProfileImage',
+  deleteSchoolProfileImage: 'deleteSchoolProfileImage',
   createClassTeacherInvitation: 'createClassTeacherInvitation',
   createParentInvitation: 'createParentInvitation',
   createStudentInvitation: 'createStudentInvitation',
   createSchoolProfile: 'createSchoolProfile',
+  updateSchoolProfile: 'updateSchoolProfile',
   options: {
     retry: 3,
   },

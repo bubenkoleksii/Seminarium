@@ -2,7 +2,7 @@ import { FC } from 'react';
 import { SchoolProfileResponse } from '@/features/user/types/schoolProfileTypes';
 import { useTranslations } from 'next-intl';
 import { Table } from 'flowbite-react';
-import { DateTime } from '@/components/date-time';
+import { DateOnly } from '@/components/date-time';
 
 type SchoolProfileDetailsInfoProps = {
   profile: SchoolProfileResponse
@@ -18,7 +18,7 @@ const SchoolProfileDetailsInfo: FC<SchoolProfileDetailsInfoProps> = ({ profile }
       </Table.Cell>
       <Table.Cell className="w-1/2 px-4 py-2 text-center font-medium">
         {value
-          ? (label.includes('Date') || label.includes('At') ? <DateTime date={value} /> : value)
+          ? (label.includes('Date') || label.includes('At') ? <DateOnly date={value} /> : value)
           : '-'
         }
       </Table.Cell>
@@ -30,7 +30,7 @@ const SchoolProfileDetailsInfo: FC<SchoolProfileDetailsInfoProps> = ({ profile }
       <Table className="w-full max-w-full sm:max-w-3/4 md:max-w-2/3 lg:max-w-1/2">
         <Table.Body>
           {renderRow('item.name', profile.name)}
-          {renderRow('item.school', profile.schoolName)}
+          {profile.type !== 'parent' && renderRow('item.school', profile.schoolName)}
           {renderRow('item.createdAt', profile.createdAt)}
           {renderRow('item.lastUpdatedAt', profile.lastUpdatedAt)}
           {renderRow('item.type', t(`type.${profile.type}`))}

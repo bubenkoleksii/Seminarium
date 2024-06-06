@@ -12,6 +12,7 @@ import { getDefaultProfileImgByType, truncateString } from '@/shared/helpers';
 import { useProfiles, activate, useSchoolProfilesStore } from '@/features/user';
 import { useIsMutating, useMutation } from '@tanstack/react-query';
 import { toast } from 'react-hot-toast';
+import { CustomImage } from '@/components/custom-image';
 
 interface CurrentUserPopoverProps {
   user: CurrentUser;
@@ -57,13 +58,15 @@ const CurrentUserPopover: FC<CurrentUserPopoverProps> = ({ user }) => {
   };
 
   const adminProfileImage = '/profile/admin.png';
+  const userProfileImage = activeProfile?.img ||
+    getDefaultProfileImgByType(activeProfile?.type);
   const profileImage =
     user.role === 'admin'
       ? adminProfileImage
-      : getDefaultProfileImgByType(activeProfile?.type);
+      : userProfileImage;
 
   const handleChangeActiveProfile = (id: string) => {
-    if (activeProfile.id === id) return;
+    if (activeProfile?.id === id) return;
 
     activateProfile(id);
   };
@@ -75,12 +78,11 @@ const CurrentUserPopover: FC<CurrentUserPopoverProps> = ({ user }) => {
           className="inline-flex items-center justify-center rounded-md px-2 py-1 text-sm font-semibold
           text-gray-900 hover:bg-gray-200 focus:outline-none"
         >
-          <Image
+          <CustomImage
             src={profileImage}
             width={35}
             height={35}
             alt={`Profile image`}
-            className="h-8 w-8 rounded-full"
           />
           <ChevronDownIcon
             className="h-4 w-4 text-gray-400"

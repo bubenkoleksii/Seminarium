@@ -64,11 +64,14 @@ public class GetOneSchoolProfileQueryHandler : IRequestHandler<GetOneSchoolProfi
                         .Where(p => p.Type == SchoolProfileType.Parent)
                         .ToListAsync(CancellationToken.None);
 
-                    entity.Parents = parents
+                    var filteredParents = parents
                         .Where(p => p.Children != null &&
                                     p.Children.Any(child => child.Id == entity.Id))
                         .ToList();
 
+                    filteredParents.ForEach(pa => pa.Children = null);
+
+                    entity.Parents = filteredParents;
                     schoolProfileResponse.Parents = _mapper.Map<IEnumerable<SchoolProfileModelResponse>>(entity.Parents);
                     break;
                 }
@@ -79,11 +82,14 @@ public class GetOneSchoolProfileQueryHandler : IRequestHandler<GetOneSchoolProfi
                         .Where(p => p.Type == SchoolProfileType.Student)
                         .ToListAsync(CancellationToken.None);
 
-                    entity.Children = children
+                    var filteredChildren = children
                         .Where(p => p.Parents != null &&
                                     p.Parents.Any(parent => parent.Id == entity.Id))
                         .ToList();
 
+                    filteredChildren.ForEach(c => c.Parents = null);
+
+                    entity.Children = filteredChildren;
                     schoolProfileResponse.Children =
                         _mapper.Map<IEnumerable<SchoolProfileModelResponse>>(entity.Children);
                     break;

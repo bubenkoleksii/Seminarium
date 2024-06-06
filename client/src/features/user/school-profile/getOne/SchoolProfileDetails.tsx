@@ -20,6 +20,8 @@ import { Button } from 'flowbite-react';
 import { useMutation } from '@tanstack/react-query';
 import { toast } from 'react-hot-toast';
 import { CopyTextModal, ProveModal } from '@/components/modal';
+import { buildQueryString, getDefaultProfileImgByType } from '@/shared/helpers';
+import Link from 'next/link';
 
 type SchoolProfileDetailsProps = {
   id: string;
@@ -79,7 +81,7 @@ const SchoolProfileDetails: FC<SchoolProfileDetailsProps> = ({ id }) => {
 
         toast.success(t('labels.deleteSuccess'), { duration: 2500 });
 
-        window.history.go(-2);
+        replace(`/${activeLocale}/uk/u`);
       }
     },
   });
@@ -143,6 +145,29 @@ const SchoolProfileDetails: FC<SchoolProfileDetailsProps> = ({ id }) => {
     );
   }
 
+  const buildUpdateQuery = () => {
+    return buildQueryString({
+      id: data.id,
+      type: data.type,
+      name: data.name,
+      phone: data.phone,
+      email: data.email,
+      details: data.details,
+      teacherSubjects: data.teacherSubjects,
+      teacherExperience: data.teacherExperience,
+      teacherEducation: data.teacherEducation,
+      teacherQualification: data.teacherQualification,
+      teacherLessonsPerCycle: data.teacherLessonsPerCycle,
+      studentDateOfBirth: data.studentDateOfBirth,
+      studentAptitudes: data.studentAptitudes,
+      studentIsClassLeader: data.studentIsClassLeader?.toString(),
+      studentIsIndividually: data.studentIsIndividually?.toString(),
+      studentHealthGroup: data.studentHealthGroup,
+      parentAddress: data.parentAddress,
+      img: data.img
+    });
+  };
+
   const handleOpenDeleteModal = () => {
     setDeleteOpenModal(true);
   };
@@ -156,13 +181,13 @@ const SchoolProfileDetails: FC<SchoolProfileDetailsProps> = ({ id }) => {
 
   const canUpdate = profiles && profiles.some(profile => profile.id === id);
   const canDelete = !(!activeProfile ||
-    activeProfile.type !== 'school_admin' ||
-    activeProfile.type !== 'class_teacher' ||
-    (activeProfile.type === 'school_admin' && data.schoolId !== activeProfile.schoolId) ||
-    (activeProfile.type === 'class_teacher' && data.groupId !== activeProfile.groupId)) ||
+    activeProfile?.type !== 'school_admin' ||
+    activeProfile?.type !== 'class_teacher' ||
+    (activeProfile?.type === 'school_admin' && data.schoolId !== activeProfile?.schoolId) ||
+    (activeProfile?.type === 'class_teacher' && data.groupId !== activeProfile?.groupId)) ||
     canUpdate;
-  const canGenerateParentCode = activeProfile.type === 'school_admin'
-    || activeProfile.type === 'class_teacher'
+  const canGenerateParentCode = activeProfile?.type === 'school_admin'
+    || activeProfile?.type === 'class_teacher'
     || canUpdate;
 
   return (
@@ -180,16 +205,16 @@ const SchoolProfileDetails: FC<SchoolProfileDetailsProps> = ({ id }) => {
 
       <div className="flex items-center justify-center w-[100%]">
         <CustomImage
-          src={data.img || `/profile/student.png`}
+          src={data.img || getDefaultProfileImgByType(data.type)}
           alt={data.name}
           width={isPhone ? 120 : 200}
           height={isPhone ? 120 : 200}
         />
       </div>
 
-      {data.type === 'student' && invitationParentCode && canGenerateParentCode &&
+      {data.type === 'student' && canGenerateParentCode &&
         <>
-          <div className="mb-4 flex w-[100%] justify-center">
+          <div className="mb-4 mt-4 flex w-[100%] justify-center">
             <div className="w-[350px]">
               <Button
                 onClick={() => {
@@ -204,19 +229,20 @@ const SchoolProfileDetails: FC<SchoolProfileDetailsProps> = ({ id }) => {
                 size="md"
               >
                 <span className="text-white">
-                  {t('invitation.labelTeacherModal')}
+                  {t('parentModalBtn')}
                 </span>
               </Button>
             </div>
           </div>
 
-          <CopyTextModal
-            open={copyParentInvitationOpenModal}
-            label={t('labelParentModal')}
-            text={invitationParentCode}
-            onClose={() => setCopyParentInvitationOpenModal(false)}
-          />
-
+          {invitationParentCode &&
+            <CopyTextModal
+              open={copyParentInvitationOpenModal}
+              label={t('labelParentModal')}
+              text={invitationParentCode}
+              onClose={() => setCopyParentInvitationOpenModal(false)}
+            />
+          }
         </>
       }
       <div className="mt-4 flex w-[100%] flex-col justify-center lg:flex-row">
@@ -243,8 +269,14 @@ const SchoolProfileDetails: FC<SchoolProfileDetailsProps> = ({ id }) => {
         }
 
         {canUpdate &&
-          <Button size="md" gradientMonochrome="lime">
-            {t('updateBtn')}
+          <Button
+            size="md" gradientMonochrome="lime"
+          >
+            <Link
+              href={`/${activeLocale}/u/school-profile/update/${id}?${buildUpdateQuery()}`}
+            >
+              {t('updateBtn')}
+            </Link>
           </Button>
         }
       </div>

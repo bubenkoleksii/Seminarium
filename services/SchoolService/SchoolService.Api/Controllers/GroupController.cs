@@ -72,6 +72,31 @@ public class GroupController(IMapper mapper, IOptions<Shared.Contracts.Options.F
         );
     }
 
+    [Authorize]
+    [ProfileIdentify([Constants.SchoolAdmin, Constants.ClassTeacher], true)]
+    [HttpPut("[action]/")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SchoolResponse))]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> Update([FromBody] UpdateGroupRequest groupRequest)
+    {
+        var userId = User.Identity?.GetId();
+        var userRole = User.Identity?.GetRole();
+
+        if (userId is null || userRole is null)
+            return ErrorActionResultHandler.Handle(new InvalidError("user"));
+
+        var command = mapper.Map<UpdateGroupCommand>(groupRequest);
+        command.UserId = (Guid)userId;
+
+        var result = await Mediator.Send(command);
+
+        return result.Match(
+            Left: modelResponse => Ok(mapper.Map<GroupResponse>(modelResponse)),
+            Right: ErrorActionResultHandler.Handle
+        );
+    }
+
     [Authorize(Roles = Constants.UserRole)]
     [ProfileIdentify([Constants.SchoolAdmin, Constants.ClassTeacher], true)]
     [HttpPost("[action]/")]
@@ -124,12 +149,22 @@ public class GroupController(IMapper mapper, IOptions<Shared.Contracts.Options.F
     }
 
     [Authorize(Roles = Constants.UserRole)]
+    [ProfileIdentify([Constants.SchoolAdmin, Constants.ClassTeacher], true)]
     [HttpPatch("[action]/{id}")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(FileSuccess))]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Image(Guid id, [FromForm] IFormFile image)
     {
+        var userId = User.Identity?.GetId();
+        var userRole = User.Identity?.GetRole();
+
+        if (userId is null)
+            return ErrorActionResultHandler.Handle(new InvalidError("user_id"));
+
+        if (userRole is null)
+            return ErrorActionResultHandler.Handle(new InvalidError("user_role"));
+
         var maxAllowedSizeInMb = fileOptions.Value.MaxSizeInMb;
         var urlExpirationInMin = fileOptions.Value.UrlExpirationInMin;
 
@@ -141,7 +176,7 @@ public class GroupController(IMapper mapper, IOptions<Shared.Contracts.Options.F
         }
         var stream = (Stream)mappingStreamResult;
 
-        var command = new SetGroupImageCommand(id, image.FileName, stream, urlExpirationInMin);
+        var command = new SetGroupImageCommand(id, (Guid)userId, image.FileName, stream, urlExpirationInMin);
         var result = await Mediator.Send(command);
 
         return result.Match(
@@ -151,13 +186,49 @@ public class GroupController(IMapper mapper, IOptions<Shared.Contracts.Options.F
     }
 
     [Authorize(Roles = Constants.UserRole)]
+    [ProfileIdentify([Constants.SchoolAdmin, Constants.ClassTeacher], true)]
     [HttpDelete("[action]/{id}")]
     [ProducesResponseType(StatusCodes.Status202Accepted)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Image(Guid id)
     {
-        var command = new DeleteGroupImageCommand(id);
+        var userId = User.Identity?.GetId();
+        var userRole = User.Identity?.GetRole();
+
+        if (userId is null)
+            return ErrorActionResultHandler.Handle(new InvalidError("user_id"));
+
+        if (userRole is null)
+            return ErrorActionResultHandler.Handle(new InvalidError("user_role"));
+
+        var command = new DeleteGroupImageCommand(id, (Guid)userId);
+
+        var result = await Mediator.Send(command);
+
+        return result.Match(
+            None: Accepted,
+            Some: ErrorActionResultHandler.Handle);
+    }
+
+    [Authorize(Roles = Constants.UserRole)]
+    [ProfileIdentify([Constants.SchoolAdmin, Constants.ClassTeacher], true)]
+    [HttpDelete("[action]/{id}")]
+    [ProducesResponseType(StatusCodes.Status202Accepted)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> Delete(Guid id)
+    {
+        var userId = User.Identity?.GetId();
+        var userRole = User.Identity?.GetRole();
+
+        if (userId is null)
+            return ErrorActionResultHandler.Handle(new InvalidError("user_id"));
+
+        if (userRole is null)
+            return ErrorActionResultHandler.Handle(new InvalidError("user_role"));
+
+        var command = new DeleteGroupCommand(id, (Guid)userId);
 
         var result = await Mediator.Send(command);
 

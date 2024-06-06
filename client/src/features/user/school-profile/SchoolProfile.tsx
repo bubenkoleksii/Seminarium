@@ -100,12 +100,6 @@ const SchoolProfile: FC<SchoolProfileProps> = ({ profile }) => {
             {t('detailsBtn')}
           </span>
         </Button>
-
-        <Button gradientMonochrome="lime" size="xs">
-          <span>
-            {t('updateBtn')}
-          </span>
-        </Button>
       </div>
 
       {!profile.isActive && (

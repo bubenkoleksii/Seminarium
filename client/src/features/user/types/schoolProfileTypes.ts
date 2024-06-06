@@ -56,8 +56,10 @@ export type CreateSchoolProfileRequest = {
 
 export type UpdateSchoolProfileRequest = {
   id: string;
+  type?: string;
   name: string;
   phone?: string;
+  img?: string;
   email?: string;
   details?: string;
   teacherSubjects?: string;
@@ -67,8 +69,8 @@ export type UpdateSchoolProfileRequest = {
   teacherLessonsPerCycle?: number;
   studentDateOfBirth?: string;
   studentAptitudes?: string;
-  studentIsClassLeader?: boolean;
-  studentIsIndividually?: boolean;
+  studentIsClassLeader?: boolean | string;
+  studentIsIndividually?: boolean | string;
   studentHealthGroup?: string;
   parentAddress?: string;
 };

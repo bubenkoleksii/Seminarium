@@ -3,6 +3,8 @@
 public record SetGroupImageCommand(
     Guid GroupId,
 
+    Guid UserId,
+
     string Name,
 
     Stream Stream,
