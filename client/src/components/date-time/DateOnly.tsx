@@ -9,10 +9,10 @@ import 'moment/locale/hu';
 
 interface DateOnlyProps {
   date: string;
-  showDayOfWeek: boolean;
+  showDayOfWeek?: boolean;
 }
 
-const DateOnly: FC<DateOnlyProps> = ({ date, showDayOfWeek }) => {
+const DateOnly: FC<DateOnlyProps> = ({ date, showDayOfWeek = false }) => {
   const activeLocale = useLocale();
   const dateLocale = activeLocale === 'crh' ? 'en-us' : activeLocale;
   const format = showDayOfWeek ? 'ddd, DD.MM.YY' : 'DD.MM.YY';

@@ -9,6 +9,7 @@ export { UpdateDefaultSchoolProfile } from './school-profile/update/UpdateDefaul
 export { UpdateStudentSchoolProfile } from './school-profile/update/UpdateStudentSchoolProfile';
 export { UpdateTeacherSchoolProfile } from './school-profile/update/UpdateTeacherSchoolProfile';
 export { UpdateParentSchoolProfile } from './school-profile/update/UpdateParentSchoolProfile';
+export { Children } from './components/children/Children';
 export { useProfiles } from './hooks';
 export { activate } from './api/schoolProfilesApi';
 export { useSchoolProfilesStore } from './store/schoolProfilesStore';

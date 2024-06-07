@@ -24,6 +24,10 @@ public class GetOneSchoolProfileQueryHandler : IRequestHandler<GetOneSchoolProfi
 
     public async Task<Either<SchoolProfileModelResponse, Error>> Handle(GetOneSchoolProfileQuery request, CancellationToken cancellationToken)
     {
+        var profile = request.UserId.HasValue ? await _schoolProfileManager.GetActiveProfile(request.UserId.Value) : null;
+        if (profile is null)
+            return new InvalidError("school_profile");
+
         var entity = await _queryContext.SchoolProfiles
             .FirstOrDefaultAsync(p => p.Id == request.Id, cancellationToken);
 
@@ -59,39 +63,63 @@ public class GetOneSchoolProfileQueryHandler : IRequestHandler<GetOneSchoolProfi
                     schoolProfileResponse.School = _mapper.Map<SchoolModelResponse>(group?.School);
                     schoolProfileResponse.Group = _mapper.Map<GroupModelResponse>(group);
 
-                    var parents = await _queryContext.SchoolProfiles
-                        .Include(p => p.Children)
-                        .Where(p => p.Type == SchoolProfileType.Parent)
-                        .ToListAsync(CancellationToken.None);
+                    try
+                    {
+                        var parents = await _queryContext.SchoolProfiles
+                            .Include(p => p.Children)
+                            .Where(p => p.Type == SchoolProfileType.Parent)
+                            .ToListAsync(CancellationToken.None);
 
-                    var filteredParents = parents
-                        .Where(p => p.Children != null &&
-                                    p.Children.Any(child => child.Id == entity.Id))
-                        .ToList();
+                        var filteredParents = parents
+                            .Where(p => p.Children != null &&
+                                   p.Children.Any(child => child.Id == entity.Id))
+                            .ToList();
 
-                    filteredParents.ForEach(pa => pa.Children = null);
+                        var isNotParentAndChild = profile.Type == SchoolProfileType.Parent &&
+                            !(schoolProfileResponse.Children?.Any(c => c.Id == profile.Id) ?? false) &&
+                            (!filteredParents?.Exists(pa => pa.Id == profile.Id) ?? false);
+                        if (isNotParentAndChild)
+                            return new InvalidError("school_profile");
 
-                    entity.Parents = filteredParents;
-                    schoolProfileResponse.Parents = _mapper.Map<IEnumerable<SchoolProfileModelResponse>>(entity.Parents);
+                        filteredParents?.ForEach(pa => pa.Children = null);
+
+                        entity.Parents = filteredParents;
+                        schoolProfileResponse.Parents = _mapper.Map<ICollection<SchoolProfileModelResponse>>(entity.Parents);
+                    }
+                    catch (Exception ex)
+                    {
+                        schoolProfileResponse.Parents = null;
+                        Log.Error(ex, "Exception caught while retrieving parents of student with @Id", profile.Id);
+                    }
+
                     break;
                 }
             case { Type: SchoolProfileType.Parent }:
                 {
-                    var children = await _queryContext.SchoolProfiles
-                        .Include(p => p.Parents)
-                        .Where(p => p.Type == SchoolProfileType.Student)
-                        .ToListAsync(CancellationToken.None);
+                    try
+                    {
+                        var children = await _queryContext.SchoolProfiles
+                           .Include(p => p.Parents)
+                           .Where(p => p.Type == SchoolProfileType.Student)
+                           .ToListAsync(CancellationToken.None);
 
-                    var filteredChildren = children
-                        .Where(p => p.Parents != null &&
-                                    p.Parents.Any(parent => parent.Id == entity.Id))
-                        .ToList();
+                        var filteredChildren = children
+                            .Where(p => p.Parents != null &&
+                                        p.Parents.Any(parent => parent.Id == entity.Id))
+                            .ToList();
 
-                    filteredChildren.ForEach(c => c.Parents = null);
+                        filteredChildren.ForEach(c => c.Parents = null);
 
-                    entity.Children = filteredChildren;
-                    schoolProfileResponse.Children =
-                        _mapper.Map<IEnumerable<SchoolProfileModelResponse>>(entity.Children);
+                        entity.Children = filteredChildren;
+                        schoolProfileResponse.Children =
+                            _mapper.Map<ICollection<SchoolProfileModelResponse>>(entity.Children);
+                    }
+                    catch (Exception ex)
+                    {
+                        schoolProfileResponse.Children = null;
+                        Log.Error(ex, "Exception caught while retrieving parents of student with @Id", profile.Id);
+                    }
+
                     break;
                 }
             case { Type: SchoolProfileType.ClassTeacher }:
@@ -110,14 +138,12 @@ public class GetOneSchoolProfileQueryHandler : IRequestHandler<GetOneSchoolProfi
 
         if (request.UserId.HasValue)
         {
-            var profile = await _schoolProfileManager.GetActiveProfile(request.UserId.Value);
-
             var isNotSameUser = profile?.UserId != schoolProfileResponse.UserId;
             var isNotSameSchool = schoolProfileResponse.School?.Id != profile?.School?.Id;
-            var isNotParentAndChild = !(schoolProfileResponse.Children?.Any(c => c.Id == entity.Id) ?? false)
-                                      && (!schoolProfileResponse.Parents?.Any(pa => pa.Id == entity.Id) ?? false);
 
-            if (profile is null || (isNotSameUser && isNotSameSchool && isNotParentAndChild))
+            if (profile is null || (isNotSameUser && isNotSameSchool &&
+                profile.Type != SchoolProfileType.Student &&
+                profile.Type != SchoolProfileType.Parent))
                 return new InvalidError("school_profile");
         }
 

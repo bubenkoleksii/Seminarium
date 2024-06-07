@@ -25,8 +25,6 @@ public class UpdateSchoolProfileCommandHandler : IRequestHandler<UpdateSchoolPro
             .Include(profile => profile.School)
             .Include(profile => profile.Group)
             .Include(profile => profile.ClassTeacherGroup)
-            .Include(profile => profile.Children)
-            .Include(profile => profile.Parents)
             .FirstOrDefaultAsync(s => s.Id == request.Id, cancellationToken: cancellationToken);
 
         if (entity is null || entity.UserId != request.UserId)

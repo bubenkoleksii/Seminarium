@@ -52,11 +52,17 @@ public class CreateSchoolProfileCommandHandler : IRequestHandler<CreateSchoolPro
             }
 
             if (isNew)
+            {
                 existedProfiles.ForEach(p => p.IsActive = false);
+                _commandContext.SchoolProfiles.UpdateRange(existedProfiles);
+            }
             else
+            {
                 existedProfiles.ForEach(p => p.IsActive = p.Id != ((Domain.Entities.SchoolProfile)parentProfile).Id);
 
-            _commandContext.SchoolProfiles.UpdateRange(existedProfiles);
+                var profilesToUpdate = existedProfiles.Where(p => p.Id != ((Domain.Entities.SchoolProfile)parentProfile).Id);
+                _commandContext.SchoolProfiles.UpdateRange(profilesToUpdate);
+            }
 
             try
             {
@@ -70,6 +76,10 @@ public class CreateSchoolProfileCommandHandler : IRequestHandler<CreateSchoolPro
             var currentParentProfile = await _schoolProfileManager.CacheProfiles(request.UserId, ((Domain.Entities.SchoolProfile)parentProfile).Id);
             if (currentParentProfile is null)
                 return new InvalidError("user");
+
+            if (currentParentProfile.Children != null)
+                foreach (var child in currentParentProfile.Children)
+                    child.Parents = null;
 
             return currentParentProfile;
         }

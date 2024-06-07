@@ -5,7 +5,7 @@ import { useNavStore } from '@/features/nav';
 import { Tooltip } from 'flowbite-react';
 import { CurrentTab } from '@/features/user/constants';
 import Link from 'next/link';
-import { ChevronsLeft, Home, User } from 'lucide-react';
+import { ChevronsLeft, Home, User, Baby } from 'lucide-react';
 import { SchoolProfileResponse } from '@/features/user/types/schoolProfileTypes';
 
 type ParentContentTabsProps = {
@@ -30,6 +30,20 @@ const ParentContentTabs: FC<ParentContentTabsProps> = ({ activeProfile }) => {
         >
           <User
             color={`${currentTab === CurrentTab.Profile ? `#f9fafb` : `#3B0764`}`}
+            size={20}
+          />
+        </Link>
+      </Tooltip>
+
+      <Tooltip content={t('children')} placement="right" style="light">
+        <Link
+          href={`/${activeLocale}/u/children/${activeProfile.id}`}
+          className={`flex h-[50px] w-[50px] items-center justify-center 
+         ${currentTab === CurrentTab.Children ? `bg-purple-950` : `bg-gray-50 hover:bg-gray-200`} 
+         text-gray-800 transition duration-300`}
+        >
+          <Baby
+            color={`${currentTab === CurrentTab.Children ? `#f9fafb` : `#3B0764`}`}
             size={20}
           />
         </Link>

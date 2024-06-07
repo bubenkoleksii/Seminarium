@@ -110,10 +110,10 @@ const UpdateStudentSchoolProfile: FC<UpdateStudentSchoolProfileProps> = ({
         queryClient.invalidateQueries({
           queryKey: [userQueries.getSchoolProfile, id],
         });
-
-        const url = `/${activeLocale}/u/school-profile/${id}`;
-        replace(url);
       }
+
+      const url = `/${activeLocale}/u/school-profile/${id}`;
+      replace(url);
     },
   });
 

@@ -93,7 +93,7 @@ public class SchoolProfileController(IMapper mapper, IOptions<Shared.Contracts.O
         var result = await Mediator.Send(command);
 
         return result.Match(
-            Left: modelResponse => CreatedAtAction(nameof(Create), mapper.Map<SchoolProfileResponse>(modelResponse)),
+            Left: modelResponse => Ok(mapper.Map<SchoolProfileResponse>(modelResponse)),
             Right: ErrorActionResultHandler.Handle
         );
     }

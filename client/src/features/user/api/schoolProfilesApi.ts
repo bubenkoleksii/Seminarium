@@ -55,6 +55,14 @@ type RemoveImage = ({
   schoolProfileId?: string;
 }) => Promise<ApiResponse<any>>;
 
+type AddChild = ({
+  data,
+  schoolProfileId,
+}: {
+  data: CreateSchoolProfileRequest;
+  schoolProfileId: string;
+}) => Promise<ApiResponse<SchoolProfileResponse>>;
+
 export const get: Get = () => api.get(schoolProfile.get);
 
 export const getOne: GetOne = (id) => api.get(schoolProfile.getOne(id));
@@ -75,6 +83,9 @@ export const createParentInvitation: GenerateInvitation = ({
 
 export const create: Create = (data: CreateSchoolProfileRequest) =>
   api.create(schoolProfile.create, data);
+
+export const addChild: AddChild = ({ data, schoolProfileId }) =>
+  api.create(schoolProfile.create, data, false, schoolProfileId);
 
 export const remove: Remove = (id: string) =>
   api.remove(schoolProfile.remove(id));

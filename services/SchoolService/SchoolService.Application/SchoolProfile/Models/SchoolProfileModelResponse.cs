@@ -60,7 +60,7 @@ public class SchoolProfileModelResponse
 
     public string? ParentAddress { get; set; }
 
-    public IEnumerable<SchoolProfileModelResponse>? Parents { get; set; }
+    public ICollection<SchoolProfileModelResponse>? Parents { get; set; }
 
-    public IEnumerable<SchoolProfileModelResponse>? Children { get; set; }
+    public ICollection<SchoolProfileModelResponse>? Children { get; set; }
 }

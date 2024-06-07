@@ -242,7 +242,7 @@ const SchoolProfileDetails: FC<SchoolProfileDetailsProps> = ({ id }) => {
           )}
         </>
       )}
-      <div className="mt-4 flex w-[100%] flex-col justify-center lg:flex-row">
+      <div className="mt-4 flex w-[100%] flex-col justify-center">
         <SchoolProfileDetailsInfo profile={data} />
       </div>
 
