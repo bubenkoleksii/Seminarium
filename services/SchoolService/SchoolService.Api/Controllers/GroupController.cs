@@ -72,7 +72,7 @@ public class GroupController(IMapper mapper, IOptions<Shared.Contracts.Options.F
         );
     }
 
-    [Authorize]
+    [Authorize(Roles = Constants.UserRole)]
     [ProfileIdentify([Constants.SchoolAdmin, Constants.ClassTeacher], true)]
     [HttpPut("[action]/")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SchoolResponse))]

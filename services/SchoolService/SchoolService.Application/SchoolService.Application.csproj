@@ -36,9 +36,4 @@
 		<ProjectReference Include="..\SchoolService.Domain\SchoolService.Domain.csproj" />
 	</ItemGroup>
 
-	<ItemGroup>
-	  <Folder Include="StudyPeriod\Commands\" />
-	  <Folder Include="StudyPeriod\Queries\" />
-	</ItemGroup>
-
 </Project>

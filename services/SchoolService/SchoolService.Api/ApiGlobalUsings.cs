@@ -14,6 +14,7 @@ global using SchoolService.Api.Models.Group;
 global using SchoolService.Api.Models.JoiningRequest;
 global using SchoolService.Api.Models.School;
 global using SchoolService.Api.Models.SchoolProfile;
+global using SchoolService.Api.Models.StudyPeriod;
 global using SchoolService.Api.Options;
 global using SchoolService.Application;
 global using SchoolService.Application.Common.Mappings;
@@ -54,6 +55,10 @@ global using SchoolService.Application.SchoolProfile.Queries.GetAllSchoolProfile
 global using SchoolService.Application.SchoolProfile.Queries.GetOneSchoolProfile;
 global using SchoolService.Application.SchoolProfile.Queries.GetUserSchoolProfiles;
 global using SchoolService.Application.SchoolProfile.SchoolProfileManager;
+global using SchoolService.Application.StudyPeriod.Commands.CreateStudyPeriod;
+global using SchoolService.Application.StudyPeriod.Commands.DeleteStudyPeriod;
+global using SchoolService.Application.StudyPeriod.Commands.UpdateStudyPeriod;
+global using SchoolService.Application.StudyPeriod.Queries.GetAllStudyPeriods;
 global using SchoolService.Infrastructure.Persistence;
 global using Serilog;
 global using Serilog.Events;

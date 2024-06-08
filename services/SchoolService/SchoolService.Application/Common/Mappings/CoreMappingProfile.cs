@@ -13,6 +13,8 @@ public class CoreMappingProfile : Profile
         ConfigureSchoolProfileMappings();
 
         ConfigureGroupMappings();
+
+        ConfigureStudyPeriodMappings();
     }
 
     private void ConfigureSchoolMapping()
@@ -51,5 +53,14 @@ public class CoreMappingProfile : Profile
         CreateMap<Domain.Entities.Group, GroupModelResponse>();
 
         CreateMap<Domain.Entities.Group, OneGroupModelResponse>();
+    }
+
+    private void ConfigureStudyPeriodMappings()
+    {
+        CreateMap<CreateStudyPeriodCommand, Domain.Entities.StudyPeriod>();
+
+        CreateMap<UpdateStudyPeriodCommand, Domain.Entities.StudyPeriod>();
+
+        CreateMap<Domain.Entities.StudyPeriod, StudyPeriodModelResponse>();
     }
 }
