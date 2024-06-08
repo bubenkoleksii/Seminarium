@@ -2,11 +2,7 @@
 
 public class School : Entity
 {
-    public Guid JoiningRequestId { get; set; }
-
-    public required JoiningRequest JoiningRequest { get; set; }
-
-    public ulong RegisterCode { get; set; }
+    public required string RegisterCode { get; set; }
 
     public required string Name { get; set; }
 
@@ -20,7 +16,7 @@ public class School : Entity
 
     public SchoolType Type { get; set; }
 
-    public ulong PostalCode { get; set; }
+    public required string PostalCode { get; set; }
 
     public SchoolOwnershipType OwnershipType { get; set; }
 
@@ -37,4 +33,12 @@ public class School : Entity
     public string? SiteUrl { get; set; }
 
     public string? Img { get; set; }
+
+    public Guid JoiningRequestId { get; set; }
+
+    public required JoiningRequest JoiningRequest { get; set; }
+
+    public IEnumerable<SchoolProfile>? Teachers { get; set; }
+
+    public IEnumerable<Group>? Groups { get; set; }
 }

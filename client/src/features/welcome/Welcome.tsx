@@ -4,18 +4,19 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { routes } from '@/shared/constants';
 import { useSession } from 'next-auth/react';
-import { redirect } from 'next/navigation';
+import { redirect, useRouter } from 'next/navigation';
 
 const Welcome: FC = () => {
   const activeLocale = useLocale();
+  const { replace } = useRouter();
   const { status, data } = useSession();
   const t = useTranslations('Welcome');
 
   const currentUser = data?.user;
   if (currentUser) {
     currentUser.role === 'admin'
-      ? redirect(`${activeLocale}/admin`)
-      : redirect(`${activeLocale}/admin`);
+      ? redirect(`${activeLocale}/admin/joining_requests`)
+      : replace(`${activeLocale}/u`);
   }
 
   return (

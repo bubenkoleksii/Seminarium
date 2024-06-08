@@ -37,9 +37,7 @@ const JoiningRequestForm: FC = () => {
     gradingSystem: Yup.number()
       .required(v('required'))
       .max(10000, v('maxNumber')),
-    postalCode: Yup.number()
-      .required(v('required'))
-      .max(999999, v('maxNumber')),
+    postalCode: Yup.string().required(v('required')).max(50, v('max')),
     studentsQuantity: Yup.number()
       .required(v('required'))
       .max(1000000, v('maxNumber')),
@@ -205,7 +203,7 @@ const JoiningRequestForm: FC = () => {
             </label>
             <Field
               placeholder={t('placeholders.registerCode')}
-              type="number"
+              type="text"
               id="registerCode"
               name="registerCode"
               className={styles.input}
@@ -295,7 +293,7 @@ const JoiningRequestForm: FC = () => {
             </label>
             <Field
               placeholder={t('placeholders.postalCode')}
-              type="number"
+              type="text"
               id="postalCode"
               name="postalCode"
               className={styles.input}
@@ -427,7 +425,7 @@ const JoiningRequestForm: FC = () => {
               type="submit"
               className={styles.button}
             >
-              {t('labels.submit')}
+              {t('labels.createSubmit')}
             </button>
           </div>
         </Form>

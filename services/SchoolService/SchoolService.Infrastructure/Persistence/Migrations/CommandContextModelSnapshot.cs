@@ -23,6 +23,52 @@ namespace SchoolService.Infrastructure.Persistence.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
+            modelBuilder.Entity("SchoolService.Domain.Entities.Group", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid?>("ClassTeacherId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Img")
+                        .HasMaxLength(250)
+                        .HasColumnType("character varying(250)");
+
+                    b.Property<bool>("IsArchived")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTime?>("LastArchivedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime?>("LastUpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(250)
+                        .HasColumnType("character varying(250)");
+
+                    b.Property<Guid>("SchoolId")
+                        .HasColumnType("uuid");
+
+                    b.Property<byte>("StudyPeriodNumber")
+                        .HasColumnType("smallint");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ClassTeacherId")
+                        .IsUnique();
+
+                    b.HasIndex("SchoolId");
+
+                    b.ToTable("Groups", "public");
+                });
+
             modelBuilder.Entity("SchoolService.Domain.Entities.JoiningRequest", b =>
                 {
                     b.Property<Guid>("Id")
@@ -59,14 +105,18 @@ namespace SchoolService.Infrastructure.Persistence.Migrations
                     b.Property<int>("OwnershipType")
                         .HasColumnType("integer");
 
-                    b.Property<decimal>("PostalCode")
-                        .HasColumnType("numeric(20,0)");
+                    b.Property<string>("PostalCode")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
 
                     b.Property<int>("Region")
                         .HasColumnType("integer");
 
-                    b.Property<decimal>("RegisterCode")
-                        .HasColumnType("numeric(20,0)");
+                    b.Property<string>("RegisterCode")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
 
                     b.Property<string>("RequesterEmail")
                         .IsRequired()
@@ -111,6 +161,27 @@ namespace SchoolService.Infrastructure.Persistence.Migrations
                         .IsUnique();
 
                     b.ToTable("JoiningRequests", "public");
+                });
+
+            modelBuilder.Entity("SchoolService.Domain.Entities.ParentChild", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid?>("ChildId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid?>("ParentId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ChildId");
+
+                    b.HasIndex("ParentId");
+
+                    b.ToTable("ParentChild", "public");
                 });
 
             modelBuilder.Entity("SchoolService.Domain.Entities.School", b =>
@@ -164,14 +235,18 @@ namespace SchoolService.Infrastructure.Persistence.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("character varying(50)");
 
-                    b.Property<decimal>("PostalCode")
-                        .HasColumnType("numeric(20,0)");
+                    b.Property<string>("PostalCode")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
 
                     b.Property<int>("Region")
                         .HasColumnType("integer");
 
-                    b.Property<decimal>("RegisterCode")
-                        .HasColumnType("numeric(20,0)");
+                    b.Property<string>("RegisterCode")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
 
                     b.Property<string>("ShortName")
                         .HasMaxLength(250)
@@ -196,6 +271,96 @@ namespace SchoolService.Infrastructure.Persistence.Migrations
                     b.ToTable("Schools", "public");
                 });
 
+            modelBuilder.Entity("SchoolService.Domain.Entities.SchoolProfile", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid?>("ClassTeacherGroupId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Data")
+                        .HasMaxLength(1024)
+                        .HasColumnType("character varying(1024)");
+
+                    b.Property<string>("Details")
+                        .HasMaxLength(1024)
+                        .HasColumnType("character varying(1024)");
+
+                    b.Property<string>("Email")
+                        .HasMaxLength(250)
+                        .HasColumnType("character varying(250)");
+
+                    b.Property<Guid?>("GroupId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Img")
+                        .HasMaxLength(250)
+                        .HasColumnType("character varying(250)");
+
+                    b.Property<bool>("IsActive")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(true);
+
+                    b.Property<bool>("IsArchived")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTime?>("LastArchivedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime?>("LastUpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(250)
+                        .HasColumnType("character varying(250)");
+
+                    b.Property<string>("Phone")
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
+
+                    b.Property<Guid?>("SchoolId")
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("integer");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("GroupId");
+
+                    b.HasIndex("SchoolId");
+
+                    b.ToTable("SchoolProfiles", "public");
+                });
+
+            modelBuilder.Entity("SchoolService.Domain.Entities.Group", b =>
+                {
+                    b.HasOne("SchoolService.Domain.Entities.SchoolProfile", "ClassTeacher")
+                        .WithOne("ClassTeacherGroup")
+                        .HasForeignKey("SchoolService.Domain.Entities.Group", "ClassTeacherId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("SchoolService.Domain.Entities.School", "School")
+                        .WithMany("Groups")
+                        .HasForeignKey("SchoolId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ClassTeacher");
+
+                    b.Navigation("School");
+                });
+
             modelBuilder.Entity("SchoolService.Domain.Entities.JoiningRequest", b =>
                 {
                     b.HasOne("SchoolService.Domain.Entities.School", "School")
@@ -205,10 +370,58 @@ namespace SchoolService.Infrastructure.Persistence.Migrations
                     b.Navigation("School");
                 });
 
+            modelBuilder.Entity("SchoolService.Domain.Entities.ParentChild", b =>
+                {
+                    b.HasOne("SchoolService.Domain.Entities.SchoolProfile", "Child")
+                        .WithMany()
+                        .HasForeignKey("ChildId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.HasOne("SchoolService.Domain.Entities.SchoolProfile", "Parent")
+                        .WithMany()
+                        .HasForeignKey("ParentId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.Navigation("Child");
+
+                    b.Navigation("Parent");
+                });
+
+            modelBuilder.Entity("SchoolService.Domain.Entities.SchoolProfile", b =>
+                {
+                    b.HasOne("SchoolService.Domain.Entities.Group", "Group")
+                        .WithMany("Students")
+                        .HasForeignKey("GroupId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("SchoolService.Domain.Entities.School", "School")
+                        .WithMany("Teachers")
+                        .HasForeignKey("SchoolId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.Navigation("Group");
+
+                    b.Navigation("School");
+                });
+
+            modelBuilder.Entity("SchoolService.Domain.Entities.Group", b =>
+                {
+                    b.Navigation("Students");
+                });
+
             modelBuilder.Entity("SchoolService.Domain.Entities.School", b =>
                 {
+                    b.Navigation("Groups");
+
                     b.Navigation("JoiningRequest")
                         .IsRequired();
+
+                    b.Navigation("Teachers");
+                });
+
+            modelBuilder.Entity("SchoolService.Domain.Entities.SchoolProfile", b =>
+                {
+                    b.Navigation("ClassTeacherGroup");
                 });
 #pragma warning restore 612, 618
         }

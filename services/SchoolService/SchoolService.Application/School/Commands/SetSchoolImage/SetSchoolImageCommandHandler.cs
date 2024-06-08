@@ -4,19 +4,28 @@ public class SetSchoolImageCommandHandler : IRequestHandler<SetSchoolImageComman
 {
     private readonly ICommandContext _commandContext;
 
-    private readonly IOptions<S3Options> _s3Options;
+    private readonly ISchoolProfileManager _schoolProfileManager;
 
-    private readonly IS3Service _s3Service;
+    private readonly IFilesManager _filesManager;
 
-    public SetSchoolImageCommandHandler(ICommandContext commandContext, IOptions<S3Options> s3Options, IS3Service s3Service)
+    public SetSchoolImageCommandHandler(
+        ICommandContext commandContext,
+        ISchoolProfileManager schoolProfileManager,
+        IFilesManager filesManager)
     {
         _commandContext = commandContext;
-        _s3Options = s3Options;
-        _s3Service = s3Service;
+        _schoolProfileManager = schoolProfileManager;
+        _filesManager = filesManager;
     }
 
     public async Task<Either<FileSuccess, Error>> Handle(SetSchoolImageCommand request, CancellationToken cancellationToken)
     {
+        var validationError =
+            await _schoolProfileManager.ValidateSchoolProfileBySchool(request.UserId, request.SchoolId);
+
+        if (validationError.IsSome)
+            return (Error)validationError;
+
         var entity = await _commandContext.Schools
             .IgnoreQueryFilters()
             .FirstOrDefaultAsync(s => s.Id == request.SchoolId, cancellationToken: cancellationToken);
@@ -24,15 +33,15 @@ public class SetSchoolImageCommandHandler : IRequestHandler<SetSchoolImageComman
         if (entity is null)
             return new NotFoundByIdError(request.SchoolId, "school");
 
-        var deletingResult = await DeleteImageIfExists(entity.Img);
+        var deletingResult = await _filesManager.DeleteFileIfExists(entity.Img);
         if (deletingResult.IsSome)
         {
             Log.Error("An error occurred while deleting image the school with values {@SchoolId} {@FileName}.", entity.Id, entity.Img);
             return (Error)deletingResult;
         }
 
-        var newFileName = $"{Guid.NewGuid()}__{request.Name}";
-        var uploadingResult = await UploadNewImage(request.Stream, newFileName, request.UrlExpirationInMin);
+        var newFileName = $"{Guid.NewGuid()}_school_{request.Name}";
+        var uploadingResult = await _filesManager.UploadFile(request.Stream, newFileName, request.UrlExpirationInMin);
 
         if (uploadingResult.IsLeft)
         {
@@ -51,28 +60,5 @@ public class SetSchoolImageCommandHandler : IRequestHandler<SetSchoolImageComman
         }
 
         return uploadingResult;
-    }
-
-    private async Task<Either<FileSuccess, Error>> UploadNewImage(Stream stream, string fileName, int? urlExpirationInMin)
-    {
-        var newFileRequest = urlExpirationInMin != null
-            ? new SaveFileRequest(stream, fileName, _s3Options.Value.Bucket, urlExpirationInMin.Value)
-            : new SaveFileRequest(stream, fileName, _s3Options.Value.Bucket);
-
-        return await _s3Service.UploadOne(newFileRequest);
-    }
-
-    private async Task<Option<Error>> DeleteImageIfExists(string? name)
-    {
-        if (name == null)
-            return Option<Error>.None;
-
-        var deletingRequest = new DeleteFileRequest(name, _s3Options.Value.Bucket);
-        var deletingResult = await _s3Service.DeleteOne(deletingRequest);
-
-        if (deletingResult.IsSome)
-            return (Error)deletingResult;
-
-        return Option<Error>.None;
     }
 }

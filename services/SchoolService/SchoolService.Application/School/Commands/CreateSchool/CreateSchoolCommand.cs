@@ -3,7 +3,7 @@
 public record CreateSchoolCommand(
     Guid JoiningRequestId,
 
-    ulong RegisterCode,
+    string RegisterCode,
 
     string Name,
 
@@ -13,7 +13,7 @@ public record CreateSchoolCommand(
 
     SchoolType Type,
 
-    ulong PostalCode,
+    string PostalCode,
 
     SchoolOwnershipType OwnershipType,
 

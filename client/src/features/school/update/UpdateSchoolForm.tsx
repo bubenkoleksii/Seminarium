@@ -27,6 +27,7 @@ import { CustomImage } from '@/components/custom-image';
 import { useMediaQuery } from 'react-responsive';
 import { UploadFile } from '@/components/file-upload';
 import { Button } from 'flowbite-react';
+import { useProfiles } from '@/features/user';
 
 type UpdateSchoolFormProps = {
   id: string;
@@ -39,9 +40,11 @@ const UpdateSchoolForm: FC<UpdateSchoolFormProps> = ({ id, school }) => {
   const activeLocale = useLocale();
   const { replace } = useRouter();
 
+  const { activeProfile, isLoading: profilesLoading } = useProfiles();
+
   const queryClient = useQueryClient();
 
-  const { isUserLoading } = useAuthRedirectByRole(activeLocale, 'user');
+  const { isUserLoading, user } = useAuthRedirectByRole(activeLocale, 'user');
   const isMutating = useIsMutating();
 
   const [img, setImg] = useState<string | undefined>(school.img);
@@ -50,15 +53,13 @@ const UpdateSchoolForm: FC<UpdateSchoolFormProps> = ({ id, school }) => {
     email: Yup.string().email(v('email')).max(250, v('max')),
     phone: Yup.string().max(250, v('max')),
     site: Yup.string().max(250, v('max')),
-    registerCode: Yup.string().required(v('required')),
+    registerCode: Yup.string().required(v('required')).max(50, v('max')),
     name: Yup.string().required(v('required')).max(250, v('max')),
     shortName: Yup.string().max(250, v('max')),
     gradingSystem: Yup.number()
       .required(v('required'))
       .max(10000, v('maxNumber')),
-    postalCode: Yup.number()
-      .required(v('required'))
-      .max(999999, v('maxNumber')),
+    postalCode: Yup.string().required(v('required')).max(50, v('max')),
     studentsQuantity: Yup.number()
       .required(v('required'))
       .max(1000000, v('maxNumber')),
@@ -78,10 +79,21 @@ const UpdateSchoolForm: FC<UpdateSchoolFormProps> = ({ id, school }) => {
     mutationKey: [updateSchoolRoute],
     onSuccess: (response) => {
       if (response && response.error) {
+        if (
+          response.error.detail.includes('school_profile') ||
+          response.error.detail.includes('school_id')
+        ) {
+          toast.error(t('labels.invalid_school_profile'));
+
+          return;
+        }
+
         const errorMessages = {
           404: t('labels.updateNotFound'),
           409: t('labels.updateAlreadyExists'),
           400: t('labels.validation'),
+          401: t('labels.unauthorized'),
+          403: t('labels.forbidden'),
         };
 
         toast.error(
@@ -99,7 +111,12 @@ const UpdateSchoolForm: FC<UpdateSchoolFormProps> = ({ id, school }) => {
           queryKey: [getOneSchoolRoute, id],
         });
 
-        replace(`/${activeLocale}/school/${id}`);
+        const url =
+          user?.role === 'user'
+            ? `/${activeLocale}/u/my-school/${id}`
+            : `/${activeLocale}/school/${id}`;
+
+        replace(url);
       }
     },
   });
@@ -109,9 +126,20 @@ const UpdateSchoolForm: FC<UpdateSchoolFormProps> = ({ id, school }) => {
     mutationKey: [imageRoute + 'update', id],
     onSuccess: (response) => {
       if (response && response.error) {
+        if (
+          response.error.detail.includes('school_profile') ||
+          response.error.detail.includes('school_id')
+        ) {
+          toast.error(t('labels.invalid_school_profile'));
+
+          return;
+        }
+
         const errorMessages = {
           404: t('labels.updateNotFound'),
           400: t('labels.validation'),
+          401: t('labels.unauthorized'),
+          403: t('labels.forbidden'),
         };
 
         toast.error(
@@ -140,9 +168,20 @@ const UpdateSchoolForm: FC<UpdateSchoolFormProps> = ({ id, school }) => {
       mutationKey: [imageRoute + 'delete', id],
       onSuccess: (response) => {
         if (response && response.error) {
+          if (
+            response.error.detail.includes('school_profile') ||
+            response.error.detail.includes('school_id')
+          ) {
+            toast.error(t('labels.invalid_school_profile'));
+
+            return;
+          }
+
           const errorMessages = {
             404: t('labels.updateNotFound'),
             400: t('labels.validation'),
+            401: t('labels.unauthorized'),
+            403: t('labels.forbidden'),
           };
 
           toast.error(
@@ -183,11 +222,14 @@ const UpdateSchoolForm: FC<UpdateSchoolFormProps> = ({ id, school }) => {
       region: values.region,
       territorialCommunity: values.territorialCommunity,
       address: values.address,
-      areOccupied: values.areOccupied === `true`,
+      areOccupied: values.areOccupied == `true`,
       siteUrl: values.siteUrl,
     };
 
-    mutate(request);
+    mutate({
+      data: request,
+      schoolProfileId: activeProfile?.id,
+    });
   };
 
   const handleImageSubmit = (values: { files: File }) => {
@@ -197,6 +239,7 @@ const UpdateSchoolForm: FC<UpdateSchoolFormProps> = ({ id, school }) => {
     imageMutate({
       id: school.id,
       data: formData,
+      schoolProfileId: activeProfile?.id,
     });
   };
 
@@ -207,14 +250,22 @@ const UpdateSchoolForm: FC<UpdateSchoolFormProps> = ({ id, school }) => {
     imagePending ||
     imageDeletePending ||
     isMutating ||
-    isUserLoading
+    isUserLoading ||
+    profilesLoading
   ) {
     return (
       <>
         <h2 className="mb-4 mt-2 text-center text-xl font-bold">
           {t('updateTitle')}
           <span
-            onClick={() => replace(`/${activeLocale}/school/${id}`)}
+            onClick={() => {
+              const url =
+                user?.role === 'user'
+                  ? `/${activeLocale}/u/my-school/${id}`
+                  : `/${activeLocale}/school/${id}`;
+
+              replace(url);
+            }}
             className="ml-2 cursor-pointer pt-1 text-sm text-purple-700 hover:text-red-700"
           >
             {t('back')}
@@ -235,7 +286,14 @@ const UpdateSchoolForm: FC<UpdateSchoolFormProps> = ({ id, school }) => {
         <h2 className="mb-4 mt-2 text-center text-xl font-bold">
           {t('updateTitle')}
           <span
-            onClick={() => replace(`/${activeLocale}/school/${id}`)}
+            onClick={() => {
+              const url =
+                user?.role === 'user'
+                  ? `/${activeLocale}/u/my-school/${id}`
+                  : `/${activeLocale}/school/${id}`;
+
+              replace(url);
+            }}
             className="ml-2 cursor-pointer pt-1 text-sm text-purple-700 hover:text-red-700"
           >
             {t('back')}
@@ -258,7 +316,12 @@ const UpdateSchoolForm: FC<UpdateSchoolFormProps> = ({ id, school }) => {
             />
 
             <Button
-              onClick={() => imageDeleteMutate(id)}
+              onClick={() =>
+                imageDeleteMutate({
+                  id,
+                  schoolProfileId: activeProfile?.id,
+                })
+              }
               gradientMonochrome="failure"
             >
               <span className="text-white">{t('labels.deleteImage')}</span>
@@ -274,7 +337,7 @@ const UpdateSchoolForm: FC<UpdateSchoolFormProps> = ({ id, school }) => {
             </label>
             <Field
               placeholder={t('placeholders.registerCode')}
-              type="number"
+              type="text"
               id="registerCode"
               name="registerCode"
               className={styles.input}
@@ -364,7 +427,7 @@ const UpdateSchoolForm: FC<UpdateSchoolFormProps> = ({ id, school }) => {
             </label>
             <Field
               placeholder={t('placeholders.postalCode')}
-              type="number"
+              type="text"
               id="postalCode"
               name="postalCode"
               className={styles.input}

@@ -1,7 +1,7 @@
 ﻿namespace SchoolService.Api.Models.JoiningRequest;
 
 public record CreateJoiningRequest(
-    ulong RegisterCode,
+    string RegisterCode,
 
     string Name,
 
@@ -17,7 +17,7 @@ public record CreateJoiningRequest(
 
     string Type,
 
-    ulong PostalCode,
+    string PostalCode,
 
     string OwnershipType,
 

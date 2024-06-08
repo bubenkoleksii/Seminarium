@@ -10,7 +10,7 @@ export interface JoiningRequestResponse {
   schoolId?: string;
   createdAt: string;
   lastUpdatedAt?: string;
-  registerCode: number;
+  registerCode: string;
   name: string;
   requesterEmail: string;
   requesterPhone: string;
@@ -18,7 +18,7 @@ export interface JoiningRequestResponse {
   shortName?: string | null;
   gradingSystem: number;
   type: string;
-  postalCode: number;
+  postalCode: string;
   ownershipType: string;
   studentsQuantity: number;
   region: string;

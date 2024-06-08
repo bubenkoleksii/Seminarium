@@ -10,11 +10,15 @@ public class UpdateSchoolCommandValidator : AbstractValidator<UpdateSchoolComman
             .NotEqual(Guid.Empty)
             .WithErrorCode(ErrorTitles.Common.Empty);
 
+        RuleFor(x => x.UserId)
+            .NotEqual(Guid.Empty)
+            .WithErrorCode(ErrorTitles.Common.Empty);
+
         RuleFor(x => x.RegisterCode)
             .NotEmpty()
             .WithErrorCode(ErrorTitles.Common.Empty)
-            .GreaterThan((ulong)0)
-            .WithErrorCode(ErrorTitles.Common.LowerZero);
+            .MaximumLength(50)
+            .WithErrorCode(ErrorTitles.Common.TooLong);
 
         RuleFor(x => x.Name)
             .NotEmpty()
@@ -49,8 +53,8 @@ public class UpdateSchoolCommandValidator : AbstractValidator<UpdateSchoolComman
         RuleFor(x => x.PostalCode)
             .NotEmpty()
             .WithErrorCode(ErrorTitles.Common.Empty)
-            .GreaterThan((ulong)0)
-            .WithErrorCode(ErrorTitles.Common.LowerZero);
+            .MaximumLength(50)
+            .WithErrorCode(ErrorTitles.Common.TooLong);
 
         RuleFor(x => x.OwnershipType)
             .NotEmpty()

@@ -9,7 +9,7 @@ public record SchoolModelResponse(
 
     DateTime? LastUpdatedAt,
 
-    ulong RegisterCode,
+    string RegisterCode,
 
     string Name,
 
@@ -23,7 +23,7 @@ public record SchoolModelResponse(
 
     SchoolType Type,
 
-    ulong PostalCode,
+    string PostalCode,
 
     SchoolOwnershipType OwnershipType,
 

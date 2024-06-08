@@ -2,11 +2,7 @@
 
 public class JoiningRequest : Entity
 {
-    public Guid? SchoolId { get; set; }
-
-    public School? School { get; set; }
-
-    public ulong RegisterCode { get; set; }
+    public required string RegisterCode { get; set; }
 
     public required string RequesterEmail { get; set; }
 
@@ -22,7 +18,7 @@ public class JoiningRequest : Entity
 
     public SchoolType Type { get; set; }
 
-    public ulong PostalCode { get; set; }
+    public required string PostalCode { get; set; }
 
     public SchoolOwnershipType OwnershipType { get; set; }
 
@@ -37,4 +33,8 @@ public class JoiningRequest : Entity
     public bool AreOccupied { get; set; }
 
     public JoiningRequestStatus Status { get; set; }
+
+    public Guid? SchoolId { get; set; }
+
+    public School? School { get; set; }
 }

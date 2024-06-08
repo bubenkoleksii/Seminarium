@@ -9,6 +9,10 @@ public class ApiMappingProfile : Profile
         ConfigureSchoolMapping();
 
         ConfigureJoiningRequestMapping();
+
+        ConfigureSchoolProfileMappings();
+
+        ConfigureGroupMappings();
     }
 
     private void ConfigureSchoolMapping()
@@ -37,6 +41,35 @@ public class ApiMappingProfile : Profile
         CreateMap<GetAllJoiningRequestsModelResponse, GetAllJoiningRequestsResponse>();
 
         CreateMap<RejectJoiningRequestModelResponse, RejectJoiningRequestResponse>();
+    }
+
+    private void ConfigureSchoolProfileMappings()
+    {
+        CreateMap<CreateSchoolProfileRequest, CreateSchoolProfileCommand>();
+
+        CreateMap<UpdateSchoolProfileRequest, UpdateSchoolProfileCommand>()
+            .ForMember(command => command.Email, act => act.MapFrom(req => req.Email == null ? null : req.Email.ToLower()));
+
+        CreateMap<SchoolProfileModelResponse, SchoolProfileResponse>();
+
+        CreateMap<GetAllSchoolProfileBySchoolParams, GetAllSchoolProfilesBySchoolQuery>();
+
+        CreateMap<GetAllSchoolProfilesBySchoolModelResponse, GetAllSchoolProfilesBySchoolResponse>();
+    }
+
+    private void ConfigureGroupMappings()
+    {
+        CreateMap<CreateGroupRequest, CreateGroupCommand>();
+
+        CreateMap<UpdateGroupRequest, UpdateGroupCommand>();
+
+        CreateMap<GroupModelResponse, GroupResponse>();
+
+        CreateMap<GetAllGroupsParams, GetAllGroupsQuery>();
+
+        CreateMap<GetAllGroupsModelResponse, GetAllGroupsResponse>();
+
+        CreateMap<OneGroupModelResponse, OneGroupResponse>();
     }
 
     private void ConfigureGlobalMappings()

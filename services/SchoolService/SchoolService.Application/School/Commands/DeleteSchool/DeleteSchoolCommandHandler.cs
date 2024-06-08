@@ -4,15 +4,14 @@ public class DeleteSchoolCommandHandler : IRequestHandler<DeleteSchoolCommand, O
 {
     private readonly ICommandContext _commandContext;
 
-    private readonly IOptions<S3Options> _s3Options;
+    private readonly IFilesManager _filesManager;
 
-    private readonly IS3Service _s3Service;
-
-    public DeleteSchoolCommandHandler(ICommandContext commandContext, IOptions<S3Options> s3Options, IS3Service s3Service)
+    public DeleteSchoolCommandHandler(
+        ICommandContext commandContext,
+        IFilesManager filesManager)
     {
         _commandContext = commandContext;
-        _s3Options = s3Options;
-        _s3Service = s3Service;
+        _filesManager = filesManager;
     }
 
     public async Task<Option<Error>> Handle(DeleteSchoolCommand request, CancellationToken cancellationToken)
@@ -26,8 +25,10 @@ public class DeleteSchoolCommandHandler : IRequestHandler<DeleteSchoolCommand, O
         if (entity is null)
             return Option<Error>.None;
 
-        entity.JoiningRequest.School = null;
-        await DeleteImageIfExists(entity.Img);
+        if (entity.JoiningRequest is not null)
+            entity.JoiningRequest.School = null;
+
+        await _filesManager.DeleteFileIfExists(entity.Img);
 
         _commandContext.Schools.Remove(entity);
 
@@ -37,19 +38,11 @@ public class DeleteSchoolCommandHandler : IRequestHandler<DeleteSchoolCommand, O
         }
         catch (Exception exception)
         {
-            Log.Error(exception, "An error occurred while archiving the school with ID {@SchoolId}.", request.Id);
+            Log.Error(exception, "An error occurred while deleting the school with ID {@SchoolId}.", request.Id);
 
             return new InvalidDatabaseOperationError("school");
         }
 
         return Option<Error>.None;
-    }
-
-    private async Task DeleteImageIfExists(string? name)
-    {
-        if (name == null) return;
-
-        var deletingRequest = new DeleteFileRequest(name, _s3Options.Value.Bucket);
-        await _s3Service.DeleteOne(deletingRequest);
     }
 }

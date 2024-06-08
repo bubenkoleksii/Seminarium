@@ -9,6 +9,10 @@ public class CoreMappingProfile : Profile
         ConfigureSchoolMapping();
 
         ConfigureJoiningRequestMapping();
+
+        ConfigureSchoolProfileMappings();
+
+        ConfigureGroupMappings();
     }
 
     private void ConfigureSchoolMapping()
@@ -27,5 +31,25 @@ public class CoreMappingProfile : Profile
         CreateMap<Domain.Entities.JoiningRequest, JoiningRequestModelResponse>();
 
         CreateMap<Domain.Entities.JoiningRequest, RejectJoiningRequestModelResponse>();
+    }
+
+    private void ConfigureSchoolProfileMappings()
+    {
+        CreateMap<CreateSchoolProfileCommand, Domain.Entities.SchoolProfile>();
+
+        CreateMap<UpdateSchoolProfileCommand, Domain.Entities.SchoolProfile>();
+
+        CreateMap<Domain.Entities.SchoolProfile, SchoolProfileModelResponse>();
+    }
+
+    private void ConfigureGroupMappings()
+    {
+        CreateMap<CreateGroupCommand, Domain.Entities.Group>();
+
+        CreateMap<UpdateGroupCommand, Domain.Entities.Group>();
+
+        CreateMap<Domain.Entities.Group, GroupModelResponse>();
+
+        CreateMap<Domain.Entities.Group, OneGroupModelResponse>();
     }
 }

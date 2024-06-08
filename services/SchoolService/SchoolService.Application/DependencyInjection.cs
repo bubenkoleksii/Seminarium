@@ -11,6 +11,15 @@ public static class DependencyInjection
         services.Configure<MailOptions>(appConfiguration.GetSection(nameof(MailOptions)));
         services.AddScoped<IMailService, MailService>();
 
+        services.AddSingleton<IAesCipher, AesCipher>();
+
+        services.AddScoped<IInvitationManager, InvitationManager>();
+
+        services.AddScoped<IFilesManager, FilesManager>();
+
+        services.AddMemoryCache();
+        services.AddScoped<ISchoolProfileManager, SchoolProfileManager>();
+
         return services;
     }
 

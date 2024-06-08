@@ -1,18 +1,26 @@
 'use client';
 
-import { FC, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
-import { useAuthRedirectByRole } from '@/shared/hooks';
+import { useAuthRedirectByRole, useSetCurrentTab } from '@/shared/hooks';
 import { useRouter } from 'next/navigation';
 import { useIsMutating, useMutation, useQuery } from '@tanstack/react-query';
 import { ApiResponse } from '@/shared/types';
-import { getOne, remove } from '../api';
+import {
+  createInvitation,
+  createTeacherInvitation,
+  getOne,
+  remove,
+} from '../api';
 import {
   removeSchoolRoute,
   getOneSchoolRoute,
+  createInvitationRoute,
+  createTeacherInvitationRoute,
   joiningRequestClientPath,
   schoolsClientPath,
   updateSchoolClientPath,
+  inRegisterSchoolClientPath,
 } from '../constants';
 import { SchoolResponse } from '../types';
 import { Loader } from '@/components/loader';
@@ -24,8 +32,10 @@ import { useMediaQuery } from 'react-responsive';
 import { DateTime } from '@/components/date-time';
 import { Button } from 'flowbite-react';
 import Link from 'next/link';
-import { ProveModal } from '@/components/modal';
+import { CopyTextModal, ProveModal } from '@/components/modal';
 import { toast } from 'react-hot-toast';
+import { useProfiles } from '@/features/user';
+import { CurrentTab } from '@/features/user/constants';
 
 interface SchoolProps {
   id: string;
@@ -34,11 +44,22 @@ interface SchoolProps {
 const School: FC<SchoolProps> = ({ id }) => {
   const t = useTranslations('School');
 
+  const { activeProfile, isLoading: profilesLoading } = useProfiles();
+
+  useSetCurrentTab(CurrentTab.School);
+
   const { replace } = useRouter();
   const activeLocale = useLocale();
   const isMutating = useIsMutating();
 
   const { isUserLoading, user } = useAuthRedirectByRole(activeLocale, 'user');
+
+  useEffect(() => {
+    if (!activeProfile || !activeProfile?.schoolId) return;
+
+    const url = `/${activeLocale}/u/my-school/${activeProfile?.schoolId}`;
+    replace(url);
+  }, [activeProfile, activeLocale, replace]);
 
   const { data, isLoading } = useQuery<ApiResponse<SchoolResponse>>({
     queryKey: [getOneSchoolRoute, id],
@@ -46,11 +67,82 @@ const School: FC<SchoolProps> = ({ id }) => {
     enabled: !!id,
   });
 
+  const { mutate: generateInvitation } = useMutation({
+    mutationFn: createInvitation,
+    mutationKey: [createInvitationRoute, id],
+    onSuccess: (response) => {
+      if (response && response.error) {
+        if (
+          response.error.detail.includes('school_profile') ||
+          response.error.detail.includes('school_id')
+        ) {
+          toast.error(t('labels.invalid_school_profile'));
+
+          return;
+        }
+
+        const errorMessages = {
+          404: t('labels.oneNotFound'),
+          400: t('labels.invitationValidation'),
+          401: t('labels.unauthorized'),
+          403: t('labels.forbidden'),
+        };
+
+        toast.error(
+          errorMessages[response.error.status] || t('labels.internal'),
+        );
+      } else {
+        setInvitationCode(response.replace(`/uk/`, `/${activeLocale}/`));
+        setCopyInvitationOpenModal(true);
+      }
+    },
+  });
+
+  const { mutate: generateTeacherInvitation } = useMutation({
+    mutationFn: createTeacherInvitation,
+    mutationKey: [createTeacherInvitationRoute, id],
+    onSuccess: (response) => {
+      if (response && response.error) {
+        if (
+          response.error.detail.includes('school_profile') ||
+          response.error.detail.includes('school_id')
+        ) {
+          toast.error(t('labels.invalid_school_profile'));
+
+          return;
+        }
+
+        const errorMessages = {
+          404: t('labels.oneNotFound'),
+          400: t('labels.invitationValidation'),
+          401: t('labels.unauthorized'),
+          403: t('labels.forbidden'),
+        };
+
+        toast.error(
+          errorMessages[response.error.status] || t('labels.internal'),
+        );
+      } else {
+        setTeacherInvitationCode(response.replace(`/uk/`, `/${activeLocale}/`));
+        setCopyTeacherInvitationOpenModal(true);
+      }
+    },
+  });
+
   const { mutate: deleteMutate } = useMutation({
     mutationFn: remove,
     mutationKey: [removeSchoolRoute, id],
     onSuccess: (response) => {
       if (response && response.error) {
+        if (
+          response.error.detail.includes('school_profile') ||
+          response.error.detail.includes('school_id')
+        ) {
+          toast.error(t('labels.invalid_school_profile'));
+
+          return;
+        }
+
         const errorMessages = {
           404: t('labels.oneNotFound'),
         };
@@ -68,9 +160,17 @@ const School: FC<SchoolProps> = ({ id }) => {
 
   const [deleteOpenModal, setDeleteOpenModal] = useState(false);
 
+  const [copyInvitationOpenModal, setCopyInvitationOpenModal] = useState(false);
+  const [invitationCode, setInvitationCode] = useState<string>(null);
+
+  const [copyTeacherInvitationOpenModal, setCopyTeacherInvitationOpenModal] =
+    useState(false);
+  const [teacherInvitationCode, setTeacherInvitationCode] =
+    useState<string>(null);
+
   const isPhone = useMediaQuery({ query: mediaQueries.phone });
 
-  if (isLoading || isUserLoading || isMutating) {
+  if (isLoading || isUserLoading || isMutating || profilesLoading) {
     return (
       <>
         <h2 className="mb-4 mt-2 text-center text-xl font-bold">
@@ -124,6 +224,13 @@ const School: FC<SchoolProps> = ({ id }) => {
     deleteMutate(data.id);
   };
 
+  const handleCloseCopyInvitationModal = () => {
+    setCopyInvitationOpenModal(false);
+  };
+  const handleCloseCopyTeacherInvitationModal = () => {
+    setCopyTeacherInvitationOpenModal(false);
+  };
+
   const occupiedColor = getColorByStatus(data.areOccupied ? 'danger' : 'ok');
 
   const buildUpdateQuery = () => {
@@ -149,8 +256,8 @@ const School: FC<SchoolProps> = ({ id }) => {
   };
 
   return (
-    <div className="mb-4 w-[90%] p-3">
-      <h2 className="mb-4 mt-2 text-center text-xl font-bold">
+    <div className="mb-4 w-[90%] justify-center p-3">
+      <h2 className="mb-2 mt-2 text-center text-xl font-bold">
         {t('oneTitle')}
 
         {user?.role === 'admin' && (
@@ -163,12 +270,75 @@ const School: FC<SchoolProps> = ({ id }) => {
         )}
       </h2>
 
-      <h6 className="py-2 text-center font-bold">
+      <h6 className="mb-4 py-2 text-center font-bold">
         <p className="color-gray-500 mr-1 text-sm font-normal lg:text-lg">
           {t('labels.name')}
         </p>
         <span className="text-purple-950 lg:text-2xl">{data.name}</span>
       </h6>
+
+      {(user?.role === 'admin' ||
+        (activeProfile && activeProfile?.type === 'school_admin')) && (
+        <>
+          <div className="mb-4 flex w-[100%] justify-center">
+            <div className="w-[350px]">
+              <Button
+                onClick={() => {
+                  setTeacherInvitationCode(null);
+
+                  generateTeacherInvitation({
+                    id: data.id,
+                    schoolProfileId: activeProfile?.id,
+                  });
+                }}
+                gradientDuoTone="pinkToOrange"
+                size="md"
+              >
+                <span className="text-white">
+                  {t('invitation.labelTeacherModal')}
+                </span>
+              </Button>
+            </div>
+          </div>
+
+          {teacherInvitationCode && (
+            <CopyTextModal
+              open={copyTeacherInvitationOpenModal}
+              label={t('invitation.labelTeacherModal')}
+              text={teacherInvitationCode}
+              onClose={handleCloseCopyTeacherInvitationModal}
+            />
+          )}
+
+          <div className="mb-4 flex w-[100%] justify-center">
+            <div className="w-[350px]">
+              <Button
+                onClick={() => {
+                  setInvitationCode(null);
+
+                  generateInvitation({
+                    id: data.id,
+                    schoolProfileId: activeProfile?.id,
+                  });
+                }}
+                gradientMonochrome="success"
+                size="md"
+              >
+                <span className="text-white">{t('invitation.labelBtn')}</span>
+              </Button>
+            </div>
+          </div>
+
+          {invitationCode && (
+            <CopyTextModal
+              open={copyInvitationOpenModal}
+              text={invitationCode}
+              label={t('invitation.labelModal')}
+              onClose={handleCloseCopyInvitationModal}
+            />
+          )}
+        </>
+      )}
 
       <div className="flex items-center justify-center">
         <CustomImage
@@ -185,11 +355,23 @@ const School: FC<SchoolProps> = ({ id }) => {
         </p>
       </h6>
 
+      <div className="mb-2 flex w-[100%] justify-center">
+        <Button gradientMonochrome="purple" size="md">
+          <span className="text-white">
+            <Link
+              href={`/${activeLocale}/${inRegisterSchoolClientPath}/${data.registerCode}`}
+            >
+              {t('labels.register.labelBtn')}
+            </Link>
+          </span>
+        </Button>
+      </div>
+
       <div className="flex text-xs lg:text-lg">
         <div className="flex w-1/2 justify-center border border-gray-200 bg-purple-100 px-4 py-2 font-semibold">
           <span className="text-center">{t('labels.registerCode')}</span>
         </div>
-        <div className="flex w-1/2 justify-center border border-gray-200 px-4 py-2 font-medium">
+        <div className="flex w-1/2 items-center justify-center gap-2 border border-gray-200 px-4 py-2 font-medium">
           <span>{data.registerCode}</span>
         </div>
       </div>
@@ -404,15 +586,18 @@ const School: FC<SchoolProps> = ({ id }) => {
           </div>
         </div>
       ) : (
-        <div className="flex w-full justify-center">
-          <Button gradientMonochrome="lime" fullSized>
-            <Link
-              href={`/${activeLocale}/${updateSchoolClientPath}/${data.id}?${buildUpdateQuery()}`}
-            >
-              {t('labels.update')}
-            </Link>
-          </Button>
-        </div>
+        activeProfile &&
+        activeProfile?.type === 'school_admin' && (
+          <div className="mt-3 flex w-full justify-center">
+            <Button gradientMonochrome="lime" fullSized>
+              <Link
+                href={`/${activeLocale}/${updateSchoolClientPath}/${data.id}?${buildUpdateQuery()}`}
+              >
+                {t('labels.update')}
+              </Link>
+            </Button>
+          </div>
+        )
       )}
     </div>
   );

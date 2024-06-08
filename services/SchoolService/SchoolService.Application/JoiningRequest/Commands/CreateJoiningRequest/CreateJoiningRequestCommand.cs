@@ -1,7 +1,7 @@
 ﻿namespace SchoolService.Application.JoiningRequest.Commands.CreateJoiningRequest;
 
 public record CreateJoiningRequestCommand(
-    ulong RegisterCode,
+    string RegisterCode,
 
     string Name,
 
@@ -17,7 +17,7 @@ public record CreateJoiningRequestCommand(
 
     SchoolType Type,
 
-    ulong PostalCode,
+    string PostalCode,
 
     SchoolOwnershipType OwnershipType,
 

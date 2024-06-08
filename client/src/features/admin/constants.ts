@@ -28,3 +28,5 @@ export const adminMutations = {
     retry: 2,
   },
 };
+
+export const inRegisterSchoolClientPath = `/school/edrpou`;

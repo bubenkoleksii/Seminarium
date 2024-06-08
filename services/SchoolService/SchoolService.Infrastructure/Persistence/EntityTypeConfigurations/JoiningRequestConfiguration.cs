@@ -7,6 +7,8 @@ public class JoiningRequestConfiguration : IEntityTypeConfiguration<JoiningReque
         builder.HasKey(request => request.Id);
 
         builder.Property(request => request.Id).ValueGeneratedOnAdd();
+        builder.Property(request => request.RegisterCode).HasMaxLength(50);
+        builder.Property(request => request.PostalCode).HasMaxLength(50);
         builder.Property(request => request.RequesterEmail).HasMaxLength(50);
         builder.Property(request => request.RequesterPhone).HasMaxLength(50);
         builder.Property(request => request.RequesterFullName).HasMaxLength(250);

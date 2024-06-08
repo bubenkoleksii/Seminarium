@@ -10,15 +10,23 @@ import styles from './Navbar.module.scss';
 import { SessionProvider } from 'next-auth/react';
 import { useNavStore } from './store/navStore';
 import { useRouter, usePathname } from 'next/navigation';
+import { useProfiles } from '@/features/user';
+import { useLocale } from 'next-intl';
 
 const Navbar: FC = () => {
+  const activeLocale = useLocale();
+
   const sidebarOpen = useNavStore((store) => store.sidebarOpen);
   const setSidebarOpen = useNavStore((store) => store.setSidebarOpen);
   const pathname = usePathname();
   const router = useRouter();
 
+  const { activeProfile, isLoading: profilesLoading } = useProfiles();
+
+  if (profilesLoading) return null;
+
   const showSidebar = () => {
-    const pathsWithSidebar = ['admin'];
+    const pathsWithSidebar = ['admin', 'u'];
 
     if (pathsWithSidebar.some((path) => pathname.includes(path)))
       setSidebarOpen(!sidebarOpen);
@@ -26,6 +34,8 @@ const Navbar: FC = () => {
       router.push('/');
     }
   };
+
+  const url = activeProfile ? `/${activeLocale}/u/` : '/';
 
   return (
     <header className={styles.header}>
@@ -35,7 +45,7 @@ const Navbar: FC = () => {
             <Logo />
           </div>
 
-          <Link href="/">
+          <Link href={url}>
             <h1 className={styles.logoText}>Seminarium</h1>
           </Link>
         </div>

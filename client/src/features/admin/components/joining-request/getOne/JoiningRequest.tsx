@@ -22,6 +22,7 @@ import {
   adminMutations,
   adminQueries,
   CurrentTab,
+  inRegisterSchoolClientPath,
 } from '@/features/admin/constants';
 import { buildQueryString, getColorByStatus } from '@/shared/helpers';
 import { DateTime } from '@/components/date-time';
@@ -223,6 +224,18 @@ const JoiningRequest: FC<JoiningRequestProps> = ({ id }) => {
           {t('labels.detailInfo')}
         </p>
       </h6>
+
+      <div className="mb-2 flex w-[100%] justify-center">
+        <Button gradientMonochrome="purple" size="md">
+          <span className="text-white">
+            <Link
+              href={`/${activeLocale}/${inRegisterSchoolClientPath}/${data.registerCode}`}
+            >
+              {t('labels.register.labelBtn')}
+            </Link>
+          </span>
+        </Button>
+      </div>
 
       <div className="mt-2 flex text-xs lg:text-lg">
         <div className="flex w-1/2 justify-center border border-gray-200 bg-purple-100 px-4 py-2 font-semibold">

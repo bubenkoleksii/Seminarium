@@ -13,8 +13,8 @@ public class CreateSchoolCommandValidator : AbstractValidator<CreateSchoolComman
         RuleFor(x => x.RegisterCode)
             .NotEmpty()
             .WithErrorCode(ErrorTitles.Common.Empty)
-            .GreaterThan((ulong)0)
-            .WithErrorCode(ErrorTitles.Common.LowerZero);
+            .MaximumLength(50)
+            .WithErrorCode(ErrorTitles.Common.TooLong);
 
         RuleFor(x => x.Name)
             .NotEmpty()
@@ -39,8 +39,8 @@ public class CreateSchoolCommandValidator : AbstractValidator<CreateSchoolComman
         RuleFor(x => x.PostalCode)
             .NotEmpty()
             .WithErrorCode(ErrorTitles.Common.Empty)
-            .GreaterThan((ulong)0)
-            .WithErrorCode(ErrorTitles.Common.LowerZero);
+            .MaximumLength(50)
+            .WithErrorCode(ErrorTitles.Common.TooLong);
 
         RuleFor(x => x.OwnershipType)
             .NotEmpty()

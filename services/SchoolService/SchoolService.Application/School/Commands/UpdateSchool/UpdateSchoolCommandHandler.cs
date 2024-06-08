@@ -4,16 +4,25 @@ public class UpdateSchoolCommandHandler : IRequestHandler<UpdateSchoolCommand, E
 {
     private readonly ICommandContext _commandContext;
 
+    private readonly ISchoolProfileManager _schoolProfileManager;
+
     private readonly IMapper _mapper;
 
-    public UpdateSchoolCommandHandler(ICommandContext commandContext, IMapper mapper)
+    public UpdateSchoolCommandHandler(ICommandContext commandContext, ISchoolProfileManager schoolProfileManager, IMapper mapper)
     {
         _commandContext = commandContext;
+        _schoolProfileManager = schoolProfileManager;
         _mapper = mapper;
     }
 
     public async Task<Either<SchoolModelResponse, Error>> Handle(UpdateSchoolCommand request, CancellationToken cancellationToken)
     {
+        var validationError =
+            await _schoolProfileManager.ValidateSchoolProfileBySchool(request.UserId, request.Id);
+
+        if (validationError.IsSome)
+            return (Error)validationError;
+
         var entity = await _commandContext.Schools
             .IgnoreQueryFilters()
             .FirstOrDefaultAsync(s => s.Id == request.Id, cancellationToken: cancellationToken);
