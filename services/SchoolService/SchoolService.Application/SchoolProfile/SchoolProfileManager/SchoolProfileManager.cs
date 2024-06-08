@@ -224,6 +224,8 @@ public class SchoolProfileManager : ISchoolProfileManager
             _commandContext.SchoolProfiles.Update(child);
             _commandContext.SchoolProfiles.Update(profile);
 
+            ClearCache(child.UserId);
+
             try
             {
                 await _commandContext.SaveChangesAsync(CancellationToken.None);
@@ -238,6 +240,8 @@ public class SchoolProfileManager : ISchoolProfileManager
 
         existedParent.Children ??= new List<Domain.Entities.SchoolProfile>();
         existedParent.Children.Add(child);
+        foreach (var childToClearCache in existedParent.Children)
+            ClearCache(childToClearCache.UserId);
 
         existedParent.IsActive = true;
 
@@ -318,20 +322,21 @@ public class SchoolProfileManager : ISchoolProfileManager
 
                         try
                         {
-                            var parents = await _queryContext.SchoolProfiles
-                                .Include(p => p.Children)
-                                .Where(p => p.Type == SchoolProfileType.Parent)
+                            var allParents = await _queryContext.SchoolProfiles
+                                        .Where(p => p.Type == SchoolProfileType.Parent)
+                                        .ToListAsync(CancellationToken.None);
+
+                            var allChildren = await _queryContext.SchoolProfiles
+                                .Where(p => p.Type == SchoolProfileType.Student)
                                 .ToListAsync(CancellationToken.None);
 
-                            var filteredParents = parents
-                                .Where(p => p.Children != null &&
-                                            p.Children.Any(child => child.Id == profile.Id))
+                            var filteredParents = allParents
+                                .Where(p => allChildren.Exists(child => child.Id == profile.Id &&
+                                                                     allParents != null &&
+                                                                     allParents.Exists(parent => parent.Id == p.Id)))
                                 .ToList();
 
-                            filteredParents.ForEach(pa => pa.Children = null);
-
                             profile.Parents = filteredParents;
-
                         }
                         catch
                         {
@@ -344,17 +349,20 @@ public class SchoolProfileManager : ISchoolProfileManager
                     {
                         try
                         {
-                            var children = await _queryContext.SchoolProfiles
-                                .Include(p => p.Parents)
+                            var allParents = await _queryContext.SchoolProfiles
+                                .Where(p => p.Type == SchoolProfileType.Parent)
+                                .ToListAsync(CancellationToken.None);
+
+                            var allChildren = await _queryContext.SchoolProfiles
                                 .Where(p => p.Type == SchoolProfileType.Student)
                                 .ToListAsync(CancellationToken.None);
 
-                            var filteredChildren = children
-                                .Where(p => p.Parents != null &&
-                                            p.Parents.Any(parent => parent.Id == profile.Id))
+                            var filteredChildren = allChildren
+                                .Where(p => allParents.Exists(parent => parent.Id == profile.Id &&
+                                                                     allChildren != null &&
+                                                                     allChildren.Exists(child => child.Id == p.Id)))
                                 .ToList();
 
-                            filteredChildren.ForEach(c => c.Parents = null);
                             profile.Children = filteredChildren;
                         }
                         catch
@@ -410,6 +418,46 @@ public class SchoolProfileManager : ISchoolProfileManager
         return profileGroupId != groupId
             ? new InvalidError("group")
             : Option<Error>.None;
+    }
+
+    public async Task<Option<Error>> ValidateParentProfileByChildGroup(Guid? userId, Guid groupId)
+    {
+        if (userId is null)
+            return Option<Error>.None;
+
+        var profile = await GetActiveProfile((Guid)userId);
+        if (profile is null)
+            return new InvalidError("school_profile");
+
+        try
+        {
+            var allParents = await _queryContext.SchoolProfiles
+                .Where(p => p.Type == SchoolProfileType.Parent)
+                .ToListAsync(CancellationToken.None);
+
+            var allChildren = await _queryContext.SchoolProfiles
+                .Where(p => p.Type == SchoolProfileType.Student)
+                .ToListAsync(CancellationToken.None);
+
+            var filteredChildren = allChildren
+                .Where(p => allParents.Exists(parent => parent.Id == profile.Id &&
+                                                     allChildren != null &&
+                                                     allChildren.Exists(child => child.Id == p.Id)));
+
+            var filteredByGroupChildren = filteredChildren
+                .Where(p => p.GroupId == groupId)
+                .ToList();
+
+            if (filteredByGroupChildren.Count == 0)
+                return new InvalidError("school_profile");
+        }
+        catch (Exception ex)
+        {
+            Log.Error(ex, "An error occurred while retrieving children of parent with values {@Profile}.", profile);
+            return new InvalidError("school_profile");
+        }
+
+        return Option<Error>.None;
     }
 
     public async Task<Option<Error>> ValidateClassTeacherSchoolProfileByGroup(Guid? userId, Guid groupId)

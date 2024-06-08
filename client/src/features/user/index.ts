@@ -17,3 +17,4 @@ export { Groups } from './components/group/getAll/Groups';
 export { Group } from './components/group/getOne/Group';
 export { CreateGroupForm } from './components/group/create/CreateGroupForm';
 export { UpdateGroupForm } from './components/group/update/UpdateGroupForm';
+export { GetAllSchoolProfiles } from './school-profile/getAll/GetAllSchoolProfiles';

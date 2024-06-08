@@ -50,6 +50,7 @@ global using SchoolService.Application.SchoolProfile.Commands.DeleteSchoolProfil
 global using SchoolService.Application.SchoolProfile.Commands.SetSchoolProfileImage;
 global using SchoolService.Application.SchoolProfile.Commands.UpdateSchoolProfile;
 global using SchoolService.Application.SchoolProfile.Models;
+global using SchoolService.Application.SchoolProfile.Queries.GetAllSchoolProfilesBySchool;
 global using SchoolService.Application.SchoolProfile.Queries.GetOneSchoolProfile;
 global using SchoolService.Application.SchoolProfile.Queries.GetUserSchoolProfiles;
 global using SchoolService.Application.SchoolProfile.SchoolProfileManager;

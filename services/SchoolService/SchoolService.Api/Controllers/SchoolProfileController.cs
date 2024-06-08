@@ -49,6 +49,27 @@ public class SchoolProfileController(IMapper mapper, IOptions<Shared.Contracts.O
     }
 
     [Authorize(Roles = Constants.UserRole)]
+    [HttpGet("[action]/")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GetAllSchoolProfilesBySchoolResponse))]
+    public async Task<IActionResult> GetAllBySchool([FromQuery] GetAllSchoolProfileBySchoolParams request)
+    {
+        var userId = User.Identity?.GetId();
+        var userRole = User.Identity?.GetRole();
+
+        if (userId is null)
+            return ErrorActionResultHandler.Handle(new InvalidError("user_id"));
+
+        if (userRole is null)
+            return ErrorActionResultHandler.Handle(new InvalidError("user_role"));
+
+        var query = mapper.Map<GetAllSchoolProfilesBySchoolQuery>(request);
+        query.UserId = (Guid)userId;
+
+        var result = await Mediator.Send(query);
+        return Ok(mapper.Map<GetAllSchoolProfilesBySchoolResponse>(result));
+    }
+
+    [Authorize(Roles = Constants.UserRole)]
     [HttpPost("[action]/")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SchoolProfileResponse))]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]

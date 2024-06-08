@@ -3,6 +3,7 @@
 import type { ApiResponse } from '@/shared/types';
 import type {
   CreateSchoolProfileRequest,
+  PagesSchoolProfilesResponse,
   SchoolProfileResponse,
   UpdateSchoolProfileRequest,
 } from '@/features/user/types/schoolProfileTypes';
@@ -10,6 +11,10 @@ import { api } from '@/shared/api';
 import { schoolProfile } from '@/features/user/routes';
 
 type Get = () => Promise<ApiResponse<SchoolProfileResponse[]>>;
+
+type GetAllBySchool = (
+  query?: string | null,
+) => Promise<ApiResponse<PagesSchoolProfilesResponse>>;
 
 type GetOne = (id: string) => Promise<ApiResponse<SchoolProfileResponse>>;
 
@@ -64,6 +69,9 @@ type AddChild = ({
 }) => Promise<ApiResponse<SchoolProfileResponse>>;
 
 export const get: Get = () => api.get(schoolProfile.get);
+
+export const getAllBySchool: GetAllBySchool = (query) =>
+  api.get(schoolProfile.getAllBySchool(query));
 
 export const getOne: GetOne = (id) => api.get(schoolProfile.getOne(id));
 

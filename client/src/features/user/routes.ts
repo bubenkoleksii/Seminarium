@@ -1,5 +1,7 @@
 export const schoolProfile = {
   get: '/schoolProfile/Get',
+  getAllBySchool: (query: string | null | undefined) =>
+    `/schoolProfile/GetAllBySchool/?${query}`,
   update: '/schoolProfile/Update',
   image: (id: string) => `/schoolProfile/Image/${id}`,
   getOne: (id: string) => `/schoolProfile/GetOne/${id}`,

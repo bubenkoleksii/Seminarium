@@ -256,7 +256,7 @@ const School: FC<SchoolProps> = ({ id }) => {
   };
 
   return (
-    <div className="mb-4 w-[90%] p-3">
+    <div className="mb-4 w-[90%] justify-center p-3">
       <h2 className="mb-2 mt-2 text-center text-xl font-bold">
         {t('oneTitle')}
 

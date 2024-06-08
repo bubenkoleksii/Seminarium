@@ -3,10 +3,12 @@ export const enum CurrentTab {
   School = 'school',
   Group = 'group',
   Children = 'children',
+  SchoolProfiles = 'schoolProfiles',
 }
 
 export const userQueries = {
   getSchoolProfile: 'getSchoolProfile',
+  getAllSchoolProfilesBySchool: 'getAllSchoolProfilesBySchool',
   getGroups: 'getAllGroups',
   getOneGroup: 'getOneGroup',
   options: {
@@ -39,4 +41,11 @@ export const studentHealthGroups = {
   preparatory: 'preparatory',
   special: 'special',
   main: 'main',
+};
+
+export const schoolOnlyProfileTypes = {
+  schoolAdmin: 'schoolAdmin',
+  teacher: 'teacher',
+  classTeacher: 'classTeacher',
+  student: 'student',
 };

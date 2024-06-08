@@ -24,5 +24,7 @@ public interface ISchoolProfileManager
 
     public Task<Option<Error>> ValidateClassTeacherSchoolProfileByGroup(Guid? userId, Guid groupId);
 
+    public Task<Option<Error>> ValidateParentProfileByChildGroup(Guid? userId, Guid groupId);
+
     public void ClearCache(Guid userId);
 }

@@ -1,6 +1,13 @@
 import type { GroupResponse } from '@/features/user/types/groupTypes';
 import type { SchoolResponse } from '@/features/school/types';
 
+export interface PagesSchoolProfilesResponse {
+  entries: SchoolProfileResponse[];
+  total: number;
+  skip: number;
+  take: number;
+}
+
 export type SchoolProfileResponse = {
   id: string;
   userId: string;

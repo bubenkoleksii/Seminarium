@@ -51,6 +51,10 @@ public class ApiMappingProfile : Profile
             .ForMember(command => command.Email, act => act.MapFrom(req => req.Email == null ? null : req.Email.ToLower()));
 
         CreateMap<SchoolProfileModelResponse, SchoolProfileResponse>();
+
+        CreateMap<GetAllSchoolProfileBySchoolParams, GetAllSchoolProfilesBySchoolQuery>();
+
+        CreateMap<GetAllSchoolProfilesBySchoolModelResponse, GetAllSchoolProfilesBySchoolResponse>();
     }
 
     private void ConfigureGroupMappings()

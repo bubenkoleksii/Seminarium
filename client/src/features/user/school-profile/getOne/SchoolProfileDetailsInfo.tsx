@@ -145,6 +145,10 @@ const SchoolProfileDetailsInfo: FC<SchoolProfileDetailsInfoProps> = ({
             {profile.type === 'student' && (
               <>
                 {renderRow(
+                  'item.group',
+                  profile.group ? profile.group?.name : '-',
+                )}
+                {renderRow(
                   'item.studentHealthGroup',
                   profile.studentHealthGroup
                     ? t(`item.healthGroup.${profile.studentHealthGroup}`)

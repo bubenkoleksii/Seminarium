@@ -65,18 +65,23 @@ public class GetOneSchoolProfileQueryHandler : IRequestHandler<GetOneSchoolProfi
 
                     try
                     {
-                        var parents = await _queryContext.SchoolProfiles
-                            .Include(p => p.Children)
-                            .Where(p => p.Type == SchoolProfileType.Parent)
+                        var allParents = await _queryContext.SchoolProfiles
+                                    .Where(p => p.Type == SchoolProfileType.Parent)
+                                    .ToListAsync(CancellationToken.None);
+
+                        var allChildren = await _queryContext.SchoolProfiles
+                            .Where(p => p.Type == SchoolProfileType.Student)
                             .ToListAsync(CancellationToken.None);
 
-                        var filteredParents = parents
-                            .Where(p => p.Children != null &&
-                                   p.Children.Any(child => child.Id == entity.Id))
+                        var filteredParents = allParents
+                            .Where(p => allChildren.Exists(child => child.Id == entity.Id &&
+                                                                 allParents != null &&
+                                                                 allParents.Exists(parent => parent.Id == p.Id)))
                             .ToList();
 
+                        entity.Parents = filteredParents;
+
                         var isNotParentAndChild = profile.Type == SchoolProfileType.Parent &&
-                            !(schoolProfileResponse.Children?.Any(c => c.Id == profile.Id) ?? false) &&
                             (!filteredParents?.Exists(pa => pa.Id == profile.Id) ?? false);
                         if (isNotParentAndChild)
                             return new InvalidError("school_profile");
@@ -98,17 +103,19 @@ public class GetOneSchoolProfileQueryHandler : IRequestHandler<GetOneSchoolProfi
                 {
                     try
                     {
-                        var children = await _queryContext.SchoolProfiles
-                           .Include(p => p.Parents)
-                           .Where(p => p.Type == SchoolProfileType.Student)
-                           .ToListAsync(CancellationToken.None);
+                        var allParents = await _queryContext.SchoolProfiles
+                            .Where(p => p.Type == SchoolProfileType.Parent)
+                            .ToListAsync(CancellationToken.None);
 
-                        var filteredChildren = children
-                            .Where(p => p.Parents != null &&
-                                        p.Parents.Any(parent => parent.Id == entity.Id))
+                        var allChildren = await _queryContext.SchoolProfiles
+                            .Where(p => p.Type == SchoolProfileType.Student)
+                            .ToListAsync(CancellationToken.None);
+
+                        var filteredChildren = allChildren
+                            .Where(p => allParents.Exists(parent => parent.Id == entity.Id &&
+                                                                 allChildren != null &&
+                                                                 allChildren.Exists(child => child.Id == p.Id)))
                             .ToList();
-
-                        filteredChildren.ForEach(c => c.Parents = null);
 
                         entity.Children = filteredChildren;
                         schoolProfileResponse.Children =

@@ -49,6 +49,14 @@ public class DeleteSchoolProfileCommandHandler : IRequestHandler<DeleteSchoolPro
 
         _schoolProfileManager.ClearCache(entity.UserId);
 
+        if (entity.Parents != null)
+            foreach (var profile in entity.Parents)
+                _schoolProfileManager.ClearCache(profile.UserId);
+
+        if (entity.Children != null)
+            foreach (var child in entity.Children)
+                _schoolProfileManager.ClearCache(child.UserId);
+
         try
         {
             _commandContext.SchoolProfiles.Remove(entity);

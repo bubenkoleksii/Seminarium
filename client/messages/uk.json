@@ -13,6 +13,26 @@
     "changeAccountInfo": "Змінити інформацію про акаунт",
     "forgotPassword": "Забули пароль"
   },
+  "AllSchoolProfiles": {
+    "listTitle": "Профілі учасників навчального закладу",
+    "group": "Група",
+    "subjects": "Предмети",
+    "placeholders": {
+      "name": "Валько Андрій",
+      "group": "8-А"
+    },
+    "typeLabel": "Фільтрувати за типом",
+    "groupLabel": "Фільтрувати за групою",
+    "notFound": "За цим запитом нічого не знайдено",
+    "clear": "Очистити",
+    "types": {
+      "schoolAdmin": "Aдміністратор",
+      "teacher": "Викладач",
+      "classTeacher": "Куратор",
+      "student": "Студент"
+    },
+    "detailsBtn": "Детальніше"
+  },
   "Auth": {
     "registrationBtn": "Зареєструватись",
     "loginBtn": "Увійти",
@@ -38,6 +58,7 @@
     "listTitle": "Навчальні групи закладу",
     "oneTitle": "Навчальна група",
     "toMain": "До переліку навчальних груп",
+    "deleteClassTeacherLabel": "* Для такого щоб змінити куратора групи, видаліть профіль поточного куратора",
     "name": "Назва",
     "classTeacher": "Куратор",
     "students": "Студенти",
@@ -347,6 +368,7 @@
   "SchoolProfile": {
     "addProfileBtn": "Додати профіль",
     "addChild": "Додати дитину",
+    "toGroup": "Група",
     "parentsLabel": "Батьки",
     "childrenLabel": "Діти",
     "backTo": "Повернутись до деталей",
@@ -403,6 +425,7 @@
       "lastUpdatedAt": "Востаннє оновлено",
       "name": "Ім'я",
       "email": "Електронна пошта",
+      "group": "Навчальна група",
       "details": "Корисні деталі про Вас",
       "teacherSubjects": "Дисципліни",
       "teacherExperience": "Досвід",
@@ -519,6 +542,7 @@
   "UserContentTabs": {
     "profile": "Мої профілі",
     "school": "Мій навчальний заклад",
+    "schoolProfiles": "Профілі учасників навчального закладу",
     "groups": "Навчальні групи",
     "group": "Моя група",
     "home": "На головну",

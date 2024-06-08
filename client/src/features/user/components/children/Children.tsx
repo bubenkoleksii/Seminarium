@@ -173,7 +173,7 @@ const Children: FC<ChildrenProps> = ({ id }) => {
           {data?.children?.map((c, idx) => <Child child={c} key={idx} />)}
         </div>
       ) : (
-        <p>{c('notFound')}</p>
+        <p className="mt-3 text-center">{c('notFound')}</p>
       )}
     </div>
   );

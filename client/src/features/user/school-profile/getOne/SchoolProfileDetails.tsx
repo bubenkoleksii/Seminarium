@@ -1,31 +1,30 @@
 'use client';
 
-import { FC, useState } from 'react';
-import { useLocale, useTranslations } from 'next-intl';
-import { useRouter } from 'next/navigation';
-import { useAuthRedirectByRole } from '@/shared/hooks';
+import { CustomImage } from '@/components/custom-image';
+import { Error } from '@/components/error';
+import { Loader } from '@/components/loader';
+import { CopyTextModal, ProveModal } from '@/components/modal';
 import { useProfiles, useSchoolProfilesStore } from '@/features/user';
-import { mediaQueries } from '@/shared/constants';
-import { useMediaQuery } from 'react-responsive';
-import { useIsMutating, useQuery } from '@tanstack/react-query';
 import {
   createParentInvitation,
   getOne,
   remove,
 } from '@/features/user/api/schoolProfilesApi';
 import { userMutations, userQueries } from '@/features/user/constants';
-import { Loader } from '@/components/loader';
-import { Error } from '@/components/error';
-import { ApiResponse } from '@/shared/types';
-import { SchoolProfileResponse } from '@/features/user/types/schoolProfileTypes';
-import { CustomImage } from '@/components/custom-image';
 import SchoolProfileDetailsInfo from '@/features/user/school-profile/getOne/SchoolProfileDetailsInfo';
-import { Button } from 'flowbite-react';
-import { useMutation } from '@tanstack/react-query';
-import { toast } from 'react-hot-toast';
-import { CopyTextModal, ProveModal } from '@/components/modal';
+import { SchoolProfileResponse } from '@/features/user/types/schoolProfileTypes';
+import { mediaQueries } from '@/shared/constants';
 import { buildQueryString, getDefaultProfileImgByType } from '@/shared/helpers';
+import { useAuthRedirectByRole } from '@/shared/hooks';
+import { ApiResponse } from '@/shared/types';
+import { useIsMutating, useMutation, useQuery } from '@tanstack/react-query';
+import { Button } from 'flowbite-react';
+import { useLocale, useTranslations } from 'next-intl';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { FC, useState } from 'react';
+import { toast } from 'react-hot-toast';
+import { useMediaQuery } from 'react-responsive';
 
 type SchoolProfileDetailsProps = {
   id: string;
@@ -177,19 +176,25 @@ const SchoolProfileDetails: FC<SchoolProfileDetailsProps> = ({ id }) => {
 
   const canUpdate = profiles && profiles.some((profile) => profile.id === id);
   const canDelete =
-    !(
-      !activeProfile ||
-      activeProfile?.type !== 'school_admin' ||
-      activeProfile?.type !== 'class_teacher' ||
-      (activeProfile?.type === 'school_admin' &&
-        data.schoolId !== activeProfile?.schoolId) ||
-      (activeProfile?.type === 'class_teacher' &&
-        data.groupId !== activeProfile?.groupId)
-    ) || canUpdate;
+    !activeProfile ||
+    activeProfile?.type !== 'school_admin' ||
+    activeProfile?.type !== 'class_teacher' ||
+    (activeProfile?.type === 'school_admin' &&
+      data.schoolId !== activeProfile?.schoolId) ||
+    (activeProfile?.type === 'class_teacher' &&
+      data.groupId !== activeProfile?.groupId) ||
+    canUpdate;
   const canGenerateParentCode =
     activeProfile?.type === 'school_admin' ||
     activeProfile?.type === 'class_teacher' ||
     canUpdate;
+
+  const groupUrl =
+    data.type === 'class_teacher'
+      ? `/${activeLocale}/u/groups/${data.classTeacherGroupId}`
+      : data.type === 'student'
+        ? `/${activeLocale}/u/groups/${data.groupId}`
+        : null;
 
   return (
     <div className="mb-2 p-3">
@@ -265,10 +270,20 @@ const SchoolProfileDetails: FC<SchoolProfileDetailsProps> = ({ id }) => {
           </>
         )}
 
+        {groupUrl && (
+          <Button
+            onClick={() => replace(groupUrl)}
+            size="md"
+            gradientMonochrome="purple"
+          >
+            <span className="text-white">{t('toGroup')}</span>
+          </Button>
+        )}
+
         {canUpdate && (
           <Button size="md" gradientMonochrome="lime">
             <Link
-              href={`/${activeLocale}/u/school-profile/update/${id}?${buildUpdateQuery()}`}
+              href={`/${activeLocale}/u/school-profile/update/${id}/?${buildUpdateQuery()}`}
             >
               {t('updateBtn')}
             </Link>
@@ -280,3 +295,4 @@ const SchoolProfileDetails: FC<SchoolProfileDetailsProps> = ({ id }) => {
 };
 
 export { SchoolProfileDetails };
+

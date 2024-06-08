@@ -1,37 +1,37 @@
 'use client';
 
-import { FC, useState } from 'react';
-import { useLocale, useTranslations } from 'next-intl';
-import { useIsMutating, useMutation, useQuery } from '@tanstack/react-query';
-import { useAuthRedirectByRole, useSetCurrentTab } from '@/shared/hooks';
-import { useRouter } from 'next/navigation';
-import { ApiResponse } from '@/shared/types';
-import { OneGroupResponse } from '@/features/user/types/groupTypes';
+import { CustomImage } from '@/components/custom-image';
+import { Error } from '@/components/error';
+import { Loader } from '@/components/loader';
+import { CopyTextModal, ProveModal } from '@/components/modal';
+import { useProfiles } from '@/features/user';
+import ClassTeacherInfo from '@/features/user/components/group/getOne/ClassTeacherInfo';
+import { GroupInfo } from '@/features/user/components/group/getOne/GroupInfo';
+import { GroupStudents } from '@/features/user/components/group/getOne/GroupStudents';
 import {
   CurrentTab,
   userMutations,
   userQueries,
 } from '@/features/user/constants';
+import { OneGroupResponse } from '@/features/user/types/groupTypes';
+import { mediaQueries } from '@/shared/constants';
+import { buildQueryString } from '@/shared/helpers';
+import { useAuthRedirectByRole, useSetCurrentTab } from '@/shared/hooks';
+import { ApiResponse } from '@/shared/types';
+import { useIsMutating, useMutation, useQuery } from '@tanstack/react-query';
+import { Button } from 'flowbite-react';
+import { useLocale, useTranslations } from 'next-intl';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { FC, useState } from 'react';
+import { toast } from 'react-hot-toast';
+import { useMediaQuery } from 'react-responsive';
 import {
   createClassTeacherInvitation,
   createStudentInvitation,
   getOne,
   remove,
 } from '../../../api/groupsApi';
-import { Loader } from '@/components/loader';
-import { Error } from '@/components/error';
-import { GroupInfo } from '@/features/user/components/group/getOne/GroupInfo';
-import { CustomImage } from '@/components/custom-image';
-import { mediaQueries } from '@/shared/constants';
-import { useMediaQuery } from 'react-responsive';
-import { toast } from 'react-hot-toast';
-import { CopyTextModal, ProveModal } from '@/components/modal';
-import { Button } from 'flowbite-react';
-import { useProfiles } from '@/features/user';
-import Link from 'next/link';
-import ClassTeacherInfo from '@/features/user/components/group/getOne/ClassTeacherInfo';
-import { GroupStudents } from '@/features/user/components/group/getOne/GroupStudents';
-import { buildQueryString } from '@/shared/helpers';
 
 interface GroupProps {
   id: string;
@@ -220,6 +220,11 @@ const Group: FC<GroupProps> = ({ id }) => {
     (activeProfile?.type === 'class_teacher' &&
       activeProfile?.groupId === data.id);
 
+  const canDeleteClassTeacher =
+    activeProfile.id == data.classTeacher?.id ||
+    (activeProfile.type === 'school_admin' &&
+      activeProfile.school === data.classTeacher?.schoolId);
+
   const handleOpenDeleteModal = () => {
     setDeleteOpenModal(true);
   };
@@ -272,10 +277,16 @@ const Group: FC<GroupProps> = ({ id }) => {
           />
         </div>
 
-        <div className="mt-4 flex flex-col justify-start lg:mt-0 lg:w-1/4">
-          <p className="color-gray-500 mr-1 text-center text-sm font-semibold lg:text-lg">
+        <div className="mt-4 flex flex-col items-start justify-center lg:mt-0 lg:w-1/4">
+          <p className="color-gray-500 text mr-1 w-[350px] text-center font-semibold lg:text-lg">
             {t('classTeacher')}
           </p>
+
+          {data.classTeacher && canDeleteClassTeacher && (
+            <p className="color-gray-500 text mb-4 mt-2 w-[350px] text-xs font-semibold">
+              {t('deleteClassTeacherLabel')}
+            </p>
+          )}
 
           {data.classTeacher ? (
             <>
@@ -283,7 +294,7 @@ const Group: FC<GroupProps> = ({ id }) => {
             </>
           ) : (
             <>
-              <p className="text-md text-center text-red-900">
+              <p className="text-md  w-[350px] text-center text-red-900">
                 {t('labels.noClassTeacher')}
               </p>
 
@@ -328,7 +339,7 @@ const Group: FC<GroupProps> = ({ id }) => {
       </div>
 
       {canModify && (
-        <div className="mb-4 mt-2 flex w-[100%] justify-center pt-3">
+        <div className="mb-4 mt-2 flex w-[350px] justify-center pt-3">
           <div className="flex w-[350px] justify-center">
             <Button
               onClick={() => {
@@ -390,3 +401,4 @@ const Group: FC<GroupProps> = ({ id }) => {
 };
 
 export { Group };
+

@@ -30,12 +30,20 @@ public class GetOneGroupQueryHandler : IRequestHandler<GetOneGroupQuery, Either<
 
         var group = await _queryContext.Groups
             .Include(g => g.School)
-            .Include(g => g.ClassTeacher)
             .Include(g => g.Students)
             .FirstOrDefaultAsync(r => r.Id == request.Id, cancellationToken: cancellationToken);
 
         if (group is null)
             return new NotFoundByIdError(request.Id, "group");
+
+        var classTeacher = await _queryContext.SchoolProfiles
+            .FirstOrDefaultAsync(p => p.Type == SchoolProfileType.ClassTeacher &&
+            p.ClassTeacherGroupId == group.Id, cancellationToken: cancellationToken);
+
+        if (classTeacher != null)
+            classTeacher.SchoolId = group.SchoolId;
+
+        group.ClassTeacher = classTeacher;
 
         switch (profile.Type)
         {
@@ -48,9 +56,25 @@ public class GetOneGroupQueryHandler : IRequestHandler<GetOneGroupQuery, Either<
                         return (Error)validationError;
                     break;
                 }
-            case SchoolProfileType.ClassTeacher or SchoolProfileType.Student:
+            case SchoolProfileType.Student:
                 {
                     var validationError = await _schoolProfileManager.ValidateSchoolProfileByGroup(request.UserId, group.Id);
+
+                    if (validationError.IsSome)
+                        return (Error)validationError;
+                    break;
+                }
+            case SchoolProfileType.ClassTeacher:
+                {
+                    var validationError = await _schoolProfileManager.ValidateClassTeacherSchoolProfileByGroup(request.UserId, group.Id);
+
+                    if (validationError.IsSome)
+                        return (Error)validationError;
+                    break;
+                }
+            case SchoolProfileType.Parent:
+                {
+                    var validationError = await _schoolProfileManager.ValidateParentProfileByChildGroup(request.UserId, group.Id);
 
                     if (validationError.IsSome)
                         return (Error)validationError;

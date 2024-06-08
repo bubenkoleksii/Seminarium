@@ -32,7 +32,7 @@ public class SchoolProfile : Entity
 
     public Group? ClassTeacherGroup { get; set; }
 
-    public ICollection<SchoolProfile>? Parents { get; set; }
+    public ICollection<SchoolProfile>? Parents { get; set; } = [];
 
-    public ICollection<SchoolProfile>? Children { get; set; }
+    public ICollection<SchoolProfile>? Children { get; set; } = [];
 }
