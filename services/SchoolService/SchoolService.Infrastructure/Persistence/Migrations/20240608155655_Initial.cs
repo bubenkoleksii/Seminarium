@@ -1,12 +1,11 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
 namespace SchoolService.Infrastructure.Persistence.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialMigration : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -84,6 +83,33 @@ namespace SchoolService.Infrastructure.Persistence.Migrations
                         principalSchema: "public",
                         principalTable: "Schools",
                         principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "StudyPeriods",
+                schema: "public",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    SchoolId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Name = table.Column<string>(type: "text", nullable: true),
+                    StartDate = table.Column<DateOnly>(type: "date", nullable: true),
+                    EndDate = table.Column<DateOnly>(type: "date", nullable: true),
+                    IsArchived = table.Column<bool>(type: "boolean", nullable: false),
+                    LastArchivedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    LastUpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_StudyPeriods", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_StudyPeriods_Schools_SchoolId",
+                        column: x => x.SchoolId,
+                        principalSchema: "public",
+                        principalTable: "Schools",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -228,6 +254,12 @@ namespace SchoolService.Infrastructure.Persistence.Migrations
                 table: "SchoolProfiles",
                 column: "SchoolId");
 
+            migrationBuilder.CreateIndex(
+                name: "IX_StudyPeriods_SchoolId",
+                schema: "public",
+                table: "StudyPeriods",
+                column: "SchoolId");
+
             migrationBuilder.AddForeignKey(
                 name: "FK_Groups_SchoolProfiles_ClassTeacherId",
                 schema: "public",
@@ -253,6 +285,10 @@ namespace SchoolService.Infrastructure.Persistence.Migrations
 
             migrationBuilder.DropTable(
                 name: "ParentChild",
+                schema: "public");
+
+            migrationBuilder.DropTable(
+                name: "StudyPeriods",
                 schema: "public");
 
             migrationBuilder.DropTable(

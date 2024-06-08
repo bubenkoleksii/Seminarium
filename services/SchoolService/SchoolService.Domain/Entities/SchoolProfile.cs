@@ -35,4 +35,6 @@ public class SchoolProfile : Entity
     public ICollection<SchoolProfile>? Parents { get; set; } = [];
 
     public ICollection<SchoolProfile>? Children { get; set; } = [];
+
+    public IEnumerable<GroupNotice>? Notices { get; set; }
 }

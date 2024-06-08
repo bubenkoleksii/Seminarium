@@ -13,6 +13,10 @@ public abstract class BaseContext : DbContext
 
     public DbSet<Group> Groups { get; set; }
 
+    public DbSet<StudyPeriod> StudyPeriods { get; set; }
+
+    public DbSet<GroupNotice> GroupNotices { get; set; }
+
     protected BaseContext(DbContextOptions options) : base(options)
     {
     }

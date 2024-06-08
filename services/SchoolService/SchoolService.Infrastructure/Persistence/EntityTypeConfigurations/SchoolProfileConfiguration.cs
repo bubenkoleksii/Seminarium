@@ -33,6 +33,7 @@ public class SchoolProfileConfiguration : IEntityTypeConfiguration<SchoolProfile
         AddSchoolRelationship(builder);
         AddGroupRelationships(builder);
         AddParentChildrenRelationships(builder);
+        AddNoticesRelationships(builder);
     }
 
     private static void AddSchoolRelationship(EntityTypeBuilder<SchoolProfile> builder)
@@ -82,6 +83,12 @@ public class SchoolProfileConfiguration : IEntityTypeConfiguration<SchoolProfile
                     j.Property(x => x.ChildId).IsRequired(false);
                 }
             );
+    }
 
+    private static void AddNoticesRelationships(EntityTypeBuilder<SchoolProfile> builder)
+    {
+        builder.HasMany(builder => builder.Notices)
+            .WithOne(notice => notice.Author)
+            .OnDelete(DeleteBehavior.SetNull);
     }
 }

@@ -10,5 +10,9 @@ public interface IContext
 
     DbSet<Domain.Entities.Group> Groups { get; set; }
 
+    DbSet<Domain.Entities.StudyPeriod> StudyPeriods { get; set; }
+
+    DbSet<Domain.Entities.GroupNotice> GroupNotices { get; set; }
+
     Task<int> SaveChangesAsync(CancellationToken cancellationToken);
 }

@@ -30,6 +30,7 @@ public class SchoolConfiguration : IEntityTypeConfiguration<School>
         AddJoiningRequestForeignKey(builder);
         AddTeachersRelationship(builder);
         AddGroupsRelationship(builder);
+        AddStudyPeriodsRelationship(builder);
     }
 
     private static void AddJoiningRequestForeignKey(EntityTypeBuilder<School> builder)
@@ -51,6 +52,13 @@ public class SchoolConfiguration : IEntityTypeConfiguration<School>
     {
         builder.HasMany(school => school.Groups)
             .WithOne(group => group.School)
+            .OnDelete(DeleteBehavior.Cascade);
+    }
+
+    private static void AddStudyPeriodsRelationship(EntityTypeBuilder<School> builder)
+    {
+        builder.HasMany(school => school.StudyPeriods)
+            .WithOne(period => period.School)
             .OnDelete(DeleteBehavior.Cascade);
     }
 }

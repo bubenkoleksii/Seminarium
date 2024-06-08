@@ -41,4 +41,6 @@ public class School : Entity
     public IEnumerable<SchoolProfile>? Teachers { get; set; }
 
     public IEnumerable<Group>? Groups { get; set; }
+
+    public IEnumerable<StudyPeriod>? StudyPeriods { get; set; }
 }
