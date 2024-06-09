@@ -2,7 +2,7 @@
 
 public record OneGroupResponse(
     Guid Id,
-    
+
     Guid SchoolId,
 
     string SchoolName,
@@ -12,6 +12,8 @@ public record OneGroupResponse(
     SchoolProfileResponse? ClassTeacher,
 
     IEnumerable<SchoolProfileResponse>? Students,
+
+    GroupNoticeResponse? LastNotice,
 
     DateTime CreatedAt,
 

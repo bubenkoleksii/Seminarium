@@ -1,4 +1,5 @@
 import type { SchoolProfileResponse } from '@/features/user/types/schoolProfileTypes';
+import type { GroupNoticeResponse } from './groupNoticesTypes';
 
 export interface PagesGroupsResponse {
   entries: GroupResponse[];
@@ -23,6 +24,7 @@ export interface OneGroupResponse extends GroupResponse {
   classTeacherId?: string;
   classTeacher?: SchoolProfileResponse;
   students?: SchoolProfileResponse[];
+  lastNotice: GroupNoticeResponse;
 }
 
 export interface CreateGroupRequest {

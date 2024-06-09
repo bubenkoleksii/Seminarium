@@ -14,6 +14,8 @@ public class OneGroupModelResponse
 
     public IEnumerable<SchoolProfileModelResponse>? Students { get; set; }
 
+    public GroupNoticeModelResponse? LastNotice { get; set; }
+
     public DateTime CreatedAt { get; set; }
 
     public DateTime? LastUpdatedAt { get; set; }

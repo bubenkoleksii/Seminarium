@@ -86,8 +86,14 @@ public class GetOneGroupQueryHandler : IRequestHandler<GetOneGroupQuery, Either<
             .OrderBy(s => s.Name)
             .ToList();
 
+        var lastNotice = await _queryContext.GroupNotices
+            .OrderByDescending(n => n.CreatedAt)
+            .FirstOrDefaultAsync(n => n.GroupId == group.Id, cancellationToken: cancellationToken);
+        var lastNoticeResponse = _mapper.Map<GroupNoticeModelResponse>(lastNotice);
+
         var groupResponse = _mapper.Map<OneGroupModelResponse>(group);
         groupResponse.SchoolName = group.School.Name;
+        groupResponse.LastNotice = lastNoticeResponse;
 
         var students = group.Students?.Select(student =>
         {

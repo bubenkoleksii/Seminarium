@@ -336,6 +336,10 @@ const Group: FC<GroupProps> = ({ id }) => {
         </div>
       </div>
 
+      <h2 className="md:text mt-4 text-center text-sm font-bold lg:text-xl">
+        {t('lastNotice')}
+      </h2>
+
       <div className="mt-4 flex w-[100%] flex-col justify-center lg:flex-row">
         <GroupInfo group={data} />
       </div>
