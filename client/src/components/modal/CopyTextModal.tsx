@@ -1,12 +1,14 @@
-import { FC } from 'react';
+import { Button, Modal } from 'flowbite-react';
 import { useTranslations } from 'next-intl';
-import { Modal, Button } from 'flowbite-react';
+import { useQRCode } from 'next-qrcode';
+import { FC } from 'react';
 import toast from 'react-hot-toast';
 
 interface CopyTextModalProps {
   open: boolean;
   text: string;
   label?: string;
+  isNeedQrCode?: boolean;
   onClose: () => void;
 }
 
@@ -15,8 +17,10 @@ const CopyTextModal: FC<CopyTextModalProps> = ({
   text,
   label,
   onClose,
+  isNeedQrCode = false,
 }) => {
   const t = useTranslations('Modal');
+  const { Canvas } = useQRCode();
 
   const handleCopy = () => {
     navigator.clipboard.writeText(text);
@@ -40,7 +44,24 @@ const CopyTextModal: FC<CopyTextModalProps> = ({
             <div className="mb-4 pl-3 pr-3">
               <p className="font-semibold text-blue-500">{text}</p>
             </div>
-            <div className="flex justify-center gap-4">
+            {isNeedQrCode && (
+              <div className="mb-2 flex justify-center">
+                <Canvas
+                  text={text}
+                  options={{
+                    errorCorrectionLevel: 'M',
+                    margin: 3,
+                    scale: 4,
+                    width: 200,
+                    color: {
+                      dark: '#800080',
+                      light: '#F0F0F0',
+                    },
+                  }}
+                />
+              </div>
+            )}
+            <div className="mt-4 flex justify-center gap-4">
               <Button gradientMonochrome="failure" onClick={handleCancel}>
                 <span className="text-white">{t('close')}</span>
               </Button>
@@ -56,3 +77,4 @@ const CopyTextModal: FC<CopyTextModalProps> = ({
 };
 
 export { CopyTextModal };
+

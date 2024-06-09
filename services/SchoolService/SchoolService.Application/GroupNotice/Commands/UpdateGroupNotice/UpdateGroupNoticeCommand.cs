@@ -6,6 +6,8 @@ public class UpdateGroupNoticeCommand : IRequest<Either<GroupNoticeModelResponse
 
     public Guid UserId { get; set; }
 
+    public bool IsCrucial { get; set; }
+
     public required string Title { get; set; }
 
     public string? Text { get; set; }

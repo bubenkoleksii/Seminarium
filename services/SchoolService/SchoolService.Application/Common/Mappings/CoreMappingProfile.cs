@@ -15,6 +15,8 @@ public class CoreMappingProfile : Profile
         ConfigureGroupMappings();
 
         ConfigureStudyPeriodMappings();
+
+        ConfigureGroupNoticeMappings();
     }
 
     private void ConfigureSchoolMapping()
@@ -62,5 +64,14 @@ public class CoreMappingProfile : Profile
         CreateMap<UpdateStudyPeriodCommand, Domain.Entities.StudyPeriod>();
 
         CreateMap<Domain.Entities.StudyPeriod, StudyPeriodModelResponse>();
+    }
+
+    private void ConfigureGroupNoticeMappings()
+    {
+        CreateMap<CreateGroupNoticeCommand, Domain.Entities.GroupNotice>();
+
+        CreateMap<UpdateGroupNoticeCommand, Domain.Entities.GroupNotice>();
+
+        CreateMap<Domain.Entities.GroupNotice, GroupNoticeModelResponse>();
     }
 }

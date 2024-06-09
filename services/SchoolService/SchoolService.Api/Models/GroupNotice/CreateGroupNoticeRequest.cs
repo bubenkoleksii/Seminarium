@@ -3,6 +3,8 @@
 public record CreateGroupNoticeRequest(
     Guid GroupId,
 
+    bool IsCrucial,
+
     string Title,
 
     string? Text

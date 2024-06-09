@@ -103,4 +103,3 @@ const ClassTeacherContentTabs: FC<ClassTeacherContentTabsProps> = ({
 };
 
 export { ClassTeacherContentTabs };
-

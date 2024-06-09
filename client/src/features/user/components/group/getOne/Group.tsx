@@ -263,6 +263,7 @@ const Group: FC<GroupProps> = ({ id }) => {
           open={copyStudentInvitationOpenModal}
           text={invitationStudentCode}
           label={t('studentInvitationBtn')}
+          isNeedQrCode={true}
           onClose={() => setCopyStudentInvitationOpenModal(false)}
         />
       )}
@@ -294,7 +295,7 @@ const Group: FC<GroupProps> = ({ id }) => {
             </>
           ) : (
             <>
-              <p className="text-md  w-[350px] text-center text-red-900">
+              <p className="text-md w-[100%] text-center text-red-900">
                 {t('labels.noClassTeacher')}
               </p>
 
@@ -326,6 +327,7 @@ const Group: FC<GroupProps> = ({ id }) => {
                   open={copyClassTeacherInvitationOpenModal}
                   text={invitationClassTeacherCode}
                   label={t('classTeacherInvitationBtn')}
+                  isNeedQrCode={true}
                   onClose={() => setCopyClassTeacherInvitationOpenModal(false)}
                 />
               )}
@@ -339,7 +341,7 @@ const Group: FC<GroupProps> = ({ id }) => {
       </div>
 
       {canModify && (
-        <div className="mb-4 mt-2 flex w-[350px] justify-center pt-3">
+        <div className="mb-4 mt-2 flex justify-center pt-3">
           <div className="flex w-[350px] justify-center">
             <Button
               onClick={() => {
@@ -359,6 +361,10 @@ const Group: FC<GroupProps> = ({ id }) => {
         </div>
       )}
 
+      <h2 className="md:text mt-4 text-center text-sm font-bold lg:text-xl">
+        {t('students')}
+        {data.students.length > 0 ? ` (${data.students.length})` : ''}
+      </h2>
       <GroupStudents students={data.students} />
 
       {canModify && (

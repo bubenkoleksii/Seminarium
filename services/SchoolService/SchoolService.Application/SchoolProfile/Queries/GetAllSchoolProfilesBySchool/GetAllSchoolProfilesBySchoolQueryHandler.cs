@@ -10,12 +10,16 @@ public class GetAllSchoolProfilesBySchoolQueryHandler : IRequestHandler<GetAllSc
 
     private readonly IMapper _mapper;
 
+    private readonly IFilesManager _filesManager;
+
     public GetAllSchoolProfilesBySchoolQueryHandler(
         ISchoolProfileManager schoolProfileManager,
         IQueryContext queryContext,
+        IFilesManager filesManager,
         IMapper mapper)
     {
         _schoolProfileManager = schoolProfileManager;
+        _filesManager = filesManager;
         _queryContext = queryContext;
         _mapper = mapper;
     }
@@ -60,10 +64,18 @@ public class GetAllSchoolProfilesBySchoolQueryHandler : IRequestHandler<GetAllSc
 
         ClearCyclicDependencies(entities);
 
-        var schoolsResponse = _mapper.Map<IEnumerable<SchoolProfileModelResponse>>(entities);
+        var schoolProfilesResponse = _mapper.Map<IEnumerable<SchoolProfileModelResponse>>(entities);
+        foreach (var profile in schoolProfilesResponse)
+        {
+            if (profile.Img == null)
+                continue;
+
+            var image = _filesManager.GetFile(profile.Img);
+            profile.Img = image.IsRight ? null : ((FileSuccess)image).Url;
+        }
 
         var response = new GetAllSchoolProfilesBySchoolModelResponse(
-            Entries: schoolsResponse,
+            Entries: schoolProfilesResponse,
             Total: (ulong)dbQuery.Count(),
             Skip: request.Skip,
             Take: take

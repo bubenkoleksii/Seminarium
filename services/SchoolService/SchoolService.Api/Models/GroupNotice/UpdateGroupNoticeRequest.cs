@@ -5,6 +5,8 @@ public record UpdateGroupNoticeRequest(
 
     Guid GroupId,
 
+    bool IsCrucial,
+
     string Title,
 
     string? Text
