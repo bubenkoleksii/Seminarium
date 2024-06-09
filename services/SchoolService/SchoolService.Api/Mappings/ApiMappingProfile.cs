@@ -1,6 +1,4 @@
-﻿using SchoolService.Application.StudyPeriod.Models;
-
-namespace SchoolService.Api.Mappings;
+﻿namespace SchoolService.Api.Mappings;
 
 public class ApiMappingProfile : Profile
 {
@@ -17,6 +15,8 @@ public class ApiMappingProfile : Profile
         ConfigureGroupMappings();
 
         ConfigureStudyPeriodMappings();
+
+        ConfigureGroupNoticeMappings();
     }
 
     private void ConfigureSchoolMapping()
@@ -83,6 +83,15 @@ public class ApiMappingProfile : Profile
         CreateMap<UpdateStudyPeriodRequest, UpdateStudyPeriodCommand>();
 
         CreateMap<StudyPeriodModelResponse, StudyPeriodResponse>();
+    }
+
+    private void ConfigureGroupNoticeMappings()
+    {
+        CreateMap<CreateGroupNoticeRequest, CreateGroupNoticeCommand>();
+
+        CreateMap<UpdateGroupNoticeRequest, UpdateStudyPeriodCommand>();
+
+        CreateMap<GroupNoticeModelResponse, GroupNoticeModelResponse>();
     }
 
     private void ConfigureGlobalMappings()
