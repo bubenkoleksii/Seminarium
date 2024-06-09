@@ -24,6 +24,7 @@ global using SchoolService.Application.Common.Files;
 global using SchoolService.Application.Group.Commands.CreateGroup;
 global using SchoolService.Application.Group.Commands.UpdateGroup;
 global using SchoolService.Application.Group.Models;
+global using SchoolService.Application.GroupNotice.Models;
 global using SchoolService.Application.JoiningRequest.Commands.CreateJoiningRequest;
 global using SchoolService.Application.JoiningRequest.Models;
 global using SchoolService.Application.School.Commands.CreateSchool;

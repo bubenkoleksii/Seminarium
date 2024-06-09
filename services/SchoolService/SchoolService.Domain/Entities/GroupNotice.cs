@@ -2,7 +2,9 @@
 
 public class GroupNotice : Entity
 {
-    public required string Text { get; set; }
+    public required string Title { get; set; }
+
+    public string? Text { get; set; }
 
     public bool IsCrucial { get; set; }
 
