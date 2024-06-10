@@ -112,6 +112,23 @@
       "name": "8-A"
     }
   },
+  "GroupNotice": {
+    "create": {
+      "title": "Створити оголошення для групи"
+    },
+    "labels": {
+      "isCrucial": "Важливе",
+      "title": "Заголовок",
+      "text": "Текст",
+      "createSubmit": "Створити оголошення",
+      "toList": "Повернутися до переліку оголошень",
+      "createSuccess": "Нове оголошення для групи успішно створено!"
+    },
+    "placeholders": {
+      "title": "Ваш заголовок оголошення",
+      "text": "Ваш текст оголошення"
+    }
+  },
   "JoiningRequest": {
     "title": "Форма приєднання навчального закладу",
     "listTitle": "Запити навчальних закладів на приєднання",
@@ -533,6 +550,14 @@
   },
   "SearchInput": {
     "label": "Пошук"
+  },
+  "Tiptap": {
+    "words": "сл.",
+    "symbols": "симв.",
+    "youtubeLabelModal": "Введіть посилання на YouTube відео",
+    "invalidYoutubeLink": "Недійсне посилання на YouTube",
+    "linkLabelModal": "Введіть посилання",
+    "invalidLink": "Недійсне посилання"
   },
   "UploadFile": {
     "fileRequired": "Завантаження файлу обов'язкове",

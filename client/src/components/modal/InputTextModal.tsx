@@ -1,12 +1,13 @@
+import { Button, Label, Modal, TextInput, Textarea } from 'flowbite-react';
+import { useTranslations } from 'next-intl';
 import React, { FC, useState } from 'react';
 import { HiOutlineExclamationCircle } from 'react-icons/hi';
-import { Modal, Button, Label, TextInput, Textarea } from 'flowbite-react';
-import { useTranslations } from 'next-intl';
 
 interface InputTextModalProps {
   open: boolean;
   text: string;
   required?: boolean;
+  value?: string;
   isTextarea?: boolean;
   onClose: (confirmed: boolean, value?: string) => void;
 }
@@ -14,12 +15,13 @@ interface InputTextModalProps {
 const InputTextModal: FC<InputTextModalProps> = ({
   open,
   text,
+  value,
   required = false,
   isTextarea = false,
   onClose,
 }) => {
   const t = useTranslations('Modal');
-  const [inputValue, setInputValue] = useState('');
+  const [inputValue, setInputValue] = useState(value || '');
   const [hasError, setHasError] = useState(false);
 
   const handleInputChange = (
@@ -93,3 +95,4 @@ const InputTextModal: FC<InputTextModalProps> = ({
 };
 
 export { InputTextModal };
+
