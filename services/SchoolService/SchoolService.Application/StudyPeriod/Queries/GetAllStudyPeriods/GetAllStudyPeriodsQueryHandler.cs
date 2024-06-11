@@ -17,7 +17,9 @@ public class GetAllStudyPeriodsQueryHandler(
             return [];
 
         var entities = await _queryContext.StudyPeriods
+            .Include(period => period.School)
             .Where(period => period.SchoolId == profile.SchoolId)
+            .OrderByDescending(period => period.StartDate)
             .ToListAsync();
 
         var studyPeriodsResponse = _mapper.Map<IEnumerable<StudyPeriodModelResponse>>(entities);

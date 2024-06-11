@@ -23,7 +23,7 @@ export const group = {
 };
 
 export const studyPeriods = {
-  getAll: 'studyPeriod/getAll',
+  getAll: '/studyPeriod/getAll',
   create: '/studyPeriod/create',
   update: '/studyPeriod/update',
   remove: (id: string) => `/studyPeriod/delete/${id}`,

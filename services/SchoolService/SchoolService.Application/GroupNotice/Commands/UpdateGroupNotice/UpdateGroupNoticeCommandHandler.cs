@@ -25,7 +25,7 @@ public class UpdateGroupNoticeCommandHandler(ISchoolProfileManager schoolProfile
             || (profile.Type == SchoolProfileType.ClassTeacher && notice.GroupId == profile.GroupId);
         var canOwnUpdate = profile.Id == notice.AuthorId;
 
-        if (!(canAdminUpdate && canOwnUpdate))
+        if (!canAdminUpdate && !canOwnUpdate)
             return new InvalidError("school_profile");
 
         _mapper.Map(request, notice);

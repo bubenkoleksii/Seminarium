@@ -170,7 +170,7 @@ const GroupNoticeItem: FC<GroupNoticeProps> = ({
       id: notice.id,
       isCrucial: notice.isCrucial,
       title: notice.title,
-      text: notice.text
+      text: notice.text,
     });
   };
 
@@ -280,4 +280,3 @@ const GroupNoticeItem: FC<GroupNoticeProps> = ({
 };
 
 export { GroupNoticeItem };
-

@@ -5,6 +5,7 @@ export const enum CurrentTab {
   GroupNotices = 'groupNotices',
   Children = 'children',
   SchoolProfiles = 'schoolProfiles',
+  StudyPeriods = 'studyPeriods',
 }
 
 export const userQueries = {
@@ -13,6 +14,7 @@ export const userQueries = {
   getGroups: 'getAllGroups',
   getOneGroup: 'getOneGroup',
   getGroupNotices: 'getGroupNotices',
+  getStudyPeriods: 'getStudyPeriods',
   options: {
     retry: 4,
   },
@@ -27,6 +29,9 @@ export const userMutations = {
   updateGroupNotice: 'updateGroupNotice',
   deleteGroupNotice: 'deleteGroupNotice',
   changeCrucial: 'changeCrucial',
+  createStudyPeriod: 'createStudyPeriod',
+  deleteStudyPeriod: 'deleteStudyPeriod',
+  updateStudyPeriod: 'updateStudyPeriod',
   updateGroupImage: 'updateGroupImage',
   deleteGroupImage: 'deleteGroupImage',
   deleteProfile: 'deleteProfile',

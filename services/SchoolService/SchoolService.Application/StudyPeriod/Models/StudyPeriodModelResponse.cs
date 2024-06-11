@@ -1,13 +1,17 @@
 ﻿namespace SchoolService.Application.StudyPeriod.Models;
 
-public record StudyPeriodModelResponse(
-    Guid Id,
+public class StudyPeriodModelResponse
+{
+    public Guid Id { get; set; }
 
-    Guid SchoolId,
+    public Guid SchoolId { get; set; }
 
-    SchoolModelResponse School,
+    public required SchoolModelResponse School { get; set; }
 
-    DateOnly StartDate,
+    public bool IncrementGroups { get; set; }
 
-    DateOnly EndDate
-);
+    public DateOnly StartDate { get; set; }
+
+    public DateOnly EndDate { get; set; }
+}
+

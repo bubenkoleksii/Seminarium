@@ -17,10 +17,11 @@ public class StudyPeriodController(IMapper mapper) : BaseController
         var query = new GetAllStudyPeriodsQuery((Guid)userId);
 
         var result = await Mediator.Send(query);
-        return Ok(mapper.Map<StudyPeriodResponse>(result));
+        return Ok(mapper.Map<IEnumerable<StudyPeriodResponse>>(result));
     }
 
     [Authorize(Roles = Constants.UserRole)]
+    [HttpPost("[action]/")]
     [ProfileIdentify([Constants.SchoolAdmin])]
     [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(StudyPeriodResponse))]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -34,6 +35,7 @@ public class StudyPeriodController(IMapper mapper) : BaseController
             return ErrorActionResultHandler.Handle(new InvalidError("user"));
 
         var command = mapper.Map<CreateStudyPeriodCommand>(studyPeriodRequest);
+        command.UserId = (Guid)userId;
 
         var result = await Mediator.Send(command);
 
@@ -58,6 +60,7 @@ public class StudyPeriodController(IMapper mapper) : BaseController
             return ErrorActionResultHandler.Handle(new InvalidError("user"));
 
         var command = mapper.Map<UpdateStudyPeriodCommand>(studyPeriodRequest);
+        command.UserId = (Guid)userId;
 
         var result = await Mediator.Send(command);
         return result.Match(

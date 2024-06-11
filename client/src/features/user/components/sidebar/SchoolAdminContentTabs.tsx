@@ -1,12 +1,20 @@
-import { FC } from 'react';
-import type { SchoolProfileResponse } from '@/features/user/types/schoolProfileTypes';
-import { Tooltip } from 'flowbite-react';
-import { useLocale, useTranslations } from 'next-intl';
-import Link from 'next/link';
-import { useUserStore } from '@/features/user/store/userStore';
 import { useNavStore } from '@/features/nav';
 import { CurrentTab } from '@/features/user/constants';
-import { User, School, Home, ChevronsLeft, Users, Contact } from 'lucide-react';
+import { useUserStore } from '@/features/user/store/userStore';
+import type { SchoolProfileResponse } from '@/features/user/types/schoolProfileTypes';
+import { Tooltip } from 'flowbite-react';
+import {
+  ChevronsLeft,
+  Contact,
+  Home,
+  Hourglass,
+  School,
+  User,
+  Users,
+} from 'lucide-react';
+import { useLocale, useTranslations } from 'next-intl';
+import Link from 'next/link';
+import { FC } from 'react';
 
 interface SchoolAdminContentTabsProps {
   activeProfile: SchoolProfileResponse;
@@ -74,6 +82,20 @@ const SchoolAdminContentTabs: FC<SchoolAdminContentTabsProps> = ({
         >
           <Contact
             color={`${currentTab === CurrentTab.SchoolProfiles ? `#f9fafb` : `#3B0764`}`}
+            size={20}
+          />
+        </Link>
+      </Tooltip>
+
+      <Tooltip content={t('studyPeriods')} placement="right" style="light">
+        <Link
+          href={`/${activeLocale}/u/study-periods/`}
+          className={`flex h-[50px] w-[50px] items-center justify-center 
+         ${currentTab === CurrentTab.StudyPeriods ? `bg-purple-950` : `bg-gray-50 hover:bg-gray-200`} 
+         text-gray-800 transition duration-300`}
+        >
+          <Hourglass
+            color={`${currentTab === CurrentTab.StudyPeriods ? `#f9fafb` : `#3B0764`}`}
             size={20}
           />
         </Link>

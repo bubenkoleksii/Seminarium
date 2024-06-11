@@ -1,19 +1,13 @@
 ﻿namespace SchoolService.Application.StudyPeriod.Commands.CreateStudyPeriod;
 
-public class CreateStudyPeriodCommandHandler : IRequestHandler<CreateStudyPeriodCommand, Either<StudyPeriodModelResponse, Error>>
+public class CreateStudyPeriodCommandHandler(ISchoolProfileManager schoolProfileManager, ICommandContext commandContext, IMapper mapper)
+    : IRequestHandler<CreateStudyPeriodCommand, Either<StudyPeriodModelResponse, Error>>
 {
-    private readonly ISchoolProfileManager _schoolProfileManager;
+    private readonly ISchoolProfileManager _schoolProfileManager = schoolProfileManager;
 
-    private readonly ICommandContext _commandContext;
+    private readonly ICommandContext _commandContext = commandContext;
 
-    private readonly IMapper _mapper;
-
-    public CreateStudyPeriodCommandHandler(ISchoolProfileManager schoolProfileManager, ICommandContext commandContext, IMapper mapper)
-    {
-        _schoolProfileManager = schoolProfileManager;
-        _commandContext = commandContext;
-        _mapper = mapper;
-    }
+    private readonly IMapper _mapper = mapper;
 
     public async Task<Either<StudyPeriodModelResponse, Error>> Handle(CreateStudyPeriodCommand request, CancellationToken cancellationToken)
     {
@@ -25,7 +19,7 @@ public class CreateStudyPeriodCommandHandler : IRequestHandler<CreateStudyPeriod
         if (school == null)
             return new InvalidError("school_id");
 
-        if (profile.Type != SchoolProfileType.SchoolAdmin)
+        if (profile.Type != SchoolProfileType.SchoolAdmin || profile.SchoolId != school.Id)
             return new InvalidError("school_profile");
 
         try
@@ -59,6 +53,34 @@ public class CreateStudyPeriodCommandHandler : IRequestHandler<CreateStudyPeriod
         }
 
         var studyPeriodResponse = _mapper.Map<StudyPeriodModelResponse>(entity);
+
+        if (request.IncrementGroups)
+        {
+            var groups = await _commandContext.Groups
+                .Where(group => group.SchoolId == school.Id)
+                .ToListAsync(CancellationToken.None);
+
+            if (groups is not null)
+            {
+                foreach (var group in groups)
+                    group.StudyPeriodNumber++;
+
+                _commandContext.Groups.UpdateRange(groups);
+
+                try
+                {
+                    await _commandContext.SaveChangesAsync(cancellationToken);
+                }
+                catch (Exception exception)
+                {
+                    Log.Error(exception, "An error occurred while incrementing the study period number of group with values {@Request}.", request);
+                    return new InvalidDatabaseOperationError("group");
+                }
+
+                studyPeriodResponse.IncrementGroups = true;
+            }
+        }
+
         return studyPeriodResponse;
     }
 }

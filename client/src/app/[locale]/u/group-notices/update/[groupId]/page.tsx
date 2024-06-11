@@ -15,10 +15,7 @@ const UpdateGroupNoticePage: FC<UpdateGroupNoticePageProps> = ({
 }) => {
   return (
     <div className="p-3">
-      <UpdateGroupNoticeForm
-        id={params.id}
-        noticeRequest={searchParams}
-      />
+      <UpdateGroupNoticeForm id={params.id} noticeRequest={searchParams} />
     </div>
   );
 };

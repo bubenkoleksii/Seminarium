@@ -1,4 +1,5 @@
 export type CreateStudyPeriodRequest = {
+  incrementGroups: boolean;
   startDate: string;
   endDate: string;
 };
@@ -11,6 +12,7 @@ export type UpdateStudyPeriodRequest = {
 
 export type StudyPeriodResponse = {
   id: string;
+  incrementGroups: boolean;
   schoolId: string;
   school: SchoolResponse;
   startDate: string;

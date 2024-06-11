@@ -25,7 +25,7 @@ public class ChangeGroupNoticeCrucialCommandHandler(ISchoolProfileManager school
             || (profile.Type == SchoolProfileType.ClassTeacher && notice.GroupId == profile.GroupId);
         var canOwnUpdate = profile.Id == notice.AuthorId;
 
-        if (!(canAdminUpdate && canOwnUpdate))
+        if (!canAdminUpdate && !canOwnUpdate)
             return new InvalidError("school_profile");
 
         notice.IsCrucial = request.IsCrucial;
