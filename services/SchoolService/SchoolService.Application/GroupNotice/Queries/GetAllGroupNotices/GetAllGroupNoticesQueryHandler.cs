@@ -3,7 +3,7 @@
 public class GetAllGroupNoticesQueryHandler(ISchoolProfileManager schoolProfileManager, IQueryContext queryContext, IMapper mapper, IFilesManager filesManager)
     : IRequestHandler<GetAllGroupNoticesQuery, Either<GetAllGroupNoticesModelResponse, Error>>
 {
-    private const int DefaultTake = 15;
+    private const int DefaultTake = 8;
 
     private readonly ISchoolProfileManager _schoolProfileManager = schoolProfileManager;
 
@@ -68,8 +68,7 @@ public class GetAllGroupNoticesQueryHandler(ISchoolProfileManager schoolProfileM
 
         var entities = await dbQuery
             .Include(notice => notice.Author)
-            .OrderBy(n => n.IsCrucial)
-            .ThenByDescending(n => n.CreatedAt)
+            .OrderByDescending(n => n.IsCrucial)
             .Skip(request.Skip)
             .Take(take)
             .ToListAsync(cancellationToken: cancellationToken);
@@ -92,8 +91,14 @@ public class GetAllGroupNoticesQueryHandler(ISchoolProfileManager schoolProfileM
 
         var entitiesResponse = _mapper.Map<IEnumerable<GroupNoticeModelResponse>>(entities);
 
-        var crucialNotes = entitiesResponse.Where(n => n.IsCrucial).ToList();
-        var regularNotes = entitiesResponse.Where(n => !n.IsCrucial).ToList();
+        var crucialNotes = entitiesResponse
+            .Where(n => n.IsCrucial)
+            .OrderByDescending(n => n.CreatedAt)
+            .ToList();
+        var regularNotes = entitiesResponse
+            .Where(n => !n.IsCrucial)
+            .OrderByDescending(n => n.CreatedAt)
+            .ToList();
 
         var count = (ulong)dbQuery.Count();
         if (lastNoticeResponse is not null)

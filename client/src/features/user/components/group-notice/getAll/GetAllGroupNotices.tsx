@@ -130,8 +130,6 @@ const GetAllGroupNotices: FC<GetAllGroupNoticesProps> = ({
         <Loader />
       </>
     );
-  } else {
-    window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
   }
 
   if (data && data.error) {
@@ -179,6 +177,10 @@ const GetAllGroupNotices: FC<GetAllGroupNoticesProps> = ({
       </>
     )
   }
+
+  let total = data.crucialNotices.length + data.regularNotices.length;
+  if (data.lastNotice)
+    total++;
 
   return (
     <div className="p-3">
@@ -257,7 +259,7 @@ const GetAllGroupNotices: FC<GetAllGroupNoticesProps> = ({
         </div>
       </div>
 
-      {data && data.crucialNotices.length >= data.total && (
+      {data && total < data.total && (
         <div className="mt-3">
           <Pagination
             currentPage={page}
@@ -284,7 +286,7 @@ const GetAllGroupNotices: FC<GetAllGroupNoticesProps> = ({
       {
         data.regularNotices && data.regularNotices.length > 0 &&
         <>
-          <h2 className="text-xl mt-4 text-center text-sm font-bold">
+          <h2 className="text-xl mt-[30px] text-center text-sm font-bold">
             {t('regularNotices')}
           </h2>
 
@@ -293,6 +295,17 @@ const GetAllGroupNotices: FC<GetAllGroupNoticesProps> = ({
           }
         </>
       }
+
+      {data && total < data.total && (
+        <div className="mt-3">
+          <Pagination
+            currentPage={page}
+            totalCount={data.total}
+            limit={data.take}
+            onChangePage={(page) => handlePage(page)}
+          />
+        </div>
+      )}
     </div >
   );
 };

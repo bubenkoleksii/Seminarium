@@ -23,7 +23,7 @@ public class DeleteGroupNoticeCommandHandler(ISchoolProfileManager schoolProfile
                 || (profile.Type == SchoolProfileType.ClassTeacher && notice.GroupId == profile.GroupId);
         var canOwnDelete = profile.Id == notice.AuthorId;
 
-        if (!(canAdminDelete && canOwnDelete))
+        if (!canAdminDelete && !canOwnDelete)
             return new InvalidError("school_profile");
 
         try

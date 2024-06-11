@@ -2,14 +2,18 @@
 
 import { DateTime } from '@/components/date-time';
 import { ProveModal } from '@/components/modal';
+import { removeGroupNotice } from '@/features/user/api/groupNoticesApi';
+import { userMutations, userQueries } from '@/features/user/constants';
 import type { GroupNoticeResponse } from '@/features/user/types/groupNoticesTypes';
 import type { SchoolProfileResponse } from '@/features/user/types/schoolProfileTypes';
 import { mediaQueries } from '@/shared/constants';
+import { useIsMutating, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Button } from 'flowbite-react';
 import parse from 'html-react-parser';
 import { useLocale, useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { FC, useState } from 'react';
+import toast from 'react-hot-toast';
 import { useMediaQuery } from 'react-responsive';
 
 type GroupNoticeProps = {
@@ -21,20 +25,73 @@ type GroupNoticeProps = {
 const GroupNoticeItem: FC<GroupNoticeProps> = ({ notice, activeProfile, groupId }) => {
   const t = useTranslations('GroupNotice');
   const s = useTranslations('SchoolProfile');
+  const v = useTranslations('Validation');
 
   const activeLocale = useLocale();
 
+  const queryClient = useQueryClient();
+
   const isPhone = useMediaQuery({ query: mediaQueries.phone });
+  const isMutating = useIsMutating();
 
   const [deleteOpenModal, setDeleteOpenModal] = useState(false);
   const [isCrucial, setIsCrucial] = useState(notice.isCrucial);
 
+  const { mutate: deleteGroupNotice } = useMutation({
+    mutationFn: removeGroupNotice,
+    mutationKey: [userMutations.deleteGroupNotice, notice.id],
+    onSuccess: (response) => {
+      if (response && response.error) {
+        if (
+          response.error.detail.includes('school_profile') ||
+          response.error.detail.includes('school_id')
+        ) {
+          toast.error(v('invalid_school_profile'));
+          return;
+        }
+
+        const errorMessages = {
+          404: t('labels.oneNotFound'),
+          400: v('invitationValidation'),
+          401: v('unauthorized'),
+          403: v('forbidden'),
+        };
+
+        toast.error(errorMessages[response.error.status] || v('internal'));
+      } else {
+        toast.success(t('labels.deleteSuccess'), { duration: 2500 });
+      }
+    },
+    onSettled: async () => {
+      queryClient.invalidateQueries({
+        queryKey: [userQueries.getGroupNotices],
+        refetchType: "all",
+      });
+
+      queryClient.invalidateQueries({
+        queryKey: [userQueries.getOneGroup],
+        refetchType: "all",
+      });
+    }
+  });
+
   const handleOpenDeleteModal = () => setDeleteOpenModal(true);
-  const handleCloseDeleteModal = () => setDeleteOpenModal(false);
+  const handleCloseDeleteModal = (confirmed: boolean) => {
+    setDeleteOpenModal(false);
+
+    if (!confirmed) return;
+
+    deleteGroupNotice({
+      id: notice.id,
+      schoolProfileId: activeProfile.id,
+    });
+  };
 
   const { title, text, author, createdAt, lastUpdatedAt } = notice;
 
-  const canModify = activeProfile.type !== 'student' || activeProfile.groupId === groupId;
+  const canModify = activeProfile.type !== 'student' || (
+    activeProfile.type == 'student' && activeProfile.id === notice.authorId
+  );
 
   const noticeClass = isCrucial
     ? 'bg-gradient-to-r from-red-50 to-red-100 p-4 rounded-lg shadow-md mb-4'
@@ -44,8 +101,11 @@ const GroupNoticeItem: FC<GroupNoticeProps> = ({ notice, activeProfile, groupId 
     setIsCrucial(prev => !prev);
   };
 
+  if (isMutating)
+    return null;
+
   return (
-    <div className="flex justify-center w-[100%]">
+    <div className="flex justify-center w-[100%] mt-4 mb-4">
       <div className="flex justify-center mt-2 w-[100%] sm:w-[80%]">
         <div className="w-7/8 md:w-5/6 lg:w-2/3">
           <div className={noticeClass}>
