@@ -1,0 +1,16 @@
+﻿global using AutoMapper;
+global using CourseService.Api.Identity;
+global using CourseService.Api.Mappings;
+global using CourseService.Api.Options;
+global using CourseService.Application;
+global using CourseService.Application.Common.Mappings;
+global using CourseService.Infrastructure.Persistence;
+global using MassTransit.Mediator;
+global using Microsoft.AspNetCore.Authentication.JwtBearer;
+global using Microsoft.AspNetCore.Mvc;
+global using Serilog;
+global using Serilog.Events;
+global using Shared.Contracts.Options;
+global using Shared.Utils.Errors;
+global using System.Security.Claims;
+global using System.Security.Principal;

@@ -3,16 +3,15 @@
 	<PropertyGroup>
 		<TargetFramework>net8.0</TargetFramework>
 		<Nullable>enable</Nullable>
-		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
 		<ImplicitUsings>enable</ImplicitUsings>
-		<InvariantGlobalization>true</InvariantGlobalization>
-		<UserSecretsId>5eb136d1-1230-443f-b402-e18b6a735fd6</UserSecretsId>
+		<UserSecretsId>16671bd9-27ed-4c96-85b7-50bcb79d1a6f</UserSecretsId>
 	</PropertyGroup>
 
 	<ItemGroup>
 		<PackageReference Include="AutoMapper" Version="13.0.1" />
 		<PackageReference Include="CaseExtensions" Version="1.1.0" />
 		<PackageReference Include="File.TypeChecker" Version="4.0.0" />
+		<PackageReference Include="MediatR" Version="12.2.0" />
 		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.3" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.3">
 			<PrivateAssets>all</PrivateAssets>
@@ -30,9 +29,17 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\SchoolService.Application\SchoolService.Application.csproj" />
-		<ProjectReference Include="..\SchoolService.Domain\SchoolService.Domain.csproj" />
-		<ProjectReference Include="..\SchoolService.Infrastructure\SchoolService.Infrastructure.csproj" />
+		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Folder Include="Models\" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\CourseService.Application\CourseService.Application.csproj" />
+		<ProjectReference Include="..\CourseService.Domain\CourseService.Domain.csproj" />
+		<ProjectReference Include="..\CourseService.Infrastructure\CourseService.Infrastructure.csproj" />
 	</ItemGroup>
 
 </Project>
