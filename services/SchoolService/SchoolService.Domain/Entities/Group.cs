@@ -17,4 +17,6 @@ public class Group : Entity
     public SchoolProfile? ClassTeacher { get; set; }
 
     public IEnumerable<SchoolProfile>? Students { get; set; }
+
+    public IEnumerable<GroupNotice>? Notices { get; set; }
 }

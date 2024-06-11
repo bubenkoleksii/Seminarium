@@ -8,7 +8,8 @@
   word-wrap: break-word;
 }
 
-html, body {
+html,
+body {
   max-width: 100%;
 }
 
@@ -19,9 +20,79 @@ html, body {
 }
 
 @keyframes custom-move {
-  33%   {top: 0;}
-  66%  {top: 20px;}
-  100%  {top: 0}
+  33% {
+    top: 0;
+  }
+
+  66% {
+    top: 20px;
+  }
+
+  100% {
+    top: 0
+  }
+}
+
+.tiptap {
+  word-break: break-word;
+  white-space: pre-wrap;
+  -moz-white-space: pre-wrap;
+  background-color: whitesmoke;
+}
+
+.tiptap h2 {
+  font-size: 28px;
+  width: 100%;
+}
+
+.tiptap code {
+  font-family: 'Courier New', Courier, monospace;
+  background-color: #000;
+  padding: 2px 4px;
+  border-radius: 4px;
+  color: #fff;
+}
+
+.tiptap ol {
+  list-style-type: decimal;
+  padding-left: 20px;
+  color: #333;
+}
+
+.tiptap ul {
+  list-style-type: disc;
+  padding-left: 20px;
+  color: #333;
+}
+
+.tiptap li {
+  margin-bottom: 10px;
+}
+
+.tiptap p {
+  display: inline-block;
+  width: 100%;
+  text-justify: inter-word;
+}
+
+.tiptap a {
+  color: #007BFF;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.tiptap a:hover {
+  color: #0056b3;
+  text-decoration: underline;
+}
+
+blockquote {
+  padding: 5px 10px;
+  margin: 5px 0;
+  border-left: 5px solid #ccc;
+  background-color: #f9f9f9;
+  font-style: italic;
+  color: #666;
 }
 
 .custom-file-input input::file-selector-button {

@@ -12,8 +12,8 @@ using SchoolService.Infrastructure.Persistence;
 namespace SchoolService.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(CommandContext))]
-    [Migration("20240606163115_InitialMigration")]
-    partial class InitialMigration
+    [Migration("20240608155655_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -346,6 +346,43 @@ namespace SchoolService.Infrastructure.Persistence.Migrations
                     b.ToTable("SchoolProfiles", "public");
                 });
 
+            modelBuilder.Entity("SchoolService.Domain.Entities.StudyPeriod", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateOnly?>("EndDate")
+                        .HasColumnType("date");
+
+                    b.Property<bool>("IsArchived")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTime?>("LastArchivedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime?>("LastUpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("SchoolId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateOnly?>("StartDate")
+                        .HasColumnType("date");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SchoolId");
+
+                    b.ToTable("StudyPeriods", "public");
+                });
+
             modelBuilder.Entity("SchoolService.Domain.Entities.Group", b =>
                 {
                     b.HasOne("SchoolService.Domain.Entities.SchoolProfile", "ClassTeacher")
@@ -407,6 +444,17 @@ namespace SchoolService.Infrastructure.Persistence.Migrations
                     b.Navigation("School");
                 });
 
+            modelBuilder.Entity("SchoolService.Domain.Entities.StudyPeriod", b =>
+                {
+                    b.HasOne("SchoolService.Domain.Entities.School", "School")
+                        .WithMany("StudyPeriods")
+                        .HasForeignKey("SchoolId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("School");
+                });
+
             modelBuilder.Entity("SchoolService.Domain.Entities.Group", b =>
                 {
                     b.Navigation("Students");
@@ -418,6 +466,8 @@ namespace SchoolService.Infrastructure.Persistence.Migrations
 
                     b.Navigation("JoiningRequest")
                         .IsRequired();
+
+                    b.Navigation("StudyPeriods");
 
                     b.Navigation("Teachers");
                 });

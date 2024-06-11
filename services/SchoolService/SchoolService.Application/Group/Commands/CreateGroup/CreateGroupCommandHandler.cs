@@ -41,6 +41,7 @@ public class CreateGroupCommandHandler : IRequestHandler<CreateGroupCommand, Eit
         catch (Exception exception)
         {
             Log.Error(exception, "An error occurred while creating the group with values {@Request}.", request);
+            throw;
         }
 
         var entity = _mapper.Map<Domain.Entities.Group>(request);
@@ -55,7 +56,7 @@ public class CreateGroupCommandHandler : IRequestHandler<CreateGroupCommand, Eit
         catch (Exception exception)
         {
             Log.Error(exception, "An error occurred while creating the group with values {@Request}.", request);
-            return new InvalidDatabaseOperationError("joining request");
+            return new InvalidDatabaseOperationError("group");
         }
 
         var groupModelResponse = _mapper.Map<GroupModelResponse>(entity);

@@ -1,14 +1,14 @@
 'use client';
 
-import { PropsWithChildren } from 'react';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import ScrollToTop from 'react-scroll-to-top';
-import { SessionProvider } from 'next-auth/react';
 import { UserSidebar } from '@/features/user';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { SessionProvider } from 'next-auth/react';
+import { PropsWithChildren } from 'react';
+import ScrollToTop from 'react-scroll-to-top';
+
+const queryClient = new QueryClient();
 
 export default function AdminLayout({ children }: PropsWithChildren) {
-  const queryClient = new QueryClient();
-
   return (
     <QueryClientProvider client={queryClient}>
       <SessionProvider>

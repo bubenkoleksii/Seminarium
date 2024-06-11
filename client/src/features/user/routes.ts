@@ -22,6 +22,21 @@ export const group = {
   createStudentInvitation: '/group/studentInvitation',
 };
 
+export const studyPeriods = {
+  getAll: '/studyPeriod/getAll',
+  create: '/studyPeriod/create',
+  update: '/studyPeriod/update',
+  remove: (id: string) => `/studyPeriod/delete/${id}`,
+};
+
+export const groupNotice = {
+  getAll: (query: string | null | undefined) => `/groupNotice/get/?${query}`,
+  create: '/groupNotice/create',
+  update: '/groupNotice/update',
+  changeCrucial: '/groupNotice/crucial',
+  remove: (id: string) => `/groupNotice/delete/${id}`,
+};
+
 export const groupClientPaths = {
   create: '/u/groups/create',
 };

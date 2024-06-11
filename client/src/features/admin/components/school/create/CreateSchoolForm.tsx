@@ -1,24 +1,24 @@
 'use client';
 
-import styles from './CreateSchoolForm.module.scss';
-import { FC } from 'react';
+import { Loader } from '@/components/loader';
+import { create } from '@/features/admin/api/schoolApi';
+import { AdminClientPaths, adminMutations } from '@/features/admin/constants';
+import { school as schoolRoutes } from '@/features/admin/routes';
 import type {
   CreateSchoolRequest,
   CreateSchoolRequestWithId,
 } from '@/features/admin/types/schoolTypes';
-import { AdminClientPaths, adminMutations } from '@/features/admin/constants';
-import { useLocale, useTranslations } from 'next-intl';
-import { useRouter } from 'next/navigation';
 import { school as schoolConstants } from '@/shared/constants';
-import { school as schoolRoutes } from '@/features/admin/routes';
-import { useIsMutating, useMutation } from '@tanstack/react-query';
-import { Formik, Form, Field, ErrorMessage } from 'formik';
-import * as Yup from 'yup';
-import { Loader } from '@/components/loader';
-import { create } from '@/features/admin/api/schoolApi';
-import { toast } from 'react-hot-toast';
 import { replaceEmptyStringsWithNull } from '@/shared/helpers';
 import { useAuthRedirectByRole } from '@/shared/hooks';
+import { useIsMutating, useMutation } from '@tanstack/react-query';
+import { ErrorMessage, Field, Form, Formik } from 'formik';
+import { useLocale, useTranslations } from 'next-intl';
+import { useRouter } from 'next/navigation';
+import { FC } from 'react';
+import { toast } from 'react-hot-toast';
+import * as Yup from 'yup';
+import styles from './CreateSchoolForm.module.scss';
 
 type CreateSchoolFormProps = {
   joiningRequestId: string;

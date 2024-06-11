@@ -41,7 +41,7 @@ public class UpdateGroupCommandHandler : IRequestHandler<UpdateGroupCommand, Eit
         {
             Log.Error(exception, "An error occurred while updating the group with values {@Request}.", request);
 
-            return new InvalidDatabaseOperationError("school");
+            return new InvalidDatabaseOperationError("group");
         }
 
         var groupModelResponse = _mapper.Map<GroupModelResponse>(group);

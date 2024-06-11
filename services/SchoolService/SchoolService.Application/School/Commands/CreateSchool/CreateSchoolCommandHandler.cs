@@ -57,7 +57,7 @@ public class CreateSchoolCommandHandler : IRequestHandler<CreateSchoolCommand, E
         var encodedInvitationCode = Uri.EscapeDataString(invitationCode);
 
         var clientUrl = _configuration["ClientUrl"]!;
-        var link = $"{clientUrl}uk/school-profile/create/school_admin/{encodedInvitationCode}";
+        var link = $"{clientUrl}uk/u/school-profile/create/school_admin/{encodedInvitationCode}";
 
         try
         {

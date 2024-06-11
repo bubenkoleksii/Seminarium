@@ -242,6 +242,7 @@ const SchoolProfileDetails: FC<SchoolProfileDetailsProps> = ({ id }) => {
               open={copyParentInvitationOpenModal}
               label={t('labelParentModal')}
               text={invitationParentCode}
+              isNeedQrCode={true}
               onClose={() => setCopyParentInvitationOpenModal(false)}
             />
           )}
@@ -295,4 +296,3 @@ const SchoolProfileDetails: FC<SchoolProfileDetailsProps> = ({ id }) => {
 };
 
 export { SchoolProfileDetails };
-

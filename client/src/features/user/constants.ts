@@ -2,8 +2,10 @@ export const enum CurrentTab {
   Profile = 'profile',
   School = 'school',
   Group = 'group',
+  GroupNotices = 'groupNotices',
   Children = 'children',
   SchoolProfiles = 'schoolProfiles',
+  StudyPeriods = 'studyPeriods',
 }
 
 export const userQueries = {
@@ -11,6 +13,8 @@ export const userQueries = {
   getAllSchoolProfilesBySchool: 'getAllSchoolProfilesBySchool',
   getGroups: 'getAllGroups',
   getOneGroup: 'getOneGroup',
+  getGroupNotices: 'getGroupNotices',
+  getStudyPeriods: 'getStudyPeriods',
   options: {
     retry: 4,
   },
@@ -21,6 +25,13 @@ export const userMutations = {
   createGroup: 'createGroup',
   updateGroup: 'updateGroup',
   deleteGroup: 'deleteGroup',
+  createGroupNotice: 'createGroupNotice',
+  updateGroupNotice: 'updateGroupNotice',
+  deleteGroupNotice: 'deleteGroupNotice',
+  changeCrucial: 'changeCrucial',
+  createStudyPeriod: 'createStudyPeriod',
+  deleteStudyPeriod: 'deleteStudyPeriod',
+  updateStudyPeriod: 'updateStudyPeriod',
   updateGroupImage: 'updateGroupImage',
   deleteGroupImage: 'deleteGroupImage',
   deleteProfile: 'deleteProfile',

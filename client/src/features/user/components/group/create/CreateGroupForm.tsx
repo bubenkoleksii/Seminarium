@@ -1,18 +1,18 @@
 'use client';
 
-import styles from './CreateGroupForm.module.scss';
-import { FC } from 'react';
-import { Formik, Form, Field, ErrorMessage } from 'formik';
-import * as Yup from 'yup';
-import { toast } from 'react-hot-toast';
-import { useAuthRedirectByRole } from '@/shared/hooks';
 import { Loader } from '@/components/loader';
-import { useIsMutating, useMutation } from '@tanstack/react-query';
-import { useLocale, useTranslations } from 'next-intl';
 import { useProfiles } from '@/features/user';
-import { useRouter } from 'next/navigation';
 import { create } from '@/features/user/api/groupsApi';
 import { userMutations } from '@/features/user/constants';
+import { useAuthRedirectByRole } from '@/shared/hooks';
+import { useIsMutating, useMutation } from '@tanstack/react-query';
+import { ErrorMessage, Field, Form, Formik } from 'formik';
+import { useLocale, useTranslations } from 'next-intl';
+import { useRouter } from 'next/navigation';
+import { FC } from 'react';
+import { toast } from 'react-hot-toast';
+import * as Yup from 'yup';
+import styles from './CreateGroupForm.module.scss';
 
 const CreateGroupForm: FC = () => {
   const activeLocale = useLocale();
@@ -39,7 +39,7 @@ const CreateGroupForm: FC = () => {
 
         const errorMessages = {
           409: t('labels.alreadyExists'),
-          400: t('labels.invitationValidation'),
+          400: t('validation'),
           401: t('labels.unauthorized'),
           403: t('labels.forbidden'),
         };

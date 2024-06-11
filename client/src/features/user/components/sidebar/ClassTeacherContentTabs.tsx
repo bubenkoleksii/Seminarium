@@ -3,7 +3,15 @@ import { CurrentTab } from '@/features/user/constants';
 import { useUserStore } from '@/features/user/store/userStore';
 import { SchoolProfileResponse } from '@/features/user/types/schoolProfileTypes';
 import { Tooltip } from 'flowbite-react';
-import { ChevronsLeft, Contact, Home, School, User, Users } from 'lucide-react';
+import {
+  ChevronsLeft,
+  Contact,
+  Home,
+  Megaphone,
+  School,
+  User,
+  Users,
+} from 'lucide-react';
 import { useLocale, useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { FC } from 'react';
@@ -65,6 +73,20 @@ const ClassTeacherContentTabs: FC<ClassTeacherContentTabsProps> = ({
         </Link>
       </Tooltip>
 
+      <Tooltip content={t('groupNotices')} placement="right" style="light">
+        <Link
+          href={`/${activeLocale}/u/group-notices/${activeProfile.classTeacherGroupId || activeProfile.classTeacherGroup?.id}`}
+          className={`flex h-[50px] w-[50px] items-center justify-center 
+         ${currentTab === CurrentTab.GroupNotices ? `bg-purple-950` : `bg-gray-50 hover:bg-gray-200`} 
+         text-gray-800 transition duration-300`}
+        >
+          <Megaphone
+            color={`${currentTab === CurrentTab.GroupNotices ? `#f9fafb` : `#3B0764`}`}
+            size={20}
+          />
+        </Link>
+      </Tooltip>
+
       <Tooltip content={t('schoolProfiles')} placement="right" style="light">
         <Link
           href={`/${activeLocale}/u/school-profile/all/`}
@@ -103,4 +125,3 @@ const ClassTeacherContentTabs: FC<ClassTeacherContentTabsProps> = ({
 };
 
 export { ClassTeacherContentTabs };
-

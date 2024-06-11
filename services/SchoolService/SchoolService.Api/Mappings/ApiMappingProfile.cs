@@ -13,6 +13,10 @@ public class ApiMappingProfile : Profile
         ConfigureSchoolProfileMappings();
 
         ConfigureGroupMappings();
+
+        ConfigureStudyPeriodMappings();
+
+        ConfigureGroupNoticeMappings();
     }
 
     private void ConfigureSchoolMapping()
@@ -70,6 +74,28 @@ public class ApiMappingProfile : Profile
         CreateMap<GetAllGroupsModelResponse, GetAllGroupsResponse>();
 
         CreateMap<OneGroupModelResponse, OneGroupResponse>();
+    }
+
+    private void ConfigureStudyPeriodMappings()
+    {
+        CreateMap<CreateStudyPeriodRequest, CreateStudyPeriodCommand>();
+
+        CreateMap<UpdateStudyPeriodRequest, UpdateStudyPeriodCommand>();
+
+        CreateMap<StudyPeriodModelResponse, StudyPeriodResponse>();
+    }
+
+    private void ConfigureGroupNoticeMappings()
+    {
+        CreateMap<CreateGroupNoticeRequest, CreateGroupNoticeCommand>();
+
+        CreateMap<UpdateGroupNoticeRequest, UpdateGroupNoticeCommand>();
+
+        CreateMap<GroupNoticeModelResponse, GroupNoticeResponse>();
+
+        CreateMap<GetAllGroupNoticesParams, GetAllGroupNoticesQuery>();
+
+        CreateMap<GetAllGroupNoticesModelResponse, GetAllGroupNoticesResponse>();
     }
 
     private void ConfigureGlobalMappings()

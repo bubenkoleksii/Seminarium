@@ -21,6 +21,7 @@ public class GroupConfiguration : IEntityTypeConfiguration<Group>
         AddSchoolRelationship(builder);
         AddClassTeacherRelationship(builder);
         AddStudentsRelationship(builder);
+        AddNoticesRelationship(builder);
     }
 
     private static void AddSchoolRelationship(EntityTypeBuilder<Group> builder)
@@ -44,6 +45,13 @@ public class GroupConfiguration : IEntityTypeConfiguration<Group>
     {
         builder.HasMany(group => group.Students)
             .WithOne(profile => profile.Group)
+            .OnDelete(DeleteBehavior.Cascade);
+    }
+
+    private static void AddNoticesRelationship(EntityTypeBuilder<Group> builder)
+    {
+        builder.HasMany(group => group.Notices)
+            .WithOne(notice => notice.Group)
             .OnDelete(DeleteBehavior.Cascade);
     }
 }

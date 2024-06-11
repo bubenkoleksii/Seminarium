@@ -69,6 +69,49 @@ namespace SchoolService.Infrastructure.Persistence.Migrations
                     b.ToTable("Groups", "public");
                 });
 
+            modelBuilder.Entity("SchoolService.Domain.Entities.GroupNotice", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid?>("AuthorId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("GroupId")
+                        .HasColumnType("uuid");
+
+                    b.Property<bool>("IsArchived")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("IsCrucial")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTime?>("LastArchivedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime?>("LastUpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Text")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AuthorId");
+
+                    b.HasIndex("GroupId");
+
+                    b.ToTable("GroupNotices", "public");
+                });
+
             modelBuilder.Entity("SchoolService.Domain.Entities.JoiningRequest", b =>
                 {
                     b.Property<Guid>("Id")
@@ -343,6 +386,40 @@ namespace SchoolService.Infrastructure.Persistence.Migrations
                     b.ToTable("SchoolProfiles", "public");
                 });
 
+            modelBuilder.Entity("SchoolService.Domain.Entities.StudyPeriod", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateOnly>("EndDate")
+                        .HasColumnType("date");
+
+                    b.Property<bool>("IsArchived")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTime?>("LastArchivedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime?>("LastUpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("SchoolId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateOnly>("StartDate")
+                        .HasColumnType("date");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SchoolId");
+
+                    b.ToTable("StudyPeriods", "public");
+                });
+
             modelBuilder.Entity("SchoolService.Domain.Entities.Group", b =>
                 {
                     b.HasOne("SchoolService.Domain.Entities.SchoolProfile", "ClassTeacher")
@@ -359,6 +436,24 @@ namespace SchoolService.Infrastructure.Persistence.Migrations
                     b.Navigation("ClassTeacher");
 
                     b.Navigation("School");
+                });
+
+            modelBuilder.Entity("SchoolService.Domain.Entities.GroupNotice", b =>
+                {
+                    b.HasOne("SchoolService.Domain.Entities.SchoolProfile", "Author")
+                        .WithMany("Notices")
+                        .HasForeignKey("AuthorId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.HasOne("SchoolService.Domain.Entities.Group", "Group")
+                        .WithMany("Notices")
+                        .HasForeignKey("GroupId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Author");
+
+                    b.Navigation("Group");
                 });
 
             modelBuilder.Entity("SchoolService.Domain.Entities.JoiningRequest", b =>
@@ -404,8 +499,21 @@ namespace SchoolService.Infrastructure.Persistence.Migrations
                     b.Navigation("School");
                 });
 
+            modelBuilder.Entity("SchoolService.Domain.Entities.StudyPeriod", b =>
+                {
+                    b.HasOne("SchoolService.Domain.Entities.School", "School")
+                        .WithMany("StudyPeriods")
+                        .HasForeignKey("SchoolId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("School");
+                });
+
             modelBuilder.Entity("SchoolService.Domain.Entities.Group", b =>
                 {
+                    b.Navigation("Notices");
+
                     b.Navigation("Students");
                 });
 
@@ -416,12 +524,16 @@ namespace SchoolService.Infrastructure.Persistence.Migrations
                     b.Navigation("JoiningRequest")
                         .IsRequired();
 
+                    b.Navigation("StudyPeriods");
+
                     b.Navigation("Teachers");
                 });
 
             modelBuilder.Entity("SchoolService.Domain.Entities.SchoolProfile", b =>
                 {
                     b.Navigation("ClassTeacherGroup");
+
+                    b.Navigation("Notices");
                 });
 #pragma warning restore 612, 618
         }

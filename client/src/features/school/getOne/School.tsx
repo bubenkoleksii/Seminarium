@@ -306,6 +306,7 @@ const School: FC<SchoolProps> = ({ id }) => {
               open={copyTeacherInvitationOpenModal}
               label={t('invitation.labelTeacherModal')}
               text={teacherInvitationCode}
+              isNeedQrCode={true}
               onClose={handleCloseCopyTeacherInvitationModal}
             />
           )}
@@ -334,6 +335,7 @@ const School: FC<SchoolProps> = ({ id }) => {
               open={copyInvitationOpenModal}
               text={invitationCode}
               label={t('invitation.labelModal')}
+              isNeedQrCode={true}
               onClose={handleCloseCopyInvitationModal}
             />
           )}
