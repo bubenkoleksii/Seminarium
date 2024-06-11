@@ -13,5 +13,9 @@ public record GroupNoticeResponse(
 
     Guid? AuthorId,
 
+    DateTime CreatedAt,
+
+    DateTime? LastUpdatedAt,
+
     SchoolProfileResponse? Author
 );

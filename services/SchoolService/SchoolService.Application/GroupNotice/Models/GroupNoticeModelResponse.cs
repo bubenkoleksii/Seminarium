@@ -1,17 +1,22 @@
 ﻿namespace SchoolService.Application.GroupNotice.Models;
 
-public record GroupNoticeModelResponse(
-    Guid Id,
+public class GroupNoticeModelResponse
+{
+    public Guid Id { get; set; }
 
-    string Title,
+    public DateTime CreatedAt { get; set; }
 
-    string? Text,
+    public DateTime? LastUpdatedAt { get; set; }
 
-    bool IsCrucial,
+    public required string Title { get; set; }
 
-    Guid GroupId,
+    public string? Text { get; set; }
 
-    Guid? AuthorId,
+    public bool IsCrucial { get; set; }
 
-    SchoolProfileModelResponse? Author
-);
+    public Guid GroupId { get; set; }
+
+    public Guid? AuthorId { get; set; }
+
+    public SchoolProfileModelResponse? Author { get; set; }
+}

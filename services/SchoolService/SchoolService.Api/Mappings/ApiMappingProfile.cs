@@ -91,7 +91,7 @@ public class ApiMappingProfile : Profile
 
         CreateMap<UpdateGroupNoticeRequest, UpdateStudyPeriodCommand>();
 
-        CreateMap<GroupNoticeModelResponse, GroupNoticeModelResponse>();
+        CreateMap<GroupNoticeModelResponse, GroupNoticeResponse>();
 
         CreateMap<GetAllGroupNoticesParams, GetAllGroupNoticesQuery>();
 

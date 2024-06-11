@@ -17,6 +17,8 @@ export type UpdateGroupNoticeRequest = {
 
 export interface GroupNoticeResponse {
   id: string;
+  createdAt: string;
+  lastUpdatedAt?: string;
   title: string;
   text?: string | null;
   isCrucial: boolean;

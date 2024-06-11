@@ -32,6 +32,7 @@ import {
   getOne,
   remove,
 } from '../../../api/groupsApi';
+import { GroupNoticeItem } from '../../group-notice/getAll/GroupNoticeItem';
 
 interface GroupProps {
   id: string;
@@ -336,9 +337,30 @@ const Group: FC<GroupProps> = ({ id }) => {
         </div>
       </div>
 
-      <h2 className="md:text mt-4 text-center text-sm font-bold lg:text-xl">
-        {t('lastNotice')}
-      </h2>
+      {data.lastNotice &&
+        <>
+          <h2 className="md:text mt-4 text-center text font-bold lg:text-xl">
+            {t('lastNotice')}
+          </h2>
+          <GroupNoticeItem
+            notice={data.lastNotice}
+            activeProfile={activeProfile}
+            groupId={data.id}
+          />
+        </>
+      }
+
+      <div className="mb-2 flex w-full flex-wrap justify-center gap-4 md:flex-nowrap">
+        <Button
+          onClick={() =>
+            replace(`/${activeLocale}/u/group-notices/${data.id}`)
+          }
+          gradientMonochrome="success"
+          size="lg"
+        >
+          <span className="text-white">{t('viewAllBtn')}</span>
+        </Button>
+      </div>
 
       <div className="mt-4 flex w-[100%] flex-col justify-center lg:flex-row">
         <GroupInfo group={data} />

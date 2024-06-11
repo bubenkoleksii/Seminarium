@@ -87,8 +87,20 @@ public class GetOneGroupQueryHandler : IRequestHandler<GetOneGroupQuery, Either<
             .ToList();
 
         var lastNotice = await _queryContext.GroupNotices
-            .OrderByDescending(n => n.CreatedAt)
-            .FirstOrDefaultAsync(n => n.GroupId == group.Id, cancellationToken: cancellationToken);
+               .Include(notice => notice.Author)
+               .OrderByDescending(n => n.CreatedAt)
+               .FirstOrDefaultAsync(n => n.GroupId == group.Id, cancellationToken: cancellationToken);
+        if (lastNotice != null && lastNotice.Author != null)
+        {
+            lastNotice.Author.Notices = null;
+
+            if (lastNotice.Author.Img is not null)
+            {
+                var image = _filesManager.GetFile(lastNotice.Author.Img);
+                lastNotice.Author.Img = image.IsRight ? null : ((FileSuccess)image).Url;
+            }
+        }
+
         var lastNoticeResponse = _mapper.Map<GroupNoticeModelResponse>(lastNotice);
 
         var groupResponse = _mapper.Map<OneGroupModelResponse>(group);

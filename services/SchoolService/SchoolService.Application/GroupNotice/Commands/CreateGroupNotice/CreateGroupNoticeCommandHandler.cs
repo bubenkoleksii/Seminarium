@@ -40,6 +40,7 @@ public class CreateGroupNoticeCommandHandler(ISchoolProfileManager schoolProfile
         }
 
         var noticeResponse = _mapper.Map<GroupNoticeModelResponse>(entity);
+        noticeResponse.Author = profile;
         return noticeResponse;
     }
 

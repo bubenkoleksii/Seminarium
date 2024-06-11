@@ -128,7 +128,7 @@ const CreateGroupNoticeForm: FC<CreateGroupNoticeFormProps> = ({ groupId }) => {
             <div>
               <span
                 onClick={() => {
-                  const url = `/${activeLocale}/u/group-notices`;
+                  const url = `/${activeLocale}/u/group-notices/${groupId}`;
 
                   replace(url);
                 }}

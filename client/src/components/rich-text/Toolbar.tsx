@@ -40,9 +40,11 @@ const Toolbar = ({ editor }: Props) => {
   const handleYoutubeModalOpen = () => {
     setYoutubeModalOpen(true);
   };
+
   const handleLinkModalOpen = () => {
     setLinkModalOpen(true);
   };
+
   const handleYoutubeModalClose = (confirmed: boolean, text: string) => {
     setYoutubeModalOpen(false);
 
@@ -83,11 +85,13 @@ const Toolbar = ({ editor }: Props) => {
       .run();
   };
 
+  const buttonClass = (isActive: boolean) =>
+    isActive ? 'rounded-lg bg-purple-950 p-2 text-white' : 'text-gray-800 p-2';
+
+  const iconColor = (isActive: boolean) => (isActive ? 'white' : '#333');
+
   return (
-    <div
-      className="flex w-full flex-wrap items-start justify-between gap-5 rounded-tl-md
-    rounded-tr-md border border-gray-700 px-4 py-3"
-    >
+    <div className="flex w-full flex-wrap items-start justify-between gap-5 rounded-tl-md rounded-tr-md border border-gray-200 px-4 py-3">
       <div className="flex w-full flex-wrap items-center justify-start gap-5 lg:w-8/12">
         <div>
           <input
@@ -105,14 +109,10 @@ const Toolbar = ({ editor }: Props) => {
             e.preventDefault();
             editor.chain().focus().toggleBold().run();
           }}
-          className={
-            editor.isActive('bold')
-              ? 'rounded-lg bg-purple-950 p-2'
-              : 'text-sky-400'
-          }
+          className={buttonClass(editor.isActive('bold'))}
         >
           <Bold
-            color={editor.isActive('bold') ? 'white' : '#333'}
+            color={iconColor(editor.isActive('bold'))}
             className="h-5 w-5"
           />
         </button>
@@ -121,14 +121,10 @@ const Toolbar = ({ editor }: Props) => {
             e.preventDefault();
             editor.chain().focus().toggleItalic().run();
           }}
-          className={
-            editor.isActive('italic')
-              ? 'rounded-lg bg-purple-950 p-2'
-              : 'text-sky-400'
-          }
+          className={buttonClass(editor.isActive('italic'))}
         >
           <Italic
-            color={editor.isActive('italic') ? 'white' : '#333'}
+            color={iconColor(editor.isActive('italic'))}
             className="h-5 w-5"
           />
         </button>
@@ -137,14 +133,10 @@ const Toolbar = ({ editor }: Props) => {
             e.preventDefault();
             editor.chain().focus().toggleUnderline().run();
           }}
-          className={
-            editor.isActive('underline')
-              ? 'rounded-lg bg-purple-950 p-2'
-              : 'text-sky-400'
-          }
+          className={buttonClass(editor.isActive('underline'))}
         >
           <Underline
-            color={editor.isActive('underline') ? 'white' : '#333'}
+            color={iconColor(editor.isActive('underline'))}
             className="h-5 w-5"
           />
         </button>
@@ -153,14 +145,10 @@ const Toolbar = ({ editor }: Props) => {
             e.preventDefault();
             editor.chain().focus().toggleStrike().run();
           }}
-          className={
-            editor.isActive('strike')
-              ? 'rounded-lg bg-purple-950 p-2'
-              : 'text-sky-400'
-          }
+          className={buttonClass(editor.isActive('strike'))}
         >
           <Strikethrough
-            color={editor.isActive('strike') ? 'white' : '#333'}
+            color={iconColor(editor.isActive('strike'))}
             className="h-5 w-5"
           />
         </button>
@@ -169,14 +157,10 @@ const Toolbar = ({ editor }: Props) => {
             e.preventDefault();
             editor.chain().focus().toggleHeading({ level: 2 }).run();
           }}
-          className={
-            editor.isActive('heading', { level: 2 })
-              ? 'rounded-lg bg-purple-950 p-2'
-              : 'text-sky-400'
-          }
+          className={buttonClass(editor.isActive('heading', { level: 2 }))}
         >
           <Heading2
-            color={editor.isActive('heading', { level: 2 }) ? 'white' : '#333'}
+            color={iconColor(editor.isActive('heading', { level: 2 }))}
             className="h-5 w-5"
           />
         </button>
@@ -185,14 +169,10 @@ const Toolbar = ({ editor }: Props) => {
             e.preventDefault();
             editor.chain().focus().toggleBulletList().run();
           }}
-          className={
-            editor.isActive('bulletList')
-              ? 'rounded-lg bg-purple-950 p-2'
-              : 'text-sky-400'
-          }
+          className={buttonClass(editor.isActive('bulletList'))}
         >
           <List
-            color={editor.isActive('bulletList') ? 'white' : '#333'}
+            color={iconColor(editor.isActive('bulletList'))}
             className="h-5 w-5"
           />
         </button>
@@ -201,14 +181,10 @@ const Toolbar = ({ editor }: Props) => {
             e.preventDefault();
             editor.chain().focus().toggleOrderedList().run();
           }}
-          className={
-            editor.isActive('orderedList')
-              ? 'rounded-lg bg-purple-950 p-2'
-              : 'text-sky-400'
-          }
+          className={buttonClass(editor.isActive('orderedList'))}
         >
           <ListOrdered
-            color={editor.isActive('orderedList') ? 'white' : '#333'}
+            color={iconColor(editor.isActive('orderedList'))}
             className="h-5 w-5"
           />
         </button>
@@ -217,14 +193,10 @@ const Toolbar = ({ editor }: Props) => {
             e.preventDefault();
             editor.chain().focus().toggleBlockquote().run();
           }}
-          className={
-            editor.isActive('blockquote')
-              ? 'rounded-lg bg-purple-950 p-2'
-              : 'text-sky-400'
-          }
+          className={buttonClass(editor.isActive('blockquote'))}
         >
           <Quote
-            color={editor.isActive('blockquote') ? 'white' : '#333'}
+            color={iconColor(editor.isActive('blockquote'))}
             className="h-5 w-5"
           />
         </button>
@@ -233,14 +205,10 @@ const Toolbar = ({ editor }: Props) => {
             e.preventDefault();
             editor.chain().focus().setCode().run();
           }}
-          className={
-            editor.isActive('code')
-              ? 'rounded-lg bg-purple-950 p-2'
-              : 'text-sky-400'
-          }
+          className={buttonClass(editor.isActive('code'))}
         >
           <Code
-            color={editor.isActive('code') ? 'white' : '#333'}
+            color={iconColor(editor.isActive('code'))}
             className="h-5 w-5"
           />
         </button>
@@ -249,14 +217,10 @@ const Toolbar = ({ editor }: Props) => {
             e.preventDefault();
             editor.chain().focus().setTextAlign('left').run();
           }}
-          className={
-            editor.isActive({ textAlign: 'left' })
-              ? 'rounded-lg bg-purple-950 p-2'
-              : 'text-sky-400'
-          }
+          className={buttonClass(editor.isActive({ textAlign: 'left' }))}
         >
           <AlignLeft
-            color={editor.isActive({ textAlign: 'left' }) ? 'white' : '#333'}
+            color={iconColor(editor.isActive({ textAlign: 'left' }))}
             className="h-5 w-5"
           />
         </button>
@@ -265,14 +229,10 @@ const Toolbar = ({ editor }: Props) => {
             e.preventDefault();
             editor.chain().focus().setTextAlign('center').run();
           }}
-          className={
-            editor.isActive({ textAlign: 'center' })
-              ? 'rounded-lg bg-purple-950 p-2'
-              : 'text-sky-400'
-          }
+          className={buttonClass(editor.isActive({ textAlign: 'center' }))}
         >
           <AlignCenter
-            color={editor.isActive({ textAlign: 'center' }) ? 'white' : '#333'}
+            color={iconColor(editor.isActive({ textAlign: 'center' }))}
             className="h-5 w-5"
           />
         </button>
@@ -281,14 +241,10 @@ const Toolbar = ({ editor }: Props) => {
             e.preventDefault();
             editor.chain().focus().setTextAlign('right').run();
           }}
-          className={
-            editor.isActive({ textAlign: 'right' })
-              ? 'rounded-lg bg-purple-950 p-2'
-              : 'text-sky-400'
-          }
+          className={buttonClass(editor.isActive({ textAlign: 'right' }))}
         >
           <AlignRight
-            color={editor.isActive({ textAlign: 'right' }) ? 'white' : '#333'}
+            color={iconColor(editor.isActive({ textAlign: 'right' }))}
             className="h-5 w-5"
           />
         </button>
@@ -305,14 +261,10 @@ const Toolbar = ({ editor }: Props) => {
             e.preventDefault();
             handleLinkModalOpen();
           }}
-          className={
-            editor.isActive('link')
-              ? 'rounded-lg bg-purple-950 p-2'
-              : 'text-sky-400'
-          }
+          className={buttonClass(editor.isActive('link'))}
         >
           <Link
-            color={editor.isActive('link') ? 'white' : '#333'}
+            color={iconColor(editor.isActive('link'))}
             className="h-5 w-5"
           />
         </button>
@@ -328,14 +280,10 @@ const Toolbar = ({ editor }: Props) => {
             e.preventDefault();
             handleYoutubeModalOpen();
           }}
-          className={
-            editor.isActive('youtube')
-              ? 'rounded-lg bg-purple-950 p-2'
-              : 'text-sky-400'
-          }
+          className={buttonClass(editor.isActive('youtube'))}
         >
           <Youtube
-            color={editor.isActive('youtube') ? 'white' : '#333'}
+            color={iconColor(editor.isActive('youtube'))}
             className="h-5 w-5"
           />
         </button>
@@ -347,14 +295,10 @@ const Toolbar = ({ editor }: Props) => {
             e.preventDefault();
             editor.chain().focus().undo().run();
           }}
-          className={
-            editor.isActive('undo')
-              ? 'rounded-lg bg-purple-950 p-2'
-              : 'text-sky-400'
-          }
+          className={buttonClass(editor.isActive('undo'))}
         >
           <Undo
-            color={editor.isActive('undo') ? 'white' : '#333'}
+            color={iconColor(editor.isActive('undo'))}
             className="h-5 w-5"
           />
         </button>
@@ -363,14 +307,10 @@ const Toolbar = ({ editor }: Props) => {
             e.preventDefault();
             editor.chain().focus().redo().run();
           }}
-          className={
-            editor.isActive('redo')
-              ? 'rounded-lg bg-purple-950 p-2'
-              : 'text-sky-400'
-          }
+          className={buttonClass(editor.isActive('redo'))}
         >
           <Redo
-            color={editor.isActive('redo') ? 'white' : '#333'}
+            color={iconColor(editor.isActive('redo'))}
             className="h-5 w-5"
           />
         </button>

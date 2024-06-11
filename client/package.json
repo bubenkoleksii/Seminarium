@@ -33,6 +33,7 @@
     "flowbite-react": "^0.9.0",
     "flowbite-svelte": "^0.46.1",
     "formik": "^2.4.5",
+    "html-react-parser": "^5.1.10",
     "husky": "^9.0.11",
     "iconv-lite": "^0.6.3",
     "immer": "^10.1.1",

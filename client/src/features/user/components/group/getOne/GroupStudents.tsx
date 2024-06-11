@@ -14,7 +14,7 @@ const GroupStudents: FC<GroupStudentsProps> = ({ students }) => {
 
   if (!students || students.length === 0) {
     return (
-      <div className="relative mt-2">
+      <div className="relative">
         <div className="flex flex-col flex-wrap items-center">
           <p>{g('studentsNotFound')}</p>
         </div>

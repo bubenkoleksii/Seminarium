@@ -3,6 +3,7 @@
 public class GroupNoticeController(IMapper mapper) : BaseController
 {
     [Authorize(Roles = Constants.UserRole)]
+    [HttpGet("[action]/")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GetAllGroupNoticesResponse))]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -15,6 +16,8 @@ public class GroupNoticeController(IMapper mapper) : BaseController
             return ErrorActionResultHandler.Handle(new InvalidError("user"));
 
         var query = mapper.Map<GetAllGroupNoticesQuery>(filterParams);
+        query.UserId = (Guid)userId;
+
         var result = await Mediator.Send(query);
 
         return result.Match(
@@ -45,7 +48,7 @@ public class GroupNoticeController(IMapper mapper) : BaseController
             Left: modelResponse => CreatedAtAction(nameof(Create), mapper.Map<GroupNoticeResponse>(modelResponse)),
             Right: ErrorActionResultHandler.Handle
         );
-    }decimal 
+    }
 
     [Authorize(Roles = Constants.UserRole)]
     [HttpPut("[action]/")]

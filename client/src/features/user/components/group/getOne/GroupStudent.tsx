@@ -1,12 +1,12 @@
-import { FC } from 'react';
-import { SchoolProfileResponse } from '@/features/user/types/schoolProfileTypes';
-import { useLocale, useTranslations } from 'next-intl';
-import { getColorByStatus, getDefaultProfileImgByType } from '@/shared/helpers';
 import { CustomImage } from '@/components/custom-image';
-import { Button } from 'flowbite-react';
-import { useSchoolProfilesStore } from '@/features/user';
 import { DateOnly } from '@/components/date-time';
+import { useSchoolProfilesStore } from '@/features/user';
+import { SchoolProfileResponse } from '@/features/user/types/schoolProfileTypes';
+import { getColorByStatus, getDefaultProfileImgByType } from '@/shared/helpers';
+import { Button } from 'flowbite-react';
+import { useLocale, useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
+import { FC } from 'react';
 
 type GroupStudentProps = {
   student: SchoolProfileResponse;
@@ -41,6 +41,9 @@ const GroupStudent: FC<GroupStudentProps> = ({ student }) => {
       ) : (
         <span>&nbsp;</span>
       )}
+      <p className="mt-2 text-xs font-medium text-gray-600">
+        {t(`item.studentIsIndividually`)}: {student.studentIsIndividually ? `${t('yes')}` : `${t('no')}`}
+      </p>
       <p className="mt-2 text-sm font-semibold text-gray-600">
         {t(`item.studentHealthGroup`)}:
         {student.studentHealthGroup ? (
@@ -82,3 +85,4 @@ const GroupStudent: FC<GroupStudentProps> = ({ student }) => {
 };
 
 export { GroupStudent };
+

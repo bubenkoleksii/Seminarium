@@ -2,6 +2,7 @@ export const enum CurrentTab {
   Profile = 'profile',
   School = 'school',
   Group = 'group',
+  GroupNotices = 'groupNotices',
   Children = 'children',
   SchoolProfiles = 'schoolProfiles',
 }
@@ -11,6 +12,7 @@ export const userQueries = {
   getAllSchoolProfilesBySchool: 'getAllSchoolProfilesBySchool',
   getGroups: 'getAllGroups',
   getOneGroup: 'getOneGroup',
+  getGroupNotices: 'getGroupNotices',
   options: {
     retry: 4,
   },

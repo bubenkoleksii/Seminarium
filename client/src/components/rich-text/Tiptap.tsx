@@ -65,7 +65,7 @@ const Tiptap = ({ onChange, content, limit }: any) => {
 
   return (
     <div
-      className="w-full px-4"
+      className="w-full"
       style={{ wordWrap: 'break-word', overflowWrap: 'break-word' }}
     >
       <Toolbar editor={editor} />

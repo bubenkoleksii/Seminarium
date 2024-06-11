@@ -6,7 +6,7 @@ public class GetAllGroupNoticesQuery : IRequest<Either<GetAllGroupNoticesModelRe
 
     public Guid GroupId { get; set; }
 
-    public bool MyOnly { get; set; }
+    public bool? MyOnly { get; set; }
 
     public string? Search { get; set; }
 

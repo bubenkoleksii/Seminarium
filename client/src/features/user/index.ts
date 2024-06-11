@@ -3,6 +3,7 @@ export { UserProfile } from './components/UserProfile';
 export { UserSidebar } from './components/UserSidebar';
 export { Children } from './components/children/Children';
 export { CreateGroupNoticeForm } from './components/group-notice/create/CreateGroupNoticeForm';
+export { GetAllGroupNotices } from './components/group-notice/getAll/GetAllGroupNotices';
 export { CreateGroupForm } from './components/group/create/CreateGroupForm';
 export { Groups } from './components/group/getAll/Groups';
 export { Group } from './components/group/getOne/Group';

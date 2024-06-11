@@ -3,9 +3,9 @@
 public record GetAllGroupNoticesParams(
     Guid GroupId,
 
-    bool MyOnly,
+    bool? MyOnly,
 
-    string Search,
+    string? Search,
 
     uint Skip,
 

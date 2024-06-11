@@ -1,6 +1,6 @@
 ﻿namespace SchoolService.Application.GroupNotice.Queries.GetAllGroupNotices;
 
-public class GetAllGroupNoticesQueryHandler(ISchoolProfileManager schoolProfileManager, IQueryContext queryContext, IMapper mapper)
+public class GetAllGroupNoticesQueryHandler(ISchoolProfileManager schoolProfileManager, IQueryContext queryContext, IMapper mapper, IFilesManager filesManager)
     : IRequestHandler<GetAllGroupNoticesQuery, Either<GetAllGroupNoticesModelResponse, Error>>
 {
     private const int DefaultTake = 15;
@@ -11,13 +11,16 @@ public class GetAllGroupNoticesQueryHandler(ISchoolProfileManager schoolProfileM
 
     private readonly IMapper _mapper = mapper;
 
+    private readonly IFilesManager _filesManager = filesManager;
+
     public async Task<Either<GetAllGroupNoticesModelResponse, Error>> Handle(GetAllGroupNoticesQuery request, CancellationToken cancellationToken)
     {
         var profile = await _schoolProfileManager.GetActiveProfile(request.UserId);
         if (profile == null)
             return new InvalidError("school_profile");
 
-        var group = await _queryContext.Groups.FindAsync(request.GroupId, CancellationToken.None);
+        var group = await _queryContext.Groups
+            .FindAsync(request.GroupId, CancellationToken.None);
         if (group is null)
             return new InvalidError("group_id");
 
@@ -26,8 +29,19 @@ public class GetAllGroupNoticesQueryHandler(ISchoolProfileManager schoolProfileM
             return (Error)validationResult;
 
         var lastNotice = await _queryContext.GroupNotices
+            .Include(notice => notice.Author)
             .OrderByDescending(n => n.CreatedAt)
             .FirstOrDefaultAsync(n => n.GroupId == group.Id, cancellationToken: cancellationToken);
+        if (lastNotice != null && lastNotice.Author != null)
+        {
+            lastNotice.Author.Notices = null;
+
+            if (lastNotice.Author.Img is not null)
+            {
+                var image = _filesManager.GetFile(lastNotice.Author.Img);
+                lastNotice.Author.Img = image.IsRight ? null : ((FileSuccess)image).Url;
+            }
+        }
 
         var lastNoticeResponse = _mapper.Map<GroupNoticeModelResponse?>(lastNotice);
 
@@ -39,7 +53,7 @@ public class GetAllGroupNoticesQueryHandler(ISchoolProfileManager schoolProfileM
         if (lastNoticeResponse != null)
             dbQuery = dbQuery.Where(n => n.Id != lastNoticeResponse.Id);
 
-        if (request.MyOnly)
+        if (request.MyOnly.HasValue && request.MyOnly.Value)
             dbQuery = dbQuery.Where(notice => notice.AuthorId == profile.Id);
 
         if (!string.IsNullOrEmpty(request.Search))
@@ -53,22 +67,43 @@ public class GetAllGroupNoticesQueryHandler(ISchoolProfileManager schoolProfileM
         var take = request.Take ?? DefaultTake;
 
         var entities = await dbQuery
+            .Include(notice => notice.Author)
             .OrderBy(n => n.IsCrucial)
             .ThenByDescending(n => n.CreatedAt)
             .Skip(request.Skip)
             .Take(take)
             .ToListAsync(cancellationToken: cancellationToken);
 
+        entities = entities.Select(entity =>
+        {
+            if (entity.Author != null)
+            {
+                entity.Author.Notices = null;
+
+                if (entity.Author.Img is not null)
+                {
+                    var image = _filesManager.GetFile(entity.Author.Img);
+                    entity.Author.Img = image.IsRight ? null : ((FileSuccess)image).Url;
+                }
+            }
+
+            return entity;
+        }).ToList();
+
         var entitiesResponse = _mapper.Map<IEnumerable<GroupNoticeModelResponse>>(entities);
 
         var crucialNotes = entitiesResponse.Where(n => n.IsCrucial).ToList();
         var regularNotes = entitiesResponse.Where(n => !n.IsCrucial).ToList();
 
+        var count = (ulong)dbQuery.Count();
+        if (lastNoticeResponse is not null)
+            count++;
+
         var response = new GetAllGroupNoticesModelResponse(
             lastNoticeResponse,
             crucialNotes,
             regularNotes,
-            Total: (ulong)dbQuery.Count(),
+            Total: count,
             Skip: request.Skip,
             Take: take
         );
