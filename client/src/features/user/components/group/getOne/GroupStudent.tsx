@@ -42,7 +42,8 @@ const GroupStudent: FC<GroupStudentProps> = ({ student }) => {
         <span>&nbsp;</span>
       )}
       <p className="mt-2 text-xs font-medium text-gray-600">
-        {t(`item.studentIsIndividually`)}: {student.studentIsIndividually ? `${t('yes')}` : `${t('no')}`}
+        {t(`item.studentIsIndividually`)}:{' '}
+        {student.studentIsIndividually ? `${t('yes')}` : `${t('no')}`}
       </p>
       <p className="mt-2 text-sm font-semibold text-gray-600">
         {t(`item.studentHealthGroup`)}:
@@ -85,4 +86,3 @@ const GroupStudent: FC<GroupStudentProps> = ({ student }) => {
 };
 
 export { GroupStudent };
-

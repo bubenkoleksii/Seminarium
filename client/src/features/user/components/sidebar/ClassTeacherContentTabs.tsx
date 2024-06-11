@@ -3,7 +3,15 @@ import { CurrentTab } from '@/features/user/constants';
 import { useUserStore } from '@/features/user/store/userStore';
 import { SchoolProfileResponse } from '@/features/user/types/schoolProfileTypes';
 import { Tooltip } from 'flowbite-react';
-import { ChevronsLeft, Contact, Home, Megaphone, School, User, Users } from 'lucide-react';
+import {
+  ChevronsLeft,
+  Contact,
+  Home,
+  Megaphone,
+  School,
+  User,
+  Users,
+} from 'lucide-react';
 import { useLocale, useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { FC } from 'react';
@@ -117,4 +125,3 @@ const ClassTeacherContentTabs: FC<ClassTeacherContentTabsProps> = ({
 };
 
 export { ClassTeacherContentTabs };
-

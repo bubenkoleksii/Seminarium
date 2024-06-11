@@ -320,4 +320,3 @@ const Toolbar = ({ editor }: Props) => {
 };
 
 export { Toolbar };
-

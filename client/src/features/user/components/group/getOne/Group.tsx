@@ -337,9 +337,9 @@ const Group: FC<GroupProps> = ({ id }) => {
         </div>
       </div>
 
-      {data.lastNotice &&
+      {data.lastNotice && (
         <>
-          <h2 className="md:text mt-4 text-center text font-bold lg:text-xl">
+          <h2 className="md:text text mt-4 text-center font-bold lg:text-xl">
             {t('lastNotice')}
           </h2>
           <GroupNoticeItem
@@ -348,13 +348,11 @@ const Group: FC<GroupProps> = ({ id }) => {
             groupId={data.id}
           />
         </>
-      }
+      )}
 
       <div className="mb-2 flex w-full flex-wrap justify-center gap-4 md:flex-nowrap">
         <Button
-          onClick={() =>
-            replace(`/${activeLocale}/u/group-notices/${data.id}`)
-          }
+          onClick={() => replace(`/${activeLocale}/u/group-notices/${data.id}`)}
           gradientMonochrome="success"
           size="lg"
         >
@@ -362,7 +360,7 @@ const Group: FC<GroupProps> = ({ id }) => {
         </Button>
       </div>
 
-      <div className="mt-4 flex w-[100%] flex-col justify-center lg:flex-row">
+      <div className="mt-8 flex w-[100%] flex-col justify-center lg:flex-row">
         <GroupInfo group={data} />
       </div>
 
@@ -433,4 +431,3 @@ const Group: FC<GroupProps> = ({ id }) => {
 };
 
 export { Group };
-

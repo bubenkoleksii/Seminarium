@@ -26,6 +26,7 @@ export const userMutations = {
   createGroupNotice: 'createGroupNotice',
   updateGroupNotice: 'updateGroupNotice',
   deleteGroupNotice: 'deleteGroupNotice',
+  changeCrucial: 'changeCrucial',
   updateGroupImage: 'updateGroupImage',
   deleteGroupImage: 'deleteGroupImage',
   deleteProfile: 'deleteProfile',

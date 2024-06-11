@@ -77,4 +77,3 @@ const CopyTextModal: FC<CopyTextModalProps> = ({
 };
 
 export { CopyTextModal };
-

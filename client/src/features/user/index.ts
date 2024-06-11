@@ -4,6 +4,7 @@ export { UserSidebar } from './components/UserSidebar';
 export { Children } from './components/children/Children';
 export { CreateGroupNoticeForm } from './components/group-notice/create/CreateGroupNoticeForm';
 export { GetAllGroupNotices } from './components/group-notice/getAll/GetAllGroupNotices';
+export { UpdateGroupNoticeForm } from './components/group-notice/update/UpdateGroupNoticeForm';
 export { CreateGroupForm } from './components/group/create/CreateGroupForm';
 export { Groups } from './components/group/getAll/Groups';
 export { Group } from './components/group/getOne/Group';
@@ -20,4 +21,3 @@ export { UpdateParentSchoolProfile } from './school-profile/update/UpdateParentS
 export { UpdateStudentSchoolProfile } from './school-profile/update/UpdateStudentSchoolProfile';
 export { UpdateTeacherSchoolProfile } from './school-profile/update/UpdateTeacherSchoolProfile';
 export { useSchoolProfilesStore } from './store/schoolProfilesStore';
-

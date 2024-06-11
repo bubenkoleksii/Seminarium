@@ -179,4 +179,3 @@ const CreateGroupForm: FC = () => {
 };
 
 export { CreateGroupForm };
-

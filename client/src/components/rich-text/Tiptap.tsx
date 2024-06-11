@@ -49,6 +49,7 @@ const Tiptap = ({ onChange, content, limit }: any) => {
         defaultAlignment: 'left',
       }),
     ],
+    content: content,
     autofocus: true,
     editorProps: {
       attributes: {
@@ -88,4 +89,3 @@ const Tiptap = ({ onChange, content, limit }: any) => {
 };
 
 export { Tiptap };
-

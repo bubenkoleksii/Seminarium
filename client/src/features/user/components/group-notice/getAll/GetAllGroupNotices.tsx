@@ -88,7 +88,9 @@ const GetAllGroupNotices: FC<GetAllGroupNoticesProps> = ({
       skip,
     });
 
-  const { data, isLoading, refetch } = useQuery<ApiResponse<PagesGroupNoticeResponse>>({
+  const { data, isLoading, refetch } = useQuery<
+    ApiResponse<PagesGroupNoticeResponse>
+  >({
     queryFn: () =>
       getAllGroupNotices({
         query: buildQuery(),
@@ -118,7 +120,7 @@ const GetAllGroupNotices: FC<GetAllGroupNoticesProps> = ({
     if (page) params.set('page', page.toString());
 
     replace(`${pathname}?${params.toString()}`);
-  }, [search, myOnly, replace, limit, page]);
+  }, [search, myOnly, replace, pathname, limit, page]);
 
   useSetCurrentTab(CurrentTab.GroupNotices);
 
@@ -135,7 +137,8 @@ const GetAllGroupNotices: FC<GetAllGroupNoticesProps> = ({
   if (data && data.error) {
     return (
       <>
-        <h2 className="mb-4 text-center text-xl font-bold">{t('listTitle')}
+        <h2 className="mb-4 text-center text-xl font-bold">
+          {t('listTitle')}
           <p
             onClick={() => replace(`/${activeLocale}/u/groups/${groupId}`)}
             className="ml-2 cursor-pointer pt-1 text-sm text-purple-700 hover:text-red-700"
@@ -152,7 +155,8 @@ const GetAllGroupNotices: FC<GetAllGroupNoticesProps> = ({
   if (data && data.total == 0) {
     return (
       <>
-        <h2 className="mb-4 text-center text-xl font-bold">{t('listTitle')}
+        <h2 className="mb-4 text-center text-xl font-bold">
+          {t('listTitle')}
           <p
             onClick={() => replace(`/${activeLocale}/u/groups/${groupId}`)}
             className="ml-2 cursor-pointer pt-1 text-sm text-purple-700 hover:text-red-700"
@@ -161,7 +165,9 @@ const GetAllGroupNotices: FC<GetAllGroupNoticesProps> = ({
           </p>
         </h2>
 
-        <div className={`flex flex-row justify-center pb-3 w-full ${isDesktopOrLaptop ? 'flex-row gap-8' : 'flex-col gap-6'}`}>
+        <div
+          className={`flex w-full flex-row justify-center pb-3 ${isDesktopOrLaptop ? 'flex-row gap-8' : 'flex-col gap-6'}`}
+        >
           <Button
             gradientMonochrome="success"
             size="md"
@@ -173,20 +179,18 @@ const GetAllGroupNotices: FC<GetAllGroupNoticesProps> = ({
           </Button>
         </div>
 
-        <p className="text-center text-red-700 w-[100%]">{t('notFound')}</p>
+        <p className="w-[100%] text-center text-red-700">{t('notFound')}</p>
       </>
-    )
+    );
   }
 
   let total = data.crucialNotices.length + data.regularNotices.length;
-  if (data.lastNotice)
-    total++;
+  if (data.lastNotice) total++;
 
   return (
     <div className="p-3">
       <h2 className="mb-2 text-center text-xl font-bold">
         {t('listTitle')} {data?.total ? `(${data.total})` : ''}
-
         <p
           onClick={() => replace(`/${activeLocale}/u/groups/${groupId}`)}
           className="ml-2 cursor-pointer pt-1 text-sm text-purple-700 hover:text-red-700"
@@ -195,7 +199,7 @@ const GetAllGroupNotices: FC<GetAllGroupNoticesProps> = ({
         </p>
       </h2>
 
-      <div className="flex pb-3 justify-center pb-3 w-full">
+      <div className="flex w-full justify-center pb-3 pb-3">
         <Button
           gradientMonochrome="success"
           size="md"
@@ -207,9 +211,9 @@ const GetAllGroupNotices: FC<GetAllGroupNoticesProps> = ({
         </Button>
       </div>
 
-      {data.lastNotice &&
+      {data.lastNotice && (
         <div className="mb-4">
-          <h2 className="text-xl mt-3 text-center text-sm font-bold">
+          <h2 className="mt-3 text-center text-sm text-xl font-bold">
             {t('lastNotice')}
           </h2>
           <GroupNoticeItem
@@ -218,7 +222,7 @@ const GetAllGroupNotices: FC<GetAllGroupNoticesProps> = ({
             groupId={groupId}
           />
         </div>
-      }
+      )}
 
       <SearchInput
         maxLength={200}
@@ -227,12 +231,12 @@ const GetAllGroupNotices: FC<GetAllGroupNoticesProps> = ({
         onSubmit={handleSearch}
       />
 
-      <div className="w-full flex mt-2 mb-2 justify-center items-center">
-        <div className="w-md relative flex gap-1 items-center">
+      <div className="mb-2 mt-2 flex w-full items-center justify-center">
+        <div className="w-md relative flex items-center gap-1">
           <input
             id="myOnly"
-            className="block cursor-pointer w-8 h-8 rounded-lg pb-3 appearance-none border border-gray-300
-                        py-2 focus:border-purple-950 focus:outline-none focus:ring-1 focus:ring-purple-950"
+            className="block h-8 w-8 cursor-pointer appearance-none rounded-lg border border-gray-300 py-2
+                        pb-3 focus:border-purple-950 focus:outline-none focus:ring-1 focus:ring-purple-950"
             name="myOnly"
             type="checkbox"
             checked={myOnly}
@@ -270,31 +274,39 @@ const GetAllGroupNotices: FC<GetAllGroupNoticesProps> = ({
         </div>
       )}
 
-      {
-        data.crucialNotices && data.crucialNotices.length > 0 &&
+      {data.crucialNotices && data.crucialNotices.length > 0 && (
         <>
-          <h2 className="text-xl mt-4 text-center text-sm font-bold">
+          <h2 className="mt-4 text-center text-sm text-xl font-bold">
             {t('crucialNotices')}
           </h2>
 
-          {data.crucialNotices.map((notice, idx) =>
-            <GroupNoticeItem key={idx} activeProfile={activeProfile} notice={notice} groupId={groupId} />)
-          }
+          {data.crucialNotices.map((notice, idx) => (
+            <GroupNoticeItem
+              key={idx}
+              activeProfile={activeProfile}
+              notice={notice}
+              groupId={groupId}
+            />
+          ))}
         </>
-      }
+      )}
 
-      {
-        data.regularNotices && data.regularNotices.length > 0 &&
+      {data.regularNotices && data.regularNotices.length > 0 && (
         <>
-          <h2 className="text-xl mt-[30px] text-center text-sm font-bold">
+          <h2 className="mt-[30px] text-center text-sm text-xl font-bold">
             {t('regularNotices')}
           </h2>
 
-          {data.regularNotices.map((notice, idx) =>
-            <GroupNoticeItem key={idx} activeProfile={activeProfile} notice={notice} groupId={groupId} />)
-          }
+          {data.regularNotices.map((notice, idx) => (
+            <GroupNoticeItem
+              key={idx}
+              activeProfile={activeProfile}
+              notice={notice}
+              groupId={groupId}
+            />
+          ))}
         </>
-      }
+      )}
 
       {data && total < data.total && (
         <div className="mt-3">
@@ -306,9 +318,8 @@ const GetAllGroupNotices: FC<GetAllGroupNoticesProps> = ({
           />
         </div>
       )}
-    </div >
+    </div>
   );
 };
 
 export { GetAllGroupNotices };
-

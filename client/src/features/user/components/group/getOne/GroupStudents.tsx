@@ -34,4 +34,3 @@ const GroupStudents: FC<GroupStudentsProps> = ({ students }) => {
 };
 
 export { GroupStudents };
-

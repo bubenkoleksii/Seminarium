@@ -10,7 +10,7 @@ export type CreateGroupNoticeRequest = {
 export type UpdateGroupNoticeRequest = {
   id: string;
   groupId: string;
-  isCrucial: boolean;
+  isCrucial: boolean | string;
   title: string;
   text?: string;
 };

@@ -3,7 +3,14 @@ import { CurrentTab } from '@/features/user/constants';
 import { useUserStore } from '@/features/user/store/userStore';
 import type { SchoolProfileResponse } from '@/features/user/types/schoolProfileTypes';
 import { Tooltip } from 'flowbite-react';
-import { ChevronsLeft, Home, Megaphone, School, User, Users } from 'lucide-react';
+import {
+  ChevronsLeft,
+  Home,
+  Megaphone,
+  School,
+  User,
+  Users,
+} from 'lucide-react';
 import { useLocale, useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { FC } from 'react';
@@ -101,4 +108,3 @@ const StudentContentTabs: FC<StudentContentTabsProps> = ({ activeProfile }) => {
 };
 
 export { StudentContentTabs };
-

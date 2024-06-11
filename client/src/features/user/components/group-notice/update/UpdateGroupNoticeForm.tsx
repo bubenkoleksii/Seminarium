@@ -3,9 +3,9 @@
 import { Loader } from '@/components/loader';
 import { Tiptap } from '@/components/rich-text';
 import { useProfiles } from '@/features/user';
-import { createGroupNotice } from '@/features/user/api/groupNoticesApi';
+import { updateGroupNotice } from '@/features/user/api/groupNoticesApi';
 import { userMutations } from '@/features/user/constants';
-import { CreateGroupNoticeRequest } from '@/features/user/types/groupNoticesTypes';
+import { UpdateGroupNoticeRequest } from '@/features/user/types/groupNoticesTypes';
 import { replaceEmptyStringsWithNull } from '@/shared/helpers';
 import { useAuthRedirectByRole } from '@/shared/hooks';
 import { useIsMutating, useMutation } from '@tanstack/react-query';
@@ -15,26 +15,33 @@ import { useRouter } from 'next/navigation';
 import { FC } from 'react';
 import { toast } from 'react-hot-toast';
 import * as Yup from 'yup';
-import styles from './CreateGroupNoticeForm.module.scss';
+import styles from './UpdateGroupNoticeForm.module.scss';
 
-type CreateGroupNoticeFormProps = {
-  groupId: string;
+type UpdateGroupNoticeFormProps = {
+  id: string;
+  noticeRequest: UpdateGroupNoticeRequest;
 };
 
-const CreateGroupNoticeForm: FC<CreateGroupNoticeFormProps> = ({ groupId }) => {
+const UpdateGroupNoticeForm: FC<UpdateGroupNoticeFormProps> = ({
+  id,
+  noticeRequest,
+}) => {
   const activeLocale = useLocale();
   const { replace } = useRouter();
   const v = useTranslations('Validation');
   const t = useTranslations('GroupNotice');
+
+  noticeRequest.isCrucial =
+    noticeRequest.isCrucial === 'true' || noticeRequest.isCrucial == true;
 
   const isMutating = useIsMutating();
   const { isUserLoading } = useAuthRedirectByRole(activeLocale, 'userOnly');
 
   const { activeProfile, isLoading: profilesLoading } = useProfiles();
 
-  const { mutate, reset: resetMutation } = useMutation({
-    mutationFn: createGroupNotice,
-    mutationKey: [userMutations.createGroupNotice],
+  const { mutate } = useMutation({
+    mutationFn: updateGroupNotice,
+    mutationKey: [userMutations.updateGroupNotice],
     retry: userMutations.options.retry,
     onSuccess: (response) => {
       if (response && response.error) {
@@ -53,14 +60,9 @@ const CreateGroupNoticeForm: FC<CreateGroupNoticeFormProps> = ({ groupId }) => {
 
         toast.error(errorMessages[response.error.status] || v('internal'));
       } else {
-        toast.success(
-          t('labels.createSuccess', {
-            title: response.title,
-          }),
-          { duration: 2500 },
-        );
+        toast.success(t('labels.updateSuccess'), { duration: 2500 });
 
-        const url = `/${activeLocale}/u/group-notices/${groupId}`;
+        const url = `/${activeLocale}/u/group-notices/${noticeRequest.groupId}`;
         replace(url);
       }
     },
@@ -75,11 +77,12 @@ const CreateGroupNoticeForm: FC<CreateGroupNoticeFormProps> = ({ groupId }) => {
   const handleSubmit = (values) => {
     replaceEmptyStringsWithNull(values);
 
-    const request: CreateGroupNoticeRequest = {
+    const request: UpdateGroupNoticeRequest = {
+      id: noticeRequest.id,
       text: values.text,
       isCrucial: values.isCrucial,
       title: values.title,
-      groupId,
+      groupId: noticeRequest.groupId,
     };
 
     mutate({
@@ -92,7 +95,7 @@ const CreateGroupNoticeForm: FC<CreateGroupNoticeFormProps> = ({ groupId }) => {
     return (
       <>
         <h2 className="md:text mb-4 pt-6 text-center text-2xl font-semibold text-gray-950">
-          {t('create.title')}
+          {t('update.title')}
         </h2>
 
         <Loader />
@@ -100,15 +103,9 @@ const CreateGroupNoticeForm: FC<CreateGroupNoticeFormProps> = ({ groupId }) => {
     );
   }
 
-  const initialValues = {
-    isCrucial: false,
-    title: '',
-    text: '',
-  };
-
   return (
     <Formik
-      initialValues={initialValues}
+      initialValues={noticeRequest}
       validationSchema={validationSchema}
       onSubmit={handleSubmit}
     >
@@ -128,7 +125,7 @@ const CreateGroupNoticeForm: FC<CreateGroupNoticeFormProps> = ({ groupId }) => {
             <div>
               <span
                 onClick={() => {
-                  const url = `/${activeLocale}/u/group-notices/${groupId}`;
+                  const url = `/${activeLocale}/u/group-notices/${noticeRequest.groupId}}`;
 
                   replace(url);
                 }}
@@ -164,7 +161,7 @@ const CreateGroupNoticeForm: FC<CreateGroupNoticeFormProps> = ({ groupId }) => {
                 {t('labels.text')}
               </label>
               <Tiptap
-                content={initialValues.text}
+                content={noticeRequest.text}
                 limit={500}
                 onChange={(newContent: string) =>
                   setFieldValue('text', newContent)
@@ -191,12 +188,8 @@ const CreateGroupNoticeForm: FC<CreateGroupNoticeFormProps> = ({ groupId }) => {
             </div>
 
             <div>
-              <button
-                onClick={() => resetMutation()}
-                type="submit"
-                className={styles.button}
-              >
-                {t('labels.createSubmit')}
+              <button type="submit" className={styles.button}>
+                {t('labels.updateSubmit')}
               </button>
             </div>
           </Form>
@@ -206,4 +199,5 @@ const CreateGroupNoticeForm: FC<CreateGroupNoticeFormProps> = ({ groupId }) => {
   );
 };
 
-export { CreateGroupNoticeForm };
+export { UpdateGroupNoticeForm };
+

@@ -391,4 +391,3 @@ const CreateSchoolForm: FC<CreateSchoolFormProps> = ({
 };
 
 export { CreateSchoolForm };
-

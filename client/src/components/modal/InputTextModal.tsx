@@ -95,4 +95,3 @@ const InputTextModal: FC<InputTextModalProps> = ({
 };
 
 export { InputTextModal };
-
