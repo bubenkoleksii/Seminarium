@@ -30,7 +30,7 @@ public class CourseGroupConfiguration : IEntityTypeConfiguration<CourseGroup>
                    .HasOne(cgc => cgc.Group)
                    .WithMany()
                    .HasForeignKey(cgc => cgc.GroupId)
-                   .OnDelete(DeleteBehavior.SetNull),
+                   .OnDelete(DeleteBehavior.Cascade),
                j =>
                {
                    j.ToTable(nameof(CourseGroupCourse));

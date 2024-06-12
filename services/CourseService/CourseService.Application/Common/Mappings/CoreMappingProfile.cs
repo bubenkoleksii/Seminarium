@@ -6,6 +6,13 @@ public class CoreMappingProfile : Profile
 {
     public CoreMappingProfile()
     {
+        ConfigureCourseMapping();
+    }
 
+    private void ConfigureCourseMapping()
+    {
+        CreateMap<CreateCourseCommand, Domain.Entities.Course>();
+
+        CreateMap<Domain.Entities.Course, CourseModelResponse>();
     }
 }

@@ -6,6 +6,8 @@ public class Course : Entity
 
     public string? Description { get; set; }
 
+    public Guid StudyPeriodId { get; set; }
+
     public IEnumerable<CourseTeacher>? Teachers { get; set; }
 
     public IEnumerable<CourseGroup>? Groups { get; set; }

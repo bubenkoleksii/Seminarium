@@ -4,6 +4,8 @@ public class CourseModelResponse
 {
     public Guid Id { get; set; }
 
+    public Guid StudyPeriodId { get; set; }
+
     public DateTime CreatedAt { get; set; }
 
     public DateTime? LastUpdatedAt { get; set; }

@@ -8,12 +8,12 @@ public class GetActiveProfileConsumer(ISchoolProfileManager schoolProfileManager
 
     public async Task Consume(ConsumeContext<GetActiveSchoolProfileRequest> context)
     {
-        Either<SchoolProfileContract, Error> response;
+        var response = new GetActiveSchoolProfileResponse();
 
         var activeProfile = await _schoolProfileManager.GetActiveProfile(context.Message.UserId);
         if (activeProfile == null)
         {
-            response = new NotFoundByIdError(context.Message.UserId, "school_profile");
+            response.Error = new NotFoundByIdError(context.Message.UserId, "school_profile");
 
             await context.RespondAsync(response);
             return;
@@ -27,13 +27,13 @@ public class GetActiveProfileConsumer(ISchoolProfileManager schoolProfileManager
 
         if (isInvalidSchoolProfileType)
         {
-            response = new InvalidError("school_profile");
+            response.Error = new InvalidError("school_profile");
 
             await context.RespondAsync(response);
             return;
         }
 
-        response = schoolProfileResponse;
+        response.SchoolProfile = schoolProfileResponse;
         await context.RespondAsync(response);
     }
 

@@ -59,7 +59,7 @@ public class CourseConfiguration : IEntityTypeConfiguration<Course>
                  .HasOne(cgc => cgc.Course)
                  .WithMany()
                  .HasForeignKey(cgc => cgc.CourseId)
-                 .OnDelete(DeleteBehavior.SetNull),
+                 .OnDelete(DeleteBehavior.Cascade),
              j =>
              {
                  j.ToTable(nameof(CourseGroupCourse));

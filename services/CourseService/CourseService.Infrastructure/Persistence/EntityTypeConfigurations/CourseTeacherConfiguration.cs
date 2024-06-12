@@ -30,7 +30,7 @@ public class CourseTeacherConfiguration : IEntityTypeConfiguration<CourseTeacher
                     .HasOne(ctc => ctc.Teacher)
                     .WithMany()
                     .HasForeignKey(ctc => ctc.TeacherId)
-                    .OnDelete(DeleteBehavior.SetNull),
+                    .OnDelete(DeleteBehavior.Cascade),
                 j =>
                 {
                     j.ToTable(nameof(CourseTeacherCourse));

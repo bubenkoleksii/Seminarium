@@ -79,17 +79,27 @@ public static class DependencyInjection
         static void AddConsumers(IBusRegistrationConfigurator busConfigurator)
         {
             busConfigurator.AddConsumer<GetActiveProfileConsumer>();
+            busConfigurator.AddConsumer<GetStudyPeriodsConsumer>();
+            busConfigurator.AddConsumer<GetGroupsConsumer>();
         }
 
         static void AddRequestClients(IBusRegistrationConfigurator busConfigurator)
         {
             busConfigurator.AddRequestClient<string>(new Uri($"exchange:{nameof(GetActiveSchoolProfileRequest)}"));
+            busConfigurator.AddRequestClient<string>(new Uri($"exchange:{nameof(GetStudyPeriodsRequest)}"));
+            busConfigurator.AddRequestClient<string>(new Uri($"exchange:{nameof(GetGroupsRequest)}"));
         }
 
         static void ConfigureReceiveEndpoints(IRabbitMqBusFactoryConfigurator configurator, IBusRegistrationContext context, string queueName)
         {
             configurator.ReceiveEndpoint($"{queueName}.{nameof(GetActiveSchoolProfileRequest)}",
                             endpointConfigurator => endpointConfigurator.ConfigureConsumer<GetActiveProfileConsumer>(context));
+
+            configurator.ReceiveEndpoint($"{queueName}.{nameof(GetStudyPeriodsRequest)}",
+                endpointConfigurator => endpointConfigurator.ConfigureConsumer<GetStudyPeriodsConsumer>(context));
+
+            configurator.ReceiveEndpoint($"{queueName}.{nameof(GetGroupsRequest)}",
+                endpointConfigurator => endpointConfigurator.ConfigureConsumer<GetGroupsConsumer>(context));
         }
     }
 
