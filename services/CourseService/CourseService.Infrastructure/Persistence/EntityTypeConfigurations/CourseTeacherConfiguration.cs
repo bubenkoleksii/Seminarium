@@ -1,0 +1,44 @@
+﻿namespace CourseService.Infrastructure.Persistence.EntityTypeConfigurations;
+
+public class CourseTeacherConfiguration : IEntityTypeConfiguration<CourseTeacher>
+{
+    public void Configure(EntityTypeBuilder<CourseTeacher> builder)
+    {
+        builder.HasKey(teacher => teacher.Id);
+
+        builder.Property(teacher => teacher.Id).ValueGeneratedOnAdd();
+
+        ConfigureRelationships(builder);
+    }
+
+    private static void ConfigureRelationships(EntityTypeBuilder<CourseTeacher> builder)
+    {
+        AddCourseRelationship(builder);
+    }
+
+    private static void AddCourseRelationship(EntityTypeBuilder<CourseTeacher> builder)
+    {
+        builder.HasMany(ct => ct.Courses)
+            .WithMany(c => c.Teachers)
+            .UsingEntity<CourseTeacherCourse>(
+                j => j
+                    .HasOne(ctc => ctc.Course)
+                    .WithMany()
+                    .HasForeignKey(ctc => ctc.CourseId)
+                    .OnDelete(DeleteBehavior.SetNull),
+                j => j
+                    .HasOne(ctc => ctc.Teacher)
+                    .WithMany()
+                    .HasForeignKey(ctc => ctc.TeacherId)
+                    .OnDelete(DeleteBehavior.SetNull),
+                j =>
+                {
+                    j.ToTable(nameof(CourseTeacherCourse));
+                    j.HasKey(ctc => ctc.Id);
+                    j.Property(ctc => ctc.Id).ValueGeneratedOnAdd();
+                    j.Property(ctc => ctc.TeacherId).IsRequired(false);
+                    j.Property(ctc => ctc.CourseId).IsRequired(false);
+                }
+            );
+    }
+}

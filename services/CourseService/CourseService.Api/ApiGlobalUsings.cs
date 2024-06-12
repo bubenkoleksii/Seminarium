@@ -7,6 +7,7 @@ global using CourseService.Application.Common.Mappings;
 global using CourseService.Infrastructure.Persistence;
 global using MassTransit.Mediator;
 global using Microsoft.AspNetCore.Authentication.JwtBearer;
+global using Microsoft.AspNetCore.Authorization;
 global using Microsoft.AspNetCore.Mvc;
 global using Serilog;
 global using Serilog.Events;

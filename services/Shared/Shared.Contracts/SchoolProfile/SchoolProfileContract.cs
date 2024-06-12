@@ -1,6 +1,6 @@
-﻿namespace SchoolService.Api.Models.SchoolProfile;
+﻿namespace Shared.Contracts.SchoolProfile;
 
-public class SchoolProfileResponse
+public class SchoolProfileContract
 {
     public Guid Id { get; set; }
 
@@ -10,17 +10,11 @@ public class SchoolProfileResponse
 
     public Guid? SchoolId { get; set; }
 
-    public SchoolResponse? School { get; set; }
-
     public string? SchoolName { get; set; }
 
     public Guid? GroupId { get; set; }
 
-    public GroupResponse? Group { get; set; }
-
     public Guid? ClassTeacherGroupId { get; set; }
-
-    public GroupResponse? ClassTeacherGroup { get; set; }
 
     public bool IsActive { get; set; }
 
@@ -60,7 +54,7 @@ public class SchoolProfileResponse
 
     public string? ParentAddress { get; set; }
 
-    public IEnumerable<SchoolProfileResponse>? Children { get; set; }
+    public IEnumerable<SchoolProfileContract>? Children { get; set; }
 
-    public IEnumerable<SchoolProfileResponse>? Parents { get; set; }
+    public IEnumerable<SchoolProfileContract>? Parents { get; set; }
 }

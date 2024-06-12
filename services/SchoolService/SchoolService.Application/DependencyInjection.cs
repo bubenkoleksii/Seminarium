@@ -1,4 +1,6 @@
-﻿namespace SchoolService.Application;
+﻿using SchoolService.Application.SchoolProfile.Consumers;
+
+namespace SchoolService.Application;
 
 public static class DependencyInjection
 {
@@ -52,6 +54,10 @@ public static class DependencyInjection
 
                 busConfigurator.SetKebabCaseEndpointNameFormatter();
 
+                AddConsumers(busConfigurator);
+
+                AddRequestClients(busConfigurator);
+
                 busConfigurator.UsingRabbitMq((context, configurator) =>
                 {
                     configurator.Host(rabbitMqOptions.Host, h =>
@@ -59,6 +65,8 @@ public static class DependencyInjection
                         h.Username(rabbitMqOptions.Username);
                         h.Password(rabbitMqOptions.Password);
                     });
+
+                    ConfigureReceiveEndpoints(configurator, context, rabbitMqOptions.QueueName);
 
                     configurator.ConfigureEndpoints(context);
                 });
@@ -68,6 +76,22 @@ public static class DependencyInjection
         {
             Log.Fatal(exception, "An error occurred while mass transit initialization.");
             throw;
+        }
+
+        static void AddConsumers(IBusRegistrationConfigurator busConfigurator)
+        {
+            busConfigurator.AddConsumer<GetActiveProfileConsumer>();
+        }
+
+        static void AddRequestClients(IBusRegistrationConfigurator busConfigurator)
+        {
+            busConfigurator.AddRequestClient<string>(new Uri($"exchange:{nameof(GetActiveSchoolProfileRequest)}"));
+        }
+
+        static void ConfigureReceiveEndpoints(IRabbitMqBusFactoryConfigurator configurator, IBusRegistrationContext context, string queueName)
+        {
+            configurator.ReceiveEndpoint($"{queueName}.{nameof(GetActiveSchoolProfileRequest)}",
+                            endpointConfigurator => endpointConfigurator.ConfigureConsumer<GetActiveProfileConsumer>(context));
         }
     }
 
