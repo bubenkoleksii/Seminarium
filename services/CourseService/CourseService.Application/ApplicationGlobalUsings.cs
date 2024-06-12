@@ -17,6 +17,7 @@ global using Serilog;
 global using Shared.Contracts.Errors;
 global using Shared.Contracts.Files;
 global using Shared.Contracts.Options;
+global using Shared.Contracts.SchoolProfile.GetActiveSchoolProfile;
 global using Shared.Utils.File;
 global using Shared.Utils.Mail;
 global using System.Reflection;

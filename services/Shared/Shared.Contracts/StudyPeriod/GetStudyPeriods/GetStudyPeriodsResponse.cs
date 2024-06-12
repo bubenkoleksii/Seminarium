@@ -1,8 +1,6 @@
-﻿using LanguageExt;
+﻿namespace Shared.Contracts.StudyPeriod.GetStudyPeriods;
 
-namespace Shared.Contracts.StudyPeriod.GetStudyPeriods;
-
-public class GetStudyPeriodsResponse
+public class GetStudyPeriodsResponse : BaseResponse
 {
-    public Either<IEnumerable<StudyPeriodContact>, Errors.Error> Result { get; set; }
+    public IEnumerable<StudyPeriodContact>? StudyPeriods { get; set; }
 }

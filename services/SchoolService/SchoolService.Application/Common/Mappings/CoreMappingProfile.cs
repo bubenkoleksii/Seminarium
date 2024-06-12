@@ -44,6 +44,8 @@ public class CoreMappingProfile : Profile
         CreateMap<UpdateSchoolProfileCommand, Domain.Entities.SchoolProfile>();
 
         CreateMap<Domain.Entities.SchoolProfile, SchoolProfileModelResponse>();
+
+        CreateMap<SchoolProfileModelResponse, SchoolProfileContract>();
     }
 
     private void ConfigureGroupMappings()

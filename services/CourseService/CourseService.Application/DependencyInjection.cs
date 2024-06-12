@@ -47,6 +47,8 @@ public static class DependencyInjection
 
                 busConfigurator.SetKebabCaseEndpointNameFormatter();
 
+                AddRequestClients(busConfigurator);
+
                 busConfigurator.UsingRabbitMq((context, configurator) =>
                 {
                     configurator.Host(rabbitMqOptions.Host, h =>
@@ -63,6 +65,11 @@ public static class DependencyInjection
         {
             Log.Fatal(exception, "An error occurred while mass transit initialization.");
             throw;
+        }
+
+        static void AddRequestClients(IBusRegistrationConfigurator busConfigurator)
+        {
+            busConfigurator.AddRequestClient<string>(new Uri($"exchange:{nameof(GetActiveSchoolProfileRequest)}"));
         }
     }
 

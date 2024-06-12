@@ -1,8 +1,6 @@
-﻿using LanguageExt;
+﻿namespace Shared.Contracts.Group.GetGroups;
 
-namespace Shared.Contracts.Group.GetGroups;
-
-public class GetGroupsResponse
+public class GetGroupsResponse : BaseResponse
 {
-    public Either<IEnumerable<GroupContract>, Errors.Error> Result { get; set; }
+    public IEnumerable<GroupContract>? Groups { get; set; }
 }

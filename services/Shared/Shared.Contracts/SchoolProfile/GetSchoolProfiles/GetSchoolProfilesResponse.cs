@@ -1,8 +1,6 @@
-﻿using LanguageExt;
+﻿namespace Shared.Contracts.SchoolProfile.GetSchoolProfiles;
 
-namespace Shared.Contracts.SchoolProfile.GetSchoolProfiles;
-
-public class GetSchoolProfilesResponse
+public class GetSchoolProfilesResponse : BaseResponse
 {
-    public Either<IEnumerable<SchoolProfileContract>, Errors.Error> Result { get; set; }
+    public IEnumerable<SchoolProfileContract>? Profiles { get; set; }
 }

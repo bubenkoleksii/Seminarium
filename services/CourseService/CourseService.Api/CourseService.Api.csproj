@@ -17,7 +17,7 @@
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
-		<PackageReference Include="Seminarium.Shared.Contracts" Version="1.0.7" />
+		<PackageReference Include="Seminarium.Shared.Contracts" Version="1.0.9" />
 		<PackageReference Include="Seminarium.Shared.Utils" Version="1.0.3" />
 		<PackageReference Include="Serilog.AspNetCore" Version="8.0.1" />
 		<PackageReference Include="Serilog.Sinks.Console" Version="5.0.1" />

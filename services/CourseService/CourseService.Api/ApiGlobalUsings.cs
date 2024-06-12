@@ -5,7 +5,7 @@ global using CourseService.Api.Options;
 global using CourseService.Application;
 global using CourseService.Application.Common.Mappings;
 global using CourseService.Infrastructure.Persistence;
-global using MassTransit.Mediator;
+global using MediatR;
 global using Microsoft.AspNetCore.Authentication.JwtBearer;
 global using Microsoft.AspNetCore.Authorization;
 global using Microsoft.AspNetCore.Mvc;

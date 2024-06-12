@@ -1,8 +1,6 @@
-﻿using LanguageExt;
+﻿namespace Shared.Contracts.SchoolProfile.GetActiveSchoolProfile;
 
-namespace Shared.Contracts.SchoolProfile.GetActiveSchoolProfile;
-
-public class GetActiveSchoolProfileResponse
+public class GetActiveSchoolProfileResponse : BaseResponse
 {
-    public Either<SchoolProfileContract, Errors.Error> Result { get; set; }
+    public SchoolProfileContract? SchoolProfile { get; set; }
 }

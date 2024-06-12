@@ -8,7 +8,7 @@ public class GetActiveProfileConsumer(ISchoolProfileManager schoolProfileManager
 
     public async Task Consume(ConsumeContext<GetActiveSchoolProfileRequest> context)
     {
-        Either<GetSchoolProfileResponse, Error> response;
+        Either<SchoolProfileContract, Error> response;
 
         var activeProfile = await _schoolProfileManager.GetActiveProfile(context.Message.UserId);
         if (activeProfile == null)
@@ -19,7 +19,7 @@ public class GetActiveProfileConsumer(ISchoolProfileManager schoolProfileManager
             return;
         }
 
-        var schoolProfileResponse = _mapper.Map<GetSchoolProfileResponse>(activeProfile);
+        var schoolProfileResponse = _mapper.Map<SchoolProfileContract>(activeProfile);
 
         var isInvalidSchoolProfileType = !IsValidSchoolProfileType(
             context.Message.AllowedProfileTypes,

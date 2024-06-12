@@ -5,6 +5,6 @@
         public override string Detail { get; set; } =
             $"The {operation} database operation with {resourceName} has been invalid.";
 
-        public override string Type => ErrorTypes.Invalid;
+        public override string Type => ErrorTypes.Internal;
     }
 }

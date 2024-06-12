@@ -1,6 +1,4 @@
-﻿using SchoolService.Application.SchoolProfile.Consumers;
-
-namespace SchoolService.Application;
+﻿namespace SchoolService.Application;
 
 public static class DependencyInjection
 {

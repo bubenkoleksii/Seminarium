@@ -1,6 +1,6 @@
 ﻿namespace CourseService.Application.Course.CreateCourse;
 
-public class CreateCourseCommand : IRequest<int>
+public class CreateCourseCommand : IRequest<string>
 {
     public Guid UserId { get; set; }
 
