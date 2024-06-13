@@ -15,4 +15,6 @@ public class PracticalLessonItemSubmit : Entity
     public ICollection<Attachment>? Attachments { get; set; }
 
     public PracticalLessonItemSubmitStatus Status { get; set; }
+
+    public string? TeacherComment { get; set; }
 }

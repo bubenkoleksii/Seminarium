@@ -1,4 +1,4 @@
-﻿namespace CourseService.Application.Course.CreateCourse;
+﻿namespace CourseService.Application.Course.Commands.CreateCourse;
 
 public class CreateCourseCommand : IRequest<Either<CourseModelResponse, Error>>
 {

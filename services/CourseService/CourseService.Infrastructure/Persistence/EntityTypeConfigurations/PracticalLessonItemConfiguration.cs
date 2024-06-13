@@ -4,14 +4,7 @@ public class PracticalLessonItemConfiguration : IEntityTypeConfiguration<Practic
 {
     public void Configure(EntityTypeBuilder<PracticalLessonItem> builder)
     {
-        builder.HasKey(item => item.Id);
-
-        builder.Property(item => item.Id).ValueGeneratedOnAdd();
-        builder.Property(item => item.Title).HasMaxLength(256).IsRequired();
-        builder.Property(item => item.Text).HasMaxLength(2048);
         builder.Property(item => item.AllowSubmitAfterDeadline).HasDefaultValue(true);
-
-        builder.HasQueryFilter(item => !item.IsArchived);
 
         ConfigureRelationships(builder);
     }

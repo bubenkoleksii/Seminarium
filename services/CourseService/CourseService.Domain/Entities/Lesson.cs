@@ -11,4 +11,6 @@ public class Lesson : Entity
     public Guid CourseId { get; set; }
 
     public required Course Course { get; set; }
+
+    public IEnumerable<LessonItem>? LessonItems { get; set; }
 }

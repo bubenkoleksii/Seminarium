@@ -13,4 +13,8 @@ public class CourseModelResponse
     public required string Name { get; set; }
 
     public string? Description { get; set; }
+
+    public IEnumerable<SchoolProfileContract>? Teachers { get; set; }
+
+    public IEnumerable<GroupContract>? Groups { get; set; }
 }

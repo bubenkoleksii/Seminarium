@@ -33,7 +33,6 @@ public abstract class BaseContext(DbContextOptions options) : DbContext(options)
         modelBuilder.ApplyConfiguration(new LessonConfiguration());
         modelBuilder.ApplyConfiguration(new AttachmentConfiguration());
         modelBuilder.ApplyConfiguration(new LessonItemConfiguration());
-        modelBuilder.ApplyConfiguration(new TheoryLessonItemConfiguration());
         modelBuilder.ApplyConfiguration(new PracticalLessonItemConfiguration());
         modelBuilder.ApplyConfiguration(new PracticalLessonItemSubmitConfiguration());
 

@@ -1,0 +1,5 @@
+﻿namespace CourseService.Application.PracticalLessonItemSubmit.Commands.UpdatePracticalLessonItemSubmit;
+
+internal class UpdatePracticalLessonItemSubmitCommandValidator
+{
+}

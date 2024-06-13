@@ -20,11 +20,13 @@ public class LessonItemConfiguration : IEntityTypeConfiguration<LessonItem>
     {
         AddAttachmentsRelationship(builder);
         AddAuthorRelationship(builder);
+        AddLessonRelationship(builder);
     }
 
     private static void AddDiscriminator(EntityTypeBuilder<LessonItem> builder)
     {
         builder.HasDiscriminator<LessonItemType>(nameof(LessonItemType))
+            .HasValue<LessonItem>(LessonItemType.Base)
             .HasValue<TheoryLessonItem>(LessonItemType.Theory)
             .HasValue<PracticalLessonItem>(LessonItemType.Practical);
     }
@@ -41,6 +43,14 @@ public class LessonItemConfiguration : IEntityTypeConfiguration<LessonItem>
         builder.HasOne(item => item.Author)
             .WithMany(author => author.LessonItems)
             .HasForeignKey(item => item.AuthorId)
+            .IsRequired();
+    }
+
+    private static void AddLessonRelationship(EntityTypeBuilder<LessonItem> builder)
+    {
+        builder.HasOne(item => item.Lesson)
+            .WithMany(lesson => lesson.LessonItems)
+            .HasForeignKey(item => item.LessonId)
             .IsRequired();
     }
 }

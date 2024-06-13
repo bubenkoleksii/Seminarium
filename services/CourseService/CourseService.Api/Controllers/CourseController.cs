@@ -1,7 +1,4 @@
-﻿using CourseService.Application.Course.CreateCourse;
-using Shared.Contracts.Errors.Invalid;
-
-namespace CourseService.Api.Controllers;
+﻿namespace CourseService.Api.Controllers;
 
 public class CourseController : BaseController
 {

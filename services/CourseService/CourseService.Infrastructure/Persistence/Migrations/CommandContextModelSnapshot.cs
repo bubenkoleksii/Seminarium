@@ -23,34 +23,42 @@ namespace CourseService.Infrastructure.Persistence.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("CourseCourseGroup", b =>
+            modelBuilder.Entity("CourseService.Domain.Entities.Attachment", b =>
                 {
-                    b.Property<Guid>("CoursesId")
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("GroupsId")
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<bool>("IsArchived")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTime?>("LastArchivedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime?>("LastUpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid?>("LessonItemId")
                         .HasColumnType("uuid");
 
-                    b.HasKey("CoursesId", "GroupsId");
-
-                    b.HasIndex("GroupsId");
-
-                    b.ToTable("CourseCourseGroup", "public");
-                });
-
-            modelBuilder.Entity("CourseCourseTeacher", b =>
-                {
-                    b.Property<Guid>("CoursesId")
+                    b.Property<Guid?>("PracticalLessonItemSubmitId")
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("TeachersId")
-                        .HasColumnType("uuid");
+                    b.Property<string>("Url")
+                        .IsRequired()
+                        .HasMaxLength(1024)
+                        .HasColumnType("character varying(1024)");
 
-                    b.HasKey("CoursesId", "TeachersId");
+                    b.HasKey("Id");
 
-                    b.HasIndex("TeachersId");
+                    b.HasIndex("LessonItemId");
 
-                    b.ToTable("CourseCourseTeacher", "public");
+                    b.HasIndex("PracticalLessonItemSubmitId");
+
+                    b.ToTable("Attachments", "public");
                 });
 
             modelBuilder.Entity("CourseService.Domain.Entities.Course", b =>
@@ -63,7 +71,8 @@ namespace CourseService.Infrastructure.Persistence.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Description")
-                        .HasColumnType("text");
+                        .HasMaxLength(1024)
+                        .HasColumnType("character varying(1024)");
 
                     b.Property<bool>("IsArchived")
                         .HasColumnType("boolean");
@@ -76,7 +85,8 @@ namespace CourseService.Infrastructure.Persistence.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(250)
+                        .HasColumnType("character varying(250)");
 
                     b.Property<Guid>("StudyPeriodId")
                         .HasColumnType("uuid");
@@ -97,6 +107,27 @@ namespace CourseService.Infrastructure.Persistence.Migrations
                     b.ToTable("CourseGroups", "public");
                 });
 
+            modelBuilder.Entity("CourseService.Domain.Entities.CourseGroupCourse", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid?>("CourseId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid?>("GroupId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CourseId");
+
+                    b.HasIndex("GroupId");
+
+                    b.ToTable("CourseGroupCourse", "public");
+                });
+
             modelBuilder.Entity("CourseService.Domain.Entities.CourseTeacher", b =>
                 {
                     b.Property<Guid>("Id")
@@ -104,11 +135,34 @@ namespace CourseService.Infrastructure.Persistence.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<bool>("IsCreator")
-                        .HasColumnType("boolean");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false);
 
                     b.HasKey("Id");
 
                     b.ToTable("CourseTeachers", "public");
+                });
+
+            modelBuilder.Entity("CourseService.Domain.Entities.CourseTeacherCourse", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid?>("CourseId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid?>("TeacherId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CourseId");
+
+                    b.HasIndex("TeacherId");
+
+                    b.ToTable("CourseTeacherCourse", "public");
                 });
 
             modelBuilder.Entity("CourseService.Domain.Entities.Lesson", b =>
@@ -127,7 +181,8 @@ namespace CourseService.Infrastructure.Persistence.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Homework")
-                        .HasColumnType("text");
+                        .HasMaxLength(1024)
+                        .HasColumnType("character varying(1024)");
 
                     b.Property<bool>("IsArchived")
                         .HasColumnType("boolean");
@@ -140,43 +195,179 @@ namespace CourseService.Infrastructure.Persistence.Migrations
 
                     b.Property<string>("Topic")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(250)
+                        .HasColumnType("character varying(250)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("CourseId");
 
-                    b.ToTable("Lesson", "public");
+                    b.ToTable("Lessons", "public");
                 });
 
-            modelBuilder.Entity("CourseCourseGroup", b =>
+            modelBuilder.Entity("CourseService.Domain.Entities.LessonItem", b =>
                 {
-                    b.HasOne("CourseService.Domain.Entities.Course", null)
-                        .WithMany()
-                        .HasForeignKey("CoursesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
 
-                    b.HasOne("CourseService.Domain.Entities.CourseGroup", null)
-                        .WithMany()
-                        .HasForeignKey("GroupsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Property<Guid?>("AuthorId")
+                        .IsRequired()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime?>("Deadline")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<bool>("IsArchived")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTime?>("LastArchivedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime?>("LastUpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("LessonItemType")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Text")
+                        .HasMaxLength(2048)
+                        .HasColumnType("character varying(2048)");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("character varying(256)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AuthorId");
+
+                    b.ToTable("LessonItems", "public");
+
+                    b.HasDiscriminator<int>("LessonItemType").HasValue(3);
+
+                    b.UseTphMappingStrategy();
                 });
 
-            modelBuilder.Entity("CourseCourseTeacher", b =>
+            modelBuilder.Entity("CourseService.Domain.Entities.PracticalLessonItemSubmit", b =>
                 {
-                    b.HasOne("CourseService.Domain.Entities.Course", null)
-                        .WithMany()
-                        .HasForeignKey("CoursesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
 
-                    b.HasOne("CourseService.Domain.Entities.CourseTeacher", null)
+                    b.Property<long>("Attempt")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<bool>("IsArchived")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTime?>("LastArchivedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime?>("LastUpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("PracticalLessonItemId")
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("integer");
+
+                    b.Property<Guid>("StudentId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Text")
+                        .HasMaxLength(2048)
+                        .HasColumnType("character varying(2048)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PracticalLessonItemId");
+
+                    b.ToTable("PracticalLessonItemSubmits", "public");
+                });
+
+            modelBuilder.Entity("CourseService.Domain.Entities.PracticalLessonItem", b =>
+                {
+                    b.HasBaseType("CourseService.Domain.Entities.LessonItem");
+
+                    b.Property<bool>("AllowSubmitAfterDeadline")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(true);
+
+                    b.Property<int?>("Attempts")
+                        .HasColumnType("integer");
+
+                    b.HasDiscriminator().HasValue(2);
+                });
+
+            modelBuilder.Entity("CourseService.Domain.Entities.TheoryLessonItem", b =>
+                {
+                    b.HasBaseType("CourseService.Domain.Entities.LessonItem");
+
+                    b.Property<bool>("IsGraded")
+                        .HasColumnType("boolean");
+
+                    b.HasDiscriminator().HasValue(1);
+                });
+
+            modelBuilder.Entity("CourseService.Domain.Entities.Attachment", b =>
+                {
+                    b.HasOne("CourseService.Domain.Entities.LessonItem", "LessonItem")
+                        .WithMany("Attachments")
+                        .HasForeignKey("LessonItemId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("CourseService.Domain.Entities.PracticalLessonItemSubmit", "PracticalLessonItemSubmit")
+                        .WithMany("Attachments")
+                        .HasForeignKey("PracticalLessonItemSubmitId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.Navigation("LessonItem");
+
+                    b.Navigation("PracticalLessonItemSubmit");
+                });
+
+            modelBuilder.Entity("CourseService.Domain.Entities.CourseGroupCourse", b =>
+                {
+                    b.HasOne("CourseService.Domain.Entities.Course", "Course")
                         .WithMany()
-                        .HasForeignKey("TeachersId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CourseId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.HasOne("CourseService.Domain.Entities.CourseGroup", "Group")
+                        .WithMany()
+                        .HasForeignKey("GroupId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.Navigation("Course");
+
+                    b.Navigation("Group");
+                });
+
+            modelBuilder.Entity("CourseService.Domain.Entities.CourseTeacherCourse", b =>
+                {
+                    b.HasOne("CourseService.Domain.Entities.Course", "Course")
+                        .WithMany()
+                        .HasForeignKey("CourseId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.HasOne("CourseService.Domain.Entities.CourseTeacher", "Teacher")
+                        .WithMany()
+                        .HasForeignKey("TeacherId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.Navigation("Course");
+
+                    b.Navigation("Teacher");
                 });
 
             modelBuilder.Entity("CourseService.Domain.Entities.Lesson", b =>
@@ -190,9 +381,51 @@ namespace CourseService.Infrastructure.Persistence.Migrations
                     b.Navigation("Course");
                 });
 
+            modelBuilder.Entity("CourseService.Domain.Entities.LessonItem", b =>
+                {
+                    b.HasOne("CourseService.Domain.Entities.CourseTeacher", "Author")
+                        .WithMany("LessonItems")
+                        .HasForeignKey("AuthorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Author");
+                });
+
+            modelBuilder.Entity("CourseService.Domain.Entities.PracticalLessonItemSubmit", b =>
+                {
+                    b.HasOne("CourseService.Domain.Entities.PracticalLessonItem", "PracticalLessonItem")
+                        .WithMany("Submits")
+                        .HasForeignKey("PracticalLessonItemId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("PracticalLessonItem");
+                });
+
             modelBuilder.Entity("CourseService.Domain.Entities.Course", b =>
                 {
                     b.Navigation("Lessons");
+                });
+
+            modelBuilder.Entity("CourseService.Domain.Entities.CourseTeacher", b =>
+                {
+                    b.Navigation("LessonItems");
+                });
+
+            modelBuilder.Entity("CourseService.Domain.Entities.LessonItem", b =>
+                {
+                    b.Navigation("Attachments");
+                });
+
+            modelBuilder.Entity("CourseService.Domain.Entities.PracticalLessonItemSubmit", b =>
+                {
+                    b.Navigation("Attachments");
+                });
+
+            modelBuilder.Entity("CourseService.Domain.Entities.PracticalLessonItem", b =>
+                {
+                    b.Navigation("Submits");
                 });
 #pragma warning restore 612, 618
         }

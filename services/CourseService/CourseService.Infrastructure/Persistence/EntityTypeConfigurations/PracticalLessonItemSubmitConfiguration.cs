@@ -8,6 +8,7 @@ public class PracticalLessonItemSubmitConfiguration : IEntityTypeConfiguration<P
 
         builder.Property(submit => submit.Id).ValueGeneratedOnAdd();
         builder.Property(item => item.Text).HasMaxLength(2048);
+        builder.Property(item => item.TeacherComment).HasMaxLength(256);
 
         builder.HasQueryFilter(submit => !submit.IsArchived);
 

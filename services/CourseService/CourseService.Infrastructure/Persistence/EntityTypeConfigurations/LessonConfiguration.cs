@@ -18,6 +18,7 @@ public class LessonConfiguration : IEntityTypeConfiguration<Lesson>
     private static void ConfigureRelationships(EntityTypeBuilder<Lesson> builder)
     {
         AddCourseRelationship(builder);
+        AddLessonItemsConfiguration(builder);
     }
 
     private static void AddCourseRelationship(EntityTypeBuilder<Lesson> builder)
@@ -26,5 +27,12 @@ public class LessonConfiguration : IEntityTypeConfiguration<Lesson>
             .WithMany(course => course.Lessons)
             .HasForeignKey(lesson => lesson.CourseId)
             .IsRequired();
+    }
+
+    private static void AddLessonItemsConfiguration(EntityTypeBuilder<Lesson> builder)
+    {
+        builder.HasMany(teacher => teacher.LessonItems)
+            .WithOne(item => item.Lesson)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }
