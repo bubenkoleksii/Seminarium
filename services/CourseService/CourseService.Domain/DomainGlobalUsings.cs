@@ -1,5 +1,1 @@
-﻿namespace CourseService.Domain;
-
-internal class DomainGlobalUsings
-{
-}
+﻿global using CourseService.Domain.Enums.Lesson.PracticalLessonItem;

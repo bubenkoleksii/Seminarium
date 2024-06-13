@@ -15,6 +15,7 @@ public class CourseTeacherConfiguration : IEntityTypeConfiguration<CourseTeacher
     private static void ConfigureRelationships(EntityTypeBuilder<CourseTeacher> builder)
     {
         AddCourseRelationship(builder);
+        AddLessonItemsRelationship(builder);
     }
 
     private static void AddCourseRelationship(EntityTypeBuilder<CourseTeacher> builder)
@@ -41,5 +42,12 @@ public class CourseTeacherConfiguration : IEntityTypeConfiguration<CourseTeacher
                     j.Property(ctc => ctc.CourseId).IsRequired(false);
                 }
             );
+    }
+
+    private static void AddLessonItemsRelationship(EntityTypeBuilder<CourseTeacher> builder)
+    {
+        builder.HasMany(teacher => teacher.LessonItems)
+            .WithOne(item => item.Author)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }
