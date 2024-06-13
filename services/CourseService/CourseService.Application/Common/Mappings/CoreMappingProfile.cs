@@ -1,5 +1,4 @@
-﻿using CourseService.Application.Course.Commands.CreateCourse;
-using Profile = AutoMapper.Profile;
+﻿using Profile = AutoMapper.Profile;
 
 namespace CourseService.Application.Common.Mappings;
 

@@ -1,6 +1,4 @@
-﻿using Shared.Contracts.StudyPeriod.GetStudyPeriods;
-
-namespace CourseService.Application;
+﻿namespace CourseService.Application;
 
 public static class DependencyInjection
 {
@@ -14,6 +12,7 @@ public static class DependencyInjection
         services.AddScoped<IMailService, MailService>();
 
         services.AddScoped<IFilesManager, FilesManager>();
+        services.AddScoped<IAttachmentManager, AttachmentManager>();
 
         services.AddScoped<ISchoolProfileAccessor, SchoolProfileAccessor>();
 

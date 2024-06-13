@@ -1,6 +1,6 @@
 ﻿namespace CourseService.Application.PracticalLessonItemSubmit.Commands.CreatePracticalLessonItemSubmit;
 
-public class CreatePracticalLessonItemSubmitCommand : IRequest<Either<PracticalLessonItemModelResponse, Error>>
+public class CreatePracticalLessonItemSubmitCommand : IRequest<Either<PracticalLessonItemSubmitModelResponse, Error>>
 {
     public Guid UserId { get; set; }
 

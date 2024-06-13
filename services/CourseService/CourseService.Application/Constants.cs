@@ -15,4 +15,10 @@ public static class Constants
     public const string Student = "student";
 
     public const string Parent = "parent";
+
+    public const string TheoryItem = "theory_item";
+
+    public const string PracticeItem = "practice_item";
+
+    public const string PracticeItemSubmit = "practice_item_submit";
 }

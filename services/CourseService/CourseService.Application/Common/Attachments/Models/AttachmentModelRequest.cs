@@ -1,4 +1,4 @@
-﻿namespace CourseService.Application.Common.Attachments;
+﻿namespace CourseService.Application.Common.Attachments.Models;
 
 public class AttachmentModelRequest
 {
