@@ -10,6 +10,8 @@ public class CourseConfiguration : IEntityTypeConfiguration<Course>
         builder.Property(course => course.Name).HasMaxLength(250).IsRequired();
         builder.Property(course => course.Description).HasMaxLength(1024);
 
+        builder.HasQueryFilter(course => !course.IsArchived);
+
         ConfigureRelationships(builder);
     }
 
@@ -17,6 +19,7 @@ public class CourseConfiguration : IEntityTypeConfiguration<Course>
     {
         AddCourseTeacherRelationship(builder);
         AddCourseGroupRelationship(builder);
+        AddLessonsConfiguration(builder);
     }
 
     private static void AddCourseTeacherRelationship(EntityTypeBuilder<Course> builder)
@@ -69,5 +72,12 @@ public class CourseConfiguration : IEntityTypeConfiguration<Course>
                  j.Property(cgc => cgc.CourseId).IsRequired(false);
              }
          );
+    }
+
+    private static void AddLessonsConfiguration(EntityTypeBuilder<Course> builder)
+    {
+        builder.HasMany(course => course.Lessons)
+            .WithOne(lesson => lesson.Course)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }

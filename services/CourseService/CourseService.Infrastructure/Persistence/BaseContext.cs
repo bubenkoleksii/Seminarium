@@ -15,6 +15,11 @@ public abstract class BaseContext(DbContextOptions options) : DbContext(options)
     {
         modelBuilder.HasDefaultSchema(Schema);
 
+        modelBuilder.ApplyConfiguration(new CourseConfiguration());
+        modelBuilder.ApplyConfiguration(new CourseGroupConfiguration());
+        modelBuilder.ApplyConfiguration(new CourseTeacherConfiguration());
+        modelBuilder.ApplyConfiguration(new LessonConfiguration());
+
         base.OnModelCreating(modelBuilder);
     }
 }
