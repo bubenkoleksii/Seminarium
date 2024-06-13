@@ -7,6 +7,7 @@ public class CourseTeacherConfiguration : IEntityTypeConfiguration<CourseTeacher
         builder.HasKey(teacher => teacher.Id);
 
         builder.Property(teacher => teacher.Id).ValueGeneratedOnAdd();
+        builder.Property(teacher => teacher.IsCreator).HasDefaultValue(false);
 
         ConfigureRelationships(builder);
     }

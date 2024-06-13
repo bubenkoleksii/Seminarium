@@ -11,4 +11,6 @@ public class Course : Entity
     public IEnumerable<CourseTeacher>? Teachers { get; set; }
 
     public IEnumerable<CourseGroup>? Groups { get; set; }
+
+    public IEnumerable<Lesson>? Lessons { get; set; }
 }

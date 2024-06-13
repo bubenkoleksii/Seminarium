@@ -28,6 +28,8 @@ public abstract class BaseContext : DbContext
         modelBuilder.ApplyConfiguration(new JoiningRequestConfiguration());
         modelBuilder.ApplyConfiguration(new SchoolProfileConfiguration());
         modelBuilder.ApplyConfiguration(new GroupConfiguration());
+        modelBuilder.ApplyConfiguration(new GroupNoticeConfiguration());
+        modelBuilder.ApplyConfiguration(new StudyPeriodConfiguration());
 
         base.OnModelCreating(modelBuilder);
     }
