@@ -29,6 +29,7 @@ global using CourseService.Application.LessonItem.Commands.TheoryLessonItem.Dele
 global using CourseService.Application.LessonItem.Commands.TheoryLessonItem.UpdateTheoryLessonItem;
 global using CourseService.Application.LessonItem.Models;
 global using CourseService.Application.PracticalLessonItemSubmit.Commands.CreatePracticalLessonItemSubmit;
+global using CourseService.Application.PracticalLessonItemSubmit.Commands.DeletePracticalLessonItemSubmit;
 global using CourseService.Application.PracticalLessonItemSubmit.Commands.UpdatePracticalLessonItemSubmit;
 global using CourseService.Application.PracticalLessonItemSubmit.Models;
 global using CourseService.Infrastructure.Persistence;
