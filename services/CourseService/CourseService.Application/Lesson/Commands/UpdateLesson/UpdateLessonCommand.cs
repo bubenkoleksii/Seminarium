@@ -6,8 +6,6 @@ public class UpdateLessonCommand : IRequest<Either<LessonModelResponse, Error>>
 
     public Guid UserId { get; set; }
 
-    public Guid CourseId { get; set; }
-
     public required string Topic { get; set; }
 
     public DateTime? Date { get; set; }

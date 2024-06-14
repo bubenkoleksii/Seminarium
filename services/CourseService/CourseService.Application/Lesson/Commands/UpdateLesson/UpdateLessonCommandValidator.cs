@@ -16,12 +16,6 @@ public class UpdateLessonCommandValidator : AbstractValidator<UpdateLessonComman
             .NotEqual(Guid.Empty)
             .WithErrorCode(ErrorTitles.Common.Empty);
 
-        RuleFor(x => x.CourseId)
-            .NotNull()
-            .WithErrorCode(ErrorTitles.Common.Null)
-            .NotEqual(Guid.Empty)
-            .WithErrorCode(ErrorTitles.Common.Empty);
-
         RuleFor(x => x.Topic)
             .NotEmpty()
             .WithErrorCode(ErrorTitles.Common.Empty)
