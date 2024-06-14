@@ -1,12 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace CourseService.Application.PracticalLessonItemSubmit.Commands.UpdatePracticalLessonItemSubmit;
 
-namespace CourseService.Application.PracticalLessonItemSubmit.Commands.UpdatePracticalLessonItemSubmit
+public class UpdatePracticalLessonItemSubmitCommandHandler
 {
-    internal class UpdatePracticalLessonItemSubmitCommandHandler
-    {
-    }
 }

@@ -4,8 +4,8 @@ public class CreateCourseCommandHandler(
     ICommandContext commandContext,
     IMapper mapper,
     ISchoolProfileAccessor schoolProfileAccessor,
-    IRequestClient<GetStudyPeriodsRequest> studyPeriodsClient)
-    : IRequestHandler<CreateCourseCommand, Either<CourseModelResponse, Error>>
+    IRequestClient<GetStudyPeriodsRequest> studyPeriodsClient
+    ) : IRequestHandler<CreateCourseCommand, Either<CourseModelResponse, Error>>
 {
     private readonly ICommandContext _commandContext = commandContext;
 

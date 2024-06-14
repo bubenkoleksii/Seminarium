@@ -52,6 +52,7 @@ public class CreatePracticalLessonItemSubmitCommandHandler(
         var entity = _mapper.Map<Domain.Entities.PracticalLessonItemSubmit>(request);
         entity.PracticalLessonItem = practicalLessonItem;
         entity.Attempt = (uint)existedEntities.Count + 1;
+        entity.Status = PracticalLessonItemSubmitStatus.Submitted;
 
         var (attachments, attachmentsLinks) = await _attachmentManager.ProcessAttachments(request.Attachments, entity, Constants.TheoryItem);
 

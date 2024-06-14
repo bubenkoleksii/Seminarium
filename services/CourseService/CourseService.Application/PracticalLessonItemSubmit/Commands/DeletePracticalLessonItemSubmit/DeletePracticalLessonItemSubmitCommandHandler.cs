@@ -38,6 +38,9 @@ public class DeletePracticalLessonItemSubmitCommandHandler(
         if (practicalLessonItem == null)
             return new InvalidError("practice_item");
 
+        if (practicalLessonItemSubmit.Status != PracticalLessonItemSubmitStatus.Submitted)
+            return new InvalidError("practical_lesson_item_submit_status");
+
         var studentValidatingResult =
             await _schoolProfileAccessor.ValidateStudentGroupByCourse(practicalLessonItem.Lesson.CourseId, activeProfile.Id);
         if (studentValidatingResult.IsSome)
