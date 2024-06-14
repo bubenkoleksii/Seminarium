@@ -49,6 +49,15 @@ public class CreatePracticalLessonItemSubmitCommandHandler(
         if (practicalLessonItem.Attempts.HasValue && practicalLessonItem.Attempts.Value <= existedEntities.Count)
             return new InvalidError("max_attempts_count");
 
+        if (practicalLessonItem.Deadline.HasValue)
+        {
+            var utcDeadline = practicalLessonItem.Deadline.Value.ToUniversalTime();
+            var utcNow = DateTime.UtcNow;
+
+            if (utcNow > utcDeadline)
+                return new InvalidError("deadline");
+        }
+
         var entity = _mapper.Map<Domain.Entities.PracticalLessonItemSubmit>(request);
         entity.PracticalLessonItem = practicalLessonItem;
         entity.Attempt = (uint)existedEntities.Count + 1;
@@ -68,6 +77,7 @@ public class CreatePracticalLessonItemSubmitCommandHandler(
             return new InvalidDatabaseOperationError("attachment");
         }
 
+        entity.PracticalLessonItem.Submits = null;
         var practiceLessonItemSubmitModelResponse = _mapper.Map<PracticalLessonItemSubmitModelResponse>(entity);
         practiceLessonItemSubmitModelResponse.Attachments = attachmentsLinks;
 

@@ -53,6 +53,8 @@ public class UpdateTheoryLessonItemCommandHandler(
             return new InvalidDatabaseOperationError("theory_lesson_item");
         }
 
+        theoryLessonItem.Lesson.LessonItems = null;
+
         var theoryLessonItemModelResponse = _mapper.Map<TheoryLessonItemModelResponse>(theoryLessonItem);
         return theoryLessonItemModelResponse;
     }

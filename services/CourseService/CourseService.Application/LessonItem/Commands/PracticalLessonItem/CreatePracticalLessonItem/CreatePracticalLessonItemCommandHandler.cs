@@ -55,6 +55,8 @@ public class CreatePracticalLessonItemCommandHandler(
             return new InvalidDatabaseOperationError("lesson");
         }
 
+        entity.Lesson.LessonItems = null;
+
         var practicalLessonModelResponse = _mapper.Map<PracticalLessonItemModelResponse>(entity);
         practicalLessonModelResponse.Attachments = attachmentsLinks;
 

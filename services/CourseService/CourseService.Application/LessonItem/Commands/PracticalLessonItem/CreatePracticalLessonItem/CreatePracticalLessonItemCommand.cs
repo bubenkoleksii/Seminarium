@@ -17,4 +17,6 @@ public class CreatePracticalLessonItemCommand : IRequest<Either<PracticalLessonI
     public int? Attempts { get; set; }
 
     public bool AllowSubmitAfterDeadline { get; set; }
+
+    public bool IsArchived { get; set; }
 }

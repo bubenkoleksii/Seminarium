@@ -70,6 +70,8 @@ public class CreateTheoryLessonItemCommandHandler(
             return new InvalidDatabaseOperationError("attachment");
         }
 
+        entity.Lesson.LessonItems = null;
+
         var theoryLessonModelResponse = _mapper.Map<TheoryLessonItemModelResponse>(entity);
         theoryLessonModelResponse.Attachments = attachmentsLinks;
 

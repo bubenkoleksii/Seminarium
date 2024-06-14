@@ -55,6 +55,8 @@ public class UpdatePracticalLessonItemCommandHandler(
             return new InvalidDatabaseOperationError("practical_lesson_item");
         }
 
+        practicalLessonItem.Lesson.LessonItems = null;
+
         var practicalLessonItemModelResponse = _mapper.Map<PracticalLessonItemModelResponse>(practicalLessonItem);
         return practicalLessonItemModelResponse;
     }

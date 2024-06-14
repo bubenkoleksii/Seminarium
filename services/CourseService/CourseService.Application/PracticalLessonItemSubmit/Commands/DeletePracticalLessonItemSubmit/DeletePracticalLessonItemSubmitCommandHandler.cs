@@ -27,7 +27,9 @@ public class DeletePracticalLessonItemSubmitCommandHandler(
         if (activeProfile == null)
             return new InvalidError("school_profile");
 
-        var practicalLessonItemSubmit = await _commandContext.PracticalLessonItemSubmits.FindAsync(request.Id, CancellationToken.None);
+        var practicalLessonItemSubmit = await _commandContext.PracticalLessonItemSubmits
+            .Where(submit => submit.Id == request.Id && submit.StudentId == activeProfile.Id)
+            .FirstOrDefaultAsync(CancellationToken.None);
         if (practicalLessonItemSubmit == null)
             return Option<Error>.None;
 

@@ -15,4 +15,6 @@ public class CreateTheoryLessonItemCommand : IRequest<Either<TheoryLessonItemMod
     public ICollection<AttachmentModelRequest>? Attachments { get; set; }
 
     public bool IsGraded { get; set; }
+
+    public bool IsArchived { get; set; }
 }

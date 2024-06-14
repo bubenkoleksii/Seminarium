@@ -1,11 +1,14 @@
 ﻿namespace CourseService.Api.Controllers;
 
-public class CourseController(IMapper mapper) : BaseController
+public class LessonController(IMapper mapper) : BaseController
 {
+    private readonly IMapper _mapper = mapper;
+
     [HttpPost("[action]/")]
-    [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(CourseResponse))]
+    [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(LessonResponse))]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> Create([FromBody] CreateCourseRequest createRequest)
+    [ProducesResponseType(StatusCodes.Status409Conflict)]
+    public async Task<IActionResult> Create([FromBody] CreateLessonRequest createRequest)
     {
         var userId = User.Identity?.GetId();
         var userRole = User.Identity?.GetRole();
@@ -13,22 +16,22 @@ public class CourseController(IMapper mapper) : BaseController
         if (userId is null || userRole is null)
             return ErrorActionResultHandler.Handle(new InvalidError("user"));
 
-        var command = mapper.Map<CreateCourseCommand>(createRequest);
+        var command = _mapper.Map<CreateLessonCommand>(createRequest);
         command.UserId = (Guid)userId;
 
         var result = await Mediator.Send(command);
 
         return result.Match(
-            Left: modelResponse => CreatedAtAction(nameof(Create), mapper.Map<CourseResponse>(modelResponse)),
+            Left: modelResponse => CreatedAtAction(nameof(Create), _mapper.Map<LessonResponse>(modelResponse)),
             Right: ErrorActionResultHandler.Handle
         );
     }
 
     [HttpPut("[action]/")]
-    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CourseResponse))]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(LessonResponse))]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> Update([FromBody] UpdateCourseRequest updateRequest)
+    public async Task<IActionResult> Update([FromBody] UpdateLessonRequest updateRequest)
     {
         var userId = User.Identity?.GetId();
         var userRole = User.Identity?.GetRole();
@@ -36,13 +39,13 @@ public class CourseController(IMapper mapper) : BaseController
         if (userId is null || userRole is null)
             return ErrorActionResultHandler.Handle(new InvalidError("user"));
 
-        var command = mapper.Map<UpdateCourseCommand>(updateRequest);
+        var command = _mapper.Map<UpdateLessonCommand>(updateRequest);
         command.UserId = (Guid)userId;
 
         var result = await Mediator.Send(command);
 
         return result.Match(
-            Left: modelResponse => Ok(mapper.Map<CourseResponse>(modelResponse)),
+            Left: modelResponse => Ok(_mapper.Map<LessonResponse>(modelResponse)),
             Right: ErrorActionResultHandler.Handle
         );
     }
@@ -62,7 +65,7 @@ public class CourseController(IMapper mapper) : BaseController
         if (userRole is null)
             return ErrorActionResultHandler.Handle(new InvalidError("user_role"));
 
-        var command = new DeleteCourseCommand(id, (Guid)userId);
+        var command = new DeleteLessonCommand(id, (Guid)userId);
 
         var result = await Mediator.Send(command);
 

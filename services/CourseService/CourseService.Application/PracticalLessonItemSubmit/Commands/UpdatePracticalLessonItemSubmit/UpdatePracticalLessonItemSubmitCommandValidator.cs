@@ -16,12 +16,6 @@ public class UpdatePracticalLessonItemSubmitCommandValidator : AbstractValidator
             .NotEqual(Guid.Empty)
             .WithErrorCode(ErrorTitles.Common.Empty);
 
-        RuleFor(x => x.PracticalLessonItemId)
-            .NotNull()
-            .WithErrorCode(ErrorTitles.Common.Null)
-            .NotEqual(Guid.Empty)
-            .WithErrorCode(ErrorTitles.Common.Empty);
-
         RuleFor(x => x.Text)
             .MaximumLength(2048)
             .WithErrorCode(ErrorTitles.Common.TooLong);

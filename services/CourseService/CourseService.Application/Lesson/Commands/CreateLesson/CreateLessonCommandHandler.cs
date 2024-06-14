@@ -56,6 +56,8 @@ public class CreateLessonCommandHandler(
             return new InvalidDatabaseOperationError("lesson");
         }
 
+        entity.Course.Lessons = null;
+
         var lessonResponse = _mapper.Map<LessonModelResponse>(entity);
         return lessonResponse;
     }

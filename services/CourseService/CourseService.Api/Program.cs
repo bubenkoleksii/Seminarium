@@ -1,3 +1,5 @@
+using CourseService.Api.Attachments;
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Host.UseSerilog();
@@ -20,6 +22,8 @@ builder.Services.SetupOptions(builder.Configuration);
 
 builder.Services.AddApplication(builder.Configuration);
 builder.Services.AddPersistence(builder.Configuration);
+
+builder.Services.AddScoped<IAttachmentHelper, AttachmentHelper>();
 
 builder.Services.AddIdentityAuthentication(builder.Configuration);
 
