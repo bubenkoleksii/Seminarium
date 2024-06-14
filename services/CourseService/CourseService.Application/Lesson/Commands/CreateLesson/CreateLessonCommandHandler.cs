@@ -32,6 +32,16 @@ public class CreateLessonCommandHandler(
         if (teacherValidatingResult.IsSome)
             return (Error)teacherValidatingResult;
 
+        if (request.Date.HasValue)
+        {
+            var existedEntity = await _commandContext.Lessons
+                .Where(l => l.Date == request.Date.Value)
+                .FirstOrDefaultAsync();
+
+            if (existedEntity != null)
+                return new AlreadyExistsError("lesson");
+        }
+
         var entity = _mapper.Map<Domain.Entities.Lesson>(request);
 
         await _commandContext.Lessons.AddAsync(entity, cancellationToken);

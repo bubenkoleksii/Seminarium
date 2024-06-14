@@ -1,8 +1,10 @@
 ﻿namespace CourseService.Application.Common.Attachments.AttachmentManager;
 
-public class AttachmentManager(IFilesManager filesManager) : IAttachmentManager
+public class AttachmentManager(IFilesManager filesManager, ICommandContext commandContext) : IAttachmentManager
 {
     private readonly IFilesManager _filesManager = filesManager;
+
+    private readonly ICommandContext _commandContext = commandContext;
 
     public async Task<(List<Attachment> Attachments, List<string> AttachmentsLinks)> ProcessAttachments
         (IEnumerable<AttachmentModelRequest>? attachmentRequests, Domain.Entities.LessonItem entity, string attachmentType)
@@ -58,5 +60,27 @@ public class AttachmentManager(IFilesManager filesManager) : IAttachmentManager
         }
 
         return (attachments, attachmentsLinks);
+    }
+
+    public async Task DeleteAttachments(IEnumerable<Attachment>? attachments, CancellationToken cancellationToken)
+    {
+        if (attachments == null)
+            return;
+
+        foreach (var attachment in attachments)
+        {
+            await _filesManager.DeleteFileIfExists(attachment.Url);
+
+            _commandContext.Attachments.Remove(attachment);
+        }
+
+        try
+        {
+            await _commandContext.SaveChangesAsync(cancellationToken);
+        }
+        catch (Exception ex)
+        {
+            Log.Error(ex, "An error occurred while deleting attachments");
+        }
     }
 }

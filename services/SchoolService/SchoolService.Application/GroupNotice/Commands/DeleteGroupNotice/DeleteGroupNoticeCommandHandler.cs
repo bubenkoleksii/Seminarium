@@ -13,7 +13,7 @@ public class DeleteGroupNoticeCommandHandler(ISchoolProfileManager schoolProfile
             .Include(notice => notice.Group)
             .FirstOrDefaultAsync(n => n.Id == request.Id, CancellationToken.None);
         if (notice == null)
-            return new NotFoundByIdError(request.Id, "notice");
+            return Option<Error>.None;
 
         var profile = await _schoolProfileManager.GetActiveProfile(request.UserId);
         if (profile is null)
