@@ -37,6 +37,7 @@ public class CreateCourseCommandHandler(
         var teacher = new CourseTeacher
         {
             Id = activeProfile.Id,
+            IsCreator = true,
         };
 
         var entity = _mapper.Map<Domain.Entities.Course>(request);

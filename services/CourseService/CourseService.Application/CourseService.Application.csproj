@@ -24,7 +24,7 @@
 		<PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="6.0.1" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
 		<PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.2" />
-		<PackageReference Include="Seminarium.Shared.Contracts" Version="1.0.10" />
+		<PackageReference Include="Seminarium.Shared.Contracts" Version="1.0.12" />
 		<PackageReference Include="Seminarium.Shared.Utils" Version="1.0.3" />
 		<PackageReference Include="Serilog" Version="3.1.1" />
 		<PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />

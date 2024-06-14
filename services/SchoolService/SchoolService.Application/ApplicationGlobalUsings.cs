@@ -60,6 +60,7 @@ global using Shared.Contracts.Group.GetGroups;
 global using Shared.Contracts.Options;
 global using Shared.Contracts.SchoolProfile;
 global using Shared.Contracts.SchoolProfile.GetActiveSchoolProfile;
+global using Shared.Contracts.SchoolProfile.GetSchoolProfiles;
 global using Shared.Contracts.StudyPeriod;
 global using Shared.Contracts.StudyPeriod.GetStudyPeriods;
 global using Shared.Utils.File;

@@ -13,7 +13,7 @@ public record CourseResponse(
 
     string? Description,
 
-    IEnumerable<SchoolProfileContract>? Teachers,
+    IEnumerable<CourseTeacherResponse>? Teachers,
 
-    IEnumerable<GroupContract>? Groups
+    IEnumerable<CourseGroupResponse>? Groups
 );

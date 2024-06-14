@@ -75,6 +75,7 @@ public static class DependencyInjection
             busConfigurator.AddRequestClient<string>(new Uri($"exchange:{nameof(GetActiveSchoolProfileRequest)}"));
             busConfigurator.AddRequestClient<string>(new Uri($"exchange:{nameof(GetStudyPeriodsRequest)}"));
             busConfigurator.AddRequestClient<string>(new Uri($"exchange:{nameof(GetGroupsRequest)}"));
+            busConfigurator.AddRequestClient<string>(new Uri($"exchange:{nameof(GetSchoolProfilesRequest)}"));
         }
     }
 

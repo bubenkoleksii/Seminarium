@@ -14,7 +14,7 @@ public class CourseModelResponse
 
     public string? Description { get; set; }
 
-    public IEnumerable<SchoolProfileContract>? Teachers { get; set; }
+    public IEnumerable<CourseTeacherModelResponse>? Teachers { get; set; }
 
-    public IEnumerable<GroupContract>? Groups { get; set; }
+    public IEnumerable<CourseGroupModelResponse>? Groups { get; set; }
 }

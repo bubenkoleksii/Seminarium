@@ -20,6 +20,10 @@ public class ApiMappingProfile : Profile
         CreateMap<UpdateCourseRequest, UpdateCourseCommand>();
 
         CreateMap<CourseModelResponse, CourseResponse>();
+
+        CreateMap<CourseTeacherModelResponse, CourseTeacherResponse>();
+
+        CreateMap<CourseGroupModelResponse, CourseGroupResponse>();
     }
 
     private void ConfigureLessonMapping()
