@@ -24,6 +24,10 @@ public class ApiMappingProfile : Profile
         CreateMap<CourseTeacherModelResponse, CourseTeacherResponse>();
 
         CreateMap<CourseGroupModelResponse, CourseGroupResponse>();
+
+        CreateMap<GetAllCoursesParams, GetAllCoursesQuery>();
+
+        CreateMap<GetAllCoursesModelResponse, GetAllCoursesResponse>();
     }
 
     private void ConfigureLessonMapping()

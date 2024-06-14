@@ -2,6 +2,29 @@
 
 public class CourseController(IMapper mapper) : BaseController
 {
+    [HttpGet]
+    [HttpGet("[action]/")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GetAllCoursesResponse))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> GetAll([FromQuery] GetAllCoursesParams filterParams)
+    {
+        var userId = User.Identity?.GetId();
+        var userRole = User.Identity?.GetRole();
+
+        if (userId is null || userRole is null)
+            return ErrorActionResultHandler.Handle(new InvalidError("user"));
+
+        var query = mapper.Map<GetAllCoursesQuery>(filterParams);
+        query.UserId = (Guid)userId;
+
+        var result = await Mediator.Send(query);
+
+        return result.Match(
+            Left: modelResponse => Ok(mapper.Map<GetAllCoursesResponse>(modelResponse)),
+            Right: ErrorActionResultHandler.Handle
+        );
+    }
+
     [HttpPost("[action]/")]
     [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(CourseResponse))]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
