@@ -42,8 +42,16 @@ public class CreatePracticalLessonItemSubmitCommandHandler(
         if (studentValidatingResult.IsSome)
             return (Error)studentValidatingResult;
 
+        var existedEntities = await _commandContext.PracticalLessonItemSubmits
+            .Where(s => s.StudentId == activeProfile.Id && s.PracticalLessonItemId == practicalLessonItem.Id)
+            .ToListAsync();
+
+        if (practicalLessonItem.Attempts.HasValue && practicalLessonItem.Attempts.Value <= existedEntities.Count)
+            return new InvalidError("max_attempts_count");
+
         var entity = _mapper.Map<Domain.Entities.PracticalLessonItemSubmit>(request);
         entity.PracticalLessonItem = practicalLessonItem;
+        entity.Attempt = (uint)existedEntities.Count + 1;
 
         var (attachments, attachmentsLinks) = await _attachmentManager.ProcessAttachments(request.Attachments, entity, Constants.TheoryItem);
 

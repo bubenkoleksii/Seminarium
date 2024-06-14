@@ -1,5 +1,7 @@
 ﻿namespace CourseService.Application.Lesson.Commands.DeleteLesson;
 
-internal class DeleteLessonCommand
-{
-}
+public record DeleteLessonCommand(
+    Guid Id,
+
+    Guid UserId
+) : IRequest<Option<Error>>;

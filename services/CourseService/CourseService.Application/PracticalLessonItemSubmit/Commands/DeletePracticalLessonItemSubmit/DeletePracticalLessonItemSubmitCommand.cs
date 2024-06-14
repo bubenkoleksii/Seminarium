@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace CourseService.Application.PracticalLessonItemSubmit.Commands.DeletePracticalLessonItemSubmit;
 
-namespace CourseService.Application.PracticalLessonItemSubmit.Commands.DeletePracticalLessonItemSubmit
-{
-    internal class DeletePracticalLessonItemSubmitCommand
-    {
-    }
-}
+public record DeletePracticalLessonItemSubmitCommand(
+    Guid Id,
+
+    Guid UserId
+) : IRequest<Option<Error>>;
