@@ -1,6 +1,6 @@
 ﻿namespace CourseService.Application.LessonItem.Commands.TheoryLessonItem.UpdateTheoryLessonItem;
 
-public class UpdateTheoryLessonItemCommand
+public class UpdateTheoryLessonItemCommand : IRequest<Either<TheoryLessonItemModelResponse, Error>>
 {
     public Guid Id { get; set; }
 

@@ -16,12 +16,6 @@ public class UpdatePracticalLessonItemCommandValidator : AbstractValidator<Updat
             .NotEqual(Guid.Empty)
             .WithErrorCode(ErrorTitles.Common.Empty);
 
-        RuleFor(x => x.LessonId)
-            .NotNull()
-            .WithErrorCode(ErrorTitles.Common.Null)
-            .NotEqual(Guid.Empty)
-            .WithErrorCode(ErrorTitles.Common.Empty);
-
         RuleFor(x => x.Title)
             .NotEmpty()
             .WithErrorCode(ErrorTitles.Common.Empty)

@@ -17,7 +17,7 @@ public class UpdateLessonCommandHandler(
         var getActiveProfileRequest = new GetActiveSchoolProfileRequest(
           UserId: request.UserId,
           AllowedProfileTypes: [Constants.Teacher]
-      );
+        );
 
         var retrievingActiveProfileResult =
             await _schoolProfileAccessor.GetActiveSchoolProfile(getActiveProfileRequest, cancellationToken);
