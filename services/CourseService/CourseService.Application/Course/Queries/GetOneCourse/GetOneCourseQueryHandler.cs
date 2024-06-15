@@ -22,7 +22,7 @@ public class GetOneCourseQueryHandler(
     {
         var getActiveProfileRequest = new GetActiveSchoolProfileRequest(
             UserId: request.UserId,
-            AllowedProfileTypes: [Constants.Teacher, Constants.ClassTeacher, Constants.SchoolAdmin]
+            AllowedProfileTypes: new[] { Constants.Teacher, Constants.ClassTeacher, Constants.SchoolAdmin }
         );
 
         var retrievingActiveProfileResult = await _schoolProfileAccessor.GetActiveSchoolProfile(getActiveProfileRequest, cancellationToken);
@@ -34,10 +34,10 @@ public class GetOneCourseQueryHandler(
             return new InvalidError("school_profile");
 
         var course = await _queryContext.Courses
-                   .IgnoreQueryFilters()
-                   .Include(c => c.Groups)
-                   .Include(c => c.Teachers)
-                   .FirstOrDefaultAsync(c => c.Id == request.Id, cancellationToken);
+            .IgnoreQueryFilters()
+            .Include(c => c.Groups)
+            .Include(c => c.Teachers)
+            .FirstOrDefaultAsync(c => c.Id == request.Id, cancellationToken);
 
         if (course == null)
             return new NotFoundByIdError(request.Id, "course");
@@ -45,8 +45,8 @@ public class GetOneCourseQueryHandler(
         RemoveCycling(course);
 
         var courseResponse = _mapper.Map<CourseModelResponse>(course);
-        courseResponse.Teachers = await GetTeachers(courseResponse.Teachers, cancellationToken);
-        courseResponse.Groups = await GetGroups(courseResponse.Groups, cancellationToken);
+        courseResponse.Teachers = await GetTeachers(course.Teachers?.Select(t => t.Id).ToArray(), cancellationToken);
+        courseResponse.Groups = await GetGroups(course.Groups?.Select(g => g.Id).ToArray(), cancellationToken);
 
         return courseResponse;
     }
@@ -73,20 +73,18 @@ public class GetOneCourseQueryHandler(
         }
     }
 
-    private async Task<IEnumerable<CourseTeacherModelResponse>> GetTeachers(IEnumerable<CourseTeacherModelResponse>? courseTeachers, CancellationToken cancellationToken)
+    private async Task<IEnumerable<CourseTeacherModelResponse>> GetTeachers
+        (Guid[]? teachersIds, CancellationToken cancellationToken)
     {
-        if (courseTeachers is null || !courseTeachers.Any())
-            return [];
-
-        var teachersIds = courseTeachers.Select(t => t.Id).ToArray();
-        if (teachersIds.Length == 0)
+        if (teachersIds == null || teachersIds.Length == 0)
             return [];
 
         var getTeachersRequest = new GetSchoolProfilesRequest(Ids: teachersIds, null, null, null, null);
 
         try
         {
-            var response = await _getSchoolProfilesClient.GetResponse<GetSchoolProfilesResponse>(getTeachersRequest, cancellationToken);
+            var response =
+                await _getSchoolProfilesClient.GetResponse<GetSchoolProfilesResponse>(getTeachersRequest, cancellationToken);
 
             if (response.Message.Profiles == null)
                 return [];
@@ -97,7 +95,7 @@ public class GetOneCourseQueryHandler(
                 var teacher = new CourseTeacherModelResponse(
                     Id: profile.Id,
                     Name: profile.Name,
-                    IsCreator: courseTeachers.First(t => t.Id == profile.Id).IsCreator
+                    IsCreator: false
                 );
 
                 teachers.Add(teacher);
@@ -112,21 +110,18 @@ public class GetOneCourseQueryHandler(
         }
     }
 
-    private async Task<IEnumerable<CourseGroupModelResponse>> GetGroups(IEnumerable<CourseGroupModelResponse>? courseGroups, CancellationToken cancellationToken)
+    private async Task<IEnumerable<CourseGroupModelResponse>> GetGroups
+        (Guid[]? groupsIds, CancellationToken cancellationToken)
     {
-        if (courseGroups == null || !courseGroups.Any())
-            return [];
-
-        var groupsIds = courseGroups.Select(g => g.Id).ToArray();
-
-        if (groupsIds.Length == 0)
+        if (groupsIds == null || groupsIds.Length == 0)
             return [];
 
         var getGroupsRequest = new GetGroupsRequest(groupsIds, null);
 
         try
         {
-            var response = await _getGroupsClient.GetResponse<GetGroupsResponse>(getGroupsRequest, cancellationToken);
+            var response =
+                await _getGroupsClient.GetResponse<GetGroupsResponse>(getGroupsRequest, cancellationToken);
 
             if (response.Message.Groups == null)
                 return [];

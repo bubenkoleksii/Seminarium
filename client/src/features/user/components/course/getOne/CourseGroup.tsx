@@ -13,9 +13,12 @@ const CourseGroup: FC<CourseGroupProps> = ({ group, onDelete }) => {
   const t = useTranslations('Course');
 
   return (
-    <div className="mb-2 flex flex-col items-start">
-      <Link href={`/${activeLocale}/u/groups/${group.id}`}>
-        <a className="text-blue-500 hover:underline">{group.name}</a>
+    <div className="mb-2 flex flex-col items-center p-4 shadow-md">
+      <Link
+        className="mb-3 text-center"
+        href={`/${activeLocale}/u/groups/${group.id}`}
+      >
+        {group.name}
       </Link>
       <Button
         onClick={() => onDelete(group.id)}
@@ -29,4 +32,3 @@ const CourseGroup: FC<CourseGroupProps> = ({ group, onDelete }) => {
 };
 
 export { CourseGroup };
-

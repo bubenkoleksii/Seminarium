@@ -23,7 +23,12 @@ public class CoreMappingProfile : Profile
 
         CreateMap<UpdateCourseCommand, Domain.Entities.Course>();
 
-        CreateMap<Domain.Entities.Course, CourseModelResponse>();
+        CreateMap<Domain.Entities.Course, CourseModelResponse>()
+                  .ForMember(dest => dest.Teachers, opt => opt.Ignore())
+                  .ForMember(dest => dest.Groups, opt => opt.Ignore());
+        CreateMap<CourseGroup, CourseGroupModelResponse>();
+
+        CreateMap<CourseTeacher, CourseTeacherModelResponse>();
     }
 
     private void ConfigureLessonMapping()

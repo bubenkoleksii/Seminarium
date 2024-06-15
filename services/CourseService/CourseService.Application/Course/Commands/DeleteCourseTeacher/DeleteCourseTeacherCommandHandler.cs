@@ -13,7 +13,7 @@ public class DeleteCourseTeacherCommandHandler(
     {
         var getActiveProfileRequest = new GetActiveSchoolProfileRequest(
             UserId: request.UserId,
-            AllowedProfileTypes: [Constants.Teacher, Constants.SchoolAdmin]
+            AllowedProfileTypes: [Constants.Teacher, Constants.SchoolAdmin, Constants.ClassTeacher]
         );
 
         var retrievingActiveProfileResult =
@@ -25,11 +25,13 @@ public class DeleteCourseTeacherCommandHandler(
         if (activeProfile == null || activeProfile.SchoolId == null)
             return new InvalidError("school_profile");
 
-        var course = await _commandContext.Courses.FirstOrDefaultAsync(c => c.Id == request.Id, CancellationToken.None);
-        if (course is null)
+        var course = await _commandContext.Courses
+            .Include(c => c.Teachers)
+            .FirstOrDefaultAsync(c => c.Id == request.CourseId, CancellationToken.None);
+        if (course is null || course.Teachers == null)
             return new NotFoundByIdError(request.Id, "course");
 
-        if (activeProfile.Type != Constants.Teacher || activeProfile.Type != Constants.SchoolAdmin)
+        if (activeProfile.Type != Constants.Teacher && activeProfile.Type != Constants.SchoolAdmin)
             return new InvalidError("school_profile");
 
         if (activeProfile.Type == Constants.Teacher)
@@ -43,9 +45,15 @@ public class DeleteCourseTeacherCommandHandler(
         if (courseTeacher is null)
             return new NotFoundByIdError(request.Id, "course_teacher");
 
+        if (!course.Teachers.Any(t => t.Id == courseTeacher.Id))
+            return Option<Error>.None;
+
+        course.Teachers = course.Teachers.Where(t => t.Id != courseTeacher.Id).ToList();
+
+        _commandContext.Courses.Update(course);
+
         try
         {
-            _commandContext.CourseTeachers.Remove(courseTeacher);
             await _commandContext.SaveChangesAsync(cancellationToken);
         }
         catch (Exception exception)
@@ -57,5 +65,4 @@ public class DeleteCourseTeacherCommandHandler(
 
         return Option<Error>.None;
     }
-
 }

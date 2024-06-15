@@ -25,7 +25,7 @@ public class AddCourseGroupCommandHandler(
 
         var activeProfile = (SchoolProfileContract)retrievingActiveProfileResult;
         if (activeProfile == null || activeProfile.SchoolId == null ||
-            activeProfile.Type != Constants.SchoolAdmin || activeProfile.Type != Constants.Teacher)
+            (activeProfile.Type != Constants.SchoolAdmin && activeProfile.Type != Constants.Teacher))
             return new InvalidError("school_profile");
 
         var course = await _commandContext.Courses.FindAsync(request.CourseId, CancellationToken.None);
@@ -48,12 +48,32 @@ public class AddCourseGroupCommandHandler(
         if (filteredGroup == null)
             return new NotFoundError("group");
 
-        var courseGroup = new CourseGroup
-        {
-            Id = filteredGroup.Id
-        };
         course.Groups ??= [];
-        course.Groups.Add(courseGroup);
+        var existedGroup = await _commandContext.CourseGroups.FindAsync(filteredGroup.Id);
+        if (existedGroup != null)
+        {
+            course.Groups.Add(existedGroup);
+        }
+        else
+        {
+            var newCourseGroup = new CourseGroup
+            {
+                Id = filteredGroup.Id
+            };
+
+            try
+            {
+                await _commandContext.CourseGroups.AddAsync(newCourseGroup, cancellationToken);
+                await _commandContext.SaveChangesAsync(cancellationToken);
+            }
+            catch (Exception exception)
+            {
+                Log.Error(exception, "An error occurred while creating the course group with values {@Request}.", request);
+                return new InvalidDatabaseOperationError("course");
+            }
+
+            course.Groups.Add(newCourseGroup);
+        }
 
         try
         {

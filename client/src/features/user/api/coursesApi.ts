@@ -2,12 +2,12 @@
 
 import { course } from '@/features/user/routes';
 import type {
+  AddCourseGroupRequest,
+  AddCourseTeacherRequest,
   CourseResponse,
   CreateCourseRequest,
   PagesCoursesResponse,
   UpdateCourseRequest,
-  AddCourseGroupRequest,
-  AddCourseTeacherRequest
 } from '@/features/user/types/courseTypes';
 import { api } from '@/shared/api';
 import { ApiResponse } from '@/shared/types';
@@ -32,13 +32,25 @@ type AddCourseGroup = (
   data: AddCourseGroupRequest,
 ) => Promise<ApiResponse<any>>;
 
-type RemoveCourseGroup = (id: string) => Promise<ApiResponse<any>>;
+type RemoveCourseGroup = ({
+  id,
+  courseId,
+}: {
+  id: string;
+  courseId: string;
+}) => Promise<ApiResponse<any>>;
 
 type AddCourseTeacher = (
   data: AddCourseTeacherRequest,
 ) => Promise<ApiResponse<any>>;
 
-type RemoveCourseTeacher = (id: string) => Promise<ApiResponse<any>>;
+type RemoveCourseTeacher = ({
+  id,
+  courseId,
+}: {
+  id: string;
+  courseId: string;
+}) => Promise<ApiResponse<any>>;
 
 export const getOneCourse: GetOne = (id) => api.get(course.getOne(id));
 
@@ -56,11 +68,11 @@ export const removeCourse: RemoveCourse = (id) => api.remove(course.remove(id));
 export const addCourseGroup: AddCourseGroup = (data) =>
   api.create(course.addGroup, data, false);
 
-export const removeCourseGroup: RemoveCourseGroup = (id) =>
-  api.remove(course.removeGroup(id));
+export const removeCourseGroup: RemoveCourseGroup = ({ id, courseId }) =>
+  api.remove(course.removeGroup(id, courseId));
 
 export const addCourseTeacher: AddCourseTeacher = (data) =>
   api.create(course.addTeacher, data, false);
 
-export const removeCourseTeacher: RemoveCourseTeacher = (id) =>
-  api.remove(course.removeTeacher(id));
+export const removeCourseTeacher: RemoveCourseTeacher = ({ id, courseId }) =>
+  api.remove(course.removeTeacher(id, courseId));

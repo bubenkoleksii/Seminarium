@@ -147,11 +147,11 @@ public class CourseController(IMapper mapper) : BaseController
         );
     }
 
-    [HttpDelete("[action]/{id}")]
+    [HttpDelete("[action]/{id}/{courseId}")]
     [ProducesResponseType(StatusCodes.Status202Accepted)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> DeleteCourseGroup(Guid id)
+    public async Task<IActionResult> DeleteCourseGroup(Guid id, Guid courseId)
     {
         var userId = User.Identity?.GetId();
         var userRole = User.Identity?.GetRole();
@@ -164,7 +164,8 @@ public class CourseController(IMapper mapper) : BaseController
 
         var command = new DeleteCourseGroupCommand(
             (Guid)userId,
-            id
+            id,
+            courseId
         );
 
         var result = await Mediator.Send(command);
@@ -174,11 +175,11 @@ public class CourseController(IMapper mapper) : BaseController
             Some: ErrorActionResultHandler.Handle);
     }
 
-    [HttpDelete("[action]/{id}")]
+    [HttpDelete("[action]/{id}/{courseId}")]
     [ProducesResponseType(StatusCodes.Status202Accepted)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> DeleteCourseTeacher(Guid id)
+    public async Task<IActionResult> DeleteCourseTeacher(Guid id, Guid courseId)
     {
         var userId = User.Identity?.GetId();
         var userRole = User.Identity?.GetRole();
@@ -190,15 +191,16 @@ public class CourseController(IMapper mapper) : BaseController
             return ErrorActionResultHandler.Handle(new InvalidError("user_role"));
 
         var command = new DeleteCourseTeacherCommand(
+            id,
             (Guid)userId,
-            id
+            courseId
         );
 
         var result = await Mediator.Send(command);
 
         return result.Match(
-            None: () => Accepted(),
-            Some: error => ErrorActionResultHandler.Handle(error));
+            None: Accepted,
+            Some: ErrorActionResultHandler.Handle);
     }
 
     [HttpDelete("[action]/{id}")]

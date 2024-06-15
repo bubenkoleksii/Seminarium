@@ -16,11 +16,13 @@ export const course = {
   getAll: '/course/getAll',
   create: '/course/create',
   update: '/course/update',
-  addGroup: 'course/addGroup',
-  addTeacher: 'course/addTeacher',
+  addGroup: '/course/addGroup',
+  addTeacher: '/course/addTeacher',
   remove: (id: string) => `/course/Delete/${id}`,
-  removeGroup: (id: string) => `/course/DeleteCourseGroup/${id}`,
-  removeTeacher: (id: string) => `/course/DeleteCourseTeacher/${id}`,
+  removeGroup: (id: string, courseId: string) =>
+    `/course/DeleteCourseGroup/${id}/${courseId}`,
+  removeTeacher: (id: string, courseId: string) =>
+    `/course/DeleteCourseTeacher/${id}/${courseId}`,
 };
 
 export const group = {

@@ -681,9 +681,19 @@
     "deleteSuccess": "Навчальний простір успішно видалено",
     "teachers": "Викладачі",
     "groups": "Групи",
+    "toCourse": "Курс",
+    "groupNotFound": "Групу з такою назвою не знайдено",
+    "teacherNotFound": "Викладача з таким іменем не знайдено",
     "detailsBtn": "Детальніше",
     "addGroupBtn": "Додати групу",
+    "createGroupTitle": "Додавання групи",
+    "createTeacherTitle": "Додавання викладача",
     "addTeacherBtn": "Додати викладача",
+    "addGroupSuccess": "Успішно додано групу",
+    "addTeacherSuccess": "Успішно додано викладача",
+    "deleteGroupSuccess": "Успішно видалено групу",
+    "deleteTeacherSuccess": "Викладача успішно видалено",
+    "creator": "Засновник",
     "toMain": "Курси",
     "labels": {
       "createSubmit": "Створити",
@@ -695,10 +705,13 @@
       "groups": "Групи",
       "teachers": "Викладачі",
       "noGroups": "Ще немає груп",
-      "noTeachers": "Ще немає викладачів"
+      "noTeachers": "Ще немає викладачів",
+      "toCourse": "Курс"
     },
     "placeholders": {
       "name": "Фізика",
+      "teacher": "Валько Андрій",
+      "group": "8-А",
       "search": "Інформатика",
       "description": "Курс викладачів Петренка та Васильчука 2022-2023 н.р. фізика для 8 класу..."
     }

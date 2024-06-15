@@ -2,21 +2,21 @@
 
 import { Loader } from '@/components/loader';
 import { SearchInput } from '@/components/search-input';
-import { addCourseGroup } from '@/features/user/api/coursesApi';
+import { addCourseTeacher } from '@/features/user/api/coursesApi';
 import { userMutations } from '@/features/user/constants';
-import { AddCourseGroupRequest } from '@/features/user/types/courseTypes';
+import { AddCourseTeacherRequest } from '@/features/user/types/courseTypes';
 import { useIsMutating, useMutation } from '@tanstack/react-query';
 import { useLocale, useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
 import { FC } from 'react';
 import toast from 'react-hot-toast';
 
-type CreateCourseGroupProps = {
+type CreateCourseTeacherProps = {
   courseId: string;
   schoolId: string;
 };
 
-const CreateCourseGroup: FC<CreateCourseGroupProps> = ({
+const CreateCourseTeacher: FC<CreateCourseTeacherProps> = ({
   courseId,
   schoolId,
 }) => {
@@ -28,9 +28,9 @@ const CreateCourseGroup: FC<CreateCourseGroupProps> = ({
 
   const isMutating = useIsMutating();
 
-  const { mutate: mutateCreateGroup } = useMutation({
-    mutationFn: addCourseGroup,
-    mutationKey: [userMutations.addCourseGroup],
+  const { mutate: mutateCreateTeacher } = useMutation({
+    mutationFn: addCourseTeacher,
+    mutationKey: [userMutations.addCourseTeacher],
     retry: userMutations.options.retry,
     onSuccess: (response) => {
       if (response && response.error) {
@@ -41,14 +41,14 @@ const CreateCourseGroup: FC<CreateCourseGroupProps> = ({
 
         const errorMessages = {
           400: v('validation'),
-          404: t('groupNotFound'),
+          404: t('teacherNotFound'),
           401: v('unauthorized'),
           403: v('forbidden'),
         };
 
         toast.error(errorMessages[response.error.status] || v('internal'));
       } else {
-        toast.success(t('addGroupSuccess'), {
+        toast.success(t('addTeacherSuccess'), {
           duration: 2500,
         });
 
@@ -59,20 +59,20 @@ const CreateCourseGroup: FC<CreateCourseGroupProps> = ({
   });
 
   const handleSearch = (text) => {
-    const request: AddCourseGroupRequest = {
+    const request: AddCourseTeacherRequest = {
       name: text,
       courseId,
       schoolId,
     };
 
-    mutateCreateGroup(request);
+    mutateCreateTeacher(request);
   };
 
   if (isMutating) {
     return (
       <>
         <h2 className="md:text p-2 text-center text-lg font-semibold text-gray-950 lg:text-xl">
-          {t('createGroupTitle')}
+          {t('createTeacherTitle')}
         </h2>
 
         <Loader />
@@ -83,7 +83,7 @@ const CreateCourseGroup: FC<CreateCourseGroupProps> = ({
   return (
     <div className="p-3">
       <h2 className="md:text p-2 text-center text-lg font-semibold text-gray-950 lg:text-xl">
-        {t('createGroupTitle')}
+        {t('createTeacherTitle')}
 
         <div>
           <span
@@ -101,11 +101,11 @@ const CreateCourseGroup: FC<CreateCourseGroupProps> = ({
 
       <SearchInput
         maxLength={200}
-        placeholder={t('placeholders.group')}
+        placeholder={t('placeholders.teacher')}
         onSubmit={handleSearch}
       />
     </div>
   );
 };
 
-export { CreateCourseGroup };
+export { CreateCourseTeacher };

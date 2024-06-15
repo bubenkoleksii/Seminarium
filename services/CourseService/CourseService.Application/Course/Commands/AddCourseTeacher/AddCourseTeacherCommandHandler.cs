@@ -8,9 +8,9 @@ public class AddCourseTeacherCommandHandler(
 {
     private readonly ISchoolProfileAccessor _schoolProfileAccessor = schoolProfileAccessor;
 
-    private readonly ICommandContext _commandContext = commandContext;
-
     private readonly IRequestClient<GetSchoolProfilesRequest> _getSchoolProfilesClient = getSchoolProfilesClient;
+
+    private readonly ICommandContext _commandContext = commandContext;
 
     public async Task<Either<CourseTeacherModelResponse, Error>> Handle(AddCourseTeacherCommand request, CancellationToken cancellationToken)
     {
@@ -25,7 +25,7 @@ public class AddCourseTeacherCommandHandler(
 
         var activeProfile = (SchoolProfileContract)retrievingActiveProfileResult;
         if (activeProfile == null || activeProfile.SchoolId == null ||
-            activeProfile.Type != Constants.SchoolAdmin || activeProfile.Type != Constants.Teacher)
+            (activeProfile.Type != Constants.SchoolAdmin && activeProfile.Type != Constants.Teacher))
             return new InvalidError("school_profile");
 
         var course = await _commandContext.Courses
@@ -34,26 +34,50 @@ public class AddCourseTeacherCommandHandler(
         if (course == null)
             return new InvalidError("course");
 
-        var getTeachersRequest = new GetSchoolProfilesRequest(null, null, null, request.SchoolId, null);
-        var getTeachersResponse = await _getSchoolProfilesClient.GetResponse<GetSchoolProfilesResponse>(getTeachersRequest, cancellationToken);
+        var getTeachersRequest = new GetSchoolProfilesRequest(Ids: null, UserId: null, GroupId: null, SchoolId: request.SchoolId, Type: null);
 
-        if (getTeachersResponse.Message.Profiles == null)
+        var teachersResponse =
+            await _getSchoolProfilesClient.GetResponse<GetSchoolProfilesResponse>(getTeachersRequest, cancellationToken);
+        if (teachersResponse.Message.HasError)
+            return (Error)teachersResponse;
+
+        if (teachersResponse.Message.Profiles == null || !teachersResponse.Message.Profiles.Any())
             return new NotFoundError("teacher_profiles");
 
-        var teacherProfile = getTeachersResponse.Message.Profiles
+        var filteredTeacher = teachersResponse.Message.Profiles
             .FirstOrDefault(profile => string.Equals(profile.Name, request.Name, StringComparison.OrdinalIgnoreCase) &&
-                 profile.Type == "teacher"
-            );
-        if (teacherProfile == null)
+                profile.Type == "teacher");
+        if (filteredTeacher == null)
             return new NotFoundError("teacher_profile");
 
-        var courseTeacher = new CourseTeacher
-        {
-            Id = teacherProfile.Id,
-            IsCreator = false
-        };
         course.Teachers ??= [];
-        course.Teachers.Add(courseTeacher);
+        var existedTeacher = await _commandContext.CourseTeachers.FindAsync(filteredTeacher.Id);
+        if (existedTeacher != null)
+        {
+            course.Teachers.Add(existedTeacher);
+        }
+        else
+        {
+            var newCourseTeacher = new CourseTeacher
+            {
+                Id = filteredTeacher.Id
+            };
+
+            newCourseTeacher.IsCreator = false;
+
+            try
+            {
+                await _commandContext.CourseTeachers.AddAsync(newCourseTeacher, cancellationToken);
+                await _commandContext.SaveChangesAsync(cancellationToken);
+            }
+            catch (Exception exception)
+            {
+                Log.Error(exception, "An error occurred while creating the course teacher with values {@Request}.", request);
+                return new InvalidDatabaseOperationError("course");
+            }
+
+            course.Teachers.Add(newCourseTeacher);
+        }
 
         try
         {
@@ -62,9 +86,9 @@ public class AddCourseTeacherCommandHandler(
         catch (Exception exception)
         {
             Log.Error(exception, "An error occurred while creating the course teacher with values {@Request}.", request);
-            return new InvalidDatabaseOperationError("course_teacher");
+            return new InvalidDatabaseOperationError("course");
         }
 
-        return new CourseTeacherModelResponse(teacherProfile.Id, teacherProfile.Name, IsCreator: false);
+        return new CourseTeacherModelResponse(filteredTeacher.Id, filteredTeacher.Name, IsCreator: false);
     }
 }

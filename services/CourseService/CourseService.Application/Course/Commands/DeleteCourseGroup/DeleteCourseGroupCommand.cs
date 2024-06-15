@@ -3,5 +3,7 @@
 public record DeleteCourseGroupCommand(
     Guid UserId,
 
-    Guid Id
+    Guid Id,
+
+    Guid CourseId
 ) : IRequest<Option<Error>>;

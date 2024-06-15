@@ -93,8 +93,11 @@ public class GetAllCoursesQueryHandler(
         var coursesResponses = _mapper.Map<IEnumerable<CourseModelResponse>>(courses);
         foreach (var courseResponse in coursesResponses)
         {
-            courseResponse.Teachers = await GetTeachers(courseResponse.Teachers, cancellationToken);
-            courseResponse.Groups = await GetGroups(courseResponse.Groups, cancellationToken);
+            var groupsIds = courses.Find(g => g.Id == courseResponse.Id)!.Groups?.Select(g => g.Id).ToArray();
+            courseResponse.Groups = await GetGroups(groupsIds, cancellationToken);
+
+            var teachersIds = courses.Find(g => g.Id == courseResponse.Id)!.Teachers?.Select(t => t.Id).ToArray();
+            courseResponse.Teachers = await GetTeachers(teachersIds, cancellationToken);
         }
 
         var response = new GetAllCoursesModelResponse(
@@ -134,13 +137,9 @@ public class GetAllCoursesQueryHandler(
     }
 
     private async Task<IEnumerable<CourseTeacherModelResponse>> GetTeachers
-        (IEnumerable<CourseTeacherModelResponse>? courseTeachers, CancellationToken cancellationToken)
+        (Guid[]? teachersIds, CancellationToken cancellationToken)
     {
-        if (courseTeachers is null || !courseTeachers.Any())
-            return [];
-
-        var teachersIds = courseTeachers.Select(t => t.Id).ToArray();
-        if (teachersIds.Length == 0)
+        if (teachersIds == null || teachersIds.Length == 0)
             return [];
 
         var getTeachersRequest = new GetSchoolProfilesRequest(Ids: teachersIds, null, null, null, null);
@@ -159,7 +158,7 @@ public class GetAllCoursesQueryHandler(
                 var teacher = new CourseTeacherModelResponse(
                     Id: profile.Id,
                     Name: profile.Name,
-                    IsCreator: courseTeachers.First(t => t.Id == profile.Id).IsCreator
+                    IsCreator: false
                 );
 
                 teachers.Add(teacher);
@@ -175,14 +174,9 @@ public class GetAllCoursesQueryHandler(
     }
 
     private async Task<IEnumerable<CourseGroupModelResponse>> GetGroups
-    (IEnumerable<CourseGroupModelResponse>? courseGroups, CancellationToken cancellationToken)
+        (Guid[]? groupsIds, CancellationToken cancellationToken)
     {
-        if (courseGroups == null || !courseGroups.Any())
-            return [];
-
-        var groupsIds = courseGroups.Select(g => g.Id).ToArray();
-
-        if (groupsIds.Length == 0)
+        if (groupsIds == null || groupsIds.Length == 0)
             return [];
 
         var getGroupsRequest = new GetGroupsRequest(groupsIds, null);

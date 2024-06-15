@@ -42,12 +42,12 @@ export interface UpdateCourseRequest {
   description?: string | null;
 }
 
-interface CourseGroupResponse {
+export interface CourseGroupResponse {
   id: string;
   name: string;
 }
 
-interface CourseTeacherResponse {
+export interface CourseTeacherResponse {
   id: string;
   name: string;
   isCreator: boolean;

@@ -4,19 +4,29 @@ import { Error } from '@/components/error';
 import { Loader } from '@/components/loader';
 import { ProveModal } from '@/components/modal';
 import { useProfiles } from '@/features/user';
-import { CurrentTab, userQueries } from '@/features/user/constants';
+import {
+  CurrentTab,
+  userMutations,
+  userQueries,
+} from '@/features/user/constants';
 import { CourseResponse } from '@/features/user/types/courseTypes';
 import { mediaQueries } from '@/shared/constants';
 import { useAuthRedirectByRole, useSetCurrentTab } from '@/shared/hooks';
 import { ApiResponse } from '@/shared/types';
-import { useIsMutating, useQuery } from '@tanstack/react-query';
+import {
+  useIsMutating,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from '@tanstack/react-query';
 import { Button } from 'flowbite-react';
 import { useLocale, useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { FC, useState } from 'react';
+import toast from 'react-hot-toast';
 import { useMediaQuery } from 'react-responsive';
-import { getOneCourse } from '../../../api/coursesApi';
+import { getOneCourse, removeCourseGroup, removeCourseTeacher } from '../../../api/coursesApi';
 import { CourseGroup } from './CourseGroup';
 import { CourseTeacher } from './CourseTeacher';
 
@@ -33,6 +43,8 @@ const OneCourse: FC<OneCourseProps> = ({ id }) => {
   const { replace } = useRouter();
   const activeLocale = useLocale();
 
+  const queryClient = useQueryClient();
+
   const { isUserLoading } = useAuthRedirectByRole(activeLocale, 'userOnly');
   const { activeProfile, isLoading: profilesLoading } = useProfiles();
   const isPhone = useMediaQuery({ query: mediaQueries.phone });
@@ -44,6 +56,72 @@ const OneCourse: FC<OneCourseProps> = ({ id }) => {
     queryFn: () => getOneCourse(id),
     enabled: !!id,
     retry: userQueries.options.retry,
+  });
+
+  const { mutate: deleteCourseGroup } = useMutation({
+    mutationFn: removeCourseGroup,
+    mutationKey: [userMutations.deleteCourseGroup, id],
+    onSuccess: (response) => {
+      if (response && response.error) {
+        if (
+          response.error.detail.includes('school_profile') ||
+          response.error.detail.includes('school_id')
+        ) {
+          toast.error(v('invalid_school_profile'));
+          return;
+        }
+
+        const errorMessages = {
+          404: t('labels.oneNotFound'),
+          400: v('validation'),
+          401: v('unauthorized'),
+          403: v('forbidden'),
+        };
+
+        toast.error(errorMessages[response.error.status] || v('internal'));
+      } else {
+        toast.success(t('deleteGroupSuccess'), { duration: 2500 });
+      }
+    },
+    onSettled: async () => {
+      queryClient.invalidateQueries({
+        queryKey: [userQueries.getOneCourse, id],
+        refetchType: 'all',
+      });
+    },
+  });
+
+  const { mutate: deleteCourseTeacher } = useMutation({
+    mutationFn: removeCourseTeacher,
+    mutationKey: [userMutations.deleteCourseTeacher, id],
+    onSuccess: (response) => {
+      if (response && response.error) {
+        if (
+          response.error.detail.includes('school_profile') ||
+          response.error.detail.includes('school_id')
+        ) {
+          toast.error(v('invalid_school_profile'));
+          return;
+        }
+
+        const errorMessages = {
+          404: t('labels.oneNotFound'),
+          400: v('validation'),
+          401: v('unauthorized'),
+          403: v('forbidden'),
+        };
+
+        toast.error(errorMessages[response.error.status] || v('internal'));
+      } else {
+        toast.success(t('deleteTeacherSuccess'), { duration: 2500 });
+      }
+    },
+    onSettled: async () => {
+      queryClient.invalidateQueries({
+        queryKey: [userQueries.getOneCourse, id],
+        refetchType: 'all',
+      });
+    },
   });
 
   useSetCurrentTab(CurrentTab.Course);
@@ -110,11 +188,17 @@ const OneCourse: FC<OneCourseProps> = ({ id }) => {
   };
 
   const handleDeleteGroup = (groupId: string) => {
-    // handle delete group logic here
+    deleteCourseGroup({
+      id: groupId,
+      courseId: id,
+    });
   };
 
   const handleDeleteTeacher = (teacherId: string) => {
-    // handle delete teacher logic here
+    deleteCourseTeacher({
+      id: teacherId,
+      courseId: id,
+    });
   };
 
   const renderGroups = () => {
@@ -122,7 +206,7 @@ const OneCourse: FC<OneCourseProps> = ({ id }) => {
       return <p>{t('labels.noGroups')}</p>;
     }
     return (
-      <div className="flex flex-wrap gap-2">
+      <div className="flex flex-wrap justify-center gap-2">
         {data.groups.map((group) => (
           <CourseGroup
             key={group.id}
@@ -139,7 +223,7 @@ const OneCourse: FC<OneCourseProps> = ({ id }) => {
       return <p>{t('labels.noTeachers')}</p>;
     }
     return (
-      <div className="flex flex-wrap gap-2">
+      <div className="flex flex-wrap justify-center gap-2">
         {data.teachers.map((teacher) => (
           <CourseTeacher
             key={teacher.id}
@@ -177,13 +261,15 @@ const OneCourse: FC<OneCourseProps> = ({ id }) => {
         {canModify && (
           <div className="mt-2 flex justify-center">
             <Button gradientMonochrome="teal" size="md">
-              <Link href={`/${activeLocale}/u/courses/group-create/${data.id}`}>
+              <Link
+                href={`/${activeLocale}/u/courses/group-create/?schoolId=${activeProfile.schoolId}&courseId=${id}`}
+              >
                 <span className="text-white">{t('addGroupBtn')}</span>
               </Link>
             </Button>
           </div>
         )}
-        <div className="text-center">{renderGroups()}</div>
+        <div className="mt-2 text-center">{renderGroups()}</div>
       </div>
 
       <div className="my-4">
@@ -191,13 +277,15 @@ const OneCourse: FC<OneCourseProps> = ({ id }) => {
         {canModify && (
           <div className="mt-2 flex justify-center">
             <Button gradientMonochrome="purple" size="md">
-              <Link href={`/${activeLocale}/u/courses/teacher-create/${data.id}`}>
+              <Link
+                href={`/${activeLocale}/u/courses/teacher-create/?schoolId=${activeProfile.schoolId}&courseId=${id}`}
+              >
                 <span className="text-white">{t('addTeacherBtn')}</span>
               </Link>
             </Button>
           </div>
         )}
-        <div className="text-center">{renderTeachers()}</div>
+        <div className="mt-2 text-center">{renderTeachers()}</div>
       </div>
 
       {canModify && (
