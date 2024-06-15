@@ -11,6 +11,7 @@ import {
 } from '@/features/user/constants';
 import { CourseResponse } from '@/features/user/types/courseTypes';
 import { mediaQueries } from '@/shared/constants';
+import { buildQueryString } from '@/shared/helpers';
 import { useAuthRedirectByRole, useSetCurrentTab } from '@/shared/hooks';
 import { ApiResponse } from '@/shared/types';
 import {
@@ -26,7 +27,12 @@ import { useRouter } from 'next/navigation';
 import { FC, useState } from 'react';
 import toast from 'react-hot-toast';
 import { useMediaQuery } from 'react-responsive';
-import { getOneCourse, removeCourseGroup, removeCourseTeacher } from '../../../api/coursesApi';
+import {
+  getOneCourse,
+  removeCourse,
+  removeCourseGroup,
+  removeCourseTeacher,
+} from '../../../api/coursesApi';
 import { CourseGroup } from './CourseGroup';
 import { CourseTeacher } from './CourseTeacher';
 
@@ -56,6 +62,46 @@ const OneCourse: FC<OneCourseProps> = ({ id }) => {
     queryFn: () => getOneCourse(id),
     enabled: !!id,
     retry: userQueries.options.retry,
+  });
+
+  const { mutate: deleteCourse } = useMutation({
+    mutationFn: removeCourse,
+    mutationKey: [userMutations.deleteCourse, id],
+    onSuccess: (response) => {
+      if (response && response.error) {
+        if (
+          response.error.detail.includes('course_profile') ||
+          response.error.detail.includes('course_id')
+        ) {
+          toast.error(v('invalid_course_profile'));
+          return;
+        }
+
+        const errorMessages = {
+          404: t('labels.oneNotFound'),
+          400: v('invitationValidation'),
+          401: v('unauthorized'),
+          403: v('forbidden'),
+        };
+
+        toast.error(errorMessages[response.error.status] || v('internal'));
+      } else {
+        const url =
+          activeProfile.type == 'teacher'
+            ? `/${activeLocale}/u/courses?teacherId=${activeProfile.id}`
+            : `/${activeLocale}/u/courses`;
+
+        replace(url);
+
+        toast.success(t('labels.deleteSuccess'), { duration: 2500 });
+      }
+    },
+    onSettled: async () => {
+      queryClient.invalidateQueries({
+        queryKey: [userQueries.getCourses],
+        refetchType: 'all',
+      });
+    },
   });
 
   const { mutate: deleteCourseGroup } = useMutation({
@@ -164,6 +210,15 @@ const OneCourse: FC<OneCourseProps> = ({ id }) => {
     );
   }
 
+  const buildUpdateQuery = () => {
+    return buildQueryString({
+      id: data.id,
+      studyPeriodId: data.studyPeriodId,
+      name: data.name,
+      description: data.description,
+    });
+  };
+
   const canModify =
     activeProfile?.type === 'school_admin' || activeProfile?.type === 'teacher';
 
@@ -176,15 +231,7 @@ const OneCourse: FC<OneCourseProps> = ({ id }) => {
 
     if (!confirmed) return;
 
-    // deleteCourse API call
-    // remove(data.id)
-    //   .then(() => {
-    //     toast.success(t('labels.deleteSuccess'), { duration: 2500 });
-    //     replace(`/${activeLocale}/u/courses`);
-    //   })
-    //   .catch((error) => {
-    //     toast.error(error.message || v('internal'));
-    //   });
+    deleteCourse(id);
   };
 
   const handleDeleteGroup = (groupId: string) => {
@@ -314,7 +361,9 @@ const OneCourse: FC<OneCourseProps> = ({ id }) => {
             className={`flex pl-2 pr-2 pt-2 ${isPhone ? 'order-1 w-full' : 'w-1/3'} justify-center`}
           >
             <Button gradientMonochrome="lime" fullSized>
-              <Link href={`/${activeLocale}/u/courses/update/${id}`}>
+              <Link
+                href={`/${activeLocale}/u/courses/update/${id}/?${buildUpdateQuery()}`}
+              >
                 {t('updateBtn')}
               </Link>
             </Button>

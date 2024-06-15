@@ -1,10 +1,10 @@
 'use client';
 
 import { Loader } from '@/components/loader';
-import { useProfiles } from '@/features/user';
-import { createCourse } from '@/features/user/api/coursesApi';
+import { updateCourse } from '@/features/user/api/coursesApi';
+import { StudyPeriodsDropdown } from '@/features/user/components/study-period/getAll/StudyPeriodDropdown';
 import { userMutations } from '@/features/user/constants';
-import type { CreateCourseRequest } from '@/features/user/types/courseTypes';
+import { UpdateCourseRequest } from '@/features/user/types/courseTypes';
 import { useAuthRedirectByRole } from '@/shared/hooks';
 import { useIsMutating, useMutation } from '@tanstack/react-query';
 import { ErrorMessage, Field, Form, Formik } from 'formik';
@@ -13,24 +13,32 @@ import { useRouter } from 'next/navigation';
 import { FC } from 'react';
 import toast from 'react-hot-toast';
 import * as Yup from 'yup';
-import { StudyPeriodsDropdown } from '../../study-period/getAll/StudyPeriodDropdown';
-import styles from './CreateCourseForm.module.scss';
+import styles from './UpdateCourseForm.module.scss';
 
-const CreateCourseForm: FC = () => {
+type UpdateCourseFormProps = {
+  id: string;
+  course: UpdateCourseRequest;
+};
+
+const UpdateCourseForm: FC<UpdateCourseFormProps> = ({ id, course }) => {
+  const t = useTranslations('Course');
+  const v = useTranslations('Validation');
+
   const activeLocale = useLocale();
   const { replace } = useRouter();
 
-  const v = useTranslations('Validation');
-  const t = useTranslations('Course');
+  const validationSchema = Yup.object().shape({
+    studyPeriodId: Yup.string().required(t('required')),
+    name: Yup.string().max(250, t('Vmax')).required(t('required')),
+    description: Yup.string().optional().max(1024, t('max')),
+  });
 
   const isMutating = useIsMutating();
   const { isUserLoading } = useAuthRedirectByRole(activeLocale, 'userOnly');
 
-  const { activeProfile, isLoading: profilesLoading } = useProfiles();
-
-  const { mutate, reset: resetMutation } = useMutation({
-    mutationFn: createCourse,
-    mutationKey: [userMutations.createCourse],
+  const { mutate: mutateUpdateCourse } = useMutation({
+    mutationFn: updateCourse,
+    mutationKey: [userMutations.updateCourse],
     retry: userMutations.options.retry,
     onSuccess: (response) => {
       if (response && response.error) {
@@ -40,6 +48,7 @@ const CreateCourseForm: FC = () => {
         }
 
         const errorMessages = {
+          409: t('labels.alreadyExists'),
           400: v('validation'),
           401: v('unauthorized'),
           403: v('forbidden'),
@@ -47,21 +56,32 @@ const CreateCourseForm: FC = () => {
 
         toast.error(errorMessages[response.error.status] || v('internal'));
       } else {
-        toast.success(t('createSuccess'), {
-          duration: 2500,
-        });
+        toast.success(t('labels.updateSuccess'), { duration: 2500 });
 
-        const url = `/${activeLocale}/u/courses/?studyPeriodId=${response.studyPeriodId}`;
+        const url = `/${activeLocale}/u/courses/${course.id}`;
         replace(url);
       }
     },
   });
 
-  if (isMutating || isUserLoading || profilesLoading) {
+  if (isMutating || isUserLoading) {
     return (
       <>
         <h2 className="md:text p-3 text-center text-lg font-semibold text-gray-950 lg:text-xl">
-          {t('createTitle')}
+          {t('updateTitle')}
+
+          <div>
+            <span
+              onClick={() => {
+                const url = `/${activeLocale}/u/courses/${course.id}`;
+
+                replace(url);
+              }}
+              className="cursor-pointer text-sm font-semibold text-purple-700 hover:text-red-700"
+            >
+              {t('labels.toCourse')}
+            </span>
+          </div>
         </h2>
 
         <Loader />
@@ -69,60 +89,28 @@ const CreateCourseForm: FC = () => {
     );
   }
 
-  const validationSchema = Yup.object().shape({
-    studyPeriodId: Yup.string().required(v('required')),
-    name: Yup.string().max(250, v('max')).required(v('required')),
-    description: Yup.string().optional().max(1024, v('max')),
-  });
-
-  const initialValues = {
-    studyPeriodId: '',
-    name: '',
-    description: '',
-  };
-
   const handleSubmit = (values) => {
-    const request: CreateCourseRequest = {
+    const request: UpdateCourseRequest = {
+      id: values.id,
       studyPeriodId: values.studyPeriodId,
       name: values.name,
-      description: values.description,
+      description: values.name,
     };
 
-    mutate(request);
+    mutateUpdateCourse(request);
   };
 
   return (
     <Formik
-      initialValues={initialValues}
+      initialValues={course}
       validationSchema={validationSchema}
       onSubmit={handleSubmit}
     >
       {({ setFieldValue }) => (
         <div className={styles.container}>
-          <h2 className="md:text p-2 text-center text-lg font-semibold text-gray-950 lg:text-xl">
-            {t('createTitle')}
+          <h2 className="md:text p-3 text-center text-lg font-semibold text-gray-950 lg:text-xl">
+            {t('updateTitle')}
           </h2>
-
-          <div>
-            <span
-              onClick={() => {
-                const url = `/${activeLocale}/u/courses`;
-
-                replace(url);
-              }}
-              className="cursor-pointer text-sm font-semibold text-purple-700 hover:text-red-700"
-            >
-              {t('labels.toList')}
-            </span>
-          </div>
-
-          <div className="mb-5 flex flex-col items-center justify-center gap-2">
-            <div>
-              <p className="text-center text-lg font-semibold text-purple-950">
-                {activeProfile.schoolName}
-              </p>
-            </div>
-          </div>
 
           <Form className={styles.form}>
             <div>
@@ -135,6 +123,7 @@ const CreateCourseForm: FC = () => {
                   onSelect={(id) => {
                     setFieldValue('studyPeriodId', id);
                   }}
+                  defaultPeriodId={course.studyPeriodId}
                 />
               </div>
               <ErrorMessage
@@ -150,7 +139,6 @@ const CreateCourseForm: FC = () => {
                 <span className="text-md ml-1 text-red-500">*</span>
               </label>
               <Field
-                placeholder={t('placeholders.name')}
                 type="text"
                 id="name"
                 name="name"
@@ -168,8 +156,6 @@ const CreateCourseForm: FC = () => {
                 {t('labels.description')}
               </label>
               <Field
-                placeholder={t('placeholders.description')}
-                type="text"
                 as="textarea"
                 rows="5"
                 id="description"
@@ -184,12 +170,8 @@ const CreateCourseForm: FC = () => {
             </div>
 
             <div>
-              <button
-                onClick={() => resetMutation()}
-                type="submit"
-                className={styles.button}
-              >
-                {t('labels.createSubmit')}
+              <button type="submit" className={styles.button}>
+                {t('labels.updateSubmit')}
               </button>
             </div>
           </Form>
@@ -199,4 +181,5 @@ const CreateCourseForm: FC = () => {
   );
 };
 
-export { CreateCourseForm };
+export { UpdateCourseForm };
+

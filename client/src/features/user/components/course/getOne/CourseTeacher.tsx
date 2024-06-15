@@ -15,8 +15,10 @@ const CourseTeacher: FC<CourseTeacherProps> = ({ teacher, onDelete }) => {
 
   return (
     <div className="mb-2 flex flex-col items-center p-4 shadow-md">
-      <Link className="mb-3 text-center"
-        href={`/${activeLocale}/u/school-profile/${teacher.id}`}>
+      <Link
+        className="mb-3 text-center"
+        href={`/${activeLocale}/u/school-profile/${teacher.id}`}
+      >
         {teacher.name}
       </Link>
 

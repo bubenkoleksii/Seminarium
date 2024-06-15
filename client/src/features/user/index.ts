@@ -4,8 +4,10 @@ export { UserSidebar } from './components/UserSidebar';
 export { Children } from './components/children/Children';
 export { CreateCourseForm } from './components/course/create/CreateCourseForm';
 export { CreateCourseGroup } from './components/course/createGroup/CreateCourseGroup';
+export { CreateCourseTeacher } from './components/course/createTeacher/CreateCourseTeacher';
 export { Courses } from './components/course/getAll/Courses';
 export { OneCourse } from './components/course/getOne/OneCourse';
+export { UpdateCourseForm } from './components/course/update/UpdateCourseForm';
 export { CreateGroupNoticeForm } from './components/group-notice/create/CreateGroupNoticeForm';
 export { GetAllGroupNotices } from './components/group-notice/getAll/GetAllGroupNotices';
 export { UpdateGroupNoticeForm } from './components/group-notice/update/UpdateGroupNoticeForm';
@@ -28,4 +30,4 @@ export { UpdateParentSchoolProfile } from './school-profile/update/UpdateParentS
 export { UpdateStudentSchoolProfile } from './school-profile/update/UpdateStudentSchoolProfile';
 export { UpdateTeacherSchoolProfile } from './school-profile/update/UpdateTeacherSchoolProfile';
 export { useSchoolProfilesStore } from './store/schoolProfilesStore';
-export { CreateCourseTeacher } from './components/course/createTeacher/CreateCourseTeacher';
+

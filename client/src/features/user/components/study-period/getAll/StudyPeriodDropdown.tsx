@@ -8,7 +8,7 @@ import { ApiResponse } from '@/shared/types';
 import { useQuery } from '@tanstack/react-query';
 import { Dropdown } from 'flowbite-react';
 import { useTranslations } from 'next-intl';
-import { FC, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 
 type StudyPeriodsDropdownProps = {
   defaultPeriodId?: string;
@@ -33,6 +33,14 @@ const StudyPeriodsDropdown: FC<StudyPeriodsDropdownProps> = ({
         ? data?.find((period) => period.id === defaultPeriodId) || null
         : null,
     );
+
+  useEffect(() => {
+    setSelectedPeriod(
+      defaultPeriodId
+        ? data?.find((period) => period.id === defaultPeriodId) || null
+        : null,
+    );
+  }, [data, defaultPeriodId]);
 
   const handleSelectChange = (period: StudyPeriodResponse) => {
     setSelectedPeriod(period);
@@ -75,3 +83,4 @@ const StudyPeriodsDropdown: FC<StudyPeriodsDropdownProps> = ({
 };
 
 export { StudyPeriodsDropdown };
+

@@ -38,9 +38,15 @@ public class UpdateCourseCommandHandler(
         if (course == null)
             return new NotFoundByIdError(request.Id, "course");
 
-        var teacherValidatingResult = await _schoolProfileAccessor.ValidateTeacherByCourse(course.Id, activeProfile.Id);
-        if (teacherValidatingResult.IsSome)
-            return (Error)teacherValidatingResult;
+        if (activeProfile.Type != Constants.Teacher && activeProfile.Type != Constants.SchoolAdmin)
+            return new InvalidError("school_profile");
+
+        if (activeProfile.Type == Constants.Teacher)
+        {
+            var teacherValidatingResult = await _schoolProfileAccessor.ValidateTeacherByCourse(course.Id, activeProfile.Id);
+            if (teacherValidatingResult.IsSome)
+                return (Error)teacherValidatingResult;
+        }
 
         _mapper.Map(request, course);
 
