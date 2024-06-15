@@ -12,10 +12,15 @@ export const schoolProfile = {
 };
 
 export const course = {
+  getOne: (id: string) => `/course/getOne/${id}`,
   getAll: '/course/getAll',
   create: '/course/create',
   update: '/course/update',
+  addGroup: 'course/addGroup',
+  addTeacher: 'course/addTeacher',
   remove: (id: string) => `/course/Delete/${id}`,
+  removeGroup: (id: string) => `/course/DeleteCourseGroup/${id}`,
+  removeTeacher: (id: string) => `/course/DeleteCourseTeacher/${id}`,
 };
 
 export const group = {

@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace CourseService.Application.Course.Queries.GetOneCourse;
 
-namespace CourseService.Application.Course.Queries.GetOneCourse
+public class GetOneCourseQueryValidator : AbstractValidator<GetOneCourseQuery>
 {
-    internal class GetOneCourseQueryValidator
+    public GetOneCourseQueryValidator()
     {
+
     }
 }

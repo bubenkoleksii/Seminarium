@@ -140,4 +140,3 @@ const SchoolAdminContentTabs: FC<SchoolAdminContentTabsProps> = ({
 };
 
 export { SchoolAdminContentTabs };
-

@@ -200,4 +200,3 @@ const CreateCourseForm: FC = () => {
 };
 
 export { CreateCourseForm };
-

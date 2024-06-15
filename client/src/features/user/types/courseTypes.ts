@@ -17,6 +17,18 @@ export interface CourseResponse {
   groups?: CourseGroupResponse[] | null;
 }
 
+export interface AddCourseGroupRequest {
+  name: string;
+  courseId: string;
+  schoolId: string;
+}
+
+export interface AddCourseTeacherRequest {
+  name: string;
+  courseId: string;
+  schoolId: string;
+}
+
 export interface CreateCourseRequest {
   studyPeriodId: string;
   name: string;

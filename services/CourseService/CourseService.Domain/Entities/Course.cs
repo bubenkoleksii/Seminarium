@@ -8,9 +8,9 @@ public class Course : Entity
 
     public Guid StudyPeriodId { get; set; }
 
-    public IEnumerable<CourseTeacher>? Teachers { get; set; }
+    public ICollection<CourseTeacher>? Teachers { get; set; }
 
-    public IEnumerable<CourseGroup>? Groups { get; set; }
+    public ICollection<CourseGroup>? Groups { get; set; }
 
-    public IEnumerable<Lesson>? Lessons { get; set; }
+    public ICollection<Lesson>? Lessons { get; set; }
 }

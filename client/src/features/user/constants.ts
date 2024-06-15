@@ -11,6 +11,7 @@ export const enum CurrentTab {
 
 export const userQueries = {
   getSchoolProfile: 'getSchoolProfile',
+  getOneCourse: 'getOneCourse',
   getAllSchoolProfilesBySchool: 'getAllSchoolProfilesBySchool',
   getGroups: 'getAllGroups',
   getOneGroup: 'getOneGroup',

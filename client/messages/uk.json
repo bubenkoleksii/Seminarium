@@ -681,13 +681,21 @@
     "deleteSuccess": "Навчальний простір успішно видалено",
     "teachers": "Викладачі",
     "groups": "Групи",
+    "detailsBtn": "Детальніше",
+    "addGroupBtn": "Додати групу",
+    "addTeacherBtn": "Додати викладача",
+    "toMain": "Курси",
     "labels": {
       "createSubmit": "Створити",
       "notFound": "Не знайдено жоден простір",
       "name": "Назва простору",
       "studyPeriod": "Навчальний період",
       "description": "Опис",
-      "toList": "До переліку просторів"
+      "toList": "До переліку просторів",
+      "groups": "Групи",
+      "teachers": "Викладачі",
+      "noGroups": "Ще немає груп",
+      "noTeachers": "Ще немає викладачів"
     },
     "placeholders": {
       "name": "Фізика",

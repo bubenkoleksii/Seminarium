@@ -236,4 +236,3 @@ const Courses: FC<CoursesProps> = ({
 };
 
 export { Courses };
-
