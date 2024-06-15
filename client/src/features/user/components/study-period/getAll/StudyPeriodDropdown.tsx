@@ -11,10 +11,14 @@ import { useTranslations } from 'next-intl';
 import { FC, useState } from 'react';
 
 type StudyPeriodsDropdownProps = {
+  defaultPeriodId?: string;
   onSelect: (id: string) => void;
 };
 
-const StudyPeriodsDropdown: FC<StudyPeriodsDropdownProps> = ({ onSelect }) => {
+const StudyPeriodsDropdown: FC<StudyPeriodsDropdownProps> = ({
+  defaultPeriodId,
+  onSelect,
+}) => {
   const t = useTranslations('StudyPeriod');
 
   const { data, isLoading } = useQuery<ApiResponse<StudyPeriodResponse[]>>({
@@ -24,7 +28,11 @@ const StudyPeriodsDropdown: FC<StudyPeriodsDropdownProps> = ({ onSelect }) => {
   });
 
   const [selectedPeriod, setSelectedPeriod] =
-    useState<StudyPeriodResponse | null>(data ? data[0] : null);
+    useState<StudyPeriodResponse | null>(
+      defaultPeriodId
+        ? data?.find((period) => period.id === defaultPeriodId) || null
+        : null,
+    );
 
   const handleSelectChange = (period: StudyPeriodResponse) => {
     setSelectedPeriod(period);

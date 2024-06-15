@@ -34,14 +34,17 @@ public class CreateCourseCommandHandler(
         if (studyPeriodValidatingResult.IsSome)
             return (Error)studyPeriodValidatingResult;
 
-        var teacher = new CourseTeacher
-        {
-            Id = activeProfile.Id,
-            IsCreator = true,
-        };
-
         var entity = _mapper.Map<Domain.Entities.Course>(request);
-        entity.Teachers = [teacher];
+
+        if (activeProfile.Type == Constants.Teacher)
+        {
+            var teacher = new CourseTeacher
+            {
+                Id = activeProfile.Id,
+                IsCreator = true,
+            };
+            entity.Teachers = [teacher];
+        }
 
         await _commandContext.Courses.AddAsync(entity, cancellationToken);
 

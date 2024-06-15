@@ -8,7 +8,7 @@ public class GetAllCoursesQuery : IRequest<Either<GetAllCoursesModelResponse, Er
 
     public Guid? TeacherId { get; set; }
 
-    public Guid StudyPeriodId { get; set; }
+    public Guid? StudyPeriodId { get; set; }
 
     public string? Name { get; set; }
 

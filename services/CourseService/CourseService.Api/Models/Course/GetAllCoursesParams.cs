@@ -1,7 +1,7 @@
 ﻿namespace CourseService.Api.Models.Course;
 
 public record GetAllCoursesParams(
-    Guid StudyPeriodId,
+    Guid? StudyPeriodId,
 
     Guid? GroupId,
 

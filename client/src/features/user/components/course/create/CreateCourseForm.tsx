@@ -47,7 +47,7 @@ const CreateCourseForm: FC = () => {
 
         toast.error(errorMessages[response.error.status] || v('internal'));
       } else {
-        toast.success(t('labels.createSuccess'), {
+        toast.success(t('createSuccess'), {
           duration: 2500,
         });
 

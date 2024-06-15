@@ -38,15 +38,19 @@ public class GetAllCoursesQueryHandler(
         if (activeProfile == null || activeProfile.SchoolId == null)
             return new InvalidError("school_profile");
 
-        var studyPeriodValidatingResult = await ValidateStudyPeriod(request.StudyPeriodId, activeProfile.SchoolId.Value, cancellationToken);
-        if (studyPeriodValidatingResult.IsSome)
-            return (Error)studyPeriodValidatingResult;
-
         var dbQuery = _queryContext.Courses
             .Include(c => c.Groups)
             .Include(c => c.Teachers)
-            .Where(course => course.StudyPeriodId == request.StudyPeriodId)
             .AsQueryable();
+
+        if (request.StudyPeriodId.HasValue)
+        {
+            var studyPeriodValidatingResult = await ValidateStudyPeriod(request.StudyPeriodId.Value, activeProfile.SchoolId.Value, cancellationToken);
+            if (studyPeriodValidatingResult.IsSome)
+                return (Error)studyPeriodValidatingResult;
+
+            dbQuery = dbQuery.Where(course => course.StudyPeriodId == request.StudyPeriodId.Value);
+        }
 
         if (!string.IsNullOrEmpty(request.Name))
             dbQuery = dbQuery.Where(c => c.Name.ToLower().Contains(request.Name.ToLower()));

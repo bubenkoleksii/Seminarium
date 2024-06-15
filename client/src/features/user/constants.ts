@@ -2,6 +2,7 @@ export const enum CurrentTab {
   Profile = 'profile',
   School = 'school',
   Group = 'group',
+  Course = 'course',
   GroupNotices = 'groupNotices',
   Children = 'children',
   SchoolProfiles = 'schoolProfiles',

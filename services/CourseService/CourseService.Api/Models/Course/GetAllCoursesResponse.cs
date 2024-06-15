@@ -3,7 +3,7 @@
 public record GetAllCoursesResponse(
     IEnumerable<CourseResponse> Entries,
 
-    Guid StudyPeriodId,
+    Guid? StudyPeriodId,
 
     ulong Total,
 
