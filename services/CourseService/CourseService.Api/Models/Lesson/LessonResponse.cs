@@ -9,8 +9,6 @@ public record LessonResponse(
 
     string Topic,
 
-    DateTime? Date,
-
     string? Homework,
 
     Guid CourseId,

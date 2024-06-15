@@ -5,7 +5,5 @@ public record UpdateLessonRequest(
 
     string Topic,
 
-    DateTime? Date,
-
     string? Homework
 );

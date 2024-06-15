@@ -15,6 +15,7 @@ export const userQueries = {
   getOneGroup: 'getOneGroup',
   getGroupNotices: 'getGroupNotices',
   getStudyPeriods: 'getStudyPeriods',
+  getCourses: 'getCourses',
   options: {
     retry: 4,
   },
@@ -42,6 +43,9 @@ export const userMutations = {
   createStudentInvitation: 'createStudentInvitation',
   createSchoolProfile: 'createSchoolProfile',
   updateSchoolProfile: 'updateSchoolProfile',
+  createCourse: 'createCourse',
+  updateCourse: 'updateCourse',
+  deleteCourse: 'deleteCourse',
   options: {
     retry: 3,
   },

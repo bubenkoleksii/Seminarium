@@ -2,6 +2,7 @@ export { activate } from './api/schoolProfilesApi';
 export { UserProfile } from './components/UserProfile';
 export { UserSidebar } from './components/UserSidebar';
 export { Children } from './components/children/Children';
+export { CreateCourseForm } from './components/course/create/CreateCourseForm';
 export { CreateGroupNoticeForm } from './components/group-notice/create/CreateGroupNoticeForm';
 export { GetAllGroupNotices } from './components/group-notice/getAll/GetAllGroupNotices';
 export { UpdateGroupNoticeForm } from './components/group-notice/update/UpdateGroupNoticeForm';
@@ -24,3 +25,4 @@ export { UpdateParentSchoolProfile } from './school-profile/update/UpdateParentS
 export { UpdateStudentSchoolProfile } from './school-profile/update/UpdateStudentSchoolProfile';
 export { UpdateTeacherSchoolProfile } from './school-profile/update/UpdateTeacherSchoolProfile';
 export { useSchoolProfilesStore } from './store/schoolProfilesStore';
+

@@ -5,7 +5,5 @@ public record CreateLessonRequest(
 
     string Topic,
 
-    DateTime? Date,
-
     string? Homework
 );

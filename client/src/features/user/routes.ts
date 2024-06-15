@@ -11,6 +11,13 @@ export const schoolProfile = {
   activate: (id: string) => `/schoolProfile/Activate/${id}`,
 };
 
+export const course = {
+  getAll: '/course/getAll',
+  create: '/course/create',
+  update: '/course/update',
+  remove: (id: string) => `/course/Delete/${id}`,
+};
+
 export const group = {
   getAll: '/group/getAll',
   getOne: '/group/getOne',

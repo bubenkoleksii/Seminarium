@@ -3,6 +3,7 @@
 public class TheoryLessonItemController(IMapper mapper, IAttachmentHelper attachmentHelper) : BaseController
 {
     private readonly IMapper _mapper = mapper;
+
     private readonly IAttachmentHelper _attachmentHelper = attachmentHelper;
 
     [HttpPost("[action]/")]
