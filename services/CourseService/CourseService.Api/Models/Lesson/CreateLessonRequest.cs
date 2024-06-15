@@ -3,6 +3,8 @@
 public record CreateLessonRequest(
     Guid CourseId,
 
+    uint Number,
+
     string Topic,
 
     string? Homework

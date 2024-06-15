@@ -2,6 +2,8 @@
 
 public class Lesson : Entity
 {
+    public uint Number { get; set; }
+
     public required string Topic { get; set; }
 
     public string? Homework { get; set; }

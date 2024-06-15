@@ -4,6 +4,8 @@ public class LessonModelResponse
 {
     public Guid Id { get; set; }
 
+    public uint Number { get; set; }
+
     public DateTime CreatedAt { get; set; }
 
     public DateTime? LastUpdatedAt { get; set; }

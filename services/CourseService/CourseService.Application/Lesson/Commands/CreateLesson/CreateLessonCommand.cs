@@ -2,6 +2,8 @@
 
 public class CreateLessonCommand : IRequest<Either<LessonModelResponse, Error>>
 {
+    public uint Number { get; set; }
+
     public Guid UserId { get; set; }
 
     public Guid CourseId { get; set; }

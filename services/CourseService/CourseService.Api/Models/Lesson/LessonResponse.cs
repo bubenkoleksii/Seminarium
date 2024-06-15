@@ -3,6 +3,8 @@
 public record LessonResponse(
     Guid Id,
 
+    uint Number,
+
     DateTime CreatedAt,
 
     DateTime? LastUpdatedAt,

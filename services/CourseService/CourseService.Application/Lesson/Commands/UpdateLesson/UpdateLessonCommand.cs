@@ -2,6 +2,8 @@
 
 public class UpdateLessonCommand : IRequest<Either<LessonModelResponse, Error>>
 {
+    public uint Number { get; set; }
+
     public Guid Id { get; set; }
 
     public Guid UserId { get; set; }

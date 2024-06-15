@@ -88,8 +88,7 @@ const CreateCourseForm: FC = () => {
       description: values.description,
     };
 
-    console.log('r', request);
-    //mutate(request);
+    mutate(request);
   };
 
   return (
