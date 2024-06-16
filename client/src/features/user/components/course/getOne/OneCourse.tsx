@@ -261,6 +261,7 @@ const OneCourse: FC<OneCourseProps> = ({ id }) => {
         {data.groups.map((group) => (
           <CourseGroup
             key={group.id}
+            canModify={canModify}
             group={group}
             onDelete={handleDeleteGroup}
           />
@@ -278,6 +279,7 @@ const OneCourse: FC<OneCourseProps> = ({ id }) => {
         {data.teachers.map((teacher) => (
           <CourseTeacher
             key={teacher.id}
+            canModify={canModify}
             teacher={teacher}
             onDelete={handleDeleteTeacher}
           />
@@ -396,3 +398,4 @@ const OneCourse: FC<OneCourseProps> = ({ id }) => {
 };
 
 export { OneCourse };
+

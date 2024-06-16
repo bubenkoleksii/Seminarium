@@ -6,9 +6,10 @@ import { FC } from 'react';
 interface CourseGroupProps {
   group: { id: string; name: string };
   onDelete: (groupId: string) => void;
+  canModify: boolean;
 }
 
-const CourseGroup: FC<CourseGroupProps> = ({ group, onDelete }) => {
+const CourseGroup: FC<CourseGroupProps> = ({ group, onDelete, canModify }) => {
   const activeLocale = useLocale();
   const t = useTranslations('Course');
 
@@ -20,15 +21,18 @@ const CourseGroup: FC<CourseGroupProps> = ({ group, onDelete }) => {
       >
         {group.name}
       </Link>
-      <Button
-        onClick={() => onDelete(group.id)}
-        gradientMonochrome="failure"
-        size="xs"
-      >
-        <span className="text-white">{t('deleteBtn')}</span>
-      </Button>
+      {canModify &&
+        <Button
+          onClick={() => onDelete(group.id)}
+          gradientMonochrome="failure"
+          size="xs"
+        >
+          <span className="text-white">{t('deleteBtn')}</span>
+        </Button>
+      }
     </div>
   );
 };
 
 export { CourseGroup };
+

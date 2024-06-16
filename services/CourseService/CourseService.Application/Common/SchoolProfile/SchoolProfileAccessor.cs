@@ -15,7 +15,7 @@ public class SchoolProfileAccessor(
     {
         var getActiveSchoolProfileRequest = new GetActiveSchoolProfileRequest(
             request.UserId,
-            [Constants.ClassTeacher, Constants.SchoolAdmin, Constants.Teacher]
+            [Constants.ClassTeacher, Constants.SchoolAdmin, Constants.Teacher, Constants.SchoolAdmin, Constants.Student]
         );
 
         try

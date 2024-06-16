@@ -27,7 +27,8 @@ public class GetAllCoursesQueryHandler(
     {
         var getActiveProfileRequest = new GetActiveSchoolProfileRequest(
             UserId: request.UserId,
-            AllowedProfileTypes: [Constants.Teacher, Constants.ClassTeacher, Constants.SchoolAdmin]
+            AllowedProfileTypes: [Constants.Teacher, Constants.ClassTeacher,
+                Constants.SchoolAdmin, Constants.Student, Constants.Teacher]
         );
 
         var retrievingActiveProfileResult = await _schoolProfileAccessor.GetActiveSchoolProfile(getActiveProfileRequest, cancellationToken);

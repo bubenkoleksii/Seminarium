@@ -6,10 +6,11 @@ import { FC } from 'react';
 
 interface CourseTeacherProps {
   teacher: CourseTeacherResponse;
+  canModify: boolean;
   onDelete: (teacherId: string) => void;
 }
 
-const CourseTeacher: FC<CourseTeacherProps> = ({ teacher, onDelete }) => {
+const CourseTeacher: FC<CourseTeacherProps> = ({ teacher, onDelete, canModify }) => {
   const activeLocale = useLocale();
   const t = useTranslations('Course');
 
@@ -28,7 +29,7 @@ const CourseTeacher: FC<CourseTeacherProps> = ({ teacher, onDelete }) => {
         </div>
       ) : null}
 
-      {!teacher.isCreator && (
+      {canModify && (
         <Button
           onClick={() => onDelete(teacher.id)}
           gradientMonochrome="failure"
@@ -42,3 +43,4 @@ const CourseTeacher: FC<CourseTeacherProps> = ({ teacher, onDelete }) => {
 };
 
 export { CourseTeacher };
+
