@@ -3,19 +3,17 @@
 import { practicalLessonItem } from '@/features/user/routes';
 import type {
   PracticalLessonItemResponse,
-  UpdatePracticalLessonItemRequest
+  UpdatePracticalLessonItemRequest,
 } from '@/features/user/types/practicalLessonItemTypes';
 import { api } from '@/shared/api';
 import { ApiResponse } from '@/shared/types';
 
-type GetAll = ({
-  query,
-}: {
-  query: string;
-}) => Promise<ApiResponse<PracticalLessonItemResponse[]>>;
+type GetAll = (
+  lessonId: string,
+) => Promise<ApiResponse<PracticalLessonItemResponse[]>>;
 
 type CreatePracticalLessonItem = (
-  data: any
+  data: any,
 ) => Promise<ApiResponse<PracticalLessonItemResponse>>;
 
 type UpdatePracticalLessonItem = (
@@ -24,8 +22,8 @@ type UpdatePracticalLessonItem = (
 
 type RemovePracticalLessonItem = (id: string) => Promise<ApiResponse<any>>;
 
-export const getAllPracticalLessonItems: GetAll = ({ query }) =>
-  api.get(practicalLessonItem.getAll(query));
+export const getAllPracticalLessonItems: GetAll = (lessonId) =>
+  api.get(practicalLessonItem.getAll(lessonId));
 
 export const createPracticalLessonItem: CreatePracticalLessonItem = (data) =>
   api.create(practicalLessonItem.create, data, true);

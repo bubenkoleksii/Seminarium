@@ -36,7 +36,7 @@ public class GetAllLessonsQueryHandler(
                 .Where(item => item.LessonId == modelResponse.Id)
                 .CountAsync(cancellationToken: cancellationToken);
 
-            var theoryItemsCount = await _queryContext.PracticalLessonItems
+            var theoryItemsCount = await _queryContext.TheoryLessonItems
                 .Where(item => item.LessonId == modelResponse.Id)
                 .CountAsync(cancellationToken: cancellationToken);
 

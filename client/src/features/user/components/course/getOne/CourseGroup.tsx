@@ -21,7 +21,7 @@ const CourseGroup: FC<CourseGroupProps> = ({ group, onDelete, canModify }) => {
       >
         {group.name}
       </Link>
-      {canModify &&
+      {canModify && (
         <Button
           onClick={() => onDelete(group.id)}
           gradientMonochrome="failure"
@@ -29,10 +29,9 @@ const CourseGroup: FC<CourseGroupProps> = ({ group, onDelete, canModify }) => {
         >
           <span className="text-white">{t('deleteBtn')}</span>
         </Button>
-      }
+      )}
     </div>
   );
 };
 
 export { CourseGroup };
-

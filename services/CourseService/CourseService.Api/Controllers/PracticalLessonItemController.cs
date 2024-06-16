@@ -6,6 +6,25 @@ public class PracticalLessonItemController(IMapper mapper, IAttachmentHelper att
 
     private readonly IAttachmentHelper _attachmentHelper = attachmentHelper;
 
+    [HttpGet("[action]/{lessonId}")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<PracticalLessonItemResponse>))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> GetAll(Guid lessonId)
+    {
+        var userId = User.Identity?.GetId();
+        var userRole = User.Identity?.GetRole();
+
+        if (userId is null || userRole is null)
+            return ErrorActionResultHandler.Handle(new InvalidError("user"));
+
+        var query = new GetAllPracticalLessonItemsQuery(lessonId, (Guid)userId);
+
+        var result = await Mediator.Send(query);
+
+        return Ok(_mapper.Map<IEnumerable<PracticalLessonItemResponse>>(result));
+    }
+
     [HttpPost("[action]/")]
     [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(PracticalLessonItemResponse))]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]

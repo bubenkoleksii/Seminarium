@@ -95,10 +95,14 @@ const CreatePracticalLessonItemForm: FC<CreatePracticalLessonItemFormProps> = ({
     formData.append('lessonId', lessonId);
     formData.append('title', values.title);
     formData.append('text', values.text || '');
-    if (values.deadline) formData.append('deadline', values.deadline.toString());
-    if (values.attempts) formData.append('attempts', values.attempts?.toString() || '');
-    formData.append('allowSubmitAfterDeadline', values.allowSubmitAfterDeadline.toString());
-    formData.append('isArchived', values.isArchived.toString());
+    if (values.deadline)
+      formData.append('deadline', values.deadline.toString());
+    if (values.attempts)
+      formData.append('attempts', values.attempts?.toString() || '');
+    formData.append(
+      'allowSubmitAfterDeadline',
+      values.allowSubmitAfterDeadline.toString(),
+    );
 
     mutateCreateLessonItem(formData);
   };
@@ -204,20 +208,11 @@ const CreatePracticalLessonItemForm: FC<CreatePracticalLessonItemFormProps> = ({
                 name="allowSubmitAfterDeadline"
                 className={styles.input}
               />
-              <label htmlFor="allowSubmitAfterDeadline" className={`${styles.label} ml-1`}>
+              <label
+                htmlFor="allowSubmitAfterDeadline"
+                className={`${styles.label} ml-1`}
+              >
                 {t('labels.allowSubmitAfterDeadline')}
-              </label>
-            </div>
-
-            <div className={styles.checkbox}>
-              <Field
-                type="checkbox"
-                id="isArchived"
-                name="isArchived"
-                className={styles.input}
-              />
-              <label htmlFor="isArchived" className={`${styles.label} ml-1`}>
-                {t('labels.isArchived')}
               </label>
             </div>
 
@@ -234,4 +229,3 @@ const CreatePracticalLessonItemForm: FC<CreatePracticalLessonItemFormProps> = ({
 };
 
 export { CreatePracticalLessonItemForm };
-

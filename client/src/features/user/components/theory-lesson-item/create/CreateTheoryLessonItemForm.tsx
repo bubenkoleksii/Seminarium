@@ -93,9 +93,9 @@ const CreateTheoryLessonItemForm: FC<CreateTheoryLessonItemFormProps> = ({
     formData.append('lessonId', lessonId);
     formData.append('title', values.title);
     formData.append('text', values.text);
-    if (values.deadline) formData.append('deadline', values.deadline.toISOString());
+    if (values.deadline)
+      formData.append('deadline', values.deadline.toString());
     formData.append('isGraded', values.isGraded.toString());
-    formData.append('isArchived', values.isArchived.toString());
 
     mutateCreateLessonItem(formData);
   };
@@ -201,18 +201,6 @@ const CreateTheoryLessonItemForm: FC<CreateTheoryLessonItemFormProps> = ({
               </label>
             </div>
 
-            <div className={styles.checkbox}>
-              <Field
-                type="checkbox"
-                id="isArchived"
-                name="isArchived"
-                className={styles.input}
-              />
-              <label htmlFor="isArchived" className={`${styles.label} ml-1`}>
-                {t('labels.isArchived')}
-              </label>
-            </div>
-
             <div>
               <button type="submit" className={styles.button}>
                 {t('labels.createSubmit')}
@@ -226,4 +214,3 @@ const CreateTheoryLessonItemForm: FC<CreateTheoryLessonItemFormProps> = ({
 };
 
 export { CreateTheoryLessonItemForm };
-

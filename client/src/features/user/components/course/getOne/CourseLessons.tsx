@@ -136,8 +136,8 @@ const CourseLessons: FC<CourseLessonsProps> = ({ courseId, canModify }) => {
           <Table.Head>
             <Table.HeadCell>{t('labels.number')}</Table.HeadCell>
             <Table.HeadCell>{t('labels.topic')}</Table.HeadCell>
-            <Table.HeadCell>{t('labels.homework')}</Table.HeadCell>
             <Table.HeadCell></Table.HeadCell>
+            <Table.HeadCell>{t('labels.homework')}</Table.HeadCell>
           </Table.Head>
           <Table.Body className="divide-y">
             {data?.entries?.map((lesson, idx) => (
@@ -150,7 +150,7 @@ const CourseLessons: FC<CourseLessonsProps> = ({ courseId, canModify }) => {
                   <div className="flex flex-col gap-2">
                     {lesson.topic}
 
-                    {canModify &&
+                    {canModify && (
                       <>
                         <div className="w-[150px]">
                           <Button
@@ -162,7 +162,9 @@ const CourseLessons: FC<CourseLessonsProps> = ({ courseId, canModify }) => {
                             gradientMonochrome="purple"
                             size="xs"
                           >
-                            <span className="text-white">{t('addPractical')}</span>
+                            <span className="text-white">
+                              {t('addPractical')}
+                            </span>
                           </Button>
                         </div>
 
@@ -180,13 +182,13 @@ const CourseLessons: FC<CourseLessonsProps> = ({ courseId, canModify }) => {
                           </Button>
                         </div>
                       </>
-                    }
+                    )}
                   </div>
                 </Table.Cell>
-                <Table.Cell>{lesson.homework}</Table.Cell>
-                {canModify && (
-                  <>
-                    <Table.Cell>
+
+                <>
+                  <Table.Cell>
+                    {canModify && (
                       <div className="mt-2 flex w-full flex-wrap justify-center gap-4 md:flex-nowrap">
                         <Button
                           onClick={() =>
@@ -210,9 +212,44 @@ const CourseLessons: FC<CourseLessonsProps> = ({ courseId, canModify }) => {
                           <span className="text-white">{t('deleteBtn')}</span>
                         </Button>
                       </div>
-                    </Table.Cell>
-                  </>
-                )}
+                    )}
+
+                    <div className="mt-2 flex w-full flex-wrap justify-center gap-4 md:flex-nowrap">
+                      {lesson.practicalItemsCount > 0 && (
+                        <Button
+                          onClick={() =>
+                            replace(
+                              `/${activeLocale}/u/practical-item/getAll/?courseId=${courseId}&lessonId=${lesson.id}`,
+                            )
+                          }
+                          gradientMonochrome="purple"
+                          size="xs"
+                        >
+                          <span className="text-white">
+                            {t('practicalBtn')} ({lesson.practicalItemsCount})
+                          </span>
+                        </Button>
+                      )}
+
+                      {lesson.theoryItemsCount > 0 && (
+                        <Button
+                          onClick={() =>
+                            replace(
+                              `/${activeLocale}/u/theory-item/getAll/?courseId=${courseId}&lessonId=${lesson.id}`,
+                            )
+                          }
+                          gradientMonochrome="pink"
+                          size="xs"
+                        >
+                          <span className="text-white">
+                            {t('theoryBtn')} ({lesson.theoryItemsCount})
+                          </span>
+                        </Button>
+                      )}
+                    </div>
+                  </Table.Cell>
+                </>
+                <Table.Cell>{lesson.homework}</Table.Cell>
               </Table.Row>
             ))}
           </Table.Body>
@@ -223,4 +260,3 @@ const CourseLessons: FC<CourseLessonsProps> = ({ courseId, canModify }) => {
 };
 
 export { CourseLessons };
-

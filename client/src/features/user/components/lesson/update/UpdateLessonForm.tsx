@@ -174,4 +174,3 @@ const UpdateLessonForm: FC<UpdateLessonFormProps> = ({ courseId, lesson }) => {
 };
 
 export { UpdateLessonForm };
-

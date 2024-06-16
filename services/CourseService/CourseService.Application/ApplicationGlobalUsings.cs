@@ -36,7 +36,6 @@ global using Microsoft.Extensions.DependencyInjection;
 global using Microsoft.Extensions.Options;
 global using Serilog;
 global using Shared.Contracts.Errors;
-global using Shared.Contracts.Errors.AlreadyExists;
 global using Shared.Contracts.Errors.Invalid;
 global using Shared.Contracts.Errors.NotFound;
 global using Shared.Contracts.Errors.Services;

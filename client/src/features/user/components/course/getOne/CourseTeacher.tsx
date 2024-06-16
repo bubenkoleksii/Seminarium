@@ -10,7 +10,11 @@ interface CourseTeacherProps {
   onDelete: (teacherId: string) => void;
 }
 
-const CourseTeacher: FC<CourseTeacherProps> = ({ teacher, onDelete, canModify }) => {
+const CourseTeacher: FC<CourseTeacherProps> = ({
+  teacher,
+  onDelete,
+  canModify,
+}) => {
   const activeLocale = useLocale();
   const t = useTranslations('Course');
 
@@ -43,4 +47,3 @@ const CourseTeacher: FC<CourseTeacherProps> = ({ teacher, onDelete, canModify })
 };
 
 export { CourseTeacher };
-
