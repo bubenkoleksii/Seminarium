@@ -3,10 +3,10 @@
 public class AttachmentHelper(IOptions<Shared.Contracts.Options.FileOptions> fileOptions)
     : IAttachmentHelper
 {
-    public Either<ICollection<AttachmentModelRequest>, Error> ConvertToAttachmentRequests(IEnumerable<IFormFile>? formFiles)
+    public Either<List<AttachmentModelRequest>?, Error> ConvertToAttachmentRequests(IEnumerable<IFormFile>? formFiles)
     {
         if (formFiles == null || !formFiles.Any())
-            return [];
+            return new List<AttachmentModelRequest>();
 
         var maxAllowedSizeInMb = fileOptions.Value.MaxSizeInMb;
 
@@ -20,7 +20,7 @@ public class AttachmentHelper(IOptions<Shared.Contracts.Options.FileOptions> fil
 
             var stream = (Stream)mappingStreamResult;
 
-            var attachment = new AttachmentModelRequest { Name = file.Name, Stream = stream };
+            var attachment = new AttachmentModelRequest { Name = file.FileName, Stream = stream };
             attachmentRequests.Add(attachment);
         }
 

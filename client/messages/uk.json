@@ -721,6 +721,8 @@
   },
   "Lesson": {
     "listTitle": "План занять",
+    "addPractical": "Додати практичне",
+    "addTheory": "Додати теоретичне",
     "createTitle": "Додати заняття",
     "updateTitle": "Редагувати заняття",
     "createBtn": "Додати заняття",
@@ -745,6 +747,41 @@
     },
     "placeholders": {
       "topic": "Цикли"
+    }
+  },
+  "PracticalItem": {
+    "createTitle": "Створити нове практичне завдання",
+    "createSuccess": "Успішно додано нове практичне завдання",
+    "updateSuccess": "Успішно оновлено практичне завдання",
+    "addAttachments": "Прикріпити файли",
+    "toCourse": "Простір",
+    "labels": {
+      "title": "Заголовок",
+      "text": "Текст",
+      "deadline": "Дедлайн",
+      "isArchived": "Приховати від студентів",
+      "createSubmit": "Створити"
+    }
+  },
+  "TheoryItem": {
+    "createTitle": "Створити новий теоретичний параграф",
+    "createSuccess": "Успішно додано новий теоретичний параграф",
+    "updateSuccess": "Успішно оновлено теоретичний параграф",
+    "updateTitle": "Оновити теоретичний параграф",
+    "addAttachments": "Прикріпити файли",
+    "toCourse": "Простір",
+    "labels": {
+      "title": "Заголовок",
+      "text": "Текст",
+      "deadline": "Дедлайн",
+      "attempts": "Спроби",
+      "allowSubmitAfterDeadline": "Дозволити надсилання після дедлайну",
+      "isArchived": "Приховати від студентів",
+      "createSubmit": "Створити",
+      "isGraded": "На оцінку"
+    },
+    "placeholders": {
+      "title": "Правила дієприслівникового звороту"
     }
   }
 }

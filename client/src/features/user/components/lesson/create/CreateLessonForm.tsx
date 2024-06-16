@@ -186,4 +186,3 @@ const CreateLessonForm: FC<CreateLessonFormProps> = ({ courseId }) => {
 };
 
 export { CreateLessonForm };
-

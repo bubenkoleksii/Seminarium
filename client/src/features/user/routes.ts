@@ -33,6 +33,20 @@ export const lesson = {
   remove: (id: string) => `/lesson/Delete/${id}`,
 };
 
+export const theoryLessonItem = {
+  getAll: (lessonId: string) => `/theoryLessonItem/getAll/${lessonId}`,
+  create: '/theoryLessonItem/create',
+  update: '/theoryLessonItem/update',
+  remove: (id: string) => `/theoryLessonItem/delete/${id}`,
+};
+
+export const practicalLessonItem = {
+  getAll: (lessonId: string) => `/practicalLessonItem/getAll/${lessonId}`,
+  create: '/practicalLessonItem/create',
+  update: '/practicalLessonItem/update',
+  remove: (id: string) => `/practicalLessonItem/delete/${id}`,
+};
+
 export const group = {
   getAll: '/group/getAll',
   getOne: '/group/getOne',

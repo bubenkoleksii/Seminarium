@@ -13,8 +13,6 @@ public record PracticalLessonItemResponse(
 
     Guid LessonId,
 
-    LessonResponse Lesson,
-
     Guid? AuthorId,
 
     SchoolProfileContract? Author,

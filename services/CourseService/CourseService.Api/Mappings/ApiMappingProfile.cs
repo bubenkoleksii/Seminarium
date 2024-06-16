@@ -45,7 +45,8 @@ public class ApiMappingProfile : Profile
 
     private void ConfigurePracticalLessonItemMapping()
     {
-        CreateMap<CreatePracticalLessonItemRequest, CreatePracticalLessonItemCommand>();
+        CreateMap<CreatePracticalLessonItemRequest, CreatePracticalLessonItemCommand>()
+            .ForMember(dest => dest.Attachments, opt => opt.Ignore());
 
         CreateMap<UpdatePracticalLessonItemRequest, UpdatePracticalLessonItemCommand>();
 
@@ -54,7 +55,8 @@ public class ApiMappingProfile : Profile
 
     private void ConfigureTheoryLessonItemMapping()
     {
-        CreateMap<CreateTheoryLessonItemRequest, CreateTheoryLessonItemCommand>();
+        CreateMap<CreateTheoryLessonItemRequest, CreateTheoryLessonItemCommand>()
+           .ForMember(dest => dest.Attachments, opt => opt.Ignore());
 
         CreateMap<UpdateTheoryLessonItemRequest, UpdateTheoryLessonItemCommand>();
 

@@ -2,5 +2,5 @@
 
 public interface IAttachmentHelper
 {
-    public Either<ICollection<AttachmentModelRequest>, Error> ConvertToAttachmentRequests(IEnumerable<IFormFile>? formFiles);
+    public Either<List<AttachmentModelRequest>?, Error> ConvertToAttachmentRequests(IEnumerable<IFormFile>? formFiles);
 }

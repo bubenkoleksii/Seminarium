@@ -77,8 +77,6 @@ const UpdateLessonForm: FC<UpdateLessonFormProps> = ({ courseId, lesson }) => {
   const handleSubmit = (values) => {
     replaceEmptyStringsWithNull(values);
 
-    console.log('val', values);
-
     const request: UpdateLessonRequest = {
       id: values.id,
       courseId: values.courseId,

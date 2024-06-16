@@ -123,4 +123,3 @@ const TeacherContentTabs: FC<TeacherContentTabsProps> = ({ activeProfile }) => {
 };
 
 export { TeacherContentTabs };
-

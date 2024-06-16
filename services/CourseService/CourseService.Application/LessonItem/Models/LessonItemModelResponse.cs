@@ -14,8 +14,6 @@ public class LessonItemModelResponse
 
     public Guid LessonId { get; set; }
 
-    public required LessonModelResponse Lesson { get; set; }
-
     public Guid? AuthorId { get; set; }
 
     public SchoolProfileContract? Author { get; set; }

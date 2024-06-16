@@ -396,4 +396,3 @@ const OneCourse: FC<OneCourseProps> = ({ id }) => {
 };
 
 export { OneCourse };
-

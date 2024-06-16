@@ -20,7 +20,7 @@ public class CreateTheoryLessonItemCommandHandler(
         var getActiveProfileRequest = new GetActiveSchoolProfileRequest(
                   UserId: request.UserId,
                   AllowedProfileTypes: [Constants.Teacher]
-              );
+        );
 
         var retrievingActiveProfileResult =
             await _schoolProfileAccessor.GetActiveSchoolProfile(getActiveProfileRequest, cancellationToken);
@@ -40,9 +40,11 @@ public class CreateTheoryLessonItemCommandHandler(
         if (teacherValidatingResult.IsSome)
             return (Error)teacherValidatingResult;
 
+        var author = await _commandContext.CourseTeachers.FindAsync(activeProfile.Id);
+
         var entity = _mapper.Map<Domain.Entities.TheoryLessonItem>(request);
         entity.Lesson = lesson;
-
+        entity.Author = author;
 
         await _commandContext.TheoryLessonItems.AddAsync(entity, cancellationToken);
 
@@ -70,10 +72,9 @@ public class CreateTheoryLessonItemCommandHandler(
             return new InvalidDatabaseOperationError("attachment");
         }
 
-        entity.Lesson.LessonItems = null;
-
         var theoryLessonModelResponse = _mapper.Map<TheoryLessonItemModelResponse>(entity);
         theoryLessonModelResponse.Attachments = attachmentsLinks;
+        theoryLessonModelResponse.Author = activeProfile;
 
         return theoryLessonModelResponse;
     }

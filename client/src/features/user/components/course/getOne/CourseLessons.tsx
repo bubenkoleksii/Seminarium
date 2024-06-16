@@ -5,7 +5,10 @@ import { Loader } from '@/components/loader';
 import { SearchInput } from '@/components/search-input';
 import { getAllLessons, removeLesson } from '@/features/user/api/lessonsApi';
 import { userMutations, userQueries } from '@/features/user/constants';
-import type { LessonResponse, PagesLessonsResponse } from '@/features/user/types/lessonTypes';
+import type {
+  LessonResponse,
+  PagesLessonsResponse,
+} from '@/features/user/types/lessonTypes';
 import { buildQueryString } from '@/shared/helpers';
 import { useAuthRedirectByRole } from '@/shared/hooks';
 import { ApiResponse } from '@/shared/types';
@@ -83,15 +86,15 @@ const CourseLessons: FC<CourseLessonsProps> = ({ courseId, canModify }) => {
       courseId: courseId,
       number: lesson.number,
       topic: lesson.topic,
-      homework: lesson.homework
+      homework: lesson.homework,
     });
-  }
+  };
 
   const handleSearch = (search) => setSearch(search);
 
   const handleLessonDelete = (id: string) => {
     deleteLesson(id);
-  }
+  };
 
   useEffect(() => {
     refetch();
@@ -138,9 +141,47 @@ const CourseLessons: FC<CourseLessonsProps> = ({ courseId, canModify }) => {
           </Table.Head>
           <Table.Body className="divide-y">
             {data?.entries?.map((lesson, idx) => (
-              <Table.Row key={idx} className="bg-white dark:border-gray-700 dark:bg-gray-800">
+              <Table.Row
+                key={idx}
+                className="bg-white dark:border-gray-700 dark:bg-gray-800"
+              >
                 <Table.Cell>{lesson.number}</Table.Cell>
-                <Table.Cell>{lesson.topic}</Table.Cell>
+                <Table.Cell>
+                  <div className="flex flex-col gap-2">
+                    {lesson.topic}
+
+                    {canModify &&
+                      <>
+                        <div className="w-[150px]">
+                          <Button
+                            onClick={() =>
+                              replace(
+                                `/${activeLocale}/u/lessons/update/${courseId}/?${buildUpdateQuery(lesson)}`,
+                              )
+                            }
+                            gradientMonochrome="purple"
+                            size="xs"
+                          >
+                            <span className="text-white">{t('addPractical')}</span>
+                          </Button>
+                        </div>
+
+                        <div className="w-[150px]">
+                          <Button
+                            onClick={() =>
+                              replace(
+                                `/${activeLocale}/u/theory-item/create/?courseId=${courseId}&lessonId=${lesson.id}`,
+                              )
+                            }
+                            gradientMonochrome="pink"
+                            size="xs"
+                          >
+                            <span className="text-white">{t('addTheory')}</span>
+                          </Button>
+                        </div>
+                      </>
+                    }
+                </Table.Cell>
                 <Table.Cell>{lesson.homework}</Table.Cell>
                 {canModify && (
                   <>
@@ -148,18 +189,20 @@ const CourseLessons: FC<CourseLessonsProps> = ({ courseId, canModify }) => {
                       <div className="mt-2 flex w-full flex-wrap justify-center gap-4 md:flex-nowrap">
                         <Button
                           onClick={() =>
-                            replace(`/${activeLocale}/u/lessons/update/${courseId}/?${buildUpdateQuery(lesson)}`)
+                            replace(
+                              `/${activeLocale}/u/lessons/update/${courseId}/?${buildUpdateQuery(lesson)}`,
+                            )
                           }
                           gradientMonochrome="lime"
                           size="xs"
                         >
-                          <span className="text-gray-700">{t('updateBtn')}</span>
+                          <span className="text-gray-700">
+                            {t('updateBtn')}
+                          </span>
                         </Button>
 
                         <Button
-                          onClick={() =>
-                            handleLessonDelete(lesson.id)
-                          }
+                          onClick={() => handleLessonDelete(lesson.id)}
                           gradientMonochrome="failure"
                           size="xs"
                         >
@@ -173,9 +216,8 @@ const CourseLessons: FC<CourseLessonsProps> = ({ courseId, canModify }) => {
             ))}
           </Table.Body>
         </Table>
-      )
-      }
-    </div >
+      )}
+    </div>
   );
 };
 

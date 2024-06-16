@@ -25,7 +25,7 @@ public class TheoryLessonItemController(IMapper mapper, IAttachmentHelper attach
         if (convertingAttachmentsResult.IsRight)
             return ErrorActionResultHandler.Handle((Error)convertingAttachmentsResult);
 
-        command.Attachments = (List<AttachmentModelRequest>)convertingAttachmentsResult;
+        command.Attachments = (List<AttachmentModelRequest>?)convertingAttachmentsResult;
 
         var result = await Mediator.Send(command);
 

@@ -24,7 +24,7 @@ public class PracticalLessonItemController(IMapper mapper, IAttachmentHelper att
         if (convertingAttachmentsResult.IsRight)
             return ErrorActionResultHandler.Handle((Error)convertingAttachmentsResult);
 
-        command.Attachments = (List<AttachmentModelRequest>)convertingAttachmentsResult;
+        command.Attachments = (List<AttachmentModelRequest>?)convertingAttachmentsResult;
 
         var result = await Mediator.Send(command);
 

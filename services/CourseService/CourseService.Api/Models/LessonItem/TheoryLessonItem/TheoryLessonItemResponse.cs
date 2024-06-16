@@ -13,8 +13,6 @@ public record TheoryLessonItemResponse(
 
     Guid LessonId,
 
-    LessonResponse Lesson,
-
     Guid? AuthorId,
 
     SchoolProfileContract? Author,

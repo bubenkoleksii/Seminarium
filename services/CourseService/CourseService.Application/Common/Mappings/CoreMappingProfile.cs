@@ -42,20 +42,28 @@ public class CoreMappingProfile : Profile
 
     private void ConfigurePracticalLessonItemMapping()
     {
-        CreateMap<CreatePracticalLessonItemCommand, PracticalLessonItem>();
+        CreateMap<CreatePracticalLessonItemCommand, PracticalLessonItem>()
+            .ForMember(dest => dest.Attachments, opt => opt.Ignore());
 
-        CreateMap<UpdatePracticalLessonItemCommand, PracticalLessonItem>();
+        CreateMap<UpdatePracticalLessonItemCommand, PracticalLessonItem>()
+            .ForMember(dest => dest.Attachments, opt => opt.Ignore());
 
-        CreateMap<PracticalLessonItem, PracticalLessonItemModelResponse>();
+        CreateMap<PracticalLessonItem, PracticalLessonItemModelResponse>()
+            .ForMember(dest => dest.Author, opt => opt.Ignore())
+            .ForMember(dest => dest.Attachments, opt => opt.Ignore());
     }
 
     private void ConfigureTheoryLessonItemMapping()
     {
-        CreateMap<CreateTheoryLessonItemCommand, Domain.Entities.TheoryLessonItem>();
+        CreateMap<CreateTheoryLessonItemCommand, Domain.Entities.TheoryLessonItem>()
+             .ForMember(dest => dest.Attachments, opt => opt.Ignore());
 
-        CreateMap<UpdateTheoryLessonItemCommand, TheoryLessonItem>();
+        CreateMap<UpdateTheoryLessonItemCommand, TheoryLessonItem>()
+            .ForMember(dest => dest.Attachments, opt => opt.Ignore());
 
-        CreateMap<TheoryLessonItem, TheoryLessonItemModelResponse>();
+        CreateMap<TheoryLessonItem, TheoryLessonItemModelResponse>()
+            .ForMember(dest => dest.Author, opt => opt.Ignore())
+            .ForMember(dest => dest.Attachments, opt => opt.Ignore());
     }
 
     private void ConfigurePracticalLessonItemSubmitMapping()

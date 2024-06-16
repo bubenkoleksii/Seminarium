@@ -9,7 +9,7 @@ public record CreateTheoryLessonItemRequest(
 
     string? Text,
 
-    ICollection<IFormFile>? Attachments,
+    List<IFormFile>? Attachments,
 
     bool IsGraded,
 
