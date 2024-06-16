@@ -353,7 +353,7 @@ const OneCourse: FC<OneCourseProps> = ({ id }) => {
           </div>
         )}
 
-        <CourseLessons courseId={id} />
+        <CourseLessons courseId={id} canModify={canModify} />
       </div>
 
       {canModify && (

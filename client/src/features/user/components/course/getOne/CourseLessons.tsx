@@ -3,33 +3,43 @@
 import { Error } from '@/components/error';
 import { Loader } from '@/components/loader';
 import { SearchInput } from '@/components/search-input';
-import { getAllLessons } from '@/features/user/api/lessonsApi';
-import { userQueries } from '@/features/user/constants';
-import type { PagesLessonsResponse } from '@/features/user/types/lessonTypes';
+import { getAllLessons, removeLesson } from '@/features/user/api/lessonsApi';
+import { userMutations, userQueries } from '@/features/user/constants';
+import type { LessonResponse, PagesLessonsResponse } from '@/features/user/types/lessonTypes';
+import { buildQueryString } from '@/shared/helpers';
 import { useAuthRedirectByRole } from '@/shared/hooks';
 import { ApiResponse } from '@/shared/types';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { Button, Table } from 'flowbite-react';
 import { useLocale, useTranslations } from 'next-intl';
+import { useRouter } from 'next/navigation';
 import { FC, useEffect, useState } from 'react';
+import toast from 'react-hot-toast';
 
 type CourseLessonsProps = {
   courseId: string;
+  canModify: boolean;
 };
 
-const CourseLessons: FC<CourseLessonsProps> = ({ courseId }) => {
+const CourseLessons: FC<CourseLessonsProps> = ({ courseId, canModify }) => {
   const activeLocale = useLocale();
   const t = useTranslations('Lesson');
+  const v = useTranslations('Validation');
 
   const { isUserLoading } = useAuthRedirectByRole(activeLocale, 'userOnly');
 
+  const queryClient = useQueryClient();
+
   const [search, setSearch] = useState<string>('');
+
+  const { replace } = useRouter();
 
   const buildQuery = () => {
     const params = new URLSearchParams();
 
     params.set('courseId', courseId);
 
-    if (search) params.set('search', search);
+    if (search) params.set('topic', search);
 
     return params.toString();
   };
@@ -42,7 +52,46 @@ const CourseLessons: FC<CourseLessonsProps> = ({ courseId }) => {
     retry: userQueries.options.retry,
   });
 
+  const { mutate: deleteLesson } = useMutation({
+    mutationFn: removeLesson,
+    mutationKey: [userMutations.deleteLesson],
+    onSuccess: (response) => {
+      if (response && response.error) {
+        const errorMessages = {
+          404: t('labels.oneNotFound'),
+          400: v('validation'),
+          401: v('unauthorized'),
+          403: v('forbidden'),
+        };
+
+        toast.error(errorMessages[response.error.status] || v('internal'));
+      } else {
+        toast.success(t('labels.deleteSuccess'), { duration: 2500 });
+      }
+    },
+    onSettled: async () => {
+      queryClient.invalidateQueries({
+        queryKey: ['courseLessons', courseId, search],
+        refetchType: 'all',
+      });
+    },
+  });
+
+  const buildUpdateQuery = (lesson: LessonResponse) => {
+    return buildQueryString({
+      id: lesson.id,
+      courseId: courseId,
+      number: lesson.number,
+      topic: lesson.topic,
+      homework: lesson.homework
+    });
+  }
+
   const handleSearch = (search) => setSearch(search);
+
+  const handleLessonDelete = (id: string) => {
+    deleteLesson(id);
+  }
 
   useEffect(() => {
     refetch();
@@ -65,8 +114,8 @@ const CourseLessons: FC<CourseLessonsProps> = ({ courseId }) => {
   }
 
   return (
-    <div>
-      <div className="mb-4 flex w-full justify-center">
+    <div className="overflow-x-auto">
+      <div className="mb-4 mt-4 flex w-full justify-center">
         <SearchInput
           maxLength={200}
           value={search}
@@ -80,32 +129,53 @@ const CourseLessons: FC<CourseLessonsProps> = ({ courseId }) => {
           {t('labels.notFound')}
         </div>
       ) : (
-        <div className="relative">
-          <div className="flex flex-col items-start gap-4">
+        <Table className="w-full table-fixed">
+          <Table.Head>
+            <Table.HeadCell>{t('labels.number')}</Table.HeadCell>
+            <Table.HeadCell>{t('labels.topic')}</Table.HeadCell>
+            <Table.HeadCell>{t('labels.homework')}</Table.HeadCell>
+            <Table.HeadCell></Table.HeadCell>
+          </Table.Head>
+          <Table.Body className="divide-y">
             {data?.entries?.map((lesson, idx) => (
-              <div
-                key={idx}
-                className="w-full rounded-md border border-gray-200 p-4 shadow-sm"
-              >
-                <h3 className="text-lg font-semibold">
-                  {t('lesson')} {lesson.number}
-                </h3>
-                <p>
-                  <strong>{t('topic')}: </strong>
-                  {lesson.topic}
-                </p>
-                {lesson.homework && (
-                  <p>
-                    <strong>{t('homework')}: </strong>
-                    {lesson.homework}
-                  </p>
+              <Table.Row key={idx} className="bg-white dark:border-gray-700 dark:bg-gray-800">
+                <Table.Cell>{lesson.number}</Table.Cell>
+                <Table.Cell>{lesson.topic}</Table.Cell>
+                <Table.Cell>{lesson.homework}</Table.Cell>
+                {canModify && (
+                  <>
+                    <Table.Cell>
+                      <div className="mt-2 flex w-full flex-wrap justify-center gap-4 md:flex-nowrap">
+                        <Button
+                          onClick={() =>
+                            replace(`/${activeLocale}/u/lessons/update/${courseId}/?${buildUpdateQuery(lesson)}`)
+                          }
+                          gradientMonochrome="lime"
+                          size="xs"
+                        >
+                          <span className="text-gray-700">{t('updateBtn')}</span>
+                        </Button>
+
+                        <Button
+                          onClick={() =>
+                            handleLessonDelete(lesson.id)
+                          }
+                          gradientMonochrome="failure"
+                          size="xs"
+                        >
+                          <span className="text-white">{t('deleteBtn')}</span>
+                        </Button>
+                      </div>
+                    </Table.Cell>
+                  </>
                 )}
-              </div>
+              </Table.Row>
             ))}
-          </div>
-        </div>
-      )}
-    </div>
+          </Table.Body>
+        </Table>
+      )
+      }
+    </div >
   );
 };
 

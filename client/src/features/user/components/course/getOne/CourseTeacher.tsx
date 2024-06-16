@@ -42,3 +42,4 @@ const CourseTeacher: FC<CourseTeacherProps> = ({ teacher, onDelete }) => {
 };
 
 export { CourseTeacher };
+

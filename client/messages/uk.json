@@ -722,26 +722,29 @@
   "Lesson": {
     "listTitle": "План занять",
     "createTitle": "Додати заняття",
-    "updateTitle": "Оновити заняття",
+    "updateTitle": "Редагувати заняття",
     "createBtn": "Додати заняття",
     "updateBtn": "Оновити",
     "deleteBtn": "Видалити",
     "createLessonSucсess": "Успішно додано заняття",
+    "updateLessonSuccess": "Успішно оновлено заняття",
     "updateSucess": "Успішно оновлено заняття",
     "deleteSucess": "Успішно видалено заняття",
     "labels": {
       "createSubmit": "Додати",
       "toCourse": "Простір",
+      "oneNotFound": "Не вдалось знайти заняття",
       "updateSubmit": "Оновити",
       "number": "Номер",
       "topic": "Тема",
+      "deleteSuccess": "Заняття успішно видалено",
       "homework": "Домашнє завдання",
       "createHomeworkTask": "Створити практичне завдання для ДЗ",
       "practicalItems": "Практичні завдання",
       "theoryItems": "Теоретичні параграфи"
     },
     "placeholders": {
-      "topic": "Тригонометрія"
+      "topic": "Цикли"
     }
   }
 }

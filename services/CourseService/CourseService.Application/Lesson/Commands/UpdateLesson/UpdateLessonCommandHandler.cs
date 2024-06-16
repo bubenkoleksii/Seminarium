@@ -53,8 +53,6 @@ public class UpdateLessonCommandHandler(
             return new InvalidDatabaseOperationError("course");
         }
 
-        lesson.Course.Lessons = null;
-
         var lessonModelResponse = _mapper.Map<LessonModelResponse>(lesson);
         return lessonModelResponse;
     }

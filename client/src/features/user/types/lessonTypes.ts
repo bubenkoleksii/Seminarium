@@ -15,6 +15,7 @@ export interface CreateLessonRequest {
 }
 
 export interface UpdateLessonRequest {
+  id: string;
   courseId: string;
   number: number;
   topic: string;
@@ -22,6 +23,7 @@ export interface UpdateLessonRequest {
 }
 
 export interface LessonResponse {
+  id: string;
   courseId: string;
   number: number;
   topic: string;
