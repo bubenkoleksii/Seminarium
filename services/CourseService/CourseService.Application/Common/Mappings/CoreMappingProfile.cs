@@ -43,6 +43,9 @@ public class CoreMappingProfile : Profile
     private void ConfigurePracticalLessonItemMapping()
     {
         CreateMap<CreatePracticalLessonItemCommand, PracticalLessonItem>()
+            .ForMember(dest => dest.Deadline, opt => opt.MapFrom(src => src.Deadline.HasValue
+                ? src.Deadline.Value.ToUniversalTime()
+                : (DateTime?)null))
             .ForMember(dest => dest.Attachments, opt => opt.Ignore());
 
         CreateMap<UpdatePracticalLessonItemCommand, PracticalLessonItem>()
@@ -56,6 +59,9 @@ public class CoreMappingProfile : Profile
     private void ConfigureTheoryLessonItemMapping()
     {
         CreateMap<CreateTheoryLessonItemCommand, Domain.Entities.TheoryLessonItem>()
+             .ForMember(dest => dest.Deadline, opt => opt.MapFrom(src => src.Deadline.HasValue
+                ? src.Deadline.Value.ToUniversalTime()
+                : (DateTime?)null))
              .ForMember(dest => dest.Attachments, opt => opt.Ignore());
 
         CreateMap<UpdateTheoryLessonItemCommand, TheoryLessonItem>()

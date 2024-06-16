@@ -22,7 +22,9 @@ public class CreatePracticalLessonItemCommandHandler(
             AllowedProfileTypes: [Constants.Teacher]
         );
 
-        var retrievingActiveProfileResult = await _schoolProfileAccessor.GetActiveSchoolProfile(getActiveProfileRequest, cancellationToken);
+        var retrievingActiveProfileResult =
+            await _schoolProfileAccessor.GetActiveSchoolProfile(getActiveProfileRequest, cancellationToken);
+
         if (retrievingActiveProfileResult.IsRight)
             return (Error)retrievingActiveProfileResult;
 
@@ -30,7 +32,7 @@ public class CreatePracticalLessonItemCommandHandler(
         if (activeProfile == null || activeProfile.SchoolId == null)
             return new InvalidError("school_profile");
 
-        var lesson = await _commandContext.Lessons.FindAsync(request.LessonId, CancellationToken.None);
+        var lesson = await _commandContext.Lessons.FindAsync(request.LessonId, cancellationToken);
         if (lesson is null)
             return new InvalidError("lesson");
 
@@ -38,12 +40,13 @@ public class CreatePracticalLessonItemCommandHandler(
         if (teacherValidatingResult.IsSome)
             return (Error)teacherValidatingResult;
 
+        var author = await _commandContext.CourseTeachers.FindAsync(activeProfile.Id);
+
         var entity = _mapper.Map<Domain.Entities.PracticalLessonItem>(request);
         entity.Lesson = lesson;
+        entity.Author = author;
 
-        var (attachments, attachmentsLinks) = await _attachmentManager.ProcessAttachments(request.Attachments, entity, Constants.PracticeItem);
-
-        await _commandContext.Attachments.AddRangeAsync(attachments, cancellationToken);
+        await _commandContext.PracticalLessonItems.AddAsync(entity, cancellationToken);
 
         try
         {
@@ -55,10 +58,23 @@ public class CreatePracticalLessonItemCommandHandler(
             return new InvalidDatabaseOperationError("lesson");
         }
 
-        entity.Lesson.LessonItems = null;
+        var (attachments, attachmentsLinks) = await _attachmentManager.ProcessAttachments(request.Attachments, entity, Constants.PracticeItem);
+
+        await _commandContext.Attachments.AddRangeAsync(attachments, cancellationToken);
+
+        try
+        {
+            await _commandContext.SaveChangesAsync(cancellationToken);
+        }
+        catch (Exception exception)
+        {
+            Log.Error(exception, "An error occurred while creating the list of lesson item attachments with values {@Request}.", attachments);
+            return new InvalidDatabaseOperationError("attachment");
+        }
 
         var practicalLessonModelResponse = _mapper.Map<PracticalLessonItemModelResponse>(entity);
         practicalLessonModelResponse.Attachments = attachmentsLinks;
+        practicalLessonModelResponse.Author = activeProfile;
 
         return practicalLessonModelResponse;
     }

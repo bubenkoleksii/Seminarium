@@ -13,8 +13,8 @@ public class UpdateTheoryLessonItemCommandHandler(
     public async Task<Either<TheoryLessonItemModelResponse, Error>> Handle(UpdateTheoryLessonItemCommand request, CancellationToken cancellationToken)
     {
         var getActiveProfileRequest = new GetActiveSchoolProfileRequest(
-         UserId: request.UserId,
-         AllowedProfileTypes: [Constants.Teacher]
+            UserId: request.UserId,
+            AllowedProfileTypes: [Constants.Teacher]
        );
 
         var retrievingActiveProfileResult =

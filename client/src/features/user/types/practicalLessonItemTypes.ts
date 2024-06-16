@@ -2,7 +2,7 @@ import { SchoolProfileResponse } from './schoolProfileTypes';
 
 export interface CreatePracticalLessonItemRequest {
   lessonId: string;
-  deadline?: string;
+  deadline?: string | null;
   title: string;
   text?: string;
   attempts?: number;
@@ -12,7 +12,7 @@ export interface CreatePracticalLessonItemRequest {
 
 export interface UpdatePracticalLessonItemRequest {
   id: string;
-  deadline?: Date;
+  deadline?: string;
   title: string;
   text?: string;
   attempts?: number;
@@ -21,8 +21,8 @@ export interface UpdatePracticalLessonItemRequest {
 
 export interface PracticalLessonItemResponse {
   id: string;
-  createdAt: Date;
-  lastUpdatedAt?: Date;
+  createdAt: string;
+  lastUpdatedAt?: string;
   title?: string;
   text?: string;
   lessonId: string;

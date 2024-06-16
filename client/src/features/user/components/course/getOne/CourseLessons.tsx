@@ -156,7 +156,7 @@ const CourseLessons: FC<CourseLessonsProps> = ({ courseId, canModify }) => {
                           <Button
                             onClick={() =>
                               replace(
-                                `/${activeLocale}/u/lessons/update/${courseId}/?${buildUpdateQuery(lesson)}`,
+                                `/${activeLocale}/u/practical-item/create/?courseId=${courseId}&lessonId=${lesson.id}`,
                               )
                             }
                             gradientMonochrome="purple"
@@ -181,6 +181,7 @@ const CourseLessons: FC<CourseLessonsProps> = ({ courseId, canModify }) => {
                         </div>
                       </>
                     }
+                  </div>
                 </Table.Cell>
                 <Table.Cell>{lesson.homework}</Table.Cell>
                 {canModify && (

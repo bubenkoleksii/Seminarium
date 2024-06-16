@@ -2,7 +2,7 @@ import type { SchoolProfileResponse } from './schoolProfileTypes';
 
 export interface CreateTheoryLessonItemRequest {
   lessonId: string;
-  deadline?: Date;
+  deadline?: string | null;
   title: string;
   text?: string;
   isGraded: boolean;
@@ -12,7 +12,7 @@ export interface CreateTheoryLessonItemRequest {
 export interface UpdateTheoryLessonItemRequest {
   id: string;
   lessonId: string;
-  deadline?: Date;
+  deadline?: string | null;
   title: string;
   text?: string;
   isGraded: boolean;
@@ -21,8 +21,8 @@ export interface UpdateTheoryLessonItemRequest {
 
 export interface TheoryLessonItemResponse {
   id: string;
-  createdAt: Date;
-  lastUpdatedAt?: Date;
+  createdAt: string;
+  lastUpdatedAt?: string;
   title?: string;
   text?: string;
   lessonId: string;

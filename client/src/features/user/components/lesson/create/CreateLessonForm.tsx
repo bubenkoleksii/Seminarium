@@ -121,6 +121,7 @@ const CreateLessonForm: FC<CreateLessonFormProps> = ({ courseId }) => {
             {t('labels.toCourse')}
           </span>
         </div>
+
         <Form className={styles.form}>
           <div>
             <label htmlFor="number" className={styles.label}>
@@ -186,3 +187,4 @@ const CreateLessonForm: FC<CreateLessonFormProps> = ({ courseId }) => {
 };
 
 export { CreateLessonForm };
+

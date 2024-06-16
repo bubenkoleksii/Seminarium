@@ -34,6 +34,7 @@ const CreateTheoryLessonItemForm: FC<CreateTheoryLessonItemFormProps> = ({
   const validationSchema = Yup.object().shape({
     title: Yup.string().max(250, v('max')).required(v('required')),
     text: Yup.string().max(1500, v('max')),
+    deadline: Yup.date().nullable(),
     isGraded: Yup.boolean().required(v('required')),
     isArchived: Yup.boolean().required(v('required')),
   });
@@ -42,6 +43,7 @@ const CreateTheoryLessonItemForm: FC<CreateTheoryLessonItemFormProps> = ({
     lessonId,
     title: '',
     text: '',
+    deadline: null,
     isGraded: false,
     isArchived: false,
   };
@@ -52,8 +54,6 @@ const CreateTheoryLessonItemForm: FC<CreateTheoryLessonItemFormProps> = ({
     retry: userMutations.options.retry,
     onSuccess: (response) => {
       if (response && response.error) {
-        console.log('err', response.error);
-
         if (response.error.detail.includes('school_profile')) {
           toast.error(v('invalid_school_profile'));
           return;
@@ -93,10 +93,9 @@ const CreateTheoryLessonItemForm: FC<CreateTheoryLessonItemFormProps> = ({
     formData.append('lessonId', lessonId);
     formData.append('title', values.title);
     formData.append('text', values.text);
-    formData.append('isGraded', values.isGraded);
-    formData.append('isArchived', values.isArchived);
-
-    console.log('formData', formData.getAll('attachments'));
+    if (values.deadline) formData.append('deadline', values.deadline.toISOString());
+    formData.append('isGraded', values.isGraded.toString());
+    formData.append('isArchived', values.isArchived.toString());
 
     mutateCreateLessonItem(formData);
   };
@@ -112,6 +111,19 @@ const CreateTheoryLessonItemForm: FC<CreateTheoryLessonItemFormProps> = ({
           <h2 className="md:text p-3 text-center text-lg font-semibold text-gray-950 lg:text-xl">
             {t('createTitle')}
           </h2>
+
+          <div>
+            <span
+              onClick={() => {
+                const url = `/${activeLocale}/u/courses/${courseId}`;
+
+                replace(url);
+              }}
+              className="cursor-pointer text-sm font-semibold text-purple-700 hover:text-red-700"
+            >
+              {t('labels.toCourse')}
+            </span>
+          </div>
 
           <Form className={styles.form}>
             <div>
@@ -146,6 +158,23 @@ const CreateTheoryLessonItemForm: FC<CreateTheoryLessonItemFormProps> = ({
               />
               <ErrorMessage
                 name="text"
+                component="div"
+                className={styles.error}
+              />
+            </div>
+
+            <div>
+              <label htmlFor="deadline" className={styles.label}>
+                {t('labels.deadline')}
+              </label>
+              <Field
+                type="datetime-local"
+                id="deadline"
+                name="deadline"
+                className={styles.input}
+              />
+              <ErrorMessage
+                name="deadline"
                 component="div"
                 className={styles.error}
               />
