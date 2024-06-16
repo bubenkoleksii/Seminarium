@@ -12,11 +12,11 @@ public class LessonModelResponse
 
     public required string Topic { get; set; }
 
-    public DateTime? Date { get; set; }
-
     public string? Homework { get; set; }
 
     public Guid CourseId { get; set; }
 
-    public required CourseModelResponse Course { get; set; }
+    public uint? PracticalItemsCount { get; set; }
+
+    public uint? TheoryItemsCount { get; set; }
 }

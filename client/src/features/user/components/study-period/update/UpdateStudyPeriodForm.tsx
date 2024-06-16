@@ -41,8 +41,6 @@ const UpdateStudyPeriodForm: FC<UpdateStudyPeriodProps> = ({
     mutationKey: [userMutations.updateStudyPeriod],
     retry: userMutations.options.retry,
     onSuccess: (response) => {
-      console.log('res', response);
-
       if (response && response.error) {
         if (response.error.detail.includes('school_profile')) {
           toast.error(v('invalid_school_profile'));

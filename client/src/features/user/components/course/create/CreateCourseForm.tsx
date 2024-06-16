@@ -5,6 +5,7 @@ import { useProfiles } from '@/features/user';
 import { createCourse } from '@/features/user/api/coursesApi';
 import { userMutations } from '@/features/user/constants';
 import type { CreateCourseRequest } from '@/features/user/types/courseTypes';
+import { replaceEmptyStringsWithNull } from '@/shared/helpers';
 import { useAuthRedirectByRole } from '@/shared/hooks';
 import { useIsMutating, useMutation } from '@tanstack/react-query';
 import { ErrorMessage, Field, Form, Formik } from 'formik';
@@ -82,6 +83,8 @@ const CreateCourseForm: FC = () => {
   };
 
   const handleSubmit = (values) => {
+    replaceEmptyStringsWithNull(values);
+
     const request: CreateCourseRequest = {
       studyPeriodId: values.studyPeriodId,
       name: values.name,

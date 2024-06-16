@@ -25,6 +25,9 @@ export const userQueries = {
 
 export const userMutations = {
   activateProfile: 'activateProfile',
+  createLesson: 'createLesson',
+  updateLesson: 'updateLesson',
+  deleteLesson: 'deleteLesson',
   createGroup: 'createGroup',
   updateGroup: 'updateGroup',
   deleteGroup: 'deleteGroup',

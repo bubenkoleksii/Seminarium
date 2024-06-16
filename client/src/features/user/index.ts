@@ -15,6 +15,7 @@ export { CreateGroupForm } from './components/group/create/CreateGroupForm';
 export { Groups } from './components/group/getAll/Groups';
 export { Group } from './components/group/getOne/Group';
 export { UpdateGroupForm } from './components/group/update/UpdateGroupForm';
+export { CreateLessonForm } from './components/lesson/create/CreateLessonForm';
 export { CreateStudyPeriod } from './components/study-period/create/CreateStudyPeriod';
 export { StudyPeriods } from './components/study-period/getAll/StudyPeriods';
 export { UpdateStudyPeriodForm } from './components/study-period/update/UpdateStudyPeriodForm';
@@ -30,4 +31,3 @@ export { UpdateParentSchoolProfile } from './school-profile/update/UpdateParentS
 export { UpdateStudentSchoolProfile } from './school-profile/update/UpdateStudentSchoolProfile';
 export { UpdateTeacherSchoolProfile } from './school-profile/update/UpdateTeacherSchoolProfile';
 export { useSchoolProfilesStore } from './store/schoolProfilesStore';
-

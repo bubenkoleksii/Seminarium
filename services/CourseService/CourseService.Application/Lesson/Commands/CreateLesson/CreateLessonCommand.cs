@@ -11,4 +11,6 @@ public class CreateLessonCommand : IRequest<Either<LessonModelResponse, Error>>
     public required string Topic { get; set; }
 
     public string? Homework { get; set; }
+
+    public bool NeedPracticalItem { get; set; }
 }

@@ -37,6 +37,10 @@ public class ApiMappingProfile : Profile
         CreateMap<UpdateLessonRequest, UpdateLessonCommand>();
 
         CreateMap<LessonModelResponse, LessonResponse>();
+
+        CreateMap<GetAllLessonsParams, GetAllLessonsQuery>();
+
+        CreateMap<GetAllLessonsModelResponse, GetAllLessonsResponse>();
     }
 
     private void ConfigurePracticalLessonItemMapping()

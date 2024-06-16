@@ -6,6 +6,7 @@ import { Tooltip } from 'flowbite-react';
 import {
   ChevronsLeft,
   Home,
+  LibraryBig,
   Megaphone,
   School,
   User,
@@ -37,6 +38,20 @@ const StudentContentTabs: FC<StudentContentTabsProps> = ({ activeProfile }) => {
         >
           <User
             color={`${currentTab === CurrentTab.Profile ? `#f9fafb` : `#3B0764`}`}
+            size={20}
+          />
+        </Link>
+      </Tooltip>
+
+      <Tooltip content={t('courses')} placement="right" style="light">
+        <Link
+          href={`/${activeLocale}/u/courses/?groupId=${activeProfile.groupId}`}
+          className={`flex h-[50px] w-[50px] items-center justify-center 
+         ${currentTab === CurrentTab.Course ? `bg-purple-950` : `bg-gray-50 hover:bg-gray-200`} 
+         text-gray-800 transition duration-300`}
+        >
+          <LibraryBig
+            color={`${currentTab === CurrentTab.Course ? `#f9fafb` : `#3B0764`}`}
             size={20}
           />
         </Link>

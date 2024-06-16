@@ -80,8 +80,8 @@ const Courses: FC<CoursesProps> = ({
     buildQueryString({
       studyPeriodId,
       name: searchParameter,
-      groupId,
-      teacherId,
+      groupId: groupIdParameter,
+      teacherId: teacherIdParameter,
       take: limitParameter,
       skip,
     });
@@ -201,7 +201,7 @@ const Courses: FC<CoursesProps> = ({
         </div>
       </div>
 
-      {data && data.entries.length !== data.total && (
+      {data && data.total > data.take && (
         <div className="mt-6">
           <Pagination
             currentPage={page}

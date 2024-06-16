@@ -25,6 +25,14 @@ export const course = {
     `/course/DeleteCourseTeacher/${id}/${courseId}`,
 };
 
+export const lesson = {
+  getOne: (id: string) => `/lesson/getOne/${id}`,
+  getAll: (query: string) => `/lesson/getAll/?${query}`,
+  create: '/lesson/create',
+  update: '/lesson/update',
+  remove: (id: string) => `/lesson/Delete/${id}`,
+};
+
 export const group = {
   getAll: '/group/getAll',
   getOne: '/group/getOne',

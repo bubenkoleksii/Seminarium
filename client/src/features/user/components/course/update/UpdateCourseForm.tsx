@@ -182,4 +182,3 @@ const UpdateCourseForm: FC<UpdateCourseFormProps> = ({ id, course }) => {
 };
 
 export { UpdateCourseForm };
-

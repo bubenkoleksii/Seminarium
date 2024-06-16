@@ -4,6 +4,28 @@ public class LessonController(IMapper mapper) : BaseController
 {
     private readonly IMapper _mapper = mapper;
 
+    [HttpGet("[action]/")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GetAllLessonsResponse))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> GetAll([FromQuery] GetAllLessonsParams filterParams)
+    {
+        var userId = User.Identity?.GetId();
+        var userRole = User.Identity?.GetRole();
+
+        if (userId is null || userRole is null)
+            return ErrorActionResultHandler.Handle(new InvalidError("user"));
+
+        var query = _mapper.Map<GetAllLessonsQuery>(filterParams);
+
+        var result = await Mediator.Send(query);
+
+        return result.Match(
+            Left: modelResponse => Ok(_mapper.Map<GetAllLessonsResponse>(modelResponse)),
+            Right: ErrorActionResultHandler.Handle
+        );
+    }
+
     [HttpPost("[action]/")]
     [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(LessonResponse))]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]

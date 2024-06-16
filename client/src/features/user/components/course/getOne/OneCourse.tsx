@@ -34,6 +34,7 @@ import {
   removeCourseTeacher,
 } from '../../../api/coursesApi';
 import { CourseGroup } from './CourseGroup';
+import { CourseLessons } from './CourseLessons';
 import { CourseTeacher } from './CourseTeacher';
 
 interface OneCourseProps {
@@ -43,6 +44,7 @@ interface OneCourseProps {
 const OneCourse: FC<OneCourseProps> = ({ id }) => {
   const t = useTranslations('Course');
   const v = useTranslations('Validation');
+  const l = useTranslations('Lesson');
 
   const isMutating = useIsMutating();
 
@@ -222,6 +224,8 @@ const OneCourse: FC<OneCourseProps> = ({ id }) => {
   const canModify =
     activeProfile?.type === 'school_admin' || activeProfile?.type === 'teacher';
 
+  const canModifyLessons = activeProfile?.type === 'teacher';
+
   const handleOpenDeleteModal = () => {
     setDeleteOpenModal(true);
   };
@@ -303,36 +307,53 @@ const OneCourse: FC<OneCourseProps> = ({ id }) => {
 
       <p className="my-4 text-center">{data.description || ''}</p>
 
-      <div className="my-4">
-        <h3 className="text-center font-bold">{t('labels.groups')}</h3>
-        {canModify && (
-          <div className="mt-2 flex justify-center">
-            <Button gradientMonochrome="teal" size="md">
-              <Link
-                href={`/${activeLocale}/u/courses/group-create/?schoolId=${activeProfile.schoolId}&courseId=${id}`}
-              >
-                <span className="text-white">{t('addGroupBtn')}</span>
-              </Link>
-            </Button>
-          </div>
-        )}
-        <div className="mt-2 text-center">{renderGroups()}</div>
+      <div className="my-4 flex flex-col lg:flex-row lg:justify-between">
+        <div className="lg:w-1/2">
+          <h3 className="text-center font-bold">{t('labels.groups')}</h3>
+          {canModify && (
+            <div className="mt-2 flex justify-center">
+              <Button gradientMonochrome="teal" size="md">
+                <Link
+                  href={`/${activeLocale}/u/courses/group-create/?schoolId=${activeProfile.schoolId}&courseId=${id}`}
+                >
+                  <span className="text-white">{t('addGroupBtn')}</span>
+                </Link>
+              </Button>
+            </div>
+          )}
+          <div className="mt-2 text-center">{renderGroups()}</div>
+        </div>
+
+        <div className="lg:w-1/2">
+          <h3 className="text-center font-bold">{t('labels.teachers')}</h3>
+          {canModify && (
+            <div className="mt-2 flex justify-center">
+              <Button gradientMonochrome="purple" size="md">
+                <Link
+                  href={`/${activeLocale}/u/courses/teacher-create/?schoolId=${activeProfile.schoolId}&courseId=${id}`}
+                >
+                  <span className="text-white">{t('addTeacherBtn')}</span>
+                </Link>
+              </Button>
+            </div>
+          )}
+          <div className="mt-2 text-center">{renderTeachers()}</div>
+        </div>
       </div>
 
       <div className="my-4">
-        <h3 className="text-center font-bold">{t('labels.teachers')}</h3>
-        {canModify && (
+        <h3 className="text-center text-2xl font-bold">{l('listTitle')}</h3>
+        {canModifyLessons && (
           <div className="mt-2 flex justify-center">
-            <Button gradientMonochrome="purple" size="md">
-              <Link
-                href={`/${activeLocale}/u/courses/teacher-create/?schoolId=${activeProfile.schoolId}&courseId=${id}`}
-              >
-                <span className="text-white">{t('addTeacherBtn')}</span>
+            <Button gradientMonochrome="success" size="md">
+              <Link href={`/${activeLocale}/u/lessons/create/${id}`}>
+                <span className="text-white">{l('createBtn')}</span>
               </Link>
             </Button>
           </div>
         )}
-        <div className="mt-2 text-center">{renderTeachers()}</div>
+
+        <CourseLessons courseId={id} />
       </div>
 
       {canModify && (

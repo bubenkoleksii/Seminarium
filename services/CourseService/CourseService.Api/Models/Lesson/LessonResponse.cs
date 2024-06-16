@@ -15,5 +15,7 @@ public record LessonResponse(
 
     Guid CourseId,
 
-    CourseResponse Course
+    uint? PracticalItemsCount,
+
+    uint? TheoryItemsCount
 );

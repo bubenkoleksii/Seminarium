@@ -7,5 +7,7 @@ public record CreateLessonRequest(
 
     string Topic,
 
-    string? Homework
+    string? Homework,
+
+    bool NeedPracticalItem
 );

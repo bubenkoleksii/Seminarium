@@ -4,6 +4,8 @@ import { FC } from 'react';
 type CoursePageProps = {
   searchParams: {
     studyPeriodId: string;
+    teacherId: string;
+    groupId: string;
     search: string;
     take: string;
     page: string;
@@ -16,6 +18,8 @@ const CoursesPage: FC<CoursePageProps> = ({ searchParams }) => {
       <Courses
         studyPeriodIdParameter={searchParams.studyPeriodId}
         searchParameter={searchParams.search}
+        teacherIdParameter={searchParams.teacherId}
+        groupIdParameter={searchParams.groupId}
         limitParameter={searchParams.take ? Number(searchParams.take) : null}
         pageParameter={searchParams.page ? Number(searchParams.page) : null}
       />

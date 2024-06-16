@@ -27,6 +27,7 @@ global using CourseService.Application.Lesson.Commands.CreateLesson;
 global using CourseService.Application.Lesson.Commands.DeleteLesson;
 global using CourseService.Application.Lesson.Commands.UpdateLesson;
 global using CourseService.Application.Lesson.Models;
+global using CourseService.Application.Lesson.Queries.GetAllLessons;
 global using CourseService.Application.LessonItem.Commands.PracticalLessonItem.CreatePracticalLessonItem;
 global using CourseService.Application.LessonItem.Commands.PracticalLessonItem.DeletePracticalLessonItem;
 global using CourseService.Application.LessonItem.Commands.PracticalLessonItem.UpdatePracticalLessonItem;

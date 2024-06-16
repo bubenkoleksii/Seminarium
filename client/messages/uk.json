@@ -718,5 +718,30 @@
       "search": "Інформатика",
       "description": "Простір викладачів Петренка та Васильчука 2022-2023 н.р. фізика для 8 класу..."
     }
+  },
+  "Lesson": {
+    "listTitle": "План занять",
+    "createTitle": "Додати заняття",
+    "updateTitle": "Оновити заняття",
+    "createBtn": "Додати заняття",
+    "updateBtn": "Оновити",
+    "deleteBtn": "Видалити",
+    "createLessonSucсess": "Успішно додано заняття",
+    "updateSucess": "Успішно оновлено заняття",
+    "deleteSucess": "Успішно видалено заняття",
+    "labels": {
+      "createSubmit": "Додати",
+      "toCourse": "Простір",
+      "updateSubmit": "Оновити",
+      "number": "Номер",
+      "topic": "Тема",
+      "homework": "Домашнє завдання",
+      "createHomeworkTask": "Створити практичне завдання для ДЗ",
+      "practicalItems": "Практичні завдання",
+      "theoryItems": "Теоретичні параграфи"
+    },
+    "placeholders": {
+      "topic": "Тригонометрія"
+    }
   }
 }
