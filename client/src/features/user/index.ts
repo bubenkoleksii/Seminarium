@@ -17,6 +17,8 @@ export { Group } from './components/group/getOne/Group';
 export { UpdateGroupForm } from './components/group/update/UpdateGroupForm';
 export { CreateLessonForm } from './components/lesson/create/CreateLessonForm';
 export { UpdateLessonForm } from './components/lesson/update/UpdateLessonForm';
+export { CreatePracticalLessonItemSubmit } from './components/practical-lesson-item-submit/create/CreatePracticalLessonItemSubmit';
+export { PracticalLessonItemSubmit } from './components/practical-lesson-item-submit/getOne/PracticalLessonItemSubmit';
 export { CreatePracticalLessonItemForm } from './components/practical-lesson-item/create/CreatePracticalLessonItemForm';
 export { GetAllPracticalLessonItems } from './components/practical-lesson-item/getAll/GetAllPracticalLessonItems';
 export { CreateStudyPeriod } from './components/study-period/create/CreateStudyPeriod';

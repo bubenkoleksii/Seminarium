@@ -1,3 +1,5 @@
+'use client';
+
 import { FileInput, Label } from 'flowbite-react';
 import { ErrorMessage, Form, Formik } from 'formik';
 import { useTranslations } from 'next-intl';

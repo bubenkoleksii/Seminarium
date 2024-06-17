@@ -1,20 +1,18 @@
 ﻿namespace CourseService.Application.PracticalLessonItemSubmit.Models;
 
-public class PracticalLessonItemSubmitModelResponse
+public class GetAllPracticalLessonItemSubmitModelResponseItem
 {
     public Guid Id { get; set; }
 
     public DateTime CreatedAt { get; set; }
 
-    public DateTime? LastUpdatedAt { get; set; }
-
     public Guid StudentId { get; set; }
 
     public string? StudentName { get; set; }
 
-    public Guid PracticalLessonItemId { get; set; }
+    public string? GroupName { get; set; }
 
-    public string? Text { get; set; }
+    public Guid PracticalLessonItemId { get; set; }
 
     public ICollection<string>? Attachments { get; set; }
 

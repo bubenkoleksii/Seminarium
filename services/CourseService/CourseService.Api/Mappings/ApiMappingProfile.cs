@@ -65,7 +65,8 @@ public class ApiMappingProfile : Profile
 
     private void ConfigurePracticalLessonItemSubmitMapping()
     {
-        CreateMap<CreatePracticalLessonItemSubmitRequest, CreatePracticalLessonItemSubmitCommand>();
+        CreateMap<CreatePracticalLessonItemSubmitRequest, CreatePracticalLessonItemSubmitCommand>()
+            .ForMember(dest => dest.Attachments, opt => opt.Ignore());
 
         CreateMap<UpdatePracticalLessonItemSubmitRequest, UpdatePracticalLessonItemSubmitCommand>();
 

@@ -1,17 +1,17 @@
 'use client';
 
-import { FC } from 'react';
-import Link from 'next/link';
 import { Logo } from '@/components/logo/Logo';
+import Link from 'next/link';
+import { FC } from 'react';
 import { LanguageDropdown } from './language-dropdown';
 import { Login } from './login';
 
-import styles from './Navbar.module.scss';
-import { SessionProvider } from 'next-auth/react';
-import { useNavStore } from './store/navStore';
-import { useRouter, usePathname } from 'next/navigation';
 import { useProfiles } from '@/features/user';
+import { SessionProvider } from 'next-auth/react';
 import { useLocale } from 'next-intl';
+import { usePathname, useRouter } from 'next/navigation';
+import styles from './Navbar.module.scss';
+import { useNavStore } from './store/navStore';
 
 const Navbar: FC = () => {
   const activeLocale = useLocale();
@@ -50,7 +50,7 @@ const Navbar: FC = () => {
           </Link>
         </div>
 
-        <div>Middle</div>
+        <div></div>
 
         <div className="flex items-center justify-center gap-4">
           <LanguageDropdown />

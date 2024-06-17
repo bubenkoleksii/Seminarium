@@ -174,24 +174,6 @@ const CreatePracticalLessonItemForm: FC<CreatePracticalLessonItemFormProps> = ({
               />
             </div>
 
-            <div>
-              <label htmlFor="attempts" className={styles.label}>
-                {t('labels.attempts')}
-              </label>
-              <Field
-                placeholder={t('placeholders.attempts')}
-                type="number"
-                id="attempts"
-                name="attempts"
-                className={styles.input}
-              />
-              <ErrorMessage
-                name="attempts"
-                component="div"
-                className={styles.error}
-              />
-            </div>
-
             <div className="mt-2 flex flex-col items-center justify-center">
               <UploadFile
                 isImage={false}

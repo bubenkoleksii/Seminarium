@@ -74,10 +74,12 @@ public class CoreMappingProfile : Profile
 
     private void ConfigurePracticalLessonItemSubmitMapping()
     {
-        CreateMap<CreatePracticalLessonItemSubmitCommand, Domain.Entities.PracticalLessonItemSubmit>();
+        CreateMap<CreatePracticalLessonItemSubmitCommand, Domain.Entities.PracticalLessonItemSubmit>()
+            .ForMember(dest => dest.Attachments, opt => opt.Ignore());
 
         CreateMap<UpdatePracticalLessonItemSubmitCommand, Domain.Entities.PracticalLessonItemSubmit>();
 
-        CreateMap<Domain.Entities.PracticalLessonItemSubmit, PracticalLessonItemSubmitModelResponse>();
+        CreateMap<Domain.Entities.PracticalLessonItemSubmit, PracticalLessonItemSubmitModelResponse>()
+            .ForMember(dest => dest.Attachments, opt => opt.Ignore());
     }
 }

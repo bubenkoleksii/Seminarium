@@ -1,13 +1,38 @@
 ﻿namespace CourseService.Api.Controllers;
 
-public class PracticalLessonItemSubmitController(IMapper mapper) : BaseController
+public class PracticalLessonItemSubmitController(IMapper mapper, IAttachmentHelper attachmentHelper) : BaseController
 {
     private readonly IMapper _mapper = mapper;
+
+    private readonly IAttachmentHelper _attachmentHelper = attachmentHelper;
+
+    [HttpGet]
+    [HttpGet("[action]/{studentId}/{practicalItemId}")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PracticalLessonItemSubmitResponse))]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> GetOne(Guid studentId, Guid practicalItemId)
+    {
+        var userId = User.Identity?.GetId();
+        var userRole = User.Identity?.GetRole();
+
+        if (userId is null || userRole is null)
+            return ErrorActionResultHandler.Handle(new InvalidError("user"));
+
+        var query = new GetOnePracticalLessonItemSubmitQuery(practicalItemId, studentId);
+
+        var result = await Mediator.Send(query);
+
+        return result.Match(
+            Left: modelResponse => Ok(_mapper.Map<PracticalLessonItemSubmitResponse>(modelResponse)),
+            Right: ErrorActionResultHandler.Handle
+        );
+    }
 
     [HttpPost("[action]/")]
     [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(PracticalLessonItemSubmitResponse))]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> Create([FromBody] CreatePracticalLessonItemSubmitRequest createRequest)
+    public async Task<IActionResult> Create([FromForm] CreatePracticalLessonItemSubmitRequest createRequest)
     {
         var userId = User.Identity?.GetId();
         var userRole = User.Identity?.GetRole();
@@ -17,6 +42,12 @@ public class PracticalLessonItemSubmitController(IMapper mapper) : BaseControlle
 
         var command = _mapper.Map<CreatePracticalLessonItemSubmitCommand>(createRequest);
         command.UserId = (Guid)userId;
+
+        var convertingAttachmentsResult = _attachmentHelper.ConvertToAttachmentRequests(createRequest.Attachments);
+        if (convertingAttachmentsResult.IsRight)
+            return ErrorActionResultHandler.Handle((Error)convertingAttachmentsResult);
+
+        command.Attachments = (List<AttachmentModelRequest>?)convertingAttachmentsResult;
 
         var result = await Mediator.Send(command);
 

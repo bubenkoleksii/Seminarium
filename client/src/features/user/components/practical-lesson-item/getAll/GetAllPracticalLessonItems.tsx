@@ -25,7 +25,6 @@ const GetAllPracticalLessonItems: FC<GetAllPracticalLessonItemsProps> = ({
 }) => {
   const activeLocale = useLocale();
   const t = useTranslations('PracticalItem');
-  const v = useTranslations('Validation');
   const { replace } = useRouter();
 
   const { isUserLoading } = useAuthRedirectByRole(activeLocale, 'userOnly');
@@ -53,6 +52,8 @@ const GetAllPracticalLessonItems: FC<GetAllPracticalLessonItemsProps> = ({
 
   const canModify = activeProfile.type === 'teacher';
 
+  console.log('data', data);
+
   return (
     <div>
       <h2 className="mb-2 mt-6 text-center text-xl font-bold">
@@ -72,6 +73,7 @@ const GetAllPracticalLessonItems: FC<GetAllPracticalLessonItemsProps> = ({
             courseId={courseId}
             canModify={canModify}
             lesson={lesson}
+            activeProfile={activeProfile}
           />
         ))}
     </div>
@@ -79,4 +81,3 @@ const GetAllPracticalLessonItems: FC<GetAllPracticalLessonItemsProps> = ({
 };
 
 export { GetAllPracticalLessonItems };
-

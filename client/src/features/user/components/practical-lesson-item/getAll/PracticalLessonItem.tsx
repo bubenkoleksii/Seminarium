@@ -3,6 +3,7 @@
 import { DateTime } from '@/components/date-time';
 import { removePracticalLessonItem } from '@/features/user/api/practicalLessonItemsApi';
 import { PracticalLessonItemResponse } from '@/features/user/types/practicalLessonItemTypes';
+import { SchoolProfileResponse } from '@/features/user/types/schoolProfileTypes';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { Button } from 'flowbite-react';
 import parse from 'html-react-parser';
@@ -15,12 +16,14 @@ type PracticalLessonItemProps = {
   lesson: PracticalLessonItemResponse;
   canModify: boolean;
   courseId: string;
+  activeProfile: SchoolProfileResponse;
 };
 
 const PracticalLessonItem: FC<PracticalLessonItemProps> = ({
   lesson,
   canModify,
   courseId,
+  activeProfile,
 }) => {
   const t = useTranslations('PracticalItem');
   const v = useTranslations('Validation');
@@ -31,7 +34,6 @@ const PracticalLessonItem: FC<PracticalLessonItemProps> = ({
     lastUpdatedAt,
     title,
     text,
-    attempts,
     allowSubmitAfterDeadline,
     isArchived,
     author,
@@ -98,14 +100,9 @@ const PracticalLessonItem: FC<PracticalLessonItemProps> = ({
                 <DateTime date={lastUpdatedAt} />
               </div>
             )}
-            {attempts !== undefined && (
-              <p className="font-semibold">
-                {t('labels.attempts')}: {attempts}
-              </p>
-            )}
             {allowSubmitAfterDeadline && (
               <p className="font-semibold">
-                {t('labels.allowSubmitAfterDeadline')}
+                {t('labels.allowedSubmitAfterDeadline')}
               </p>
             )}
 
@@ -137,6 +134,22 @@ const PracticalLessonItem: FC<PracticalLessonItemProps> = ({
                   .reduce((prev, curr) => [prev, ', ', curr])}
               </div>
             )}
+            {!canModify && (
+              <div>
+                <Button
+                  className="mt-2 flex w-[100%] justify-center"
+                  onClick={() =>
+                    replace(
+                      `/${activeLocale}/u/practical-item-submit/getOne/?itemId=${id}&studentId=${activeProfile.id}`,
+                    )
+                  }
+                  gradientMonochrome="purple"
+                  size="xs"
+                >
+                  <span className="text-white">{t('myWork')}</span>
+                </Button>
+              </div>
+            )}
             {canModify && (
               <div>
                 <Button
@@ -157,4 +170,3 @@ const PracticalLessonItem: FC<PracticalLessonItemProps> = ({
 };
 
 export { PracticalLessonItem };
-

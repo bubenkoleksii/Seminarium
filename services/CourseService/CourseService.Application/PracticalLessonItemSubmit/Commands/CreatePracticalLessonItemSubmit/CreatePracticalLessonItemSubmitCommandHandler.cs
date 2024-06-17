@@ -37,11 +37,6 @@ public class CreatePracticalLessonItemSubmitCommandHandler(
         if (practicalLessonItem == null)
             return new InvalidError("practice_item");
 
-        var studentValidatingResult =
-            await _schoolProfileAccessor.ValidateStudentGroupByCourse(practicalLessonItem.Lesson.CourseId, activeProfile.Id);
-        if (studentValidatingResult.IsSome)
-            return (Error)studentValidatingResult;
-
         var existedEntities = await _commandContext.PracticalLessonItemSubmits
             .Where(s => s.StudentId == activeProfile.Id && s.PracticalLessonItemId == practicalLessonItem.Id)
             .ToListAsync();
@@ -62,6 +57,19 @@ public class CreatePracticalLessonItemSubmitCommandHandler(
         entity.PracticalLessonItem = practicalLessonItem;
         entity.Attempt = (uint)existedEntities.Count + 1;
         entity.Status = PracticalLessonItemSubmitStatus.Submitted;
+        entity.StudentId = activeProfile.Id;
+
+        await _commandContext.PracticalLessonItemSubmits.AddAsync(entity, cancellationToken);
+
+        try
+        {
+            await _commandContext.SaveChangesAsync(cancellationToken);
+        }
+        catch (Exception exception)
+        {
+            Log.Error(exception, "An error occurred while creating the practical lesson item submit with values {@Request}.", request);
+            return new InvalidDatabaseOperationError("lesson");
+        }
 
         var (attachments, attachmentsLinks) = await _attachmentManager.ProcessAttachments(request.Attachments, entity, Constants.TheoryItem);
 
@@ -82,5 +90,6 @@ public class CreatePracticalLessonItemSubmitCommandHandler(
         practiceLessonItemSubmitModelResponse.Attachments = attachmentsLinks;
 
         return practiceLessonItemSubmitModelResponse;
+
     }
 }

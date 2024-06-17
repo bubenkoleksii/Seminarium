@@ -47,6 +47,15 @@ export const practicalLessonItem = {
   remove: (id: string) => `/practicalLessonItem/delete/${id}`,
 };
 
+export const practicalLessonItemSubmit = {
+  getOne: (studentId: string, itemId: string) =>
+    `/practicalLessonItemSubmit/getOne/${studentId}/${itemId}`,
+  getAll: (practicalLessonItemId: string, studentId: string) =>
+    `/practicalLessonItemSubmit/getAll/${practicalLessonItemId}/${studentId}`,
+  create: '/practicalLessonItemSubmit/create',
+  remove: (id: string) => `/practicalLessonItemSubmit/delete/${id}`,
+};
+
 export const group = {
   getAll: '/group/getAll',
   getOne: '/group/getOne',

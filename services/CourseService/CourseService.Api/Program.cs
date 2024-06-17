@@ -1,5 +1,3 @@
-using CourseService.Api.Attachments;
-
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Host.UseSerilog();

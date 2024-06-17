@@ -1,19 +1,17 @@
 ﻿namespace CourseService.Api.Models.PracticalLessonItemSubmit;
 
-public record PracticalLessonItemSubmitResponse(
+public record GetAllPracticalLessonItemSubmitResponseItem(
     Guid Id,
 
     DateTime CreatedAt,
-
-    DateTime? LastUpdatedAt,
 
     Guid StudentId,
 
     string? StudentName,
 
-    Guid PracticalLessonItemId,
+    string? GroupName,
 
-    string? Text,
+    Guid PracticalLessonItemId,
 
     ICollection<string>? Attachments,
 

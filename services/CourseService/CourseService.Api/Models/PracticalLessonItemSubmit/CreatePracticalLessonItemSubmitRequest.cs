@@ -5,5 +5,5 @@ public record CreatePracticalLessonItemSubmitRequest(
 
     string? Text,
 
-    ICollection<IFormFile>? Attachments
+    List<IFormFile>? Attachments
 );

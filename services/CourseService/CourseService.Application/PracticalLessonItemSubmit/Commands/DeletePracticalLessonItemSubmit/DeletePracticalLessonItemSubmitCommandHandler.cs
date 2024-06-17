@@ -43,11 +43,6 @@ public class DeletePracticalLessonItemSubmitCommandHandler(
         if (practicalLessonItemSubmit.Status != PracticalLessonItemSubmitStatus.Submitted)
             return new InvalidError("practical_lesson_item_submit_status");
 
-        var studentValidatingResult =
-            await _schoolProfileAccessor.ValidateStudentGroupByCourse(practicalLessonItem.Lesson.CourseId, activeProfile.Id);
-        if (studentValidatingResult.IsSome)
-            return (Error)studentValidatingResult;
-
         try
         {
             _commandContext.PracticalLessonItemSubmits.Remove(practicalLessonItemSubmit);

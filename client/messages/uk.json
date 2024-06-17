@@ -649,6 +649,7 @@
   },
   "Validation": {
     "required": "Це поле є обов'язковим",
+    "invalidFormat": "Некоректний формат прикріплень",
     "email": "Некоректна адреса електронної пошти",
     "phone": "Некоректний номер телефону",
     "max": "Це поле занадто довге, введіть коротше",
@@ -754,11 +755,13 @@
   },
   "PracticalItem": {
     "attachments": "Прикріплення",
+    "uploadWorkBtn": "Завантажити результати виконання",
     "author": "Автор",
     "deleteBtn": "Видалити",
     "deleteSuccess": "Успішно видалено практичне завдання",
     "archived": "Архівовано",
     "createdAt": "Дата",
+    "myWork": "Моя робота",
     "updatedAt": "Востаннє оновлено",
     "listTitle": "Практичні завдання до заняття",
     "createTitle": "Створити нове практичне завдання",
@@ -774,11 +777,38 @@
       "isArchived": "Приховати від студентів",
       "attempts": "Кількість спроб",
       "allowSubmitAfterDeadline": "Дозволити надсилання після дедлайну",
+      "allowedSubmitAfterDeadline": "Дозволено надсилання після дедлайну",
       "createSubmit": "Створити"
     },
     "placeholders": {
       "title": "Контрольна робота №1",
       "attempts": "2"
+    }
+  },
+  "PracticalItemSubmit": {
+    "attachments": "Прикріплення",
+    "uploadWork": "Здати роботу",
+    "studentName": "Студент",
+    "oneTitle": "Моє виконане завдання",
+    "notUploaded": "Результати виконання ще не завантажені",
+    "createTitle": "Прикріпити виконане завдання",
+    "deleteBtn": "Видалити",
+    "deleteSuccess": "Виконане завдання успішно видалено",
+    "oneNotFound": "Нічого не знайдено",
+    "status": "Статус",
+    "statuses": {
+      "submitted": "Не перевірено",
+      "rejected": "Відхилено",
+      "approved": "Зараховано"
+    },
+    "title": "Моє виконане завдання",
+    "lastUpdatedAt": "Востаннє оновлено",
+    "createdAt": "Дата",
+    "createSuccess": "Успішно прикріплено виконане практичне завдання",
+    "addAttachments": "Прикріпити файли",
+    "labels": {
+      "text": "Текст",
+      "createSubmit": "Прикріпити"
     }
   },
   "TheoryItem": {
