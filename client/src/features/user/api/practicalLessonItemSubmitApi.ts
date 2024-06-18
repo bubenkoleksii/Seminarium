@@ -1,9 +1,11 @@
 'use server';
 
 import { practicalLessonItemSubmit } from '@/features/user/routes';
-import type { PracticalLessonItemSubmitResponse } from '@/features/user/types/practicalLessonItemSubmitTypes';
+import type { PagesPracticalLessonItemSubmitResponse, PracticalLessonItemSubmitResponse } from '@/features/user/types/practicalLessonItemSubmitTypes';
 import { api } from '@/shared/api';
 import { ApiResponse } from '@/shared/types';
+
+type GetAll = (query: string) => Promise<ApiResponse<PagesPracticalLessonItemSubmitResponse>>
 
 type GetOne = (
   studentId: string,
@@ -22,6 +24,9 @@ type CreatePracticalLessonItemSubmit = (
 type RemovePracticalLessonItemSubmit = (
   id: string,
 ) => Promise<ApiResponse<any>>;
+
+export const getTeacherAllPracticalLessonItemSubmit: GetAll = (query) =>
+  api.get(practicalLessonItemSubmit.getTeacherAll(query));
 
 export const getOnePracticalLessonItemSubmit: GetOne = (studentId, itemId) =>
   api.get(practicalLessonItemSubmit.getOne(studentId, itemId));

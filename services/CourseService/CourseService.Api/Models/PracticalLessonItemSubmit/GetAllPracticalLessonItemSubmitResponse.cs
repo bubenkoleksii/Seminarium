@@ -1,5 +1,11 @@
 ﻿namespace CourseService.Api.Models.PracticalLessonItemSubmit;
 
-public class GetAllPracticalLessonItemSubmitResponse
-{
-}
+public record GetAllPracticalLessonItemSubmitResponse(
+    IEnumerable<GetAllPracticalLessonItemSubmitResponseItem> Entries,
+
+    ulong Total,
+
+    uint Skip,
+
+    uint Take
+);

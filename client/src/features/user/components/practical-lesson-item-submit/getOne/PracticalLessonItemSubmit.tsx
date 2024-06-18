@@ -116,8 +116,6 @@ const PracticalLessonItemSubmit: FC<PracticalLessonItemSubmitProps> = ({
     status,
   } = data;
 
-  console.log('data', data);
-
   const statusClass =
     status === 'completed'
       ? 'bg-gradient-to-r from-green-50 to-green-100 p-4 rounded-lg shadow-md mb-4'
@@ -169,10 +167,6 @@ const PracticalLessonItemSubmit: FC<PracticalLessonItemSubmitProps> = ({
                 {studentName}
               </div>
             )}
-            <div className="mt-2 text-sm">
-              <span className="font-semibold">{t('status')}</span>{' '}
-              {t(`statuses.${data.status}`)}
-            </div>
 
             {data.status === 'submitted' && (
               <div className="flex flex-[100%] justify-center">

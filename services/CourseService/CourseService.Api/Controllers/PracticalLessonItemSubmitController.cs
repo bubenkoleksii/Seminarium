@@ -6,7 +6,25 @@ public class PracticalLessonItemSubmitController(IMapper mapper, IAttachmentHelp
 
     private readonly IAttachmentHelper _attachmentHelper = attachmentHelper;
 
-    [HttpGet]
+    [HttpGet("[action]/")]
+    public async Task<IActionResult> GetTeacherAll([FromQuery] GetTeacherAllPracticalLessonItemSubmitParams filterParams)
+    {
+        var userId = User.Identity?.GetId();
+        var userRole = User.Identity?.GetRole();
+
+        if (userId is null || userRole is null)
+            return ErrorActionResultHandler.Handle(new InvalidError("user"));
+
+        var query = new GetAllTeacherPracticalLessonItemsSubmitQuery(filterParams.ItemId, filterParams.Skip, filterParams.Take);
+
+        var result = await Mediator.Send(query);
+
+        return result.Match(
+            Left: modelResponse => Ok(_mapper.Map<GetAllPracticalLessonItemSubmitResponse>(modelResponse)),
+            Right: ErrorActionResultHandler.Handle
+        );
+    }
+
     [HttpGet("[action]/{studentId}/{practicalItemId}")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PracticalLessonItemSubmitResponse))]
     [ProducesResponseType(StatusCodes.Status404NotFound)]

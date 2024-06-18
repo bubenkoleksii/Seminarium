@@ -14,7 +14,5 @@ public class GetAllPracticalLessonItemSubmitModelResponseItem
 
     public Guid PracticalLessonItemId { get; set; }
 
-    public ICollection<string>? Attachments { get; set; }
-
     public PracticalLessonItemSubmitStatus Status { get; set; }
 }

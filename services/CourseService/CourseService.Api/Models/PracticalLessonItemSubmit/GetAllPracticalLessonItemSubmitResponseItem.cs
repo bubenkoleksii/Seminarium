@@ -13,7 +13,5 @@ public record GetAllPracticalLessonItemSubmitResponseItem(
 
     Guid PracticalLessonItemId,
 
-    ICollection<string>? Attachments,
-
     string Status
 );

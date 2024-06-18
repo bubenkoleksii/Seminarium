@@ -48,6 +48,7 @@ export const practicalLessonItem = {
 };
 
 export const practicalLessonItemSubmit = {
+  getTeacherAll: (query: string) => `/practicalLessonItemSubmit/getTeacherAll/?${query}`,
   getOne: (studentId: string, itemId: string) =>
     `/practicalLessonItemSubmit/getOne/${studentId}/${itemId}`,
   getAll: (practicalLessonItemId: string, studentId: string) =>

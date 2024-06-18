@@ -19,6 +19,7 @@ export { CreateLessonForm } from './components/lesson/create/CreateLessonForm';
 export { UpdateLessonForm } from './components/lesson/update/UpdateLessonForm';
 export { CreatePracticalLessonItemSubmit } from './components/practical-lesson-item-submit/create/CreatePracticalLessonItemSubmit';
 export { PracticalLessonItemSubmit } from './components/practical-lesson-item-submit/getOne/PracticalLessonItemSubmit';
+export { GetTeacherAll } from './components/practical-lesson-item-submit/getTeacherAll/GetTeacherAll';
 export { CreatePracticalLessonItemForm } from './components/practical-lesson-item/create/CreatePracticalLessonItemForm';
 export { GetAllPracticalLessonItems } from './components/practical-lesson-item/getAll/GetAllPracticalLessonItems';
 export { CreateStudyPeriod } from './components/study-period/create/CreateStudyPeriod';
@@ -38,3 +39,4 @@ export { UpdateParentSchoolProfile } from './school-profile/update/UpdateParentS
 export { UpdateStudentSchoolProfile } from './school-profile/update/UpdateStudentSchoolProfile';
 export { UpdateTeacherSchoolProfile } from './school-profile/update/UpdateTeacherSchoolProfile';
 export { useSchoolProfilesStore } from './store/schoolProfilesStore';
+

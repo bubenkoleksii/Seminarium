@@ -414,6 +414,7 @@
     }
   },
   "SchoolProfile": {
+    "courses": "Курси",
     "addProfileBtn": "Додати профіль",
     "addChild": "Додати дитину",
     "toGroup": "Група",
@@ -755,6 +756,7 @@
   },
   "PracticalItem": {
     "attachments": "Прикріплення",
+    "uploadedWorks": "Здані роботи",
     "uploadWorkBtn": "Завантажити результати виконання",
     "author": "Автор",
     "deleteBtn": "Видалити",
@@ -763,6 +765,7 @@
     "createdAt": "Дата",
     "myWork": "Моя робота",
     "updatedAt": "Востаннє оновлено",
+    "notFound": "Нічого не знайдено",
     "listTitle": "Практичні завдання до заняття",
     "createTitle": "Створити нове практичне завдання",
     "backTo": "До заняття",
@@ -786,7 +789,10 @@
     }
   },
   "PracticalItemSubmit": {
+    "details": "Детальніше",
+    "listTitle": "Виконані роботи",
     "attachments": "Прикріплення",
+    "notFound": "Нічого не знайдено",
     "uploadWork": "Здати роботу",
     "studentName": "Студент",
     "oneTitle": "Моє виконане завдання",
@@ -801,7 +807,7 @@
       "rejected": "Відхилено",
       "approved": "Зараховано"
     },
-    "title": "Моє виконане завдання",
+    "title": "Ваш заголовок оголошення",
     "lastUpdatedAt": "Востаннє оновлено",
     "createdAt": "Дата",
     "createSuccess": "Успішно прикріплено виконане практичне завдання",

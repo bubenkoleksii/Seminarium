@@ -41,6 +41,7 @@ global using CourseService.Application.PracticalLessonItemSubmit.Commands.Create
 global using CourseService.Application.PracticalLessonItemSubmit.Commands.DeletePracticalLessonItemSubmit;
 global using CourseService.Application.PracticalLessonItemSubmit.Commands.UpdatePracticalLessonItemSubmit;
 global using CourseService.Application.PracticalLessonItemSubmit.Models;
+global using CourseService.Application.PracticalLessonItemSubmit.Queries.GetAllTeacherPracticalLessonItemsSubmit;
 global using CourseService.Application.PracticalLessonItemSubmit.Queries.GetOnePracticalLessonItemSubmit;
 global using CourseService.Infrastructure.Persistence;
 global using LanguageExt;

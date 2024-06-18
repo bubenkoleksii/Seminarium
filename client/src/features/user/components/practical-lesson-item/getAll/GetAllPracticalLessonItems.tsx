@@ -52,8 +52,6 @@ const GetAllPracticalLessonItems: FC<GetAllPracticalLessonItemsProps> = ({
 
   const canModify = activeProfile.type === 'teacher';
 
-  console.log('data', data);
-
   return (
     <div>
       <h2 className="mb-2 mt-6 text-center text-xl font-bold">
@@ -66,7 +64,7 @@ const GetAllPracticalLessonItems: FC<GetAllPracticalLessonItemsProps> = ({
         </p>
       </h2>
 
-      {data &&
+      {data && data.length > 0 ?
         data?.map((lesson) => (
           <PracticalLessonItem
             key={lesson.lessonId}
@@ -75,9 +73,12 @@ const GetAllPracticalLessonItems: FC<GetAllPracticalLessonItemsProps> = ({
             lesson={lesson}
             activeProfile={activeProfile}
           />
-        ))}
+        ))
+        : <p className="w-[100%] text-center">{t('notFound')}</p>
+      }
     </div>
   );
 };
 
 export { GetAllPracticalLessonItems };
+

@@ -151,15 +151,26 @@ const PracticalLessonItem: FC<PracticalLessonItemProps> = ({
               </div>
             )}
             {canModify && (
-              <div>
-                <Button
-                  className="mt-2 flex w-[100%] justify-center"
-                  onClick={() => handleDelete(id)}
-                  gradientMonochrome="failure"
-                  size="xs"
-                >
-                  <span className="text-white">{t('deleteBtn')}</span>
-                </Button>
+              <div className="flex w-[100%] justify-center">
+                <div className="flex gap-4 width-[700px]">
+                  <Button
+                    className="mt-2 flex w-[100%] justify-center"
+                    onClick={() => handleDelete(id)}
+                    gradientMonochrome="failure"
+                    size="xs"
+                  >
+                    <span className="text-white">{t('deleteBtn')}</span>
+                  </Button>
+
+                  <Button
+                    className="mt-2 flex w-[100%] justify-center"
+                    onClick={() => replace(`/${activeLocale}/u/practical-item-submit/getTeacherAll/?itemId=${id}`)}
+                    gradientMonochrome="purple"
+                    size="xs"
+                  >
+                    <span className="text-white">{t('uploadedWorks')}</span>
+                  </Button>
+                </div>
               </div>
             )}
           </div>
@@ -170,3 +181,4 @@ const PracticalLessonItem: FC<PracticalLessonItemProps> = ({
 };
 
 export { PracticalLessonItem };
+
