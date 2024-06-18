@@ -35,6 +35,7 @@ global using Microsoft.Extensions.Configuration;
 global using Microsoft.Extensions.DependencyInjection;
 global using Microsoft.Extensions.Options;
 global using Serilog;
+global using Shared.Contracts.DeleteCourses;
 global using Shared.Contracts.Errors;
 global using Shared.Contracts.Errors.Invalid;
 global using Shared.Contracts.Errors.NotFound;

@@ -1,4 +1,6 @@
-﻿namespace CourseService.Application;
+﻿using CourseService.Application.Course.Consumers;
+
+namespace CourseService.Application;
 
 public static class DependencyInjection
 {
@@ -50,6 +52,8 @@ public static class DependencyInjection
 
                 busConfigurator.SetKebabCaseEndpointNameFormatter();
 
+                AddConsumers(busConfigurator);
+
                 AddRequestClients(busConfigurator);
 
                 busConfigurator.UsingRabbitMq((context, configurator) =>
@@ -59,6 +63,8 @@ public static class DependencyInjection
                         h.Username(rabbitMqOptions.Username);
                         h.Password(rabbitMqOptions.Password);
                     });
+
+                    ConfigureReceiveEndpoints(configurator, context, rabbitMqOptions.QueueName);
 
                     configurator.ConfigureEndpoints(context);
                 });
@@ -70,12 +76,24 @@ public static class DependencyInjection
             throw;
         }
 
+        static void AddConsumers(IBusRegistrationConfigurator busConfigurator)
+        {
+            busConfigurator.AddConsumer<DeleteCoursesConsumer>();
+        }
+
         static void AddRequestClients(IBusRegistrationConfigurator busConfigurator)
         {
             busConfigurator.AddRequestClient<string>(new Uri($"exchange:{nameof(GetActiveSchoolProfileRequest)}"));
+            busConfigurator.AddRequestClient<string>(new Uri($"exchange:{nameof(DeleteCoursesRequest)}"));
             busConfigurator.AddRequestClient<string>(new Uri($"exchange:{nameof(GetStudyPeriodsRequest)}"));
             busConfigurator.AddRequestClient<string>(new Uri($"exchange:{nameof(GetGroupsRequest)}"));
             busConfigurator.AddRequestClient<string>(new Uri($"exchange:{nameof(GetSchoolProfilesRequest)}"));
+        }
+
+        static void ConfigureReceiveEndpoints(IRabbitMqBusFactoryConfigurator configurator, IBusRegistrationContext context, string queueName)
+        {
+            configurator.ReceiveEndpoint($"{queueName}.{nameof(DeleteCoursesRequest)}",
+                            endpointConfigurator => endpointConfigurator.ConfigureConsumer<DeleteCoursesConsumer>(context));
         }
     }
 

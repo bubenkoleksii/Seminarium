@@ -1,9 +1,11 @@
 ﻿namespace SchoolService.Application.StudyPeriod.Commands.DeleteStudyPeriod;
 
-public class DeleteStudyPeriodCommandHandler(ISchoolProfileManager schoolProfileManager, ICommandContext commandContext)
+public class DeleteStudyPeriodCommandHandler(ISchoolProfileManager schoolProfileManager, ICommandContext commandContext, IPublishEndpoint publishEndpoint)
     : IRequestHandler<DeleteStudyPeriodCommand, Option<Error>>
 {
     private readonly ISchoolProfileManager _schoolProfileManager = schoolProfileManager;
+
+    private readonly IPublishEndpoint _publishEndpoint = publishEndpoint;
 
     private readonly ICommandContext _commandContext = commandContext;
 
@@ -21,6 +23,8 @@ public class DeleteStudyPeriodCommandHandler(ISchoolProfileManager schoolProfile
         {
             _commandContext.StudyPeriods.Remove(period);
             await _commandContext.SaveChangesAsync(cancellationToken);
+
+            await _publishEndpoint.Publish(new DeleteCoursesRequest(request.Id), cancellationToken);
         }
         catch (Exception exception)
         {

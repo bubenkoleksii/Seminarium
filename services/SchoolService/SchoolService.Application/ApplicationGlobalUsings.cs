@@ -50,6 +50,7 @@ global using SchoolService.Domain.Enums.JoiningRequest;
 global using SchoolService.Domain.Enums.School;
 global using SchoolService.Domain.Enums.SchoolProfile;
 global using Serilog;
+global using Shared.Contracts.DeleteCourses;
 global using Shared.Contracts.Errors;
 global using Shared.Contracts.Errors.AlreadyExists;
 global using Shared.Contracts.Errors.Invalid;
