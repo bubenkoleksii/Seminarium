@@ -1,0 +1,74 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="CourseService.Domain.Entities.TheoryLessonItem">
+    <Position X="9.5" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Entities\TheoryLessonItem.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CourseService.Domain.Entities.Attachment">
+    <Position X="2.25" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIAAAAAAAAAAAAAAAAAAAAQAAAAAAQAICAAAAAAAAAA=</HashCode>
+      <FileName>Entities\Attachment.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CourseService.Domain.Entities.Course">
+    <Position X="4.5" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEAAAAAgAAAAAAAEAAQAAAAAAAAAAAAQAgAAAAA=</HashCode>
+      <FileName>Entities\Course.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CourseService.Domain.Entities.CourseGroup">
+    <Position X="14.5" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAA=</HashCode>
+      <FileName>Entities\CourseGroup.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CourseService.Domain.Entities.CourseTeacher">
+    <Position X="14.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAABAAAAQ=</HashCode>
+      <FileName>Entities\CourseTeacher.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CourseService.Domain.Entities.Entity">
+    <Position X="6.75" Y="1" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgCAAAAAAAAAAAAACAAQAAQAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Entities\Entity.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CourseService.Domain.Entities.Lesson">
+    <Position X="12" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAEAAAAAAAAAAAAAMAAAAAAAAAAAAAAAAAAASAAAAQ=</HashCode>
+      <FileName>Entities\Lesson.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CourseService.Domain.Entities.LessonItem">
+    <Position X="6.75" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAEEAgAAACAAAAAAAAAAAABEACAAAAAA=</HashCode>
+      <FileName>Entities\LessonItem.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CourseService.Domain.Entities.PracticalLessonItem">
+    <Position X="4.5" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAg=</HashCode>
+      <FileName>Entities\PracticalLessonItem.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CourseService.Domain.Entities.PracticalLessonItemSubmit">
+    <Position X="9.75" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAAEgABIAAEAAAAAAAAAAAAAAAAAAAAACAACAAA=</HashCode>
+      <FileName>Entities\PracticalLessonItemSubmit.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
