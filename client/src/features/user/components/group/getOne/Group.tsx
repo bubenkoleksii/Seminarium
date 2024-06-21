@@ -219,7 +219,7 @@ const Group: FC<GroupProps> = ({ id }) => {
     (activeProfile?.type === 'school_admin' &&
       activeProfile?.schoolId === data.schoolId) ||
     (activeProfile?.type === 'class_teacher' &&
-      activeProfile?.groupId === data.id);
+      activeProfile?.classTeacherGroupId === data.id);
 
   const canDeleteClassTeacher =
     activeProfile.id == data.classTeacher?.id ||
@@ -431,3 +431,4 @@ const Group: FC<GroupProps> = ({ id }) => {
 };
 
 export { Group };
+

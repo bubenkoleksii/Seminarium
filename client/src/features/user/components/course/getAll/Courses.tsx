@@ -154,6 +154,26 @@ const Courses: FC<CoursesProps> = ({
   }
 
   if (data && data.error) {
+    if (data.status = 404) {
+      <div>
+        <h2 className="mb-2 mt-6 text-center text-xl font-bold">
+          {t('listTitle')} {data?.length ? `(${data.length})` : ''}
+        </h2>
+
+        {activeProfile.type !== 'student' && activeProfile.type !== 'parent' && (
+          <div className="flex w-full justify-center pb-3 pb-3">
+            <Button
+              gradientMonochrome="success"
+              size="md"
+              onClick={() => replace(`/${activeLocale}/u/courses/create/`)}
+            >
+              <span className="text-white">{t('createBtn')}</span>
+            </Button>
+          </div>
+        )}
+      </div>
+    }
+
     return (
       <>
         <h2 className="mb-4 text-center text-xl font-bold">{t('listTitle')}</h2>
@@ -236,3 +256,4 @@ const Courses: FC<CoursesProps> = ({
 };
 
 export { Courses };
+
