@@ -67,6 +67,7 @@ public class GroupNoticeController(IMapper mapper) : BaseController
         command.UserId = (Guid)userId;
 
         var result = await Mediator.Send(command);
+
         return result.Match(
             Left: modelResponse => Ok(mapper.Map<GroupNoticeResponse>(modelResponse)),
             Right: ErrorActionResultHandler.Handle

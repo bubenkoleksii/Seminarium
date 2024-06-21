@@ -1,16 +1,18 @@
-import { FC, ChangeEvent, useState } from 'react';
-import { Formik, Form, ErrorMessage } from 'formik';
-import { FileInput, Label } from 'flowbite-react';
-import { useTranslations } from 'next-intl';
+'use client';
 
-import {
-  ALLOWED_IMAGE_EXTENSIONS,
-  ALLOWED_FILE_EXTENSIONS,
-  MAX_IMAGE_FILE_SIZE,
-  MAX_FILE_SIZE,
-} from './constants';
+import { FileInput, Label } from 'flowbite-react';
+import { ErrorMessage, Form, Formik } from 'formik';
+import { useTranslations } from 'next-intl';
+import { ChangeEvent, FC, useState } from 'react';
+
 import { mediaQueries } from '@/shared/constants';
 import { useMediaQuery } from 'react-responsive';
+import {
+  ALLOWED_FILE_EXTENSIONS,
+  ALLOWED_IMAGE_EXTENSIONS,
+  MAX_FILE_SIZE,
+  MAX_IMAGE_FILE_SIZE,
+} from './constants';
 
 interface UploadFileProps {
   isRequired?: boolean;
@@ -76,10 +78,12 @@ const UploadFile: FC<UploadFileProps> = ({
 
     if (isImage && !isMultiple && onSubmit) {
       onSubmit({ files: files[0] });
+    } else {
+      onSubmit({ files: files });
     }
   };
 
-  const title = label || isImage ? t('imageTitle') : t('fileTitle');
+  const title = label ? label : isImage ? t('imageTitle') : t('fileTitle');
 
   return (
     <Formik

@@ -2,6 +2,21 @@
 
 public static class EmailTemplates
 {
+    public static class NewGroupNotice
+    {
+        public static string Subject => "Нове оголошення в групі на платформі Seminarium";
+
+        public static string GetTemplate(string title, string groupName, string url, string? text)
+        {
+            return $@"
+            <div style='max-width: 600px; margin: 0 auto; padding: 20px; background-color: #f3f4f6; border-radius: 5px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);'>
+                <h1 style='color: #333; text-align: center; font-size: 1.5rem; margin-bottom: 20px;'><b>Нове оголошення в групі <b>{groupName}</b>:</b> {title}</h1>
+                <p style='font-family: Arial, sans-serif; color: #666; margin-bottom: 20px;'>{text}</p>
+                <a href='{url}' style='display: inline-block; padding: 10px 20px; color: #fff; background-color: #007bff; border-radius: 5px; text-decoration: none;'>Перейти до оголошення</a>
+            </div>";
+        }
+    }
+
     public static class CreateJoiningRequest
     {
         public static string Subject => "Успішне створення запиту на приєднання навчального закладу на платформі Seminarium";

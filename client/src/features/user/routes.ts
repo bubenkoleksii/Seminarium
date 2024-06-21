@@ -11,6 +11,52 @@ export const schoolProfile = {
   activate: (id: string) => `/schoolProfile/Activate/${id}`,
 };
 
+export const course = {
+  getOne: (id: string) => `/course/getOne/${id}`,
+  getAll: '/course/getAll',
+  create: '/course/create',
+  update: '/course/update',
+  addGroup: '/course/addGroup',
+  addTeacher: '/course/addTeacher',
+  remove: (id: string) => `/course/Delete/${id}`,
+  removeGroup: (id: string, courseId: string) =>
+    `/course/DeleteCourseGroup/${id}/${courseId}`,
+  removeTeacher: (id: string, courseId: string) =>
+    `/course/DeleteCourseTeacher/${id}/${courseId}`,
+};
+
+export const lesson = {
+  getOne: (id: string) => `/lesson/getOne/${id}`,
+  getAll: (query: string) => `/lesson/getAll/?${query}`,
+  create: '/lesson/create',
+  update: '/lesson/update',
+  remove: (id: string) => `/lesson/Delete/${id}`,
+};
+
+export const theoryLessonItem = {
+  getAll: (lessonId: string) => `/theoryLessonItem/getAll/${lessonId}`,
+  create: '/theoryLessonItem/create',
+  update: '/theoryLessonItem/update',
+  remove: (id: string) => `/theoryLessonItem/delete/${id}`,
+};
+
+export const practicalLessonItem = {
+  getAll: (lessonId: string) => `/practicalLessonItem/getAll/${lessonId}`,
+  create: '/practicalLessonItem/create',
+  update: '/practicalLessonItem/update',
+  remove: (id: string) => `/practicalLessonItem/delete/${id}`,
+};
+
+export const practicalLessonItemSubmit = {
+  getTeacherAll: (query: string) => `/practicalLessonItemSubmit/getTeacherAll/?${query}`,
+  getOne: (studentId: string, itemId: string) =>
+    `/practicalLessonItemSubmit/getOne/${studentId}/${itemId}`,
+  getAll: (practicalLessonItemId: string, studentId: string) =>
+    `/practicalLessonItemSubmit/getAll/${practicalLessonItemId}/${studentId}`,
+  create: '/practicalLessonItemSubmit/create',
+  remove: (id: string) => `/practicalLessonItemSubmit/delete/${id}`,
+};
+
 export const group = {
   getAll: '/group/getAll',
   getOne: '/group/getOne',

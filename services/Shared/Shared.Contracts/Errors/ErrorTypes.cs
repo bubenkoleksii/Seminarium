@@ -13,5 +13,7 @@
         public static readonly string UnsupportedMediaType = "unsupported_media_type";
 
         public static readonly string Unknown = "unknown";
+
+        public static readonly string Internal = "internal";
     }
 }

@@ -63,6 +63,4 @@ public class SchoolProfileResponse
     public IEnumerable<SchoolProfileResponse>? Children { get; set; }
 
     public IEnumerable<SchoolProfileResponse>? Parents { get; set; }
-
-
 }

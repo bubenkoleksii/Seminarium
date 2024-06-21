@@ -10,6 +10,7 @@ async function get(url: string) {
   };
 
   const response = await fetch(baseUrl + url, requestOptions);
+
   return await handleResponse(response);
 }
 
@@ -68,6 +69,7 @@ async function remove(url: string, schoolProfileId = null) {
   };
 
   const response = await fetch(baseUrl + url, requestOptions);
+
   return await handleResponse(response);
 }
 

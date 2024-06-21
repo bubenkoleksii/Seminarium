@@ -1,8 +1,8 @@
-import { FC } from 'react';
-import type { SchoolProfileResponse } from '../../types/schoolProfileTypes';
+import { Button } from 'flowbite-react';
 import { useLocale, useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
-import { Button } from 'flowbite-react';
+import { FC } from 'react';
+import type { SchoolProfileResponse } from '../../types/schoolProfileTypes';
 
 type ChildProps = {
   child: SchoolProfileResponse;
@@ -21,6 +21,16 @@ const Child: FC<ChildProps> = ({ child }) => {
       <div className="mt-2 flex w-full flex-wrap justify-center gap-4 md:flex-nowrap">
         <Button
           onClick={() =>
+            replace(`/${activeLocale}/u/courses/?groupId=${child.groupId}`)
+          }
+          gradientMonochrome="pink"
+          size="xs"
+        >
+          <span className="text-white">{t('courses')}</span>
+        </Button>
+
+        <Button
+          onClick={() =>
             replace(`/${activeLocale}/u/school-profile/${child.id}`)
           }
           gradientMonochrome="success"
@@ -34,3 +44,4 @@ const Child: FC<ChildProps> = ({ child }) => {
 };
 
 export { Child };
+

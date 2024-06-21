@@ -21,7 +21,7 @@ public class DeleteGroupCommandHandler : IRequestHandler<DeleteGroupCommand, Opt
 
         var group = await _commandContext.Groups.FindAsync(request.Id);
         if (group is null)
-            return new NotFoundByIdError(request.Id, "group");
+            return Option<Error>.None;
 
         var canModify = (profile?.Type == SchoolProfileType.SchoolAdmin && group.SchoolId == profile.SchoolId) ||
                         (profile?.Type == SchoolProfileType.ClassTeacher && group.ClassTeacherId == profile.Id);

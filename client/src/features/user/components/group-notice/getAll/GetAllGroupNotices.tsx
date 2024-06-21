@@ -107,14 +107,10 @@ const GetAllGroupNotices: FC<GetAllGroupNoticesProps> = ({
   });
 
   useEffect(() => {
-    console.log(3);
-
     refetch();
   }, [activeProfile, refetch]);
 
   useEffect(() => {
-    console.log(4);
-
     const params = new URLSearchParams();
 
     if (search) params.set('search', search);

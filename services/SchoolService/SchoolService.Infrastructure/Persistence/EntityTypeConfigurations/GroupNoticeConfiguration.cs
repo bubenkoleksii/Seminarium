@@ -11,6 +11,8 @@ public class GroupNoticeConfiguration : IEntityTypeConfiguration<GroupNotice>
         builder.Property(notice => notice.Text).HasMaxLength(2048);
         builder.Property(notice => notice.IsCrucial).IsRequired();
 
+        builder.HasQueryFilter(notice => !notice.IsArchived);
+
         ConfigureRelationships(builder);
 
         AddFullTextIndex(builder);

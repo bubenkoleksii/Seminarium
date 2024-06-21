@@ -338,9 +338,10 @@ public class SchoolProfileManager : ISchoolProfileManager
 
                             profile.Parents = filteredParents;
                         }
-                        catch
+                        catch (Exception ex)
                         {
                             profile.Parents = null;
+                            Log.Error(ex, "An error occurred while retrieving parents of clhild with values {@Profile}.", profile);
                         }
 
                         break;
@@ -365,9 +366,10 @@ public class SchoolProfileManager : ISchoolProfileManager
 
                             profile.Children = filteredChildren;
                         }
-                        catch
+                        catch (Exception ex)
                         {
                             profile.Children = null;
+                            Log.Error(ex, "An error occurred while retrieving children of parent with values {@Profile}.", profile);
                         }
 
                         break;
@@ -570,7 +572,7 @@ public class SchoolProfileManager : ISchoolProfileManager
             responses.Add(response);
         }
 
-        return responses.Any() ? responses : null;
+        return responses.Count != 0 ? responses : null;
     }
 
     private static string GetCacheKey(Guid userId)

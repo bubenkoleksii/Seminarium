@@ -143,8 +143,8 @@ const GroupNoticeItem: FC<GroupNoticeProps> = ({
   const { title, text, author, createdAt, lastUpdatedAt } = notice;
 
   const canModify =
-    activeProfile.type !== 'student' ||
-    (activeProfile.type == 'student' && activeProfile.id === notice.authorId);
+    activeProfile.type === 'school_profile' ||
+    (activeProfile.id === notice.authorId);
 
   const noticeClass = isCrucial
     ? 'bg-gradient-to-r from-red-50 to-red-100 p-4 rounded-lg shadow-md mb-4'
@@ -280,3 +280,4 @@ const GroupNoticeItem: FC<GroupNoticeProps> = ({
 };
 
 export { GroupNoticeItem };
+

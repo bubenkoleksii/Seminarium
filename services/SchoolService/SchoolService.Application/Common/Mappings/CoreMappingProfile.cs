@@ -44,6 +44,10 @@ public class CoreMappingProfile : Profile
         CreateMap<UpdateSchoolProfileCommand, Domain.Entities.SchoolProfile>();
 
         CreateMap<Domain.Entities.SchoolProfile, SchoolProfileModelResponse>();
+
+        CreateMap<SchoolProfileModelResponse, SchoolProfileContract>();
+
+        CreateMap<Domain.Entities.SchoolProfile, SchoolProfileContract>();
     }
 
     private void ConfigureGroupMappings()
@@ -55,6 +59,8 @@ public class CoreMappingProfile : Profile
         CreateMap<Domain.Entities.Group, GroupModelResponse>();
 
         CreateMap<Domain.Entities.Group, OneGroupModelResponse>();
+
+        CreateMap<Domain.Entities.Group, GroupContract>();
     }
 
     private void ConfigureStudyPeriodMappings()
@@ -64,6 +70,8 @@ public class CoreMappingProfile : Profile
         CreateMap<UpdateStudyPeriodCommand, Domain.Entities.StudyPeriod>();
 
         CreateMap<Domain.Entities.StudyPeriod, StudyPeriodModelResponse>();
+
+        CreateMap<Domain.Entities.StudyPeriod, StudyPeriodContact>();
     }
 
     private void ConfigureGroupNoticeMappings()

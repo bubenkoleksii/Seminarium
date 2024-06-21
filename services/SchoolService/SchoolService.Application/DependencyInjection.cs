@@ -52,6 +52,10 @@ public static class DependencyInjection
 
                 busConfigurator.SetKebabCaseEndpointNameFormatter();
 
+                AddConsumers(busConfigurator);
+
+                AddRequestClients(busConfigurator);
+
                 busConfigurator.UsingRabbitMq((context, configurator) =>
                 {
                     configurator.Host(rabbitMqOptions.Host, h =>
@@ -59,6 +63,8 @@ public static class DependencyInjection
                         h.Username(rabbitMqOptions.Username);
                         h.Password(rabbitMqOptions.Password);
                     });
+
+                    ConfigureReceiveEndpoints(configurator, context, rabbitMqOptions.QueueName);
 
                     configurator.ConfigureEndpoints(context);
                 });
@@ -68,6 +74,38 @@ public static class DependencyInjection
         {
             Log.Fatal(exception, "An error occurred while mass transit initialization.");
             throw;
+        }
+
+        static void AddConsumers(IBusRegistrationConfigurator busConfigurator)
+        {
+            busConfigurator.AddConsumer<GetActiveProfileConsumer>();
+            busConfigurator.AddConsumer<GetStudyPeriodsConsumer>();
+            busConfigurator.AddConsumer<GetGroupsConsumer>();
+            busConfigurator.AddConsumer<GetSchoolProfilesConsumer>();
+        }
+
+        static void AddRequestClients(IBusRegistrationConfigurator busConfigurator)
+        {
+            busConfigurator.AddRequestClient<string>(new Uri($"exchange:{nameof(GetActiveSchoolProfileRequest)}"));
+            busConfigurator.AddRequestClient<string>(new Uri($"exchange:{nameof(DeleteCoursesRequest)}"));
+            busConfigurator.AddRequestClient<string>(new Uri($"exchange:{nameof(GetStudyPeriodsRequest)}"));
+            busConfigurator.AddRequestClient<string>(new Uri($"exchange:{nameof(GetGroupsRequest)}"));
+            busConfigurator.AddRequestClient<string>(new Uri($"exchange:{nameof(GetSchoolProfilesRequest)}"));
+        }
+
+        static void ConfigureReceiveEndpoints(IRabbitMqBusFactoryConfigurator configurator, IBusRegistrationContext context, string queueName)
+        {
+            configurator.ReceiveEndpoint($"{queueName}.{nameof(GetActiveSchoolProfileRequest)}",
+                            endpointConfigurator => endpointConfigurator.ConfigureConsumer<GetActiveProfileConsumer>(context));
+
+            configurator.ReceiveEndpoint($"{queueName}.{nameof(GetStudyPeriodsRequest)}",
+                endpointConfigurator => endpointConfigurator.ConfigureConsumer<GetStudyPeriodsConsumer>(context));
+
+            configurator.ReceiveEndpoint($"{queueName}.{nameof(GetGroupsRequest)}",
+                endpointConfigurator => endpointConfigurator.ConfigureConsumer<GetGroupsConsumer>(context));
+
+            configurator.ReceiveEndpoint($"{queueName}.{nameof(GetSchoolProfilesRequest)}",
+                endpointConfigurator => endpointConfigurator.ConfigureConsumer<GetSchoolProfilesConsumer>(context));
         }
     }
 

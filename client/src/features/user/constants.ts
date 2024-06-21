@@ -2,6 +2,7 @@ export const enum CurrentTab {
   Profile = 'profile',
   School = 'school',
   Group = 'group',
+  Course = 'course',
   GroupNotices = 'groupNotices',
   Children = 'children',
   SchoolProfiles = 'schoolProfiles',
@@ -10,11 +11,13 @@ export const enum CurrentTab {
 
 export const userQueries = {
   getSchoolProfile: 'getSchoolProfile',
+  getOneCourse: 'getOneCourse',
   getAllSchoolProfilesBySchool: 'getAllSchoolProfilesBySchool',
   getGroups: 'getAllGroups',
   getOneGroup: 'getOneGroup',
   getGroupNotices: 'getGroupNotices',
   getStudyPeriods: 'getStudyPeriods',
+  getCourses: 'getCourses',
   options: {
     retry: 4,
   },
@@ -22,9 +25,16 @@ export const userQueries = {
 
 export const userMutations = {
   activateProfile: 'activateProfile',
+  createLesson: 'createLesson',
+  updateLesson: 'updateLesson',
+  deleteLesson: 'deleteLesson',
   createGroup: 'createGroup',
   updateGroup: 'updateGroup',
   deleteGroup: 'deleteGroup',
+  addCourseGroup: 'addCourseGroup',
+  deleteCourseGroup: 'deleteCourseGroup',
+  addCourseTeacher: 'addCourseTeacher',
+  deleteCourseTeacher: 'deleteCourseTeacher',
   createGroupNotice: 'createGroupNotice',
   updateGroupNotice: 'updateGroupNotice',
   deleteGroupNotice: 'deleteGroupNotice',
@@ -42,6 +52,9 @@ export const userMutations = {
   createStudentInvitation: 'createStudentInvitation',
   createSchoolProfile: 'createSchoolProfile',
   updateSchoolProfile: 'updateSchoolProfile',
+  createCourse: 'createCourse',
+  updateCourse: 'updateCourse',
+  deleteCourse: 'deleteCourse',
   options: {
     retry: 3,
   },

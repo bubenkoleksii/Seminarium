@@ -1,6 +1,7 @@
 ﻿namespace SchoolService.Application.GroupNotice.Commands.CreateGroupNotice;
 
-public class CreateGroupNoticeCommandHandler(ISchoolProfileManager schoolProfileManager, IMapper mapper, ICommandContext commandContext)
+public class CreateGroupNoticeCommandHandler(ISchoolProfileManager schoolProfileManager,
+    IMapper mapper, ICommandContext commandContext, IMailService mailService, IConfiguration configuration)
     : IRequestHandler<CreateGroupNoticeCommand, Either<GroupNoticeModelResponse, Error>>
 {
     private readonly ISchoolProfileManager _schoolProfileManager = schoolProfileManager;
@@ -8,6 +9,10 @@ public class CreateGroupNoticeCommandHandler(ISchoolProfileManager schoolProfile
     private readonly IMapper _mapper = mapper;
 
     private readonly ICommandContext _commandContext = commandContext;
+
+    private readonly IMailService _mailService = mailService;
+
+    private readonly IConfiguration _configuration = configuration;
 
     public async Task<Either<GroupNoticeModelResponse, Error>> Handle(CreateGroupNoticeCommand request, CancellationToken cancellationToken)
     {
@@ -39,9 +44,64 @@ public class CreateGroupNoticeCommandHandler(ISchoolProfileManager schoolProfile
             return new InvalidDatabaseOperationError("group");
         }
 
+        var classTeacher = await _commandContext.SchoolProfiles.FindAsync(group.ClassTeacherId);
+        var students = await _commandContext.SchoolProfiles
+            .Where(s => s.Type == SchoolProfileType.Student && s.GroupId == group.Id)
+            .ToListAsync();
+
+        var parents = await _commandContext.SchoolProfiles
+            .Include(p => p.Children)
+            .Where(p => p.Type == SchoolProfileType.Parent)
+            .ToListAsync(cancellationToken);
+
+        var filteredParents = parents
+            .Where(p => p.Children != null &&
+                p.Children.Any(c => c.Type == SchoolProfileType.Student && c.GroupId == group.Id))
+            .Distinct()
+            .ToList();
+
+        var combinedProfiles = new List<Domain.Entities.SchoolProfile>();
+        if (classTeacher != null)
+        {
+            combinedProfiles.Add(classTeacher);
+        }
+
+        combinedProfiles.AddRange(filteredParents);
+        combinedProfiles.AddRange(students);
+
+        var clientUrl = _configuration["ClientUrl"]!;
+
+        await SendEmailToCombinedProfiles(combinedProfiles, entity, group, clientUrl);
+
         var noticeResponse = _mapper.Map<GroupNoticeModelResponse>(entity);
         noticeResponse.Author = profile;
         return noticeResponse;
+    }
+
+    private async Task SendEmailToCombinedProfiles(List<Domain.Entities.SchoolProfile> combinedProfiles,
+        Domain.Entities.GroupNotice entity,
+        Domain.Entities.Group group,
+        string clientUrl)
+    {
+        var tasks = combinedProfiles
+            .Where(profile => profile.Email != null)
+            .Select(async profile =>
+            {
+                try
+                {
+                    if (profile.Email != null)
+                        await _mailService.SendAsync(
+                            profile.Email,
+                            EmailTemplates.NewGroupNotice.Subject,
+                            EmailTemplates.NewGroupNotice.GetTemplate(entity.Title, group.Name, clientUrl, entity.Text));
+                }
+                catch (Exception exception)
+                {
+                    Log.Error(exception, "An error occurred while send email to {@Email} after creating joining request.", profile.Email);
+                }
+            });
+
+        await Task.WhenAll(tasks);
     }
 
     private async Task<Option<Error>> ValidateProfile(SchoolProfileType type, Guid userId, Domain.Entities.Group group)

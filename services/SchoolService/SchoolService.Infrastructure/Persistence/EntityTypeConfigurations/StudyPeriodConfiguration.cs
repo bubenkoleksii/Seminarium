@@ -10,7 +10,7 @@ public class StudyPeriodConfiguration : IEntityTypeConfiguration<StudyPeriod>
         builder.Property(period => period.StartDate).IsRequired();
         builder.Property(period => period.EndDate).IsRequired();
 
-        builder.HasQueryFilter(school => !school.IsArchived);
+        builder.HasQueryFilter(period => !period.IsArchived);
 
         ConfigureRelationships(builder);
     }

@@ -1,0 +1,102 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="SchoolService.Domain.Entities.Entity">
+    <Position X="12" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgCAAAAAAAAAAAAACAAQAAQAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Entities\Entity.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SchoolService.Domain.Entities.Group">
+    <Position X="10.5" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACIAAAAQAAAAgAAAAAAAQAQAAAAAAAgAQAAEAAAAAAA=</HashCode>
+      <FileName>Entities\Group.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SchoolService.Domain.Entities.GroupNotice">
+    <Position X="15" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEIEAAAAAEAAgAAAAAAAAAAAAAAAABAACAAAAAA=</HashCode>
+      <FileName>Entities\GroupNotice.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SchoolService.Domain.Entities.JoiningRequest">
+    <Position X="6" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAAAAAEgBCAgAAAICAAAAQAgBgAAIAGQQAAAAAAAAA=</HashCode>
+      <FileName>Entities\JoiningRequest.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SchoolService.Domain.Entities.ParentChild">
+    <Position X="7.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAIAAAAAAQAAAAAAAAAAAAgAAAAAAAAg=</HashCode>
+      <FileName>Entities\ParentChild.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SchoolService.Domain.Entities.School">
+    <Position X="17.25" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEAQgDAAAAAAICAAAAQQABgAAIUGAQAAIgAAAAA=</HashCode>
+      <FileName>Entities\School.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SchoolService.Domain.Entities.SchoolProfile">
+    <Position X="8.25" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAAAEAUACABgAAAEAQEQAwAAAAAABAAQQAAIAAIAAA=</HashCode>
+      <FileName>Entities\SchoolProfile.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SchoolService.Domain.Entities.StudyPeriod">
+    <Position X="12.75" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAgAAAAAAAAAAgAAAAAAAAQAAAAEAAAAA=</HashCode>
+      <FileName>Entities\StudyPeriod.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Enum Name="SchoolService.Domain.Enums.JoiningRequest.JoiningRequestStatus">
+    <Position X="13.75" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAACAAQAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAA=</HashCode>
+      <FileName>Enums\JoiningRequest\JoiningRequestStatus.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="SchoolService.Domain.Enums.School.SchoolOwnershipType">
+    <Position X="19.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAIAAAAAEAAAAAAAAAAABAAAAAA=</HashCode>
+      <FileName>Enums\School\SchoolOwnershipType.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="SchoolService.Domain.Enums.School.SchoolRegion">
+    <Position X="21.25" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgATMIAACgEABAYAAIAQAABAEAAAAAJAAiEAAEIAAM=</HashCode>
+      <FileName>Enums\School\SchoolRegion.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="SchoolService.Domain.Enums.School.SchoolType">
+    <Position X="11.5" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAgAAAAAAAAAQAAAAAAAAAABAAAA=</HashCode>
+      <FileName>Enums\School\SchoolType.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="SchoolService.Domain.Enums.SchoolProfile.HealthGroup">
+    <Position X="4" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAACI=</HashCode>
+      <FileName>Enums\SchoolProfile\HealthGroup.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="SchoolService.Domain.Enums.SchoolProfile.SchoolProfileType">
+    <Position X="4" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAAAEAQAAAAAAAAAAAQAAAAAAAAAAAAAAEAAAAAAA=</HashCode>
+      <FileName>Enums\SchoolProfile\SchoolProfileType.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

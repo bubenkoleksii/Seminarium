@@ -1,13 +1,173 @@
 {
+  "AdminContentTabs": {
+    "profile": "Profil",
+    "joiningRequest": "Csatlakozási kérelmek",
+    "school": "Oktatási intézmények",
+    "home": "A főoldalra",
+    "hide": "A panel elrejtése"
+  },
+  "AdminProfile": {
+    "label": "Platform adminisztrátor profil",
+    "nameLabel": "Kezdőbetűk",
+    "emailLabel": "E-mail",
+    "changeAccountInfo": "Számlainformációk módosítása",
+    "forgotPassword": "Elfelejtette jelszavát"
+  },
+  "AllSchoolProfiles": {
+    "listTitle": "Az oktatási intézmény résztvevőinek profilja",
+    "group": "Csoport",
+    "subjects": "Tantárgyak",
+    "placeholders": {
+      "name": "Andriy Valko",
+      "group": "8-А"
+    },
+    "typeLabel": "Szűrés típus szerint",
+    "groupLabel": "Szűrés csoport szerint",
+    "notFound": "Semmit sem találtunk erre a lekérdezésre",
+    "clear": "Tiszta",
+    "types": {
+      "schoolAdmin": "Adminisztrátor",
+      "teacher": "Tanár",
+      "classTeacher": "Kurátor",
+      "student": "Diák"
+    },
+    "detailsBtn": "Bővebben"
+  },
   "Auth": {
     "registrationBtn": "Regisztráció",
     "loginBtn": "Belépés",
     "logoutBtn": "Kijelentkezés"
   },
+  "Children": {
+    "title": "Gyermekek",
+    "addChildBtn": "Gyermek hozzáadása",
+    "onlyParents": "Ez az oldal csak a szülői fiókok számára érhető el",
+    "notFound": "Jelenleg nincsenek gyermekei a platformon"
+  },
+  "CreateJoiningRequestSuccess": {
+    "success": "Sikeresen elküldött kérés",
+    "text": "Az oktatási intézmény hozzáadására vonatkozó kérelmét sikeresen elküldtük, és az adminisztrátorok megvizsgálják. Várja az ellenőrzés eredményéről szóló értesítést a megadott e-mail címre vagy telefonszámra.",
+    "id": "Kérelem azonosítója",
+    "email": "A megadott e-mail cím címe",
+    "goHome": "A főoldalra"
+  },
+  "CurrentUser": {
+    "admin": "Admin"
+  },
+  "Group": {
+    "listTitle": "Az intézmény tanulmányi csoportjai",
+    "oneTitle": "Tanulmányozó csoport",
+    "viewAllBtn": "Minden hirdetés megtekintése",
+    "toMain": "A tanulmányi csoportok listájához",
+    "deleteClassTeacherLabel": "* A csoport kurátorának megváltoztatásához törölje a jelenlegi kurátor profilját",
+    "name": "Cím",
+    "classTeacher": "Kurátor",
+    "students": "Diákok",
+    "notices": "Közlemények",
+    "lastNotice": "Legutóbbi bejelentés a csoportban",
+    "noticesBtn": "A csoport bejelentéseinek megtekintése",
+    "studentsNotFound": "Ennek a csoportnak nincsenek tanulói",
+    "deleteBtn": "Törlés",
+    "deleteMsg": "Biztos, hogy törölni akarja ezt a csoportot?",
+    "detailsBtn": "Bővebben",
+    "classTeacherInvitationBtn": "Meghívó generálása a kurátor számára",
+    "studentInvitationBtn": "Meghívók generálása diákok számára",
+    "updateBtn": "Frissítés",
+    "updateImage": "A csoportkép frissítése",
+    "updateImageSuccess": "Csoportkép sikeresen frissítve",
+    "deleteImageBtn": "Csoportkép törlése",
+    "deleteImageSuccess": "Csoportkép sikeresen törölve",
+    "updateSuccess": "Csoport sikeresen frissítve",
+    "labels": {
+      "id": "Azonosító",
+      "createdAt": "A létrehozás dátuma",
+      "lastUpdatedAt": "Utolsó frissítés",
+      "noClassTeacher": "Ennek a csoportnak még nincs kurátora",
+      "invalid_school_profile": "Helytelen iskolai profil. Kérjük, ellenőrizze és próbálja újra",
+      "alreadyExists": "Egy ilyen nevű csoport már létezik",
+      "oneNotFound": "Ilyen adatokkal rendelkező csoportot nem találtunk",
+      "unauthorized": "Engedélyezési hiba, kérjük, jelentkezzen be a művelet elvégzéséhez",
+      "forbidden": "Helytelen profil. Kérjük, ellenőrizze és próbálja újra",
+      "toList": "A csoportok listájához",
+      "backTo": "Visszatérés",
+      "internal": "Hiba történt a szervereinken. Kérjük, próbálja meg később újra",
+      "createSubmit": "Hozzon létre",
+      "createSuccess": "Új csoportot adtunk hozzá",
+      "studyPeriodNumber": "A vizsgálati időszak száma",
+      "studyPeriodNumberShort": "Tanulmányi időszak",
+      "name": "A tanulmányi csoport neve",
+      "createBtn": "Új csoport létrehozása",
+      "clear": "Tiszta",
+      "deleteSuccess": "Csoport sikeresen törölve",
+      "notFound": "Nem talált tanulmányi csoportok",
+      "updateNotFound": "Nem talált frissítendő csoportot"
+    },
+    "create": {
+      "title": "Új képzési csoport létrehozása"
+    },
+    "update": {
+      "title": "A tanulmányi csoport frissítése"
+    },
+    "placeholders": {
+      "search": "8-А",
+      "name": "8-A"
+    }
+  },
+  "GroupNotice": {
+    "listTitle": "A csoport bejelentéseinek listája",
+    "deleteMsg": "Biztos, hogy törölni akarja ezt a hirdetést?",
+    "lastNotice": "Legutóbbi bejelentés",
+    "clear": "Tiszta",
+    "myOnly": "Created by me",
+    "crucialNotices": "A legfontosabb bejelentések",
+    "regularNotices": "Rendszeres hirdetések",
+    "updated": "Frissítve",
+    "crucial": "Fontos",
+    "regular": "Normál",
+    "backTo": "Csoport oldal",
+    "updateBtn": "Frissítés",
+    "createBtn": "Hozzon létre",
+    "deleteBtn": "Törlés",
+    "notFound": "Még nincsenek bejelentések a csoportodban",
+    "crucialBtn": "A fontosaknak",
+    "regularBtn": "A szokásosakra",
+    "create": {
+      "title": "Hirdetmény létrehozása egy csoport számára"
+    },
+    "update": {
+      "title": "Csoportos bejelentések frissítése"
+    },
+    "labels": {
+      "isCrucial": "Fontos",
+      "oneNotFound": "Az ilyen információkat tartalmazó hirdetéseket nem találtuk",
+      "deleteSuccess": "Hirdetés sikeresen törölve",
+      "updateSuccess": "Hirdetés sikeresen frissítve",
+      "crucialSuccess": "Hirdetés típusa sikeresen megváltozott",
+      "title": "Cím",
+      "text": "Szöveg",
+      "alreadyExists": "A következő adatokat tartalmazó hirdetést már hozzáadtuk",
+      "createSubmit": "Hirdetés létrehozása",
+      "updateSubmit": "Frissítés",
+      "toList": "Vissza a hirdetések listájához",
+      "createSuccess": "Sikeresen létrehoztunk egy új hirdetést a csoport számára!"
+    },
+    "placeholders": {
+      "title": "A hirdetés címe",
+      "text": "A hirdetés szövege",
+      "search": "Keresés"
+    }
+  },
   "JoiningRequest": {
     "title": "Iskolai csatlakozási űrlap",
-    "listTitle": "Запити навчальних закладів на приєднання",
+    "listTitle": "Az oktatási intézmények csatlakozási kérelmei",
+    "oneTitle": "Egy oktatási intézmény csatlakozási kérelme",
     "labels": {
+      "register": {
+        "labelBtn": "Az állami nyilvántartásban"
+      },
+      "createSubmit": "Kérés küldése",
+      "id": "Azonosító",
+      "createdAt": "Dátum",
       "requesterEmail": "Az Ön e-mail címe",
       "requesterPhone": "Az Ön telefonszáma",
       "requesterFullName": "A kérelmező teljes neve",
@@ -23,7 +183,41 @@
       "territorialCommunity": "Helyi közösség",
       "address": "Cím",
       "areOccupied": "Jelenleg az oktatási intézmény elfoglalt",
-      "submit": "Csatlakozási kérelem küldése"
+      "submit": "Csatlakozási kérelem küldése",
+      "details": "Bővebben",
+      "toSchool": "Oktatási intézmény megtekintése",
+      "detailInfo": "További információ",
+      "yes": "Igen",
+      "no": "Nem",
+      "toMain": "A kérelmek listájára",
+      "approveBtn": "A kérelem megerősítése és az intézmény hozzáadása",
+      "approveMessage": "Biztos, hogy meg akarja erősíteni a csatlakozási kérelmét? Ez a művelet később nem törölhető",
+      "rejectBtn": "A csatlakozási kérelem elutasítása",
+      "rejectMessage": "Biztos, hogy el akarja utasítani a csatlakozási kérelmet? Ezt a műveletet később nem lehet visszavonni",
+      "regionFilter": "Szűrés régió szerint",
+      "oneNotFound": "A következő adatokat tartalmazó kapcsolati kérelmet nem találták meg",
+      "clear": "Tiszta",
+      "notFound": "Semmi sem található",
+      "dateSorter": {
+        "label": "Rendezés dátum szerint",
+        "asc": "A régitől az újig",
+        "desc": "Az újabbaktól az idősebbekig"
+      },
+      "alreadyExists": "Az ilyen e-mailt vagy EDRPOU-t tartalmazó csatlakozási kérelmet már korábban létrehozták",
+      "validation": "A kapcsolatkérés hibás adatokat tartalmaz. Kérjük, ellenőrizze és próbálja újra",
+      "success": "A kérését elfogadtuk",
+      "rejectSuccess": "Sikeresen elutasított kérelem",
+      "internal": "Hiba történt a szervereinken. Kérjük, próbálja meg később újra",
+      "prove": "Biztos vagy benne, hogy csatlakozási kérelmet szeretnél küldeni? Ha egyszer elküldted, nem lehet visszavonni",
+      "disproved": "Az oktatási intézményhez való csatlakozási kérelem elküldése törlésre került",
+      "disproveMessage": "Az elutasítás indoklása",
+      "status": {
+        "label": "Állapot",
+        "filterLabel": "Szűrés státusz szerint",
+        "created": "Új",
+        "rejected": "Visszautasított",
+        "approved": "Megerősítve"
+      }
     },
     "placeholders": {
       "requesterEmail": "andrii.valko@gmail.com",
@@ -38,15 +232,15 @@
       "territorialCommunity": "Olevska városi közösség",
       "address": "Kvitkova utca 24/b"
     },
-    "ownershipTypes": {
-      "state": "Állami",
-      "communal": "Közösségi",
-      "private": "Magán"
-    },
     "types": {
       "secondary": "Középiskola",
       "higher": "Felsőoktatási intézmény",
       "vocational": "Szak- és szakközépiskola"
+    },
+    "ownershipTypes": {
+      "state": "Állami",
+      "communal": "Közösségi",
+      "private": "Magán"
     },
     "regions": {
       "vinnytsia": "Vinnyicja megye",
@@ -78,21 +272,580 @@
       "none": "Egyik sem"
     }
   },
+  "School": {
+    "invitation": {
+      "labelBtn": "Meghívó generálása a helyszín adminisztrátora számára",
+      "labelModal": "Meghívó az oktatási intézmény fenntartója számára",
+      "labelTeacherModal": "Meghívó oktatási intézmények tanárai számára"
+    },
+    "title": "Egy oktatási intézmény csatlakozási formája",
+    "listTitle": "Oktatási intézmények",
+    "oneTitle": "Oktatási intézmény",
+    "createTitle": "Új oktatási intézmény hozzáadása",
+    "updateTitle": "Az oktatási intézmény frissítése",
+    "updateImage": "Kép frissítése",
+    "back": "Visszatérés",
+    "labels": {
+      "register": {
+        "labelBtn": "Az állami nyilvántartásban"
+      },
+      "id": "Azonosító",
+      "createdAt": "A csatlakozás időpontja",
+      "updatedAt": "Utolsó frissítés",
+      "email": "E-mail",
+      "phone": "Telefonszám",
+      "siteUrl": "Az intézmény honlapja",
+      "requesterFullName": "Teljes név",
+      "registerCode": "EDRPOU kód",
+      "name": "Az oktatási intézmény teljes neve",
+      "shortName": "Az intézmény rövid neve",
+      "gradingSystem": "Értékelési skála",
+      "type": "Az oktatási intézmény típusa",
+      "update": "Frissítse adatait",
+      "delete": "A létesítmény törlése",
+      "deleteImage": "Kép törlése",
+      "proveDelete": "Biztos, hogy törölni szeretné ezt az iskolát, beleértve a profilokat és a csoportokat is?",
+      "postalCode": "Irányítószám",
+      "ownershipType": "Ingatlantípus",
+      "studentsQuantity": "Az oktatásban részesülők száma",
+      "region": "Régió",
+      "territorialCommunity": "Területi közösség",
+      "address": "Cím",
+      "areOccupied": "Az iskola jelenleg foglalt",
+      "submit": "Oktatási intézmény hozzáadása",
+      "updateSubmit": "Frissítse oktatási intézményét",
+      "details": "Bővebben",
+      "detailInfo": "További információ",
+      "yes": "Igen",
+      "no": "Nem",
+      "toMain": "Az intézmények listájára",
+      "toRequest": "A csatlakozási kérelemhez",
+      "approveBtn": "A kérelem megerősítése és az intézmény hozzáadása",
+      "approveMessage": "Biztos, hogy meg akarja erősíteni a csatlakozási kérelmét? Ez a művelet később nem törölhető",
+      "rejectBtn": "A csatlakozási kérelem elutasítása",
+      "rejectMessage": "Biztos, hogy el akarja utasítani a csatlakozási kérelmet? Ezt a műveletet később nem lehet visszavonni",
+      "regionFilter": "Szűrés régió szerint",
+      "oneNotFound": "A következő adatokat tartalmazó kapcsolati kérelmet nem találták meg",
+      "clear": "Tiszta",
+      "notFound": "Semmi sem található",
+      "dateSorter": {
+        "label": "Rendezés dátum szerint",
+        "asc": "A régitől az újig",
+        "desc": "Az újabbaktól az idősebbekig"
+      },
+      "invalid_school_profile": "Helytelen iskolai profil. Kérjük, ellenőrizze és próbálja újra",
+      "unauthorized": "Engedélyezési hiba, kérjük, jelentkezzen be a művelet elvégzéséhez",
+      "forbidden": "Helytelen profil. Kérjük, ellenőrizze és próbálja újra",
+      "alreadyExists": "Egy ilyen EDRPOU-val rendelkező oktatási intézményt már korábban létrehoztak",
+      "updateAlreadyExists": "Egy ilyen EDRPOU-val rendelkező oktatási intézmény már létezik a rendszerben",
+      "updateNotFound": "Nem találtunk oktatási intézményt ezzel az EDRPOU-val",
+      "validation": "Az oktatási intézmény hibás adatokat tartalmaz. Kérjük, ellenőrizze és próbálja újra",
+      "invitationValidation": "Helytelen adatok a meghívó létrehozásához. Kérjük, ellenőrizze aktív profilját és oktatási intézményét",
+      "imageValidation": "A kép hibás. Kérjük, ellenőrizze és próbálja újra",
+      "createSuccess": "Oktatási intézmény sikeresen hozzáadva",
+      "updateSuccess": "Sikeresen felújított oktatási intézmény",
+      "updateImageSuccess": "Az iskola arculatát sikeresen frissítették",
+      "deleteImageSuccess": "Oktatási intézmény képe sikeresen törölve",
+      "deleteSuccess": "Oktatási intézmény sikeresen törölve",
+      "rejectSuccess": "Sikeresen elutasított kérelem",
+      "internal": "Hiba történt a szervereinken. Kérjük, próbálja meg később újra",
+      "prove": "Biztos vagy benne, hogy csatlakozási kérelmet szeretnél küldeni? Ha egyszer elküldted, nem lehet visszavonni",
+      "disproved": "Az oktatási intézményhez való csatlakozási kérelem elküldése törlésre került",
+      "disproveMessage": "Az elutasítás indoklása",
+      "status": {
+        "label": "Állapot",
+        "filterLabel": "Szűrés státusz szerint",
+        "created": "Új",
+        "rejected": "Visszautasított",
+        "approved": "Megerősítve"
+      }
+    },
+    "placeholders": {
+      "requesterEmail": "andrii.valko@gmail.com",
+      "requesterPhone": "+380684433210",
+      "requesterFullName": "Valko András Péter",
+      "registerCode": "22054999",
+      "name": "Olevska középiskola №3 Olevska városi tanács",
+      "shortName": "Olevska középiskola №3",
+      "gradingSystem": "12",
+      "postalCode": "11028",
+      "studentsQuantity": "800",
+      "territorialCommunity": "Olevska városi közösség",
+      "address": "Kvitkova utca 24/b"
+    },
+    "types": {
+      "secondary": "Középiskola",
+      "higher": "Felsőoktatási intézmény",
+      "vocational": "Szak- és szakközépiskola"
+    },
+    "ownershipTypes": {
+      "state": "Állami",
+      "communal": "Közösségi",
+      "private": "Magán"
+    },
+    "regions": {
+      "vinnytsia": "Vinnyicja megye",
+      "volyn": "Volinszka megye",
+      "dnipropetrovsk": "Dnyipropetrovszka megye",
+      "donetsk": "Donyecki megye",
+      "zhytomyr": "Zsitomir megye",
+      "zakarpattia": "Kárpátalja",
+      "zaporizhzhia": "Zaporizska megye",
+      "ivanofrankivsk": "Ivano-Frankivszka megye",
+      "kyiv": "Kijev megye",
+      "kirovohrad": "Kirovohradszka megye",
+      "luhansk": "Luhanszk megye",
+      "lviv": "Lembergi megye",
+      "mykolaiv": "Mikolajiv megye",
+      "odesa": "Odessza megye",
+      "poltava": "Poltavszka megye",
+      "rivne": "Rovno megye",
+      "sumy": "Szumy megye",
+      "ternopil": "Ternopil megye",
+      "kharkiv": "Harkiv megye",
+      "kherson": "Hereszon megye",
+      "khmelnytskyi": "Hmelnickij megye",
+      "cherkasy": "Csernyihiv megye",
+      "chernivtsi": "Csernovic megye",
+      "chernihiv": "Csernyihiv megye",
+      "crimea": "Krími autonóm köztársaság",
+      "abroad": "Külföld",
+      "none": "Egyik sem"
+    }
+  },
+  "SchoolProfile": {
+    "courses": "Tanfolyamok",
+    "addProfileBtn": "Profil hozzáadása",
+    "addChild": "Gyermek hozzáadása",
+    "toGroup": "Csoport",
+    "parentsLabel": "Szülők",
+    "childrenLabel": "Gyermekek",
+    "backTo": "Vissza a részletekhez",
+    "updateImage": "Kép frissítése",
+    "deleteMsg": "Biztos, hogy törölni szeretné ezt a profilt",
+    "parentModalBtn": "Meghívó készítése a tanuló szülei számára",
+    "labelParentModal": "Meghívó a tanuló szüleinek",
+    "invalidInvitationLink": "Érvénytelen link a csatlakozáshoz",
+    "invitationLabelModal": "Meghívó link",
+    "removeClassTeacherBtn": "Kurátor törlése (cseréje)",
+    "max_profiles_count": "Elérte az egy felhasználóhoz tartozó profilok maximális számát",
+    "listLabel": "A profilok listája",
+    "oneTitle": "További információk a profilról",
+    "noParents": "A szülők még nincsenek a platformon",
+    "noChildren": "Még nincsenek gyerekek a peronon",
+    "smallListLabel": "Profilok",
+    "notFound": "Nincs profilja",
+    "badRequest": "Érvényesítési hiba. Kérjük, ellenőrizze és próbálja újra",
+    "alreadyExists": "Ön már rendelkezik ilyen adatokat tartalmazó profillal",
+    "activateBtn": "Aktiválja a  címet",
+    "activateFail": "A profil nem aktiválható. Próbálja meg újratölteni az oldalt",
+    "activateSuccess": "Aktív profil megváltozott",
+    "createSuccess": "Az új profil sikeresen létrejött",
+    "createChildSuccess": "Gyermek sikeresen hozzáadva",
+    "deleteImageBtn": "Profilkép törlése",
+    "updateImageSuccess": "Sikeresen beállította a profilképet",
+    "deleteImageSuccess": "Sikeresen törölt profilkép",
+    "updateBtn": "Frissítés",
+    "deleteBtn": "Törlés",
+    "detailsBtn": "Bővebben",
+    "isActive": "Aktív",
+    "yes": "Igen",
+    "no": "Nem",
+    "create": {
+      "school_admin": "Hozzon létre egy oktatási intézményi adminisztrátor profilját",
+      "student": "Egy oktatási intézmény diákjának profiljának létrehozása",
+      "teacher": "Egy tanár profiljának létrehozása egy oktatási intézményben",
+      "class_teacher": "Tanulmányi csoport oktatói profiljának létrehozása",
+      "parent": "Szülői profil létrehozása"
+    },
+    "update": {
+      "school_admin": "Az iskolai adminisztrátor profiljának frissítése",
+      "student": "A tanuló profiljának frissítése",
+      "teacher": "Egy oktatási intézmény tanárának profiljának frissítése",
+      "class_teacher": "Tanulmányi csoport oktatójának profiljának frissítése",
+      "parent": "Szülői profil frissítése"
+    },
+    "item": {
+      "id": "Id",
+      "phone": "Telefonszám",
+      "school": "Intézmény",
+      "type": "Profil típusa",
+      "createdAt": "A létrehozás dátuma",
+      "lastUpdatedAt": "Utolsó frissítés",
+      "name": "Név",
+      "email": "E-mail",
+      "group": "Tanulmányozó csoport",
+      "details": "Hasznos adatok Önről",
+      "teacherSubjects": "Fegyelmek",
+      "teacherExperience": "Tapasztalat",
+      "teacherEducation": "Oktatás",
+      "teacherQualification": "Képesítések",
+      "teacherLessonsPerCycle": "Az osztályok száma tanulmányi ciklusonként",
+      "studentDateOfBirth": "Születési dátum",
+      "studentAptitudes": "Kivételes képességek",
+      "studentIsClassLeader": "Starosta",
+      "studentIsIndividually": "Egyéni képzés",
+      "studentHealthGroup": "Egészségügyi csoport",
+      "parentAddress": "A lakóhely címe",
+      "healthGroup": {
+        "main": "Főoldal",
+        "preparatory": "Előkészítő",
+        "special": "Különleges",
+        "free": "Elbocsátva"
+      }
+    },
+    "type": {
+      "class_teacher": "Kurátori",
+      "student": "Diák",
+      "school_admin": "Adminisztratív",
+      "parent": "Szülői",
+      "teacher": "Tanítás",
+      "undefined": "-"
+    },
+    "admin": {
+      "school_admin": "A platformadminisztrátor nem rendelkezhet oktatási intézményi adminisztrátori profillal",
+      "student": "A platform adminisztrátora nem rendelkezhet oktatási intézmény hallgatói profillal",
+      "teacher": "A platform adminisztrátorának nem lehet oktatási intézményi tanár profilja",
+      "class_teacher": "A platform adminisztrátora nem rendelkezhet a tanulmányi csoport kurátorának profiljával",
+      "parent": "A platformadminisztrátornak nem lehet szülői profilja"
+    },
+    "labels": {
+      "name": "Név (kötelező)",
+      "email": "E-mail (nem kötelező)",
+      "oneNotFound": "Profil nem található",
+      "updateNotFound": "A frissíteni kívánt profilt nem találtuk meg",
+      "updateSuccess": "Profil sikeresen frissítve",
+      "deleteSuccess": "Profil sikeresen törölve",
+      "internal": "Hiba történt a szerverünkön. Kérjük, próbálja meg később újra",
+      "invalid_school_profile": "Helytelen iskolai profil. Kérjük, ellenőrizze és próbálja újra",
+      "phone": "Telefonszám (nem kötelező)",
+      "details": "Hasznos adatok Önről (nem kötelező)",
+      "createSubmit": "Profil létrehozása",
+      "updateSubmit": "Frissítse profilját",
+      "teacherSubjects": "Az Ön által tanított tantárgyak (nem kötelező)",
+      "teacherExperience": "Tapasztalat (nem kötelező)",
+      "teacherEducation": "Oktatás (nem kötelező)",
+      "teacherQualification": "Képesítések (nem kötelező)",
+      "teacherLessonsPerCycle": "Tanulmányi ciklusonkénti osztályok száma (kötelező)",
+      "studentDateOfBirth": "Születési dátum (nem kötelező)",
+      "studentAptitudes": "Az Ön különleges képességei (nem kötelező)",
+      "studentIsClassLeader": "Te egy starosta vagy",
+      "studentIsIndividually": "Egyénileg tanulsz",
+      "studentHealthGroup": "Egészségügyi csoport (kötelező)",
+      "parentAddress": "Cím (nem kötelező)"
+    },
+    "placeholders": {
+      "email": "andrii.valko@gmail.com",
+      "phone": "+380986721449",
+      "details": "Halláskárosodásom van...",
+      "teacherSubjects": "Matematika, programozás",
+      "teacherQualification": "Mesterdiploma alkalmazott matematikából",
+      "teacherEducation": "Ivan Franko Kijevi Nemzeti Egyetem",
+      "teacherExperience": "több mint 50 tudományos és oktatási mű szerzője",
+      "studentAptitudes": "Photoshop, táncoló"
+    }
+  },
+  "StudyPeriod": {
+    "listTitle": "Az intézmény tanulmányi időszakai",
+    "confirmDeleteMsg": "Biztos, hogy törölni szeretné a tanulmányi időszakot, beleértve az összes kurzust is?",
+    "period": "Időszak",
+    "deleteBtn": "Törlés",
+    "updateBtn": "Frissítés",
+    "backTo": "Visszatérés az időszakok listájához",
+    "createSuccess": "Sikeresen létrehozott képzési időszak",
+    "createSuccessAndIncrement": "Létrehozott képzési időszak és megnövelt csoportos tanfolyam",
+    "badRequest": "Helytelen kérés, kérjük ellenőrizze és próbálja meg újra",
+    "alreadyExists": "Az ilyen adatokat tartalmazó képzési időszak már létezik",
+    "internalError": "Belső szerver hiba",
+    "createBtn": "Egy pont hozzáadása",
+    "select": "Tanulmányi időszak kiválasztása",
+    "create": {
+      "title": "Tanulmányi időszak létrehozása"
+    },
+    "update": {
+      "title": "A vizsgálati időszak frissítése"
+    },
+    "labels": {
+      "incrementGroups": "Csoportok áthelyezése egy új tanfolyamra",
+      "startDate": "Kezdeti időpont",
+      "endDate": "Végdátum",
+      "createSubmit": "Hozzon létre",
+      "updateSubmit": "Frissítés",
+      "updateSuccess": "Képzési időszak sikeresen frissítve",
+      "deleteSuccess": "Tanulmányi időszak sikeresen törölve"
+    },
+    "validation": {
+      "required": "Ez a mező kötelező",
+      "endDateAfterStartDate": "A végdátumnak későbbi időpontnak kell lennie, mint a kezdeti dátum"
+    }  
+  },
   "Footer": {
-    "author": "Olekszij Bubenko"
+    "author": "Kapcsolattartási cím: bubenkooleksii@gmail.com",
+    "name": "Alexey Bubenko"
+  },
+  "Error": {
+    "invalid_school_profile": "Helytelen iskolai profil. Kérjük, ellenőrizze és próbálja újra",
+    "notFound": "Nem találtunk semmit a kérésedre",
+    "unauthorized": "Kérjük, jelentkezzen be az oldal eléréséhez",
+    "forbidden": "Nincs elegendő jogosultsága az oldal eléréséhez",
+    "internal": "Hiba történt a szerverünkön. Kérjük, próbálja meg később újra",
+    "badRequest": "Helytelen kérés. Kérjük, ellenőrizze adatait és próbálja újra",
+    "invalid": "Helytelen kérés. Kérjük, ellenőrizze adatait és próbálja újra",
+    "validation": "Érvényesítési hiba. Kérjük, ellenőrizze adatait és próbálja újra",
+    "unsupported_media_type": "Ez a fájltípus nem támogatott, próbálkozzon mással",
+    "already_exists": "Az ilyen adatokat tartalmazó rekord már szerepel a platformon, ellenőrizze az adatok egyediségét"
+  },
+  "Modal": {
+    "copy": "Másolás",
+    "close": "Close",
+    "copiedText": "Szöveg másolása",
+    "copiedSuccess": "A szöveget másolták",
+    "prove": "Megerősítés",
+    "disprove": "Hulladék",
+    "required": "Ez a mező kötelező",
+    "optional": "Ez a mező nem kötelező",
+    "leaveComment": "Hagyja itt a hozzászólását"
+  },
+  "Pagination": {
+    "next": "Csak rajta",
+    "back": "Vissza",
+    "limit": "Megjelenítés az oldalon"
+  },
+  "SearchInput": {
+    "label": "Keresés"
+  },
+  "Tiptap": {
+    "words": "sza.",
+    "symbols": "szimb.",
+    "youtubeLabelModal": "Adja meg a YouTube videó linkjét",
+    "invalidYoutubeLink": "Érvénytelen YouTube link",
+    "linkLabelModal": "Írja be a linket",
+    "invalidLink": "Érvénytelen link"
+  },
+  "UploadFile": {
+    "fileRequired": "Fájlfeltöltés szükséges",
+    "filesRequired": "Legalább egy fájl feltöltése szükséges",
+    "imageTitle": "A kép módosítása",
+    "maxSize": "A fájl mérete nagyobb a megengedettnél",
+    "invalidExt": "Helytelen fájlkiterjesztés",
+    "fileTitle": "Fájl feltöltése"
+  },
+  "UserContentTabs": {
+    "profile": "Profiljaim",
+    "school": "Az oktatási intézményem",
+    "schoolProfiles": "Az oktatási intézmény résztvevőinek profilja",
+    "groups": "Tanulmányi csoportok",
+    "group": "Az én csoportom",
+    "groupNotices": "Bejelentések a csoportomban",
+    "studyPeriods": "Tanulmányi időszakok",
+    "home": "A főoldalra",
+    "children": "A gyerekeim",
+    "hide": "A panel elrejtése",
+    "courses": "Tanulóterek"
+  },
+  "UserProfile": {
+    "changeAccountInfo": "Információ módosítása",
+    "forgotPassword": "Elfelejtette jelszavát",
+    "profilesError": "Az aktív profilra vonatkozó információk lekérdezése nem lehetséges"
   },
   "Validation": {
     "required": "Ez a mező kötelező",
+    "invalidFormat": "A mellékletek helytelen formátuma",
     "email": "Helytelen e-mail cím",
+    "phone": "Helytelen telefonszám",
     "max": "Ez a mező túl hosszú, adjon meg rövidebbet",
     "min": "Ez a mező túl rövid, adjon meg hosszabbat",
     "maxNumber": "Ez az érték túllépi a megengedettet",
-    "minNumber": "Ez az érték kisebb, mint a megengedett minimum"
+    "minNumber": "Ez az érték kisebb, mint a megengedett minimum",
+    "validation": "A kérelem hibás adatokat tartalmaz. Kérjük, ellenőrizze és próbálja újra",
+    "unauthorized": "Engedélyezési hiba, kérjük, jelentkezzen be a művelet elvégzéséhez",
+    "internal": "Hiba történt a szerverünkön. Kérjük, próbálja meg később újra",
+    "forbidden": "Helytelen profil. Kérjük, ellenőrizze és próbálja újra",
+    "invalid_school_profile": "Helytelen iskolai profil. Kérjük, ellenőrizze és próbálja újra"
   },
   "Welcome": {
     "title": "Seminarium — lépjen be az innovatív oktatás világába!",
     "description": "Seminarium - a tanítási folyamat kezelésének rendszere, ahol a tanároknak lehetőségük van egyedi tananyagok és interaktív órák létrehozására. A mi platformunk szabad kreativitást biztosít a tanároknak az olyan erőforrások fejlesztésében, amelyek megfelelnek a diákjaik igényeinek.",
     "registrationBtn": "Regisztráció",
     "joiningRequestBtn": "Csatlakozás az iskolához"
+  },
+"Course": {
+    "listTitle": "Tanulóterek",
+    "oneTitle": "Tanulási tér",
+    "createTitle": "Hozzon létre egy tanulási teret",
+    "createBtn": "Hozzon létre",
+    "createSuccess": "Sikeresen hozzáadott képzési hely",
+    "updateTitle": "A tanulási helyiségek felújítása",
+    "updateBtn": "Frissítés",
+    "updateSuccess": "Tanulási tér sikeresen frissítve",
+    "deleteBtn": "Törlés",
+    "deleteMsg": "Biztos, hogy törölni szeretné ezt a tanulási helyet?",
+    "deleteSuccess": "Tanulóterület sikeresen törölve",
+    "teachers": "Tanárok",
+    "groups": "Csoportok",
+    "toCourse": "Űr",
+    "groupNotFound": "Nincs csoport ezzel a névvel",
+    "teacherNotFound": "Ezzel a névvel rendelkező tanár nem található",
+    "detailsBtn": "Bővebben",
+    "addGroupBtn": "Csoport hozzáadása",
+    "createGroupTitle": "Csoport hozzáadása",
+    "createTeacherTitle": "Tanár hozzáadása",
+    "addTeacherBtn": "Tanár hozzáadása",
+    "addGroupSuccess": "Sikeresen hozzáadott egy csoportot",
+    "addTeacherSuccess": "Sikeresen hozzáadott egy tanárt",
+    "deleteGroupSuccess": "Csoport sikeresen törölve",
+    "deleteTeacherSuccess": "A tanár sikeresen eltávolította",
+    "creator": "Alapító",
+    "toMain": "Terek",
+    "labels": {
+      "deleteSuccess": "Hely sikeresen törölve",
+      "createSubmit": "Hozzon létre",
+      "updateSubmit": "Frissítés",
+      "notFound": "Nem találtunk helyet",
+      "updateSuccess": "Sikeresen felújított tér",
+      "name": "A hely neve",
+      "studyPeriod": "Tanulmányi időszak",
+      "description": "Leírás",
+      "toList": "A terek listájához",
+      "groups": "Csoportok",
+      "teachers": "Tanárok",
+      "noGroups": "Még nincsenek csoportok",
+      "noTeachers": "Még nincsenek tanárok",
+      "toCourse": "Űr"
+    },
+    "placeholders": {
+      "name": "Fizika",
+      "teacher": "Andriy Valko",
+      "group": "8-А",
+      "search": "Informatika",
+      "description": "Petrenko és Vasylchuk tanárok helye 2022-2023 tanév fizika 8. évfolyam számára..."
+    }
+  },
+  "Lesson": {
+    "listTitle": "Osztályterv",
+    "addPractical": "Adjon hozzá egy praktikus",
+    "addTheory": "Adjunk hozzá egy elméleti",
+    "createTitle": "Osztály hozzáadása",
+    "updateTitle": "Osztály szerkesztése",
+    "createBtn": "Osztály hozzáadása",
+    "updateBtn": "Frissítés",
+    "deleteBtn": "Törlés",
+    "practicalBtn": "Gyakorlat.",
+    "theoryBtn": "Theor.",
+    "createLessonSucсess": "Sikeresen hozzáadott osztályok",
+    "updateLessonSuccess": "Osztályok sikeresen frissítve",
+    "updateSucess": "Osztályok sikeresen frissítve",
+    "deleteSucess": "Osztályok sikeresen törölve",
+    "labels": {
+      "createSubmit": "Add",
+      "toCourse": "Űr",
+      "notFound": "Nincsenek osztályok",
+      "oneNotFound": "Nem találtam tevékenységet",
+      "updateSubmit": "Frissítés",
+      "number": "Szám",
+      "topic": "Téma",
+      "deleteSuccess": "Osztály sikeresen törölve",
+      "homework": "Házi feladat",
+      "createHomeworkTask": "Gyakorlati feladat készítése az SL számára",
+      "practicalItems": "Gyakorlati feladatok",
+      "theoryItems": "Elméleti bekezdések"
+    },
+    "placeholders": {
+      "topic": "Ciklusok"
+    }
+  },
+  "PracticalItem": {
+    "attachments": "Mellékletek",
+    "uploadedWorks": "Kiszállított munkák",
+    "uploadWorkBtn": "Végrehajtási eredmények letöltése",
+    "author": "Szerző",
+    "deleteBtn": "Törlés",
+    "deleteSuccess": "Sikeresen törölt egy gyakorlati feladatot",
+    "archived": "Archivált",
+    "createdAt": "Dátum",
+    "myWork": "A munkám",
+    "updatedAt": "Utolsó frissítés",
+    "notFound": "Semmit sem találtunk",
+    "listTitle": "Gyakorlati feladatok az órán",
+    "createTitle": "Új esettanulmány létrehozása",
+    "backTo": "A lecke előtt",
+    "createSuccess": "Sikeresen hozzáadott egy új gyakorlati feladatot",
+    "updateSuccess": "Sikeresen frissítette az esettanulmányt",
+    "addAttachments": "Fájlok csatolása",
+    "labels": {
+      "toCourse": "Űr",
+      "title": "Cím",
+      "text": "Szöveg",
+      "deadline": "Határidő",
+      "isArchived": "Rejtsd el a diákok elől",
+      "attempts": "Kísérletek száma",
+      "allowSubmitAfterDeadline": "A határidő utáni küldés engedélyezése",
+      "allowedSubmitAfterDeadline": "A határidőn túli küldés megengedett",
+      "createSubmit": "Hozzon létre"
+    },
+    "placeholders": {
+      "title": "Ellenőrző munka №1",
+      "attempts": "2"
+    }
+  },
+  "PracticalItemSubmit": {
+    "details": "Bővebben",
+    "listTitle": "Befejezett munka",
+    "attachments": "Mellékletek",
+    "notFound": "Semmit sem találtunk",
+    "uploadWork": "Adja le a munkáját",
+    "studentName": "Diák",
+    "oneTitle": "Az elvégzett feladatom",
+    "notUploaded": "A végrehajtási eredmények még nem kerültek feltöltésre",
+    "createTitle": "Csatolja az elvégzett feladatot",
+    "deleteBtn": "Törlés",
+    "deleteSuccess": "Befejezett feladat sikeresen törölve",
+    "oneNotFound": "Semmit sem találtunk",
+    "status": "Állapot",
+    "statuses": {
+      "submitted": "Nem ellenőrzött",
+      "rejected": "Visszautasított",
+      "approved": "Beiratkozott"
+    },
+    "title": "A hirdetés címe",
+    "lastUpdatedAt": "Utolsó frissítés",
+    "createdAt": "Dátum",
+    "createSuccess": "Sikeresen csatolta az elvégzett gyakorlati feladatot",
+    "addAttachments": "Fájlok csatolása",
+    "labels": {
+      "text": "Szöveg",
+      "createSubmit": "Csatlakozás"
+    }
+  },
+  "TheoryItem": {
+    "attachments": "Mellékletek",
+    "deleteBtn": "Törlés",
+    "deleteSuccess": "Elméleti feladat sikeresen törölve",
+    "author": "Szerző",
+    "archived": "Archivált",
+    "createdAt": "Dátum",
+    "updatedAt": "Utolsó frissítés",
+    "graded": "Az értékeléshez",
+    "listTitle": "A lecke elméleti bekezdései",
+    "createTitle": "Új elméleti bekezdés létrehozása",
+    "createSuccess": "Sikeresen hozzáadott egy új elméleti bekezdést",
+    "updateSuccess": "Sikeresen frissítette az elméleti bekezdést",
+    "updateTitle": "Az elméleti bekezdés frissítése",
+    "backTo": "A lecke előtt",
+    "addAttachments": "Fájlok csatolása",
+    "labels": {
+      "title": "Cím",
+      "toCourse": "Űr",
+      "text": "Szöveg",
+      "deadline": "Határidő.",
+      "attempts": "Kísérletek",
+      "isArchived": "Rejtsd el a diákok elől",
+      "allowSubmitAfterDeadline": "A határidő utáni küldés engedélyezése",
+      "createSubmit": "Hozzon létre",
+      "isGraded": "Az értékeléshez"
+    },
+    "placeholders": {
+      "title": "A participialis kifejezés szabályai"
+    }
   }
 }

@@ -1,12 +1,20 @@
-import { FC } from 'react';
-import type { SchoolProfileResponse } from '@/features/user/types/schoolProfileTypes';
-import { Tooltip } from 'flowbite-react';
-import { useLocale, useTranslations } from 'next-intl';
-import Link from 'next/link';
-import { useUserStore } from '@/features/user/store/userStore';
 import { useNavStore } from '@/features/nav';
 import { CurrentTab } from '@/features/user/constants';
-import { User, School, Home, ChevronsLeft, Users, Contact } from 'lucide-react';
+import { useUserStore } from '@/features/user/store/userStore';
+import type { SchoolProfileResponse } from '@/features/user/types/schoolProfileTypes';
+import { Tooltip } from 'flowbite-react';
+import {
+  ChevronsLeft,
+  Contact,
+  Home,
+  LibraryBig,
+  School,
+  User,
+  Users,
+} from 'lucide-react';
+import { useLocale, useTranslations } from 'next-intl';
+import Link from 'next/link';
+import { FC } from 'react';
 
 type TeacherContentTabsProps = {
   activeProfile: SchoolProfileResponse;
@@ -30,6 +38,20 @@ const TeacherContentTabs: FC<TeacherContentTabsProps> = ({ activeProfile }) => {
         >
           <User
             color={`${currentTab === CurrentTab.Profile ? `#f9fafb` : `#3B0764`}`}
+            size={20}
+          />
+        </Link>
+      </Tooltip>
+
+      <Tooltip content={t('courses')} placement="right" style="light">
+        <Link
+          href={`/${activeLocale}/u/courses/?teacherId=${activeProfile.id}`}
+          className={`flex h-[50px] w-[50px] items-center justify-center 
+         ${currentTab === CurrentTab.Course ? `bg-purple-950` : `bg-gray-50 hover:bg-gray-200`} 
+         text-gray-800 transition duration-300`}
+        >
+          <LibraryBig
+            color={`${currentTab === CurrentTab.Course ? `#f9fafb` : `#3B0764`}`}
             size={20}
           />
         </Link>
