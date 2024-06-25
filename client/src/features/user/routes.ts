@@ -42,18 +42,22 @@ export const theoryLessonItem = {
 
 export const practicalLessonItem = {
   getAll: (lessonId: string) => `/practicalLessonItem/getAll/${lessonId}`,
+  getStudentAll: (query: string) =>
+    `/practicalLessonItem/getStudentAll/?${query}`,
   create: '/practicalLessonItem/create',
   update: '/practicalLessonItem/update',
   remove: (id: string) => `/practicalLessonItem/delete/${id}`,
 };
 
 export const practicalLessonItemSubmit = {
-  getTeacherAll: (query: string) => `/practicalLessonItemSubmit/getTeacherAll/?${query}`,
+  getTeacherAll: (query: string) =>
+    `/practicalLessonItemSubmit/getTeacherAll/?${query}`,
   getOne: (studentId: string, itemId: string) =>
     `/practicalLessonItemSubmit/getOne/${studentId}/${itemId}`,
   getAll: (practicalLessonItemId: string, studentId: string) =>
     `/practicalLessonItemSubmit/getAll/${practicalLessonItemId}/${studentId}`,
   create: '/practicalLessonItemSubmit/create',
+  addResults: '/practicalLessonItemSubmit/addResults',
   remove: (id: string) => `/practicalLessonItemSubmit/delete/${id}`,
 };
 

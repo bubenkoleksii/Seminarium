@@ -38,12 +38,21 @@ public class CreateCourseCommandHandler(
 
         if (activeProfile.Type == Constants.Teacher)
         {
-            var teacher = new CourseTeacher
+            var teacher = await _commandContext.CourseTeachers.FindAsync(activeProfile.Id);
+
+            if (teacher == null)
             {
-                Id = activeProfile.Id,
-                IsCreator = true,
-            };
-            entity.Teachers = [teacher];
+                var newTeacher = new CourseTeacher
+                {
+                    Id = activeProfile.Id,
+                    IsCreator = true,
+                };
+                entity.Teachers = [newTeacher];
+            }
+            else
+            {
+                entity.Teachers = [teacher];
+            }
         }
 
         await _commandContext.Courses.AddAsync(entity, cancellationToken);

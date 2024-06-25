@@ -2,6 +2,7 @@
 
 import { practicalLessonItem } from '@/features/user/routes';
 import type {
+  GetAllStudentPracticalLessonItemsResponse,
   PracticalLessonItemResponse,
   UpdatePracticalLessonItemRequest,
 } from '@/features/user/types/practicalLessonItemTypes';
@@ -12,6 +13,10 @@ type GetAll = (
   lessonId: string,
 ) => Promise<ApiResponse<PracticalLessonItemResponse[]>>;
 
+type GetAllStudent = (
+  query: string,
+) => Promise<ApiResponse<GetAllStudentPracticalLessonItemsResponse>>;
+
 type CreatePracticalLessonItem = (
   data: any,
 ) => Promise<ApiResponse<PracticalLessonItemResponse>>;
@@ -21,6 +26,9 @@ type UpdatePracticalLessonItem = (
 ) => Promise<ApiResponse<PracticalLessonItemResponse>>;
 
 type RemovePracticalLessonItem = (id: string) => Promise<ApiResponse<any>>;
+
+export const getAllStudentPracticalLessonItems: GetAllStudent = (query) =>
+  api.get(practicalLessonItem.getStudentAll(query));
 
 export const getAllPracticalLessonItems: GetAll = (lessonId) =>
   api.get(practicalLessonItem.getAll(lessonId));

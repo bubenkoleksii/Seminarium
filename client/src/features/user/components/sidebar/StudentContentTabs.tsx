@@ -4,6 +4,7 @@ import { useUserStore } from '@/features/user/store/userStore';
 import type { SchoolProfileResponse } from '@/features/user/types/schoolProfileTypes';
 import { Tooltip } from 'flowbite-react';
 import {
+  Brain,
   ChevronsLeft,
   Home,
   LibraryBig,
@@ -52,6 +53,20 @@ const StudentContentTabs: FC<StudentContentTabsProps> = ({ activeProfile }) => {
         >
           <LibraryBig
             color={`${currentTab === CurrentTab.Course ? `#f9fafb` : `#3B0764`}`}
+            size={20}
+          />
+        </Link>
+      </Tooltip>
+
+      <Tooltip content={t('practical')} placement="right" style="light">
+        <Link
+          href={`/${activeLocale}/u/practical-item/getStudentAll/?studentId=${activeProfile.id}`}
+          className={`flex h-[50px] w-[50px] items-center justify-center 
+         ${currentTab === CurrentTab.PracticalItems ? `bg-purple-950` : `bg-gray-50 hover:bg-gray-200`} 
+         text-gray-800 transition duration-300`}
+        >
+          <Brain
+            color={`${currentTab === CurrentTab.PracticalItems ? `#f9fafb` : `#3B0764`}`}
             size={20}
           />
         </Link>
@@ -123,3 +138,4 @@ const StudentContentTabs: FC<StudentContentTabsProps> = ({ activeProfile }) => {
 };
 
 export { StudentContentTabs };
+

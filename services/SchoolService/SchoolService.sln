@@ -10,11 +10,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.editorconfig = .editorconfig
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SchoolService.Infrastructure", "SchoolService.Infrastructure\SchoolService.Infrastructure.csproj", "{3696412D-E172-42B8-A4F9-E24F5E8B9CBA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SchoolService.Infrastructure", "SchoolService.Infrastructure\SchoolService.Infrastructure.csproj", "{3696412D-E172-42B8-A4F9-E24F5E8B9CBA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SchoolService.Application", "SchoolService.Application\SchoolService.Application.csproj", "{0F8206B5-3BF5-4A83-9BD8-AC16B1AC577B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SchoolService.Application", "SchoolService.Application\SchoolService.Application.csproj", "{0F8206B5-3BF5-4A83-9BD8-AC16B1AC577B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SchoolService.Api", "SchoolService.Api\SchoolService.Api.csproj", "{3A78E19E-EA79-4E15-A620-0BAE59E2AEC4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SchoolService.Api", "SchoolService.Api\SchoolService.Api.csproj", "{3A78E19E-EA79-4E15-A620-0BAE59E2AEC4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SchoolService.Application.Tests", "SchoolService.Application.Tests\SchoolService.Application.Tests.csproj", "{E362D912-4D00-469D-8A11-EA65B67152FC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -38,6 +40,10 @@ Global
 		{3A78E19E-EA79-4E15-A620-0BAE59E2AEC4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3A78E19E-EA79-4E15-A620-0BAE59E2AEC4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3A78E19E-EA79-4E15-A620-0BAE59E2AEC4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E362D912-4D00-469D-8A11-EA65B67152FC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E362D912-4D00-469D-8A11-EA65B67152FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E362D912-4D00-469D-8A11-EA65B67152FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E362D912-4D00-469D-8A11-EA65B67152FC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

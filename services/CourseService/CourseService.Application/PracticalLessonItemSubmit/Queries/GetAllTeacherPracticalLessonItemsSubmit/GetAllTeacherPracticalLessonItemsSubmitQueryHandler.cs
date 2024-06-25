@@ -17,6 +17,8 @@ public class GetAllTeacherPracticalLessonItemsSubmitQueryHandler(
 
         var submits = await _queryContext.PracticalLessonItemSubmits
             .Where(s => s.PracticalLessonItemId == request.ItemId)
+            .GroupBy(s => s.StudentId)
+            .Select(g => g.First())
             .Skip((int)request.Skip)
             .Take((int)take)
             .ToListAsync(cancellationToken);

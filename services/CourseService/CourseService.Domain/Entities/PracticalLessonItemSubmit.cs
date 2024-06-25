@@ -17,4 +17,6 @@ public class PracticalLessonItemSubmit : Entity
     public PracticalLessonItemSubmitStatus Status { get; set; }
 
     public string? TeacherComment { get; set; }
+
+    public uint? Mark {  get; set; }
 }

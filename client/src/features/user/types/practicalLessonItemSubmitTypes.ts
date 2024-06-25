@@ -5,6 +5,13 @@ export type PagesPracticalLessonItemSubmitResponse = {
   take: number;
 };
 
+export interface AddPracticalItemSubmitResultsRequest {
+  id: string;
+  isAccept: boolean;
+  text?: string;
+  mark?: number;
+}
+
 type GetAllPracticalLessonItemSubmitResponseItem = {
   id: string;
   createdAt: string;
@@ -24,6 +31,8 @@ export type PracticalLessonItemSubmitResponse = {
   studentName?: string | null;
   practicalLessonItemId: string;
   text?: string | null;
+  teacherComment?: string | null;
+  mark?: number | null;
   attachments?: string[] | null;
   status: string;
 };

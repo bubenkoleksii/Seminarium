@@ -52,6 +52,8 @@ public class GetAllCoursesQueryHandler(
 
             dbQuery = dbQuery.Where(course => course.StudyPeriodId == request.StudyPeriodId.Value);
         }
+        else
+            return new NotFoundError("study_period");
 
         if (!string.IsNullOrEmpty(request.Name))
             dbQuery = dbQuery.Where(c => c.Name.ToLower().Contains(request.Name.ToLower()));

@@ -546,6 +546,7 @@
     }
   },
   "StudyPeriod": {
+    "choose": "Alegeți o perioadă de studiu",
     "listTitle": "Perioadele academice ale instituției",
     "confirmDeleteMsg": "Sunteți sigur că doriți să ștergeți perioada academică, inclusiv toate cursurile?",
     "period": "Perioada",
@@ -669,7 +670,8 @@
     "registrationBtn": "Înregistrează-te",
     "joiningRequestBtn": "Alătură-te școlii"
   },
-"Course": {
+  "Course": {
+    "choose": "Válasszon tanulási időszakot",
     "listTitle": "Spații de învățare",
     "oneTitle": "Spațiul de învățare",
     "createTitle": "Creați un spațiu de învățare",

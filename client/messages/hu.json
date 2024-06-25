@@ -577,7 +577,7 @@
     "validation": {
       "required": "Ez a mező kötelező",
       "endDateAfterStartDate": "A végdátumnak későbbi időpontnak kell lennie, mint a kezdeti dátum"
-    }  
+    }
   },
   "Footer": {
     "author": "Kapcsolattartási cím: bubenkooleksii@gmail.com",
@@ -669,7 +669,8 @@
     "registrationBtn": "Regisztráció",
     "joiningRequestBtn": "Csatlakozás az iskolához"
   },
-"Course": {
+  "Course": {
+    "choose": "Válasszon tanulási időszakot",
     "listTitle": "Tanulóterek",
     "oneTitle": "Tanulási tér",
     "createTitle": "Hozzon létre egy tanulási teret",

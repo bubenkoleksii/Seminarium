@@ -36,7 +36,9 @@ global using CourseService.Application.LessonItem.Commands.TheoryLessonItem.Dele
 global using CourseService.Application.LessonItem.Commands.TheoryLessonItem.UpdateTheoryLessonItem;
 global using CourseService.Application.LessonItem.Models;
 global using CourseService.Application.LessonItem.Queries.PracticalLessonItem.GetAllPracticalLessonItems;
+global using CourseService.Application.LessonItem.Queries.PracticalLessonItem.GetAllStudentPracticalLessonItems;
 global using CourseService.Application.LessonItem.Queries.TheoryLessonItem.GetAllTheoryLessonItems;
+global using CourseService.Application.PracticalLessonItemSubmit.Commands.AddResultsPracticalLessonItemSubmit;
 global using CourseService.Application.PracticalLessonItemSubmit.Commands.CreatePracticalLessonItemSubmit;
 global using CourseService.Application.PracticalLessonItemSubmit.Commands.DeletePracticalLessonItemSubmit;
 global using CourseService.Application.PracticalLessonItemSubmit.Commands.UpdatePracticalLessonItemSubmit;
