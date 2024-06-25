@@ -7,6 +7,7 @@ export const enum CurrentTab {
   Children = 'children',
   SchoolProfiles = 'schoolProfiles',
   StudyPeriods = 'studyPeriods',
+  PracticalItems = 'practicalItems',
 }
 
 export const userQueries = {

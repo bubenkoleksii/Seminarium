@@ -154,24 +154,47 @@ const Courses: FC<CoursesProps> = ({
   }
 
   if (data && data.error) {
-    if (data.status = 404) {
-      <div>
-        <h2 className="mb-2 mt-6 text-center text-xl font-bold">
-          {t('listTitle')} {data?.length ? `(${data.length})` : ''}
-        </h2>
+    if ((data.status = 404)) {
+      if (data?.error?.detail?.includes('study_period')) {
+        return (
+          <div>
+            <h2 className="mb-2 mt-6 text-center text-xl font-bold">
+              {t('listTitle')} {data?.length ? `(${data.length})` : ''}
+            </h2>
 
-        {activeProfile.type !== 'student' && activeProfile.type !== 'parent' && (
-          <div className="flex w-full justify-center pb-3 pb-3">
-            <Button
-              gradientMonochrome="success"
-              size="md"
-              onClick={() => replace(`/${activeLocale}/u/courses/create/`)}
-            >
-              <span className="text-white">{t('createBtn')}</span>
-            </Button>
+            <div className="mb-2 mt-2 flex w-full flex-col items-center justify-center">
+              <div className="w-md relative">
+                <StudyPeriodsDropdown onSelect={(id) => setStudyPeriodId(id)} />
+              </div>
+
+              <p>{t('choose')}</p>
+            </div>
           </div>
-        )}
-      </div>
+        );
+      }
+
+      return (
+        <div>
+          <h2 className="mb-2 mt-6 text-center text-xl font-bold">
+            {t('listTitle')} {data?.length ? `(${data.length})` : ''}
+          </h2>
+
+          {activeProfile.type !== 'student' &&
+          activeProfile.type !== 'parent' ? (
+            <div className="flex w-full justify-center pb-3 pb-3">
+              <Button
+                gradientMonochrome="success"
+                size="md"
+                onClick={() => replace(`/${activeLocale}/u/courses/create/`)}
+              >
+                <span className="text-white">{t('createBtn')}</span>
+              </Button>
+            </div>
+          ) : (
+            <p>{t('labels.notFound')}</p>
+          )}
+        </div>
+      );
     }
 
     return (
@@ -256,4 +279,3 @@ const Courses: FC<CoursesProps> = ({
 };
 
 export { Courses };
-

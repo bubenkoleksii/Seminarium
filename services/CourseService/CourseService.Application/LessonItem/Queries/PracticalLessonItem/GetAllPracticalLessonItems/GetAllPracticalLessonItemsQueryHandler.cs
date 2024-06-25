@@ -27,7 +27,7 @@ public class GetAllPracticalLessonItemsQueryHandler(
 
         var retrievingActiveProfileResult = await _schoolProfileAccessor.GetActiveSchoolProfile(getActiveProfileRequest, cancellationToken);
         if (retrievingActiveProfileResult.IsRight)
-            return Enumerable.Empty<PracticalLessonItemModelResponse>();
+            return [];
 
         var activeProfile = (SchoolProfileContract)retrievingActiveProfileResult;
         if (activeProfile == null || activeProfile.SchoolId == null)

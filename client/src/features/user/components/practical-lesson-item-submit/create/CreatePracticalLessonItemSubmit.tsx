@@ -149,4 +149,3 @@ const CreatePracticalLessonItemSubmit: FC<
 };
 
 export { CreatePracticalLessonItemSubmit };
-

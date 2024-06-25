@@ -47,6 +47,29 @@ public class PracticalLessonItemSubmitController(IMapper mapper, IAttachmentHelp
         );
     }
 
+    [HttpPatch("[action]")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> AddResults([FromBody] AddPracticalItemSubmitResultsRequest resultsRequest)
+    {
+        var userId = User.Identity?.GetId();
+        var userRole = User.Identity?.GetRole();
+
+        if (userId is null || userRole is null)
+            return ErrorActionResultHandler.Handle(new InvalidError("user"));
+
+        var command = _mapper.Map<AddResultsPracticalLessonItemSubmitCommand>(resultsRequest);
+        command.UserId = (Guid)userId;
+
+        var result = await Mediator.Send(command);
+
+        return result.Match(
+            None: Accepted,
+            Some: ErrorActionResultHandler.Handle
+        );
+    }
+
     [HttpPost("[action]/")]
     [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(PracticalLessonItemSubmitResponse))]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]

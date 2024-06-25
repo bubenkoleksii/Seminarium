@@ -64,7 +64,7 @@ const GetAllPracticalLessonItems: FC<GetAllPracticalLessonItemsProps> = ({
         </p>
       </h2>
 
-      {data && data.length > 0 ?
+      {data && data.length > 0 ? (
         data?.map((lesson) => (
           <PracticalLessonItem
             key={lesson.lessonId}
@@ -74,11 +74,11 @@ const GetAllPracticalLessonItems: FC<GetAllPracticalLessonItemsProps> = ({
             activeProfile={activeProfile}
           />
         ))
-        : <p className="w-[100%] text-center">{t('notFound')}</p>
-      }
+      ) : (
+        <p className="w-[100%] text-center">{t('notFound')}</p>
+      )}
     </div>
   );
 };
 
 export { GetAllPracticalLessonItems };
-

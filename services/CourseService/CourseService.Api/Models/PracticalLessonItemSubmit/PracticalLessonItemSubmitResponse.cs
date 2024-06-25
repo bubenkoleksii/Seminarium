@@ -13,7 +13,13 @@ public record PracticalLessonItemSubmitResponse(
 
     Guid PracticalLessonItemId,
 
+    int Attempt,
+
     string? Text,
+
+    string? TeacherComment,
+
+    uint? Mark,
 
     ICollection<string>? Attachments,
 

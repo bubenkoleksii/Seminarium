@@ -75,6 +75,12 @@ public class ApiMappingProfile : Profile
         CreateMap<GetAllPracticalLessonItemSubmitModelResponse, GetAllPracticalLessonItemSubmitResponse>();
 
         CreateMap<GetAllPracticalLessonItemSubmitModelResponseItem, GetAllPracticalLessonItemSubmitResponseItem>();
+
+        CreateMap<AddPracticalItemSubmitResultsRequest, AddResultsPracticalLessonItemSubmitCommand>();
+
+        CreateMap<StudentPracticalLessonItemModelResponse, StudentPracticalLessonItemResponse>();
+
+        CreateMap<GetAllStudentPracticalLessonItemsModelResponse, GetAllStudentPracticalLessonItemsResponse>();
     }
 
     private void ConfigureGlobalMappings()

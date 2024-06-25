@@ -14,7 +14,13 @@ public class PracticalLessonItemSubmitModelResponse
 
     public Guid PracticalLessonItemId { get; set; }
 
+    public int Attempt { get; set; }
+
     public string? Text { get; set; }
+
+    public string? TeacherComment { get; set; }
+
+    public uint? Mark { get; set; }
 
     public ICollection<string>? Attachments { get; set; }
 

@@ -66,7 +66,7 @@ const PracticalLessonItem: FC<PracticalLessonItemProps> = ({
         toast.success(t('deleteSuccess'), { duration: 2500 });
 
         replace(
-          `/${activeLocale}/u/practical-item/getAll?courseId=${courseId}&lessonId=${id}`,
+          `/${activeLocale}/u/courses/${courseId}`,
         );
       }
     },
@@ -92,7 +92,7 @@ const PracticalLessonItem: FC<PracticalLessonItemProps> = ({
               <div className="text-center text-gray-700">{parse(text)}</div>
             )}
             <div className="mt-2 text-sm text-gray-500">
-              <span>{t('createdAt')}</span> <DateTime date={createdAt} />
+              <span>{t('createdAt')} -</span> <DateTime date={createdAt} />
             </div>
             {lastUpdatedAt && (
               <div className="mt-1 text-sm text-gray-500">
@@ -152,7 +152,7 @@ const PracticalLessonItem: FC<PracticalLessonItemProps> = ({
             )}
             {canModify && (
               <div className="flex w-[100%] justify-center">
-                <div className="flex gap-4 width-[700px]">
+                <div className="width-[900px] flex gap-4">
                   <Button
                     className="mt-2 flex w-[100%] justify-center"
                     onClick={() => handleDelete(id)}
@@ -164,7 +164,11 @@ const PracticalLessonItem: FC<PracticalLessonItemProps> = ({
 
                   <Button
                     className="mt-2 flex w-[100%] justify-center"
-                    onClick={() => replace(`/${activeLocale}/u/practical-item-submit/getTeacherAll/?itemId=${id}`)}
+                    onClick={() =>
+                      replace(
+                        `/${activeLocale}/u/practical-item-submit/getTeacherAll/?itemId=${id}`,
+                      )
+                    }
                     gradientMonochrome="purple"
                     size="xs"
                   >

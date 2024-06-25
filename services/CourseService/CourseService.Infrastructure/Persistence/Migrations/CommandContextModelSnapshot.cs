@@ -279,6 +279,9 @@ namespace CourseService.Infrastructure.Persistence.Migrations
                     b.Property<DateTime?>("LastUpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<long?>("Mark")
+                        .HasColumnType("bigint");
+
                     b.Property<Guid>("PracticalLessonItemId")
                         .HasColumnType("uuid");
 

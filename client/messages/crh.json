@@ -670,6 +670,7 @@
     "joiningRequestBtn": "Bir mektep qoşmaq"
   },
   "Course": {
+    "choose": "Bir çalışma dönemi seçin",
     "listTitle": "Oquv meydanları",
     "oneTitle": "Oquv meydançığı",
     "createTitle": "Oquv meydançığınıñ yaratılması",
