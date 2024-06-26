@@ -1,4 +1,6 @@
-﻿namespace CourseService.Api.Controllers;
+﻿using CourseService.Application.Course.Commands.CopyCourse;
+
+namespace CourseService.Api.Controllers;
 
 public class CourseController(IMapper mapper) : BaseController
 {
@@ -128,7 +130,7 @@ public class CourseController(IMapper mapper) : BaseController
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CourseResponse))]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> Update([FromBody] UpdateCourseRequest updateRequest)
+    public async Task<IActionResult> Update([FromBody] UpdateOrCopyCourseRequest updateRequest)
     {
         var userId = User.Identity?.GetId();
         var userRole = User.Identity?.GetRole();
@@ -137,6 +139,29 @@ public class CourseController(IMapper mapper) : BaseController
             return ErrorActionResultHandler.Handle(new InvalidError("user"));
 
         var command = mapper.Map<UpdateCourseCommand>(updateRequest);
+        command.UserId = (Guid)userId;
+
+        var result = await Mediator.Send(command);
+
+        return result.Match(
+            Left: modelResponse => Ok(mapper.Map<CourseResponse>(modelResponse)),
+            Right: ErrorActionResultHandler.Handle
+        );
+    }
+
+    [HttpPost("[action]/")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CourseResponse))]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> Copy([FromBody] UpdateOrCopyCourseRequest updateRequest)
+    {
+        var userId = User.Identity?.GetId();
+        var userRole = User.Identity?.GetRole();
+
+        if (userId is null || userRole is null)
+            return ErrorActionResultHandler.Handle(new InvalidError("user"));
+
+        var command = mapper.Map<CopyCourseCommand>(updateRequest);
         command.UserId = (Guid)userId;
 
         var result = await Mediator.Send(command);

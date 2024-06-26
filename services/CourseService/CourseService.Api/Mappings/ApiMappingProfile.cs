@@ -1,4 +1,6 @@
-﻿namespace CourseService.Api.Mappings;
+﻿using CourseService.Application.Course.Commands.CopyCourse;
+
+namespace CourseService.Api.Mappings;
 
 public class ApiMappingProfile : Profile
 {
@@ -17,7 +19,9 @@ public class ApiMappingProfile : Profile
     {
         CreateMap<CreateCourseRequest, CreateCourseCommand>();
 
-        CreateMap<UpdateCourseRequest, UpdateCourseCommand>();
+        CreateMap<UpdateOrCopyCourseRequest, UpdateCourseCommand>();
+
+        CreateMap<UpdateOrCopyCourseRequest, CopyCourseCommand>();
 
         CreateMap<CourseModelResponse, CourseResponse>();
 

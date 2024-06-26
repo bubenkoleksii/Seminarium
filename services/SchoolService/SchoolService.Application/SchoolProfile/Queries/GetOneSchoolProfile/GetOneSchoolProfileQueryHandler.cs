@@ -143,17 +143,6 @@ public class GetOneSchoolProfileQueryHandler : IRequestHandler<GetOneSchoolProfi
                 }
         }
 
-        if (request.UserId.HasValue)
-        {
-            var isNotSameUser = profile?.UserId != schoolProfileResponse.UserId;
-            var isNotSameSchool = schoolProfileResponse.School?.Id != profile?.School?.Id;
-
-            if (profile is null || (isNotSameUser && isNotSameSchool &&
-                profile.Type != SchoolProfileType.Student &&
-                profile.Type != SchoolProfileType.Parent))
-                return new InvalidError("school_profile");
-        }
-
         if (entity.Data != null)
         {
             switch (entity)

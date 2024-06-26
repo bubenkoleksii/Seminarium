@@ -391,6 +391,18 @@ const OneCourse: FC<OneCourseProps> = ({ id }) => {
               </Link>
             </Button>
           </div>
+
+          <div
+            className={`flex pl-2 pr-2 pt-2 ${isPhone ? 'order-1 w-full' : 'w-1/3'} justify-center`}
+          >
+            <Button gradientMonochrome="pink" fullSized>
+              <Link
+                href={`/${activeLocale}/u/courses/copy/${id}/?${buildUpdateQuery()}`}
+              >
+                <span className="text-white">{t('copyBtn')}</span>
+              </Link>
+            </Button>
+          </div>
         </div>
       )}
     </div>
@@ -398,3 +410,4 @@ const OneCourse: FC<OneCourseProps> = ({ id }) => {
 };
 
 export { OneCourse };
+

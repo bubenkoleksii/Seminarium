@@ -35,7 +35,7 @@ export interface CreateCourseRequest {
   description?: string | null;
 }
 
-export interface UpdateCourseRequest {
+export interface UpdateOrCopyCourseRequest {
   id: string;
   studyPeriodId: string;
   name: string;

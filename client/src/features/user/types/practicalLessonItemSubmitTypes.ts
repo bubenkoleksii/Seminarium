@@ -18,6 +18,7 @@ type GetAllPracticalLessonItemSubmitResponseItem = {
   studentId: string;
   studentName?: string | null;
   groupName?: string | null;
+  mark?: number | null;
   practicalLessonItemId: string;
   attachments?: string[] | null;
   status: string;

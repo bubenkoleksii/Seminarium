@@ -7,7 +7,7 @@ import type {
   CourseResponse,
   CreateCourseRequest,
   PagesCoursesResponse,
-  UpdateCourseRequest,
+  UpdateOrCopyCourseRequest,
 } from '@/features/user/types/courseTypes';
 import { api } from '@/shared/api';
 import { ApiResponse } from '@/shared/types';
@@ -22,8 +22,8 @@ type CreateCourse = (
   data: CreateCourseRequest,
 ) => Promise<ApiResponse<CourseResponse>>;
 
-type UpdateCourse = (
-  data: UpdateCourseRequest,
+type UpdateOrCopyCourse = (
+  data: UpdateOrCopyCourseRequest,
 ) => Promise<ApiResponse<CourseResponse>>;
 
 type RemoveCourse = (id: string) => Promise<ApiResponse<any>>;
@@ -60,8 +60,11 @@ export const getAllCourses: GetAllCourses = (query) =>
 export const createCourse: CreateCourse = (data) =>
   api.create(course.create, data, false);
 
-export const updateCourse: UpdateCourse = (data) =>
+export const updateCourse: UpdateOrCopyCourse = (data) =>
   api.update(course.update, data, false);
+
+export const copyCourse: UpdateOrCopyCourse = (data) =>
+  api.create(course.copy, data, false);
 
 export const removeCourse: RemoveCourse = (id) => api.remove(course.remove(id));
 

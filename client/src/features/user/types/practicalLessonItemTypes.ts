@@ -33,8 +33,9 @@ export interface UpdatePracticalLessonItemRequest {
   deadline?: string;
   title: string;
   text?: string;
-  attempts?: number;
   allowSubmitAfterDeadline: boolean;
+  lessonId?: string;
+  courseId?: string;
 }
 
 export interface PracticalLessonItemResponse {

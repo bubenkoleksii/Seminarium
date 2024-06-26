@@ -1,8 +1,7 @@
 'use client';
 
 import { Loader } from '@/components/loader';
-import { updateCourse } from '@/features/user/api/coursesApi';
-import { StudyPeriodsDropdown } from '@/features/user/components/study-period/getAll/StudyPeriodDropdown';
+import { copyCourse } from '@/features/user/api/coursesApi';
 import { userMutations } from '@/features/user/constants';
 import { UpdateOrCopyCourseRequest } from '@/features/user/types/courseTypes';
 import { useAuthRedirectByRole } from '@/shared/hooks';
@@ -13,14 +12,15 @@ import { useRouter } from 'next/navigation';
 import { FC } from 'react';
 import toast from 'react-hot-toast';
 import * as Yup from 'yup';
-import styles from './UpdateCourseForm.module.scss';
+import { StudyPeriodsDropdown } from '../../study-period/getAll/StudyPeriodDropdown';
+import styles from './CopyCourseForm.module.scss';
 
-type UpdateCourseFormProps = {
+type CopyCourseFormProps = {
   id: string;
   course: UpdateOrCopyCourseRequest;
 };
 
-const UpdateCourseForm: FC<UpdateCourseFormProps> = ({ id, course }) => {
+const CopyCourseForm: FC<CopyCourseFormProps> = ({ id, course }) => {
   const t = useTranslations('Course');
   const v = useTranslations('Validation');
 
@@ -28,16 +28,16 @@ const UpdateCourseForm: FC<UpdateCourseFormProps> = ({ id, course }) => {
   const { replace } = useRouter();
 
   const validationSchema = Yup.object().shape({
-    studyPeriodId: Yup.string().required(t('required')),
-    name: Yup.string().max(250, t('Vmax')).required(t('required')),
-    description: Yup.string().optional().max(1024, t('max')),
+    studyPeriodId: Yup.string().required(v('required')),
+    name: Yup.string().max(250, v('max')).required(v('required')),
+    description: Yup.string().optional().max(1024, v('max')),
   });
 
   const isMutating = useIsMutating();
   const { isUserLoading } = useAuthRedirectByRole(activeLocale, 'userOnly');
 
-  const { mutate: mutateUpdateCourse } = useMutation({
-    mutationFn: updateCourse,
+  const { mutate: mutateCopyCourse } = useMutation({
+    mutationFn: copyCourse,
     mutationKey: [userMutations.updateCourse],
     retry: userMutations.options.retry,
     onSuccess: (response) => {
@@ -56,9 +56,9 @@ const UpdateCourseForm: FC<UpdateCourseFormProps> = ({ id, course }) => {
 
         toast.error(errorMessages[response.error.status] || v('internal'));
       } else {
-        toast.success(t('labels.updateSuccess'), { duration: 2500 });
+        toast.success(t('copySuccess'), { duration: 2500 });
 
-        const url = `/${activeLocale}/u/courses/${course.id}`;
+        const url = `/${activeLocale}/u/courses/${response.id}`;
         replace(url);
       }
     },
@@ -68,7 +68,7 @@ const UpdateCourseForm: FC<UpdateCourseFormProps> = ({ id, course }) => {
     return (
       <>
         <h2 className="md:text p-3 text-center text-lg font-semibold text-gray-950 lg:text-xl">
-          {t('updateTitle')}
+          {t('copyTitle')}
 
           <div>
             <span
@@ -97,7 +97,7 @@ const UpdateCourseForm: FC<UpdateCourseFormProps> = ({ id, course }) => {
       description: values.name,
     };
 
-    mutateUpdateCourse(request);
+    mutateCopyCourse(request);
   };
 
   return (
@@ -109,7 +109,20 @@ const UpdateCourseForm: FC<UpdateCourseFormProps> = ({ id, course }) => {
       {({ setFieldValue }) => (
         <div className={styles.container}>
           <h2 className="md:text p-3 text-center text-lg font-semibold text-gray-950 lg:text-xl">
-            {t('updateTitle')}
+            {t('copyTitle')}
+
+            <div>
+              <span
+                onClick={() => {
+                  const url = `/${activeLocale}/u/courses/${course.id}`;
+
+                  replace(url);
+                }}
+                className="cursor-pointer text-sm font-semibold text-purple-700 hover:text-red-700"
+              >
+                {t('labels.toCourse')}
+              </span>
+            </div>
           </h2>
 
           <Form className={styles.form}>
@@ -171,7 +184,7 @@ const UpdateCourseForm: FC<UpdateCourseFormProps> = ({ id, course }) => {
 
             <div>
               <button type="submit" className={styles.button}>
-                {t('labels.updateSubmit')}
+                {t('labels.copySubmit')}
               </button>
             </div>
           </Form>
@@ -179,7 +192,7 @@ const UpdateCourseForm: FC<UpdateCourseFormProps> = ({ id, course }) => {
       )}
     </Formik>
   );
-};
+}
 
-export { UpdateCourseForm };
+export { CopyCourseForm };
 

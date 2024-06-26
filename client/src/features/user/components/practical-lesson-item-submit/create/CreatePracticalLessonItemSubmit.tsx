@@ -47,6 +47,12 @@ const CreatePracticalLessonItemSubmit: FC<
     mutationKey: ['createPracticalLessonItemSubmit'],
     onSuccess: (response) => {
       if (response && response.error) {
+        if (response.error.detail.includes('deadline')) {
+          toast.error(t('deadlineError'));
+
+          return;
+        }
+
         const errorMessages = {
           400: v('validation'),
           401: v('unauthorized'),
@@ -149,3 +155,4 @@ const CreatePracticalLessonItemSubmit: FC<
 };
 
 export { CreatePracticalLessonItemSubmit };
+

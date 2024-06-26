@@ -2,6 +2,7 @@ export { activate } from './api/schoolProfilesApi';
 export { UserProfile } from './components/UserProfile';
 export { UserSidebar } from './components/UserSidebar';
 export { Children } from './components/children/Children';
+export { CopyCourseForm } from './components/course/copy/CopyCourseForm';
 export { CreateCourseForm } from './components/course/create/CreateCourseForm';
 export { CreateCourseGroup } from './components/course/createGroup/CreateCourseGroup';
 export { CreateCourseTeacher } from './components/course/createTeacher/CreateCourseTeacher';
@@ -24,6 +25,7 @@ export { GetTeacherAll } from './components/practical-lesson-item-submit/getTeac
 export { CreatePracticalLessonItemForm } from './components/practical-lesson-item/create/CreatePracticalLessonItemForm';
 export { GetAllPracticalLessonItems } from './components/practical-lesson-item/getAll/GetAllPracticalLessonItems';
 export { GetStudentAll } from './components/practical-lesson-item/getStudentAll/GetStudentAll';
+export { UpdatePracticalLessonItemForm } from './components/practical-lesson-item/update/UpdatePracticalLessonItemForm';
 export { CreateStudyPeriod } from './components/study-period/create/CreateStudyPeriod';
 export { StudyPeriods } from './components/study-period/getAll/StudyPeriods';
 export { UpdateStudyPeriodForm } from './components/study-period/update/UpdateStudyPeriodForm';

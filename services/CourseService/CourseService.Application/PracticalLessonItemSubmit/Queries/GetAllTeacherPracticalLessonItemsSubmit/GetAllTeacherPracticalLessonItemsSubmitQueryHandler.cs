@@ -23,7 +23,10 @@ public class GetAllTeacherPracticalLessonItemsSubmitQueryHandler(
             .Take((int)take)
             .ToListAsync(cancellationToken);
 
-        var studentIds = submits.Select(s => s.StudentId).ToArray();
+        submits = submits.OrderByDescending(s => s.CreatedAt).ToList();
+
+        var studentIds = submits.Select(s => s.StudentId)
+            .ToArray();
 
         var getStudentRequest = new GetSchoolProfilesRequest(Ids: studentIds, UserId: null, GroupId: null, SchoolId: null, Type: null);
         var studentResponse = await _getSchoolProfilesClient.GetResponse<GetSchoolProfilesResponse>(getStudentRequest, cancellationToken);
@@ -49,6 +52,7 @@ public class GetAllTeacherPracticalLessonItemsSubmitQueryHandler(
                 StudentId = submit.StudentId,
                 StudentName = studentContract.Name,
                 PracticalLessonItemId = submit.PracticalLessonItemId,
+                Mark = submit.Mark,
                 Status = submit.Status
             };
 

@@ -16,6 +16,7 @@ export const course = {
   getAll: '/course/getAll',
   create: '/course/create',
   update: '/course/update',
+  copy: '/course/copy',
   addGroup: '/course/addGroup',
   addTeacher: '/course/addTeacher',
   remove: (id: string) => `/course/Delete/${id}`,

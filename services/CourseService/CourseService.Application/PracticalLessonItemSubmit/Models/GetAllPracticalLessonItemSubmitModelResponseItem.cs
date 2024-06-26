@@ -12,6 +12,8 @@ public class GetAllPracticalLessonItemSubmitModelResponseItem
 
     public string? GroupName { get; set; }
 
+    public uint? Mark { get; set; }
+
     public Guid PracticalLessonItemId { get; set; }
 
     public PracticalLessonItemSubmitStatus Status { get; set; }

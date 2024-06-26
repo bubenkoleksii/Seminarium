@@ -11,6 +11,8 @@ public record GetAllPracticalLessonItemSubmitResponseItem(
 
     string? GroupName,
 
+    uint? Mark,
+
     Guid PracticalLessonItemId,
 
     string Status

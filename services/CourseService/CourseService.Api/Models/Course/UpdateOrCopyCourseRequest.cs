@@ -1,6 +1,6 @@
 ﻿namespace CourseService.Api.Models.Course;
 
-public record UpdateCourseRequest(
+public record UpdateOrCopyCourseRequest(
     Guid Id,
 
     Guid StudyPeriodId,

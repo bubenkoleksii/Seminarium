@@ -1,12 +1,12 @@
 import { UpdateCourseForm } from '@/features/user';
-import type { UpdateCourseRequest } from '@/features/user/types/courseTypes';
+import type { UpdateOrCopyCourseRequest } from '@/features/user/types/courseTypes';
 import { FC } from 'react';
 
 type UpdateCoursePageProps = {
   params: {
     id: string;
   };
-  searchParams: UpdateCourseRequest;
+  searchParams: UpdateOrCopyCourseRequest;
 };
 
 const UpdateCoursePage: FC<UpdateCoursePageProps> = ({

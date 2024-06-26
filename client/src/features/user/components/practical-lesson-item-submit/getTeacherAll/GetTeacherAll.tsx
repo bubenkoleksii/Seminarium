@@ -131,6 +131,12 @@ const GetTeacherAll: FC<GetTeacherAllProps> = ({
             <p>
               <DateTime date={item.createdAt} />
             </p>
+            {item.status === 'accepted' && (
+              <div className="mt-2 text-left text-sm">
+                <span className="font-semibold">{t('labels.mark')}:</span>{' '}
+                <span>{item.mark ?? '-'}</span>
+              </div>
+            )}
             <button
               onClick={() =>
                 replace(

@@ -4,6 +4,7 @@ import { DateTime } from '@/components/date-time';
 import { removePracticalLessonItem } from '@/features/user/api/practicalLessonItemsApi';
 import { PracticalLessonItemResponse } from '@/features/user/types/practicalLessonItemTypes';
 import { SchoolProfileResponse } from '@/features/user/types/schoolProfileTypes';
+import { buildQueryString } from '@/shared/helpers';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { Button } from 'flowbite-react';
 import parse from 'html-react-parser';
@@ -13,14 +14,14 @@ import { FC } from 'react';
 import toast from 'react-hot-toast';
 
 type PracticalLessonItemProps = {
-  lesson: PracticalLessonItemResponse;
+  lessonItem: PracticalLessonItemResponse;
   canModify: boolean;
   courseId: string;
   activeProfile: SchoolProfileResponse;
 };
 
 const PracticalLessonItem: FC<PracticalLessonItemProps> = ({
-  lesson,
+  lessonItem,
   canModify,
   courseId,
   activeProfile,
@@ -38,7 +39,8 @@ const PracticalLessonItem: FC<PracticalLessonItemProps> = ({
     isArchived,
     author,
     attachments,
-  } = lesson;
+    lessonId,
+  } = lessonItem;
 
   const queryClient = useQueryClient();
 
@@ -82,6 +84,17 @@ const PracticalLessonItem: FC<PracticalLessonItemProps> = ({
     deletePracticalItem(id);
   };
 
+  const buildUpdateQuery = () => {
+    return buildQueryString({
+      id,
+      title,
+      text,
+      allowSubmitAfterDeadline,
+      lessonId,
+      courseId
+    });
+  };
+
   return (
     <div className="mb-4 mt-4 flex w-[100%] justify-center">
       <div className="mt-2 flex w-[100%] justify-center sm:w-[80%]">
@@ -96,14 +109,9 @@ const PracticalLessonItem: FC<PracticalLessonItemProps> = ({
             </div>
             {lastUpdatedAt && (
               <div className="mt-1 text-sm text-gray-500">
-                <span>{t('lastUpdatedAt')}</span>{' '}
+                <span>{t('lastUpdatedAt')}</span>{' - '}
                 <DateTime date={lastUpdatedAt} />
               </div>
-            )}
-            {allowSubmitAfterDeadline && (
-              <p className="font-semibold">
-                {t('labels.allowedSubmitAfterDeadline')}
-              </p>
             )}
 
             {isArchived && (
@@ -134,7 +142,7 @@ const PracticalLessonItem: FC<PracticalLessonItemProps> = ({
                   .reduce((prev, curr) => [prev, ', ', curr])}
               </div>
             )}
-            {!canModify && (
+            {!canModify && activeProfile.type === 'student' && (
               <div>
                 <Button
                   className="mt-2 flex w-[100%] justify-center"
@@ -160,6 +168,15 @@ const PracticalLessonItem: FC<PracticalLessonItemProps> = ({
                     size="xs"
                   >
                     <span className="text-white">{t('deleteBtn')}</span>
+                  </Button>
+
+                  <Button
+                    className="mt-2 flex w-[100%] justify-center"
+                    onClick={() => replace(`/${activeLocale}/u/practical-item/update/${id}/?${buildUpdateQuery()}`)}
+                    gradientMonochrome="lime"
+                    size="xs"
+                  >
+                    <span>{t('updateBtn')}</span>
                   </Button>
 
                   <Button

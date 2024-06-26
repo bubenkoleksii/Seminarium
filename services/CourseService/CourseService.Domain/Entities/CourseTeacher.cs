@@ -6,7 +6,7 @@ public class CourseTeacher
 
     public bool IsCreator { get; set; }
 
-    public IEnumerable<Course>? Courses { get; set; }
+    public ICollection<Course>? Courses { get; set; }
 
     public IEnumerable<LessonItem>? LessonItems { get; set; }
 }

@@ -55,6 +55,7 @@ export const userMutations = {
   updateSchoolProfile: 'updateSchoolProfile',
   createCourse: 'createCourse',
   updateCourse: 'updateCourse',
+  copyCourse: 'copyCourse',
   deleteCourse: 'deleteCourse',
   options: {
     retry: 3,

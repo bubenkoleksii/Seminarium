@@ -70,7 +70,7 @@ const GetAllPracticalLessonItems: FC<GetAllPracticalLessonItemsProps> = ({
             key={lesson.lessonId}
             courseId={courseId}
             canModify={canModify}
-            lesson={lesson}
+            lessonItem={lesson}
             activeProfile={activeProfile}
           />
         ))
@@ -82,3 +82,4 @@ const GetAllPracticalLessonItems: FC<GetAllPracticalLessonItemsProps> = ({
 };
 
 export { GetAllPracticalLessonItems };
+
