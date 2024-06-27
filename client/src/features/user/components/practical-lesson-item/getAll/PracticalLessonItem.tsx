@@ -67,9 +67,7 @@ const PracticalLessonItem: FC<PracticalLessonItemProps> = ({
       } else {
         toast.success(t('deleteSuccess'), { duration: 2500 });
 
-        replace(
-          `/${activeLocale}/u/courses/${courseId}`,
-        );
+        replace(`/${activeLocale}/u/courses/${courseId}`);
       }
     },
     onSettled: async () => {
@@ -91,7 +89,7 @@ const PracticalLessonItem: FC<PracticalLessonItemProps> = ({
       text,
       allowSubmitAfterDeadline,
       lessonId,
-      courseId
+      courseId,
     });
   };
 
@@ -109,7 +107,8 @@ const PracticalLessonItem: FC<PracticalLessonItemProps> = ({
             </div>
             {lastUpdatedAt && (
               <div className="mt-1 text-sm text-gray-500">
-                <span>{t('lastUpdatedAt')}</span>{' - '}
+                <span>{t('lastUpdatedAt')}</span>
+                {' - '}
                 <DateTime date={lastUpdatedAt} />
               </div>
             )}
@@ -172,7 +171,11 @@ const PracticalLessonItem: FC<PracticalLessonItemProps> = ({
 
                   <Button
                     className="mt-2 flex w-[100%] justify-center"
-                    onClick={() => replace(`/${activeLocale}/u/practical-item/update/${id}/?${buildUpdateQuery()}`)}
+                    onClick={() =>
+                      replace(
+                        `/${activeLocale}/u/practical-item/update/${id}/?${buildUpdateQuery()}`,
+                      )
+                    }
                     gradientMonochrome="lime"
                     size="xs"
                   >
@@ -202,4 +205,3 @@ const PracticalLessonItem: FC<PracticalLessonItemProps> = ({
 };
 
 export { PracticalLessonItem };
-

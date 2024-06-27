@@ -1,10 +1,12 @@
-import { FC } from 'react';
+'use client';
+
+import { routes } from '@/shared/constants';
+import { useSession } from 'next-auth/react';
 import { useLocale, useTranslations } from 'next-intl';
 import Image from 'next/image';
 import Link from 'next/link';
-import { routes } from '@/shared/constants';
-import { useSession } from 'next-auth/react';
-import { redirect, useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
+import { FC } from 'react';
 
 const Welcome: FC = () => {
   const activeLocale = useLocale();
@@ -15,7 +17,7 @@ const Welcome: FC = () => {
   const currentUser = data?.user;
   if (currentUser) {
     currentUser.role === 'admin'
-      ? redirect(`${activeLocale}/admin/joining_requests`)
+      ? replace(`${activeLocale}/admin`)
       : replace(`${activeLocale}/u`);
   }
 

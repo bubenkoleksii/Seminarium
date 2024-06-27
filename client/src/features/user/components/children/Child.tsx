@@ -31,7 +31,9 @@ const Child: FC<ChildProps> = ({ child }) => {
 
         <Button
           onClick={() =>
-            replace(`/${activeLocale}/u/practical-item/getStudentAll/?studentId=${child.id}/`)
+            replace(
+              `/${activeLocale}/u/practical-item/getStudentAll/?studentId=${child.id}/`,
+            )
           }
           gradientMonochrome="purple"
           size="xs"
@@ -40,9 +42,7 @@ const Child: FC<ChildProps> = ({ child }) => {
         </Button>
 
         <Button
-          onClick={() =>
-            replace(`/${activeLocale}/u/groups/${child.groupId}`)
-          }
+          onClick={() => replace(`/${activeLocale}/u/groups/${child.groupId}`)}
           gradientMonochrome="lime"
           size="xs"
         >
@@ -64,4 +64,3 @@ const Child: FC<ChildProps> = ({ child }) => {
 };
 
 export { Child };
-

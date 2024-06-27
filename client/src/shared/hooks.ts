@@ -1,16 +1,16 @@
 'use client';
 
-import { useEffect, useState } from 'react';
 import { useAdminStore } from '@/features/admin/store/adminStore';
-import { useRouter } from 'next/navigation';
-import { useSession } from 'next-auth/react';
 import { useUserStore } from '@/features/user/store/userStore';
+import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
 export const useAuthRedirectByRole = (activeLocale, requiredRole = null) => {
   const { data: userData, status: userStatus } = useSession();
   const router = useRouter();
   const currentUser = userData?.user;
-  const attempts = 2;
+  const attempts = 12;
   const [attemptCount, setAttemptCount] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
 

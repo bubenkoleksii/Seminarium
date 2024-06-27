@@ -5,11 +5,14 @@ import { FC } from 'react';
 type UpdatePracticalItemPageProps = {
   params: {
     id: string;
-  }
+  };
   searchParams: UpdatePracticalLessonItemRequest;
 };
 
-const UpdatePracticalItemPage: FC<UpdatePracticalItemPageProps> = ({ params, searchParams }) => {
+const UpdatePracticalItemPage: FC<UpdatePracticalItemPageProps> = ({
+  params,
+  searchParams,
+}) => {
   return (
     <div className="p-3">
       <UpdatePracticalLessonItemForm
@@ -17,7 +20,7 @@ const UpdatePracticalItemPage: FC<UpdatePracticalItemPageProps> = ({ params, sea
         practicalLessonItem={searchParams}
       />
     </div>
-  )
-}
+  );
+};
 
 export default UpdatePracticalItemPage;

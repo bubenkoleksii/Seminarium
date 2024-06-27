@@ -43,4 +43,3 @@ export { UpdateParentSchoolProfile } from './school-profile/update/UpdateParentS
 export { UpdateStudentSchoolProfile } from './school-profile/update/UpdateStudentSchoolProfile';
 export { UpdateTeacherSchoolProfile } from './school-profile/update/UpdateTeacherSchoolProfile';
 export { useSchoolProfilesStore } from './store/schoolProfilesStore';
-

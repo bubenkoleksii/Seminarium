@@ -296,3 +296,4 @@ const SchoolProfileDetails: FC<SchoolProfileDetailsProps> = ({ id }) => {
 };
 
 export { SchoolProfileDetails };
+

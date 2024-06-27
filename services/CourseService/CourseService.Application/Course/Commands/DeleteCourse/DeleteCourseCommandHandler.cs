@@ -13,7 +13,7 @@ public class DeleteCourseCommandHandler(
     {
         var getActiveProfileRequest = new GetActiveSchoolProfileRequest(
             UserId: request.UserId,
-            AllowedProfileTypes: [Constants.Teacher, Constants.SchoolAdmin]
+            AllowedProfileTypes: [Constants.Teacher, Constants.SchoolAdmin, Constants.ClassTeacher]
         );
 
         var retrievingActiveProfileResult =
@@ -30,7 +30,7 @@ public class DeleteCourseCommandHandler(
         if (course is null)
             return new NotFoundByIdError(request.Id, "course");
 
-        if (activeProfile.Type != Constants.Teacher && activeProfile.Type != Constants.SchoolAdmin)
+        if (activeProfile.Type != Constants.Teacher && activeProfile.Type != Constants.SchoolAdmin && activeProfile.Type != Constants.ClassTeacher)
             return new InvalidError("school_profile");
 
         if (activeProfile.Type == Constants.Teacher)

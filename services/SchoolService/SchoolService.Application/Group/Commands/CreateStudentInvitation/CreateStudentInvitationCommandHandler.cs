@@ -26,7 +26,7 @@ public class CreateStudentInvitationCommandHandler : IRequestHandler<CreateStude
     {
         var profile = await _schoolProfileManager.GetActiveProfile(request.UserId);
 
-        if (profile is null || profile.Type is not SchoolProfileType.SchoolAdmin or SchoolProfileType.ClassTeacher)
+        if (profile is null || (profile.Type != SchoolProfileType.SchoolAdmin && profile.Type != SchoolProfileType.ClassTeacher))
             return new InvalidError("school_profile");
 
         var group = await _queryContext.Groups.FindAsync(request.GroupId);
@@ -40,7 +40,7 @@ public class CreateStudentInvitationCommandHandler : IRequestHandler<CreateStude
             case SchoolProfileType.ClassTeacher:
                 {
                     var validationError =
-                        await _schoolProfileManager.ValidateSchoolProfileByGroup(request.UserId, request.GroupId);
+                        await _schoolProfileManager.ValidateClassTeacherSchoolProfileByGroup(request.UserId, request.GroupId);
 
                     if (validationError.IsSome)
                         return (Error)validationError;

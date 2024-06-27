@@ -24,7 +24,7 @@ type GetStudentAllProps = {
 const GetStudentAll: FC<GetStudentAllProps> = ({
   studentId,
   limitParameter,
-  pageParameter
+  pageParameter,
 }) => {
   const activeLocale = useLocale();
   const t = useTranslations('PracticalItem');
@@ -35,8 +35,12 @@ const GetStudentAll: FC<GetStudentAllProps> = ({
   const defaultPage = 1;
   const limitOptions = [8, 20, 30];
 
-  const [limit, setLimit] = useState<number>(parseInt(limitParameter) || limitOptions[0]);
-  const [page, setPage] = useState<number>(parseInt(pageParameter) || defaultPage);
+  const [limit, setLimit] = useState<number>(
+    parseInt(limitParameter) || limitOptions[0],
+  );
+  const [page, setPage] = useState<number>(
+    parseInt(pageParameter) || defaultPage,
+  );
 
   const skip = (page - 1) * limit;
 
@@ -62,7 +66,9 @@ const GetStudentAll: FC<GetStudentAllProps> = ({
       'bg-gradient-to-r from-green-50 to-green-100 p-4 rounded-lg shadow-md mb-4',
   };
 
-  const { data, isLoading } = useQuery<ApiResponse<GetAllStudentPracticalLessonItemsResponse>>({
+  const { data, isLoading } = useQuery<
+    ApiResponse<GetAllStudentPracticalLessonItemsResponse>
+  >({
     queryFn: () => getAllStudentPracticalLessonItems(buildQuery()),
     queryKey: ['getAllPracticalLessonItems', studentId, limit, skip],
     retry: userQueries.options.retry,
@@ -77,14 +83,16 @@ const GetStudentAll: FC<GetStudentAllProps> = ({
     if (page) params.set('page', page.toString());
 
     replace(`${pathname}?${params.toString()}`);
-  }, [replace, limit, page, pathname]);
+  }, [replace, limit, page, pathname, studentId]);
 
   useSetCurrentTab(CurrentTab.PracticalItems);
 
   if (isLoading) {
     return (
       <>
-        <h2 className="mb-4 text-center text-xl font-bold">{t('studentListTitle')}</h2>
+        <h2 className="mb-4 text-center text-xl font-bold">
+          {t('studentListTitle')}
+        </h2>
         <Loader />
       </>
     );
@@ -93,7 +101,9 @@ const GetStudentAll: FC<GetStudentAllProps> = ({
   if (data && data.error) {
     return (
       <>
-        <h2 className="mb-4 text-center text-xl font-bold">{t('studentListTitle')}</h2>
+        <h2 className="mb-4 text-center text-xl font-bold">
+          {t('studentListTitle')}
+        </h2>
         <Error error={data.error} />
       </>
     );
@@ -102,7 +112,9 @@ const GetStudentAll: FC<GetStudentAllProps> = ({
   if (data && data.total === 0) {
     return (
       <>
-        <h2 className="mb-4 text-center text-xl font-bold">{t('studentListTitle')}</h2>
+        <h2 className="mb-4 text-center text-xl font-bold">
+          {t('studentListTitle')}
+        </h2>
         <p className="w-full text-center text-red-700">{t('notFound')}</p>
       </>
     );
@@ -125,7 +137,7 @@ const GetStudentAll: FC<GetStudentAllProps> = ({
         />
       </div>
 
-      <div className="flex mt-3 flex-wrap justify-center mx-2">
+      <div className="mx-2 mt-3 flex flex-wrap justify-center">
         {data?.entries.map((item) => {
           const deadline = item.deadline ? new Date(item.deadline) : null;
           const now = new Date();
@@ -139,11 +151,12 @@ const GetStudentAll: FC<GetStudentAllProps> = ({
           return (
             <div
               key={item.id}
-              className="mb-4 p-4 border justify-center rounded shadow-lg w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5 mx-2"
+              className="mx-2 mb-4 w-full justify-center rounded border p-4 shadow-lg sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5"
             >
               <h3 className="text-lg font-semibold">{item.title}</h3>
               <p className={`mt-2 ${deadlineClassName}`}>
-                {t('item.deadline')}: {deadline ? <DateTime date={deadline} /> : '-'}
+                {t('item.deadline')}:{' '}
+                {deadline ? <DateTime date={deadline} /> : '-'}
               </p>
               <p className="mt-2 text-sm font-medium text-gray-600">
                 {t('item.createdAt')}: <DateTime date={item.createdAt} />
@@ -154,8 +167,11 @@ const GetStudentAll: FC<GetStudentAllProps> = ({
               <p className="mt-2 text-sm font-medium text-gray-600">
                 {t('item.lessonTopic')}: {item.lessonTopic}
               </p>
-              <p className={`mt-4 text-sm font-medium ${textColorClasses[item.status]}`}>
-                {t('item.status')}: {item.status ? t(`item.statuses.${item.status}`) : '-'}
+              <p
+                className={`mt-4 text-sm font-medium ${textColorClasses[item.status]}`}
+              >
+                {t('item.status')}:{' '}
+                {item.status ? t(`item.statuses.${item.status}`) : '-'}
               </p>
               <button
                 onClick={() =>
@@ -185,4 +201,3 @@ const GetStudentAll: FC<GetStudentAllProps> = ({
 };
 
 export { GetStudentAll };
-

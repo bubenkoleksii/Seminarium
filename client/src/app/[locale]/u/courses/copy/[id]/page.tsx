@@ -14,7 +14,7 @@ const CopyCoursePage: FC<CopyCoursePageProps> = ({ params, searchParams }) => {
     <div className="p-3">
       <CopyCourseForm id={params.id} course={searchParams} />
     </div>
-  )
-}
+  );
+};
 
 export default CopyCoursePage;

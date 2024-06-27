@@ -164,4 +164,3 @@ const GetTeacherAll: FC<GetTeacherAllProps> = ({
 };
 
 export { GetTeacherAll };
-

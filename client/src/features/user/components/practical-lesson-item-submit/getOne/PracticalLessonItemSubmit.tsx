@@ -269,16 +269,16 @@ const PracticalLessonItemSubmit: FC<PracticalLessonItemSubmitProps> = ({
                 <span>{mark}</span>
               </div>
             )}
-            {teacherComment &&
+            {teacherComment && (
               <div className="mt-2 text-left text-sm">
                 <span className="font-semibold">{t('teacherComment')}:</span>{' '}
                 <span className={textColorClass}>{teacherComment}</span>
               </div>
-            }
+            )}
 
             {activeProfile.type === 'teacher' && (
               <>
-                <div className="flex justify-center gap-4 mb-4">
+                <div className="mb-4 flex justify-center gap-4">
                   <Button
                     className="mt-2 w-[200px] justify-center"
                     onClick={() => setTeacherRejectModalOpen(true)}
@@ -314,7 +314,8 @@ const PracticalLessonItemSubmit: FC<PracticalLessonItemSubmitProps> = ({
               </>
             )}
 
-            {((status === 'submitted' && activeProfile.id === data.studentId) || isTeacher) && (
+            {((status === 'submitted' && activeProfile.id === data.studentId) ||
+              isTeacher) && (
               <div className="flex justify-center">
                 <Button
                   className="mt-2 w-[200px] justify-center"
@@ -334,4 +335,3 @@ const PracticalLessonItemSubmit: FC<PracticalLessonItemSubmitProps> = ({
 };
 
 export { PracticalLessonItemSubmit };
-

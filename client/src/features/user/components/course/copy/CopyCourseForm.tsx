@@ -192,7 +192,6 @@ const CopyCourseForm: FC<CopyCourseFormProps> = ({ id, course }) => {
       )}
     </Formik>
   );
-}
+};
 
 export { CopyCourseForm };
-

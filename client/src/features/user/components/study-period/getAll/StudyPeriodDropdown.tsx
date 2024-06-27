@@ -83,4 +83,3 @@ const StudyPeriodsDropdown: FC<StudyPeriodsDropdownProps> = ({
 };
 
 export { StudyPeriodsDropdown };
-

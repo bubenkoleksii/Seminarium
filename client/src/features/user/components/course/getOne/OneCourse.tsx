@@ -222,7 +222,7 @@ const OneCourse: FC<OneCourseProps> = ({ id }) => {
   };
 
   const canModify =
-    activeProfile?.type === 'school_admin' || activeProfile?.type === 'teacher';
+    activeProfile?.type === 'school_admin' || activeProfile?.type === 'teacher' || activeProfile?.type === 'class_teacher';
 
   const canModifyLessons = activeProfile?.type === 'teacher';
 

@@ -20,7 +20,10 @@ type UpdatePracticalLessonItemFormProps = {
   practicalLessonItem: UpdatePracticalLessonItemRequest;
 };
 
-const UpdatePracticalLessonItemForm: FC<UpdatePracticalLessonItemFormProps> = ({ id, practicalLessonItem }) => {
+const UpdatePracticalLessonItemForm: FC<UpdatePracticalLessonItemFormProps> = ({
+  id,
+  practicalLessonItem,
+}) => {
   const t = useTranslations('PracticalItem');
   const v = useTranslations('Validation');
 
@@ -180,4 +183,3 @@ const UpdatePracticalLessonItemForm: FC<UpdatePracticalLessonItemFormProps> = ({
 };
 
 export { UpdatePracticalLessonItemForm };
-

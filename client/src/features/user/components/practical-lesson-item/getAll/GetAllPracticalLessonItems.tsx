@@ -82,4 +82,3 @@ const GetAllPracticalLessonItems: FC<GetAllPracticalLessonItemsProps> = ({
 };
 
 export { GetAllPracticalLessonItems };
-

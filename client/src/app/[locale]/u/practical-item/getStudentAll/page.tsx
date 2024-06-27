@@ -6,8 +6,8 @@ type StudentAllPageProps = {
     studentId: string;
     take?: string;
     page?: string;
-  }
-}
+  };
+};
 
 const StudentAllPage: FC<StudentAllPageProps> = ({ searchParams }) => {
   return (
@@ -18,7 +18,7 @@ const StudentAllPage: FC<StudentAllPageProps> = ({ searchParams }) => {
         pageParameter={searchParams.page ? Number(searchParams.page) : null}
       />
     </div>
-  )
-}
+  );
+};
 
 export default StudentAllPage;

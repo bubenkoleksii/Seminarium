@@ -19,7 +19,7 @@ const CourseItem: FC<CourseItemProps> = ({ course }) => {
   const { replace } = useRouter();
 
   return (
-    <div className="mb-4 mt-3 rounded-lg bg-white p-4 text-center shadow-md w-[300px]">
+    <div className="mb-4 mt-3 w-[300px] rounded-lg bg-white p-4 text-center shadow-md">
       <h2 className="mb-4 text-xl font-bold">{course.name}</h2>
 
       <div className="mt-2 flex w-full flex-wrap justify-center gap-4 md:flex-nowrap">
@@ -36,4 +36,3 @@ const CourseItem: FC<CourseItemProps> = ({ course }) => {
 };
 
 export { CourseItem };
-

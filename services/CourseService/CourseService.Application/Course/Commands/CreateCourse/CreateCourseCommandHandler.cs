@@ -55,6 +55,24 @@ public class CreateCourseCommandHandler(
             }
         }
 
+        if (activeProfile.Type == Constants.ClassTeacher)
+        {
+            var group = await _commandContext.CourseGroups.FindAsync(activeProfile.ClassTeacherGroupId);
+
+            if (group == null)
+            {
+                var newGroup = new CourseGroup
+                {
+                    Id = (Guid)activeProfile.ClassTeacherGroupId!,
+                };
+
+                entity.Groups = [newGroup];
+            } else
+            {
+                entity.Groups = [group];
+            }
+        }
+
         await _commandContext.Courses.AddAsync(entity, cancellationToken);
 
         try
